@@ -2,6 +2,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import StudentDashboard from './StudentDashboard';
 import EquipmentBrowse from './EquipmentBrowse';
+import MyBookings from './MyBookings';
 
 export default function StudentLayout() {
   const { user, logout } = useAuth();
@@ -32,7 +33,7 @@ export default function StudentLayout() {
         <Routes>
           <Route index element={<StudentDashboard />} />
           <Route path="equipment" element={<EquipmentBrowse />} />
-          <Route path="bookings" element={<div>My Bookings (Coming Soon)</div>} />
+          <Route path="bookings" element={<MyBookings />} />
         </Routes>
       </main>
     </div>

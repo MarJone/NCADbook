@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
+import BookingModal from '../../components/booking/BookingModal';
 
 export default function EquipmentBrowse() {
   const [equipment, setEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     loadEquipment();
@@ -24,6 +27,19 @@ export default function EquipmentBrowse() {
   };
 
   const categories = ['all', 'Camera', 'Computer', 'Lighting', 'Support'];
+
+  const handleBookClick = (item) => {
+    if (item.status !== 'available') {
+      alert('This equipment is not available for booking');
+      return;
+    }
+    setSelectedEquipment(item);
+    setShowModal(true);
+  };
+
+  const handleBookingSuccess = () => {
+    alert('Booking created successfully! Awaiting admin approval.');
+  };
 
   return (
     <div className="equipment-browse">
@@ -65,13 +81,25 @@ export default function EquipmentBrowse() {
                   </span>
                   <span className="department">{item.department}</span>
                 </div>
-                <button className="btn btn-primary btn-block">
-                  Book Equipment
+                <button
+                  className="btn btn-primary btn-block"
+                  onClick={() => handleBookClick(item)}
+                  disabled={item.status !== 'available'}
+                >
+                  {item.status === 'available' ? 'Book Equipment' : 'Not Available'}
                 </button>
               </div>
             </div>
           ))}
         </div>
+      )}
+
+      {showModal && selectedEquipment && (
+        <BookingModal
+          equipment={selectedEquipment}
+          onClose={() => setShowModal(false)}
+          onSuccess={handleBookingSuccess}
+        />
       )}
     </div>
   );
