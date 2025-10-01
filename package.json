@@ -1,0 +1,16 @@
+{
+  "name": "ncadbook",
+  "version": "1.0.0",
+  "description": "This project is a web-based booking system for NCAD College, generated and managed using Claude Code in VS Code.",
+  "main": "playwright.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
