@@ -453,3 +453,124 @@ body {
     width: 100%;
   }
 }
+
+/* Staff Portal - Room Booking Styles */
+.room-booking .subtitle {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.booking-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.select-input, .date-input {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+}
+
+.select-input:focus, .date-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.space-details {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.space-details h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.space-details p {
+  margin: var(--spacing-sm) 0;
+  color: var(--text-secondary);
+}
+
+.equipment-list {
+  color: var(--text-primary);
+}
+
+.time-slots-grid {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+}
+
+.time-slots-grid h3 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.slots-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.time-slot {
+  padding: var(--spacing-lg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: white;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  position: relative;
+}
+
+.time-slot-available {
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.time-slot-available:hover {
+  background: #d1fae5;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.time-slot-booked {
+  border-color: var(--error-color);
+  background: #fee2e2;
+  color: var(--error-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.slot-status {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: var(--spacing-xs);
+}
+
+.booking-summary {
+  background: var(--surface);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+}
+
+.booking-summary p {
+  margin: var(--spacing-sm) 0;
+}
+
+@media (max-width: 768px) {
+  .booking-controls {
+    grid-template-columns: 1fr;
+  }
+  
+  .slots-container {
+    grid-template-columns: 1fr;
+  }
+}

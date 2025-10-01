@@ -1,4 +1,9 @@
+import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import StaffDashboard from './StaffDashboard';
+import RoomBooking from './RoomBooking';
+import EquipmentBrowse from '../student/EquipmentBrowse';
+import MyBookings from '../student/MyBookings';
 
 export default function StaffLayout() {
   const { user, logout } = useAuth();
@@ -9,24 +14,26 @@ export default function StaffLayout() {
         <div className="header-content">
           <h1>NCADbook - Staff Portal</h1>
           <div className="header-actions">
-            <span className="user-info">{user?.full_name}</span>
+            <span className="user-info">{user?.full_name} - {user?.department}</span>
             <button onClick={logout} className="btn btn-secondary btn-sm">Logout</button>
           </div>
         </div>
       </header>
+
+      <nav className="portal-nav">
+        <Link to="/staff" className="nav-link">Dashboard</Link>
+        <Link to="/staff/rooms" className="nav-link">Book Rooms</Link>
+        <Link to="/staff/equipment" className="nav-link">Equipment</Link>
+        <Link to="/staff/bookings" className="nav-link">My Bookings</Link>
+      </nav>
+
       <main className="portal-main">
-        <div className="dashboard">
-          <h2>Welcome, {user?.first_name}!</h2>
-          <p>Staff portal features coming soon...</p>
-          <div className="dashboard-card">
-            <h3>Staff Features</h3>
-            <ul>
-              <li>Equipment Booking</li>
-              <li>Room/Space Booking</li>
-              <li>View Student Bookings</li>
-            </ul>
-          </div>
-        </div>
+        <Routes>
+          <Route index element={<StaffDashboard />} />
+          <Route path="rooms" element={<RoomBooking />} />
+          <Route path="equipment" element={<EquipmentBrowse />} />
+          <Route path="bookings" element={<MyBookings />} />
+        </Routes>
       </main>
     </div>
   );
