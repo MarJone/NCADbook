@@ -1,4 +1,6 @@
-// Complete demo data for NCADbook system
+const fs = require('fs');
+
+const demoData = `// Complete demo data for NCADbook system
 export const demoUsers = [
   { id: '1', email: 'master@ncad.ie', password: 'master123', first_name: 'Master', surname: 'Admin', full_name: 'Master Admin', role: 'master_admin', department: 'Administration', created_at: '2024-01-01' },
   { id: '2', email: 'admin@ncad.ie', password: 'admin123', first_name: 'Admin', surname: 'User', full_name: 'Admin User', role: 'admin', department: 'Moving Image', created_at: '2024-01-01' },
@@ -9,7 +11,7 @@ export const demoUsers = [
 export const demoEquipment = [
   { id: 'eq1', product_name: 'Canon EOS R5', tracking_number: 'CAM-R5-001', category: 'Camera', description: 'Professional mirrorless camera with 8K video', department: 'Moving Image', status: 'available', link_to_image: '/images/equipment/canon-r5.jpg', requires_justification: true },
   { id: 'eq2', product_name: 'Sony FX3', tracking_number: 'CAM-FX3-001', category: 'Camera', description: 'Cinema Line full-frame camera', department: 'Moving Image', status: 'available', link_to_image: '/images/equipment/sony-fx3.jpg', requires_justification: true },
-  { id: 'eq3', product_name: 'MacBook Pro 16\" M2', tracking_number: 'LAP-MBP-001', category: 'Computer', description: '32GB RAM, 1TB SSD', department: 'Graphic Design', status: 'available', link_to_image: '/images/equipment/macbook.jpg', requires_justification: false },
+  { id: 'eq3', product_name: 'MacBook Pro 16" M2', tracking_number: 'LAP-MBP-001', category: 'Computer', description: '32GB RAM, 1TB SSD', department: 'Graphic Design', status: 'available', link_to_image: '/images/equipment/macbook.jpg', requires_justification: false },
   { id: 'eq4', product_name: 'DJI Ronin RS 3', tracking_number: 'SUP-RS3-001', category: 'Support', description: 'Camera gimbal stabilizer', department: 'Moving Image', status: 'available', link_to_image: '/images/equipment/gimbal.jpg', requires_justification: false },
   { id: 'eq5', product_name: 'Aputure 300d II', tracking_number: 'LIGHT-AP300-001', category: 'Lighting', description: 'LED light', department: 'Moving Image', status: 'available', link_to_image: '/images/equipment/light.jpg', requires_justification: false },
 ];
@@ -31,3 +33,7 @@ export const demoFeatureFlags = [
 ];
 
 export const demoEquipmentNotes = [];
+`;
+
+fs.writeFileSync('src/mocks/demo-data.js', demoData);
+console.log('Demo data created successfully');
