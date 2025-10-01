@@ -4,7 +4,11 @@
       "Bash(git mv:*)",
       "Bash(npm --version)",
       "Bash(git commit:*)",
-      "Bash(npm init:*)"
+      "Bash(npm init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(npm install)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

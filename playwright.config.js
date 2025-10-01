@@ -1,95 +1,25 @@
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
-module.exports = defineConfig({
-  testDir: './tests',
+export default defineConfig({
+  testDir: './src/tests/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  
-  reporter: [
-    ['html', { outputFolder: 'test-results/html-report' }],
-    ['json', { outputFile: 'test-results/results.json' }],
-    ['junit', { outputFile: 'test-results/junit.xml' }]
-  ],
-  
+  reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure'
   },
-
   projects: [
-    {
-      name: 'chromium-desktop',
-      use: { ...devices['Desktop Chrome'] },
-      testDir: './tests/integration'
-    },
-    {
-      name: 'mobile-chrome',
-      use: {
-        ...devices['Pixel 5'],
-        // Enhanced mobile settings
-        isMobile: true,
-        hasTouch: true,
-        locale: 'en-IE',
-        timezoneId: 'Europe/Dublin'
-      },
-      testDir: './tests/mobile'
-    },
-    {
-      name: 'mobile-safari',
-      use: {
-        ...devices['iPhone 12'],
-        // iOS-specific settings
-        isMobile: true,
-        hasTouch: true,
-        locale: 'en-IE',
-        timezoneId: 'Europe/Dublin'
-      },
-      testDir: './tests/mobile'
-    },
-    {
-      name: 'tablet-chrome',
-      use: {
-        ...devices['Galaxy Tab S4'],
-        locale: 'en-IE',
-        timezoneId: 'Europe/Dublin'
-      },
-      testDir: './tests/mobile'
-    },
-    {
-      name: 'tablet-ipad',
-      use: {
-        ...devices['iPad Pro'],
-        locale: 'en-IE',
-        timezoneId: 'Europe/Dublin'
-      },
-      testDir: './tests/mobile'
-    },
-    {
-      name: 'mobile-landscape',
-      use: {
-        ...devices['iPhone 12 landscape'],
-        locale: 'en-IE',
-        timezoneId: 'Europe/Dublin'
-      },
-      testDir: './tests/mobile'
-    }
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'mobile-chrome', use: { ...devices['Pixel 5'] } },
+    { name: 'tablet-ipad', use: { ...devices['iPad Pro'] } },
   ],
-
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
   },
-
-  timeout: 30000,
-  expect: {
-    timeout: 5000
-  },
-
-  outputDir: 'test-results/artifacts'
 });
