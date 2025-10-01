@@ -2,6 +2,9 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Dashboard from './Dashboard';
 import BookingApprovals from './BookingApprovals';
+import EquipmentManagement from './EquipmentManagement';
+import Analytics from './Analytics';
+import FeatureFlagManager from './FeatureFlagManager';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -20,17 +23,21 @@ export default function AdminLayout() {
 
       <nav className="portal-nav">
         <Link to="/admin" className="nav-link">Dashboard</Link>
-        <Link to="/admin/approvals" className="nav-link">Booking Approvals</Link>
+        <Link to="/admin/approvals" className="nav-link">Approvals</Link>
         <Link to="/admin/equipment" className="nav-link">Equipment</Link>
-        <Link to="/admin/users" className="nav-link">Users</Link>
+        <Link to="/admin/analytics" className="nav-link">Analytics</Link>
+        {user?.role === 'master_admin' && (
+          <Link to="/admin/features" className="nav-link">Features</Link>
+        )}
       </nav>
 
       <main className="portal-main">
         <Routes>
           <Route index element={<Dashboard />} />
           <Route path="approvals" element={<BookingApprovals />} />
-          <Route path="equipment" element={<div>Equipment Management (Coming Soon)</div>} />
-          <Route path="users" element={<div>User Management (Coming Soon)</div>} />
+          <Route path="equipment" element={<EquipmentManagement />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="features" element={<FeatureFlagManager />} />
         </Routes>
       </main>
     </div>
