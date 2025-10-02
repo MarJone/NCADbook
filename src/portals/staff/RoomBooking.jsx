@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
 import { spaceService } from '../../services/space.service';
 import { useAuth } from '../../hooks/useAuth';
+import Toast from '../../components/common/Toast';
+import { useToast } from '../../hooks/useToast';
 
 export default function RoomBooking() {
   const { user } = useAuth();
@@ -13,6 +15,7 @@ export default function RoomBooking() {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [purpose, setPurpose] = useState('');
   const [loading, setLoading] = useState(true);
+  const { toasts, showToast, removeToast } = useToast();
 
   useEffect(() => {
     loadSpaces();
@@ -71,7 +74,7 @@ export default function RoomBooking() {
 
   const handleSlotClick = (slot) => {
     if (isSlotBooked(slot)) {
-      alert('This time slot is already booked');
+      showToast('This time slot is already booked', 'error');
       return;
     }
     setSelectedTimeSlot(slot);
@@ -80,7 +83,7 @@ export default function RoomBooking() {
 
   const handleCreateBooking = async () => {
     if (!purpose.trim()) {
-      alert('Please provide a purpose for the booking');
+      showToast('Please provide a purpose for the booking', 'error');
       return;
     }
 
@@ -98,9 +101,9 @@ export default function RoomBooking() {
       setPurpose('');
       setSelectedTimeSlot(null);
       await loadBookedSlots();
-      alert('Room booked successfully!');
+      showToast('Room booked successfully!', 'success');
     } catch (error) {
-      alert('Failed to book room: ' + error.message);
+      showToast('Failed to book room: ' + error.message, 'error');
     }
   };
 
@@ -126,6 +129,7 @@ export default function RoomBooking() {
               setSelectedSpace(space);
             }}
             className="select-input"
+            data-testid="space-select"
           >
             {spaces.map(space => (
               <option key={space.id} value={space.id}>
@@ -144,12 +148,13 @@ export default function RoomBooking() {
             onChange={(e) => setSelectedDate(e.target.value)}
             min={new Date().toISOString().split('T')[0]}
             className="date-input"
+            data-testid="date-select"
           />
         </div>
       </div>
 
       {selectedSpace && (
-        <div className="space-details">
+        <div className="space-details" data-testid="space-details">
           <h3>{selectedSpace.name}</h3>
           <p>{selectedSpace.description}</p>
           <p className="equipment-list">
@@ -160,7 +165,7 @@ export default function RoomBooking() {
 
       <div className="time-slots-grid">
         <h3>Available Time Slots</h3>
-        <div className="slots-container">
+        <div className="slots-container" data-testid="time-slots-container">
           {timeSlots.map(slot => {
             const booked = isSlotBooked(slot);
             return (
@@ -169,6 +174,7 @@ export default function RoomBooking() {
                 onClick={() => handleSlotClick(slot)}
                 className={booked ? 'time-slot time-slot-booked' : 'time-slot time-slot-available'}
                 disabled={booked}
+                data-testid={`time-slot-${slot.start}`}
               >
                 {slot.label}
                 {booked && <span className="slot-status">Booked</span>}
@@ -179,8 +185,8 @@ export default function RoomBooking() {
       </div>
 
       {showBookingModal && selectedTimeSlot && (
-        <div className="modal-overlay" onClick={() => setShowBookingModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-overlay" onClick={() => setShowBookingModal(false)} data-testid="modal-overlay">
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} data-testid="room-booking-modal">
             <div className="modal-header">
               <h2>Book {selectedSpace.name}</h2>
               <button className="modal-close" onClick={() => setShowBookingModal(false)}>&times;</button>
@@ -201,6 +207,7 @@ export default function RoomBooking() {
                   placeholder="What will you use this space for?"
                   rows="3"
                   required
+                  data-testid="room-purpose-input"
                 />
               </div>
 
@@ -208,7 +215,7 @@ export default function RoomBooking() {
                 <button onClick={() => setShowBookingModal(false)} className="btn btn-secondary">
                   Cancel
                 </button>
-                <button onClick={handleCreateBooking} className="btn btn-primary">
+                <button onClick={handleCreateBooking} className="btn btn-primary" data-testid="confirm-room-booking-btn">
                   Confirm Booking
                 </button>
               </div>
@@ -216,6 +223,15 @@ export default function RoomBooking() {
           </div>
         </div>
       )}
+
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }

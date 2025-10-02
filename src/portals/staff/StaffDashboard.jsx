@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { demoMode } from '../../mocks/demo-mode';
 
@@ -38,7 +39,7 @@ export default function StaffDashboard() {
   }
 
   return (
-    <div className="staff-dashboard">
+    <div className="staff-dashboard" data-testid="staff-dashboard">
       <h2>Welcome, {user?.first_name}!</h2>
       <p className="subtitle">Staff Dashboard - Equipment & Space Management</p>
 
@@ -71,15 +72,15 @@ export default function StaffDashboard() {
       <div className="dashboard-actions">
         <h3>Quick Actions</h3>
         <div className="action-buttons">
-          <a href="/staff/rooms" className="btn btn-primary">
+          <Link to="/staff/rooms" className="btn btn-primary" data-testid="book-room-link">
             Book a Room/Space
-          </a>
-          <a href="/staff/equipment" className="btn btn-secondary">
+          </Link>
+          <Link to="/staff/equipment" className="btn btn-secondary" data-testid="browse-equipment-link">
             Browse Equipment
-          </a>
-          <a href="/staff/bookings" className="btn btn-secondary">
+          </Link>
+          <Link to="/staff/bookings" className="btn btn-secondary" data-testid="view-bookings-link">
             View My Bookings
-          </a>
+          </Link>
         </div>
       </div>
 

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
 import { useAuth } from '../../hooks/useAuth';
+import { emailService } from '../../services/email.service';
+import Toast from '../../components/common/Toast';
+import { useToast } from '../../hooks/useToast';
 
 export default function BookingApprovals() {
   const { user } = useAuth();
@@ -10,6 +13,7 @@ export default function BookingApprovals() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showDenyModal, setShowDenyModal] = useState(false);
   const [denyReason, setDenyReason] = useState('');
+  const { toasts, showToast, removeToast } = useToast();
 
   useEffect(() => {
     loadBookings();
@@ -40,25 +44,36 @@ export default function BookingApprovals() {
   };
 
   const handleApprove = async (bookingId) => {
-    if (!confirm('Approve this booking?')) return;
-
     try {
+      const booking = bookings.find(b => b.id === bookingId);
+
       await demoMode.update('bookings', { id: bookingId }, {
         status: 'approved',
         approved_by: user.id,
         approved_at: new Date().toISOString()
       });
 
+      // Send approval notification email
+      try {
+        const equipmentItems = [booking.equipment];
+        const emailResult = await emailService.sendBookingApproved(booking, booking.student, equipmentItems, user);
+        if (!emailResult.success && emailService.isConfigured()) {
+          console.warn('Email notification failed:', emailResult.error);
+        }
+      } catch (emailError) {
+        console.error('Failed to send approval email:', emailError);
+      }
+
       await loadBookings();
-      alert('Booking approved successfully');
+      showToast('Booking approved successfully', 'success');
     } catch (error) {
-      alert('Failed to approve booking: ' + error.message);
+      showToast('Failed to approve booking: ' + error.message, 'error');
     }
   };
 
   const handleDeny = async () => {
     if (!denyReason.trim()) {
-      alert('Please provide a reason for denial');
+      showToast('Please provide a reason for denial', 'error');
       return;
     }
 
@@ -70,13 +85,30 @@ export default function BookingApprovals() {
         denial_reason: denyReason
       });
 
+      // Send denial notification email
+      try {
+        const equipmentItems = [selectedBooking.equipment];
+        const emailResult = await emailService.sendBookingDenied(
+          selectedBooking,
+          selectedBooking.student,
+          equipmentItems,
+          user,
+          denyReason
+        );
+        if (!emailResult.success && emailService.isConfigured()) {
+          console.warn('Email notification failed:', emailResult.error);
+        }
+      } catch (emailError) {
+        console.error('Failed to send denial email:', emailError);
+      }
+
       setShowDenyModal(false);
       setDenyReason('');
       setSelectedBooking(null);
       await loadBookings();
-      alert('Booking denied');
+      showToast('Booking denied', 'success');
     } catch (error) {
-      alert('Failed to deny booking: ' + error.message);
+      showToast('Failed to deny booking: ' + error.message, 'error');
     }
   };
 
@@ -103,7 +135,7 @@ export default function BookingApprovals() {
   }
 
   return (
-    <div className="booking-approvals">
+    <div className="booking-approvals" data-testid="booking-approvals">
       <div className="approvals-header">
         <h2>Booking Approvals</h2>
         <div className="filter-controls">
@@ -112,6 +144,7 @@ export default function BookingApprovals() {
               key={status}
               onClick={() => setFilter(status)}
               className={filter === status ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+              data-testid={`filter-${status}`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </button>
@@ -120,13 +153,13 @@ export default function BookingApprovals() {
       </div>
 
       {bookings.length === 0 ? (
-        <div className="empty-state">
+        <div className="empty-state" data-testid="empty-state">
           <p>No {filter !== 'all' ? filter : ''} bookings found</p>
         </div>
       ) : (
-        <div className="approvals-list">
+        <div className="approvals-list" data-testid="bookings-list">
           {bookings.map(booking => (
-            <div key={booking.id} className="approval-item">
+            <div key={booking.id} className="approval-item" data-testid="booking-card">
               <div className="approval-header">
                 <div>
                   <h3>{booking.equipment?.product_name || 'Unknown Equipment'}</h3>
@@ -170,6 +203,7 @@ export default function BookingApprovals() {
                   <button
                     onClick={() => handleApprove(booking.id)}
                     className="btn btn-primary btn-sm"
+                    data-testid="approve-btn"
                   >
                     Approve
                   </button>
@@ -179,6 +213,7 @@ export default function BookingApprovals() {
                       setShowDenyModal(true);
                     }}
                     className="btn btn-secondary btn-sm"
+                    data-testid="deny-btn"
                   >
                     Deny
                   </button>
@@ -190,8 +225,8 @@ export default function BookingApprovals() {
       )}
 
       {showDenyModal && selectedBooking && (
-        <div className="modal-overlay" onClick={() => setShowDenyModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-overlay" onClick={() => setShowDenyModal(false)} data-testid="modal-overlay">
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} data-testid="deny-modal">
             <div className="modal-header">
               <h2>Deny Booking</h2>
               <button className="modal-close" onClick={() => setShowDenyModal(false)}>&times;</button>
@@ -207,13 +242,14 @@ export default function BookingApprovals() {
                   placeholder="Explain why this booking is being denied..."
                   rows="4"
                   required
+                  data-testid="deny-reason-input"
                 />
               </div>
               <div className="modal-actions">
                 <button onClick={() => setShowDenyModal(false)} className="btn btn-secondary">
                   Cancel
                 </button>
-                <button onClick={handleDeny} className="btn btn-primary">
+                <button onClick={handleDeny} className="btn btn-primary" data-testid="confirm-deny-btn">
                   Deny Booking
                 </button>
               </div>
@@ -221,6 +257,15 @@ export default function BookingApprovals() {
           </div>
         </div>
       )}
+
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }

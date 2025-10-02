@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { bookingService } from '../../services/booking.service';
+import Toast from '../../components/common/Toast';
+import { useToast } from '../../hooks/useToast';
 
 export default function MyBookings() {
   const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { toasts, showToast, removeToast } = useToast();
 
   useEffect(() => {
     loadBookings();
@@ -24,14 +28,12 @@ export default function MyBookings() {
   };
 
   const handleCancel = async (bookingId) => {
-    if (!confirm('Are you sure you want to cancel this booking?')) return;
-
     try {
       await bookingService.cancelBooking(bookingId);
       await loadBookings();
-      alert('Booking cancelled successfully');
+      showToast('Booking cancelled successfully', 'success');
     } catch (error) {
-      alert('Failed to cancel booking: ' + error.message);
+      showToast('Failed to cancel booking: ' + error.message, 'error');
     }
   };
 
@@ -61,10 +63,10 @@ export default function MyBookings() {
 
   if (bookings.length === 0) {
     return (
-      <div className="empty-state">
+      <div className="empty-state" data-testid="no-bookings">
         <h2>No Bookings Yet</h2>
         <p>You haven't made any equipment bookings.</p>
-        <a href="/student/equipment" className="btn btn-primary">Browse Equipment</a>
+        <Link to={`/${user.role}/equipment`} className="btn btn-primary">Browse Equipment</Link>
       </div>
     );
   }
@@ -74,9 +76,9 @@ export default function MyBookings() {
       <h2>My Bookings</h2>
       <p className="subtitle">{bookings.length} total booking(s)</p>
 
-      <div className="bookings-list">
+      <div className="bookings-list" data-testid="bookings-list">
         {bookings.map(booking => (
-          <div key={booking.id} className="booking-item">
+          <div key={booking.id} className="booking-item booking-card" data-testid="booking-card">
             <div className="booking-header">
               <div>
                 <h3>{booking.equipment?.product_name || 'Unknown Equipment'}</h3>
@@ -118,6 +120,7 @@ export default function MyBookings() {
                 <button
                   onClick={() => handleCancel(booking.id)}
                   className="btn btn-secondary btn-sm"
+                  data-testid="cancel-booking-btn"
                 >
                   Cancel Booking
                 </button>
@@ -126,6 +129,15 @@ export default function MyBookings() {
           </div>
         ))}
       </div>
+
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
+import EquipmentNotes from '../../components/equipment/EquipmentNotes';
 
 export default function EquipmentManagement() {
   const [equipment, setEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
 
   useEffect(() => {
@@ -94,8 +95,14 @@ export default function EquipmentManagement() {
                   </select>
                 </td>
                 <td>
-                  <button className="btn btn-secondary btn-sm">
-                    Edit
+                  <button
+                    onClick={() => {
+                      setSelectedEquipment(item);
+                      setShowDetailModal(true);
+                    }}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    View Details
                   </button>
                 </td>
               </tr>
@@ -107,6 +114,58 @@ export default function EquipmentManagement() {
       <div className="equipment-stats">
         <p>Showing {equipment.length} equipment item(s)</p>
       </div>
+
+      {showDetailModal && selectedEquipment && (
+        <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
+          <div className="modal-content equipment-detail-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>{selectedEquipment.product_name}</h2>
+              <button
+                className="modal-close"
+                onClick={() => setShowDetailModal(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="equipment-detail-info">
+                <div className="detail-row">
+                  <span className="detail-label">Tracking Number:</span>
+                  <span className="detail-value tracking-number">{selectedEquipment.tracking_number}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Category:</span>
+                  <span className="detail-value">{selectedEquipment.category}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Department:</span>
+                  <span className="detail-value">{selectedEquipment.department}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Status:</span>
+                  <span className={`status status-${selectedEquipment.status}`}>
+                    {selectedEquipment.status}
+                  </span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Description:</span>
+                  <span className="detail-value">{selectedEquipment.description}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Requires Justification:</span>
+                  <span className="detail-value">{selectedEquipment.requires_justification ? 'Yes' : 'No'}</span>
+                </div>
+              </div>
+
+              <EquipmentNotes
+                equipmentId={selectedEquipment.id}
+                equipmentName={selectedEquipment.product_name}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

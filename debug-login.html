@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NCADbook Login Debug</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+    button { margin: 10px; padding: 10px 20px; cursor: pointer; }
+    .success { color: green; }
+    .error { color: red; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>NCADbook Login Debug Tool</h1>
+
+  <div>
+    <h2>1. Check LocalStorage</h2>
+    <button onclick="checkStorage()">Check Storage</button>
+    <button onclick="clearStorage()">Clear Storage</button>
+    <pre id="storageOutput"></pre>
+  </div>
+
+  <div>
+    <h2>2. Test Login</h2>
+    <button onclick="testLogin('demo@ncad.ie', 'demo123')">Login as Student</button>
+    <button onclick="testLogin('staff@ncad.ie', 'staff123')">Login as Staff</button>
+    <button onclick="testLogin('admin@ncad.ie', 'admin123')">Login as Admin</button>
+    <button onclick="testLogin('master@ncad.ie', 'master123')">Login as Master Admin</button>
+    <pre id="loginOutput"></pre>
+  </div>
+
+  <script type="module">
+    import { demoMode } from '/src/mocks/demo-mode.js';
+    import { authService } from '/src/services/auth.service.js';
+
+    window.demoMode = demoMode;
+    window.authService = authService;
+
+    window.checkStorage = function() {
+      const data = localStorage.getItem('ncadbook_demo_data');
+      if (!data) {
+        document.getElementById('storageOutput').innerHTML =
+          '<span class="error">No data found in localStorage</span>';
+        return;
+      }
+
+      const parsed = JSON.parse(data);
+      document.getElementById('storageOutput').innerHTML =
+        '<span class="success">Storage found!</span>\n' +
+        'Users: ' + (parsed.users?.length || 0) + '\n' +
+        'Equipment: ' + (parsed.equipment?.length || 0) + '\n' +
+        'Current User: ' + (parsed.currentUser ? parsed.currentUser.email : 'None') + '\n\n' +
+        'Full data:\n' + JSON.stringify(parsed, null, 2);
+    };
+
+    window.clearStorage = function() {
+      localStorage.removeItem('ncadbook_demo_data');
+      demoMode.initializeStorage();
+      document.getElementById('storageOutput').innerHTML =
+        '<span class="success">Storage cleared and reinitialized</span>';
+    };
+
+    window.testLogin = async function(email, password) {
+      const output = document.getElementById('loginOutput');
+      output.innerHTML = 'Testing login for ' + email + '...';
+
+      try {
+        const user = await authService.login(email, password);
+        output.innerHTML =
+          '<span class="success">✓ Login successful!</span>\n' +
+          'User: ' + JSON.stringify(user, null, 2) + '\n\n' +
+          'Checking storage...\n';
+
+        const data = JSON.parse(localStorage.getItem('ncadbook_demo_data'));
+        output.innerHTML +=
+          'Current user in storage: ' + JSON.stringify(data.currentUser, null, 2);
+      } catch (error) {
+        output.innerHTML =
+          '<span class="error">✗ Login failed!</span>\n' +
+          'Error: ' + error.message + '\n' +
+          'Stack: ' + error.stack;
+      }
+    };
+
+    // Auto-check storage on load
+    window.checkStorage();
+  </script>
+</body>
+</html>

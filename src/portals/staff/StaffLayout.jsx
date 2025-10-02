@@ -1,5 +1,5 @@
 import { Routes, Route, Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 import StaffDashboard from './StaffDashboard';
 import RoomBooking from './RoomBooking';
 import EquipmentBrowse from '../student/EquipmentBrowse';

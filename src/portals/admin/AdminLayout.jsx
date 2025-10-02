@@ -1,10 +1,12 @@
 import { Routes, Route, Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 import Dashboard from './Dashboard';
 import BookingApprovals from './BookingApprovals';
 import EquipmentManagement from './EquipmentManagement';
 import Analytics from './Analytics';
 import FeatureFlagManager from './FeatureFlagManager';
+import UserManagement from './UserManagement';
+import CSVImport from './CSVImport';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -27,7 +29,11 @@ export default function AdminLayout() {
         <Link to="/admin/equipment" className="nav-link">Equipment</Link>
         <Link to="/admin/analytics" className="nav-link">Analytics</Link>
         {user?.role === 'master_admin' && (
-          <Link to="/admin/features" className="nav-link">Features</Link>
+          <>
+            <Link to="/admin/users" className="nav-link">Users</Link>
+            <Link to="/admin/csv-import" className="nav-link">CSV Import</Link>
+            <Link to="/admin/features" className="nav-link">Features</Link>
+          </>
         )}
       </nav>
 
@@ -37,6 +43,8 @@ export default function AdminLayout() {
           <Route path="approvals" element={<BookingApprovals />} />
           <Route path="equipment" element={<EquipmentManagement />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="csv-import" element={<CSVImport />} />
           <Route path="features" element={<FeatureFlagManager />} />
         </Routes>
       </main>

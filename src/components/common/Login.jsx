@@ -1,38 +1,19 @@
 import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      await login(email, password);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const quickLogin = async (testEmail, testPassword) => {
-    setEmail(testEmail);
-    setPassword(testPassword);
+  const quickLogin = async (testEmail, testPassword, roleName) => {
     setError('');
     setLoading(true);
 
     try {
       await login(testEmail, testPassword);
     } catch (err) {
-      setError(err.message);
-    } finally {
+      setError(`Failed to login as ${roleName}: ${err.message}`);
       setLoading(false);
     }
   };
@@ -43,74 +24,57 @@ export default function Login() {
         <div className="login-header">
           <h1>NCADbook</h1>
           <p>Equipment Booking System</p>
+          <p className="demo-note">Demo Mode - Click a role to explore</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your.email@ncad.ie"
-              required
-              autoComplete="email"
-            />
-          </div>
+        {error && <div className="error-message">{error}</div>}
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-              autoComplete="current-password"
-            />
-          </div>
-
-          {error && <div className="error-message">{error}</div>}
-
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <div className="test-accounts">
-          <p className="test-accounts-title">Demo Accounts:</p>
-          <div className="test-accounts-grid">
-            <button 
-              onClick={() => quickLogin('demo@ncad.ie', 'demo123')}
-              className="btn btn-secondary btn-sm"
+        <div className="demo-accounts">
+          <h3>Select Your Role:</h3>
+          <div className="demo-accounts-grid">
+            <button
+              onClick={() => quickLogin('demo@ncad.ie', 'demo123', 'Student')}
+              className="btn btn-primary btn-large"
               disabled={loading}
             >
-              Student
+              <span className="role-icon">🎓</span>
+              <span className="role-name">Student</span>
+              <span className="role-desc">Browse & book equipment</span>
             </button>
-            <button 
-              onClick={() => quickLogin('staff@ncad.ie', 'staff123')}
-              className="btn btn-secondary btn-sm"
+            <button
+              onClick={() => quickLogin('staff@ncad.ie', 'staff123', 'Staff')}
+              className="btn btn-primary btn-large"
               disabled={loading}
             >
-              Staff
+              <span className="role-icon">👨‍🏫</span>
+              <span className="role-name">Staff</span>
+              <span className="role-desc">Equipment + room booking</span>
             </button>
-            <button 
-              onClick={() => quickLogin('admin@ncad.ie', 'admin123')}
-              className="btn btn-secondary btn-sm"
+            <button
+              onClick={() => quickLogin('admin@ncad.ie', 'admin123', 'Admin')}
+              className="btn btn-primary btn-large"
               disabled={loading}
             >
-              Admin
+              <span className="role-icon">⚙️</span>
+              <span className="role-name">Admin</span>
+              <span className="role-desc">Manage bookings & equipment</span>
             </button>
-            <button 
-              onClick={() => quickLogin('master@ncad.ie', 'master123')}
-              className="btn btn-secondary btn-sm"
+            <button
+              onClick={() => quickLogin('master@ncad.ie', 'master123', 'Master Admin')}
+              className="btn btn-primary btn-large"
               disabled={loading}
             >
-              Master Admin
+              <span className="role-icon">👑</span>
+              <span className="role-name">Master Admin</span>
+              <span className="role-desc">Full system control</span>
             </button>
           </div>
+
+          {loading && (
+            <div className="loading-message">
+              Logging in...
+            </div>
+          )}
         </div>
       </div>
     </div>
