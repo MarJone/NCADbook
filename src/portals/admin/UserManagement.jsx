@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { demoMode } from '../../mocks/demo-mode';
+import SearchBar from '../../components/common/SearchBar';
+import Pagination from '../../components/common/Pagination';
+import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 
 export default function UserManagement() {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterRole, setFilterRole] = useState('all');
   const [filterDepartment, setFilterDepartment] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -35,6 +41,22 @@ export default function UserManagement() {
     loadUsers();
   }, [filterRole, filterDepartment]);
 
+  useEffect(() => {
+    // Apply search filter to users
+    let filtered = users;
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(u =>
+        u.full_name.toLowerCase().includes(query) ||
+        u.email.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredUsers(filtered);
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [users, searchQuery]);
+
   const loadUsers = async () => {
     setLoading(true);
     try {
@@ -43,15 +65,6 @@ export default function UserManagement() {
       if (filterDepartment !== 'all') filters.department = filterDepartment;
 
       let data = await demoMode.query('users', filters);
-
-      // Apply search filter
-      if (searchTerm) {
-        data = data.filter(u =>
-          u.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          u.email.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-
       setUsers(data);
     } catch (error) {
       console.error('Failed to load users:', error);
@@ -154,25 +167,33 @@ export default function UserManagement() {
     { value: 'master_admin', label: 'Master Admin' }
   ];
 
-  if (loading) {
-    return <div className="loading">Loading users...</div>;
-  }
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Paginate filtered users
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   return (
     <div className="user-management">
       <h2>User Management</h2>
       <p className="subtitle">Manage user accounts, roles, and permissions</p>
 
+      <SearchBar
+        onSearch={handleSearch}
+        placeholder="Search by name or email..."
+        ariaLabel="Search users"
+      />
+
       <div className="management-controls">
         <div className="filter-controls">
-          <input
-            type="text"
-            placeholder="Search by name or email..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyUp={loadUsers}
-            className="search-input"
-          />
 
           <select
             value={filterRole}
@@ -205,20 +226,44 @@ export default function UserManagement() {
         </div>
       </div>
 
-      <div className="users-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Department</th>
-              <th>Created</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(u => (
+      {loading ? (
+        <div className="users-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <LoadingSkeleton type="table-row" count={10} />
+            </tbody>
+          </table>
+        </div>
+      ) : filteredUsers.length === 0 ? (
+        <div className="empty-state">
+          <p>No users found{searchQuery ? ' matching your search' : ''}</p>
+        </div>
+      ) : (
+        <>
+          <div className="users-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Department</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedUsers.map(u => (
               <tr key={u.id}>
                 <td>
                   <strong>{u.full_name}</strong>
@@ -250,13 +295,19 @@ export default function UserManagement() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
+              </tbody>
+            </table>
+          </div>
 
-      <div className="users-stats">
-        <p>Showing {users.length} user(s)</p>
-      </div>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredUsers.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            loading={loading}
+          />
+        </>
+      )}
 
       {/* Add User Modal */}
       {showAddModal && (

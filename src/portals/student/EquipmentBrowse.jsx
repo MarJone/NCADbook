@@ -4,11 +4,16 @@ import BookingModal from '../../components/booking/BookingModal';
 import MultiItemBookingModal from '../../components/booking/MultiItemBookingModal';
 import EquipmentDetails from '../../components/equipment/EquipmentDetails';
 import Toast from '../../components/common/Toast';
+import SearchBar from '../../components/common/SearchBar';
+import Pagination from '../../components/common/Pagination';
+import LoadingSkeleton from '../../components/common/LoadingSkeleton';
+import AvailabilityFilter from '../../components/equipment/AvailabilityFilter';
 import { useToast } from '../../hooks/useToast';
 import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
 
 export default function EquipmentBrowse() {
   const [equipment, setEquipment] = useState([]);
+  const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [viewMode, setViewMode] = useState('list'); // Changed default from 'large' to 'list'
@@ -18,12 +23,50 @@ export default function EquipmentBrowse() {
   const [showDetails, setShowDetails] = useState(false);
   const [subAreas, setSubAreas] = useState([]);
   const [subAreaFilter, setSubAreaFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+  const [availabilityFilter, setAvailabilityFilter] = useState({ type: 'all' });
   const { toasts, showToast, removeToast } = useToast();
 
   useEffect(() => {
     loadEquipment();
     loadSubAreas();
   }, [filter, subAreaFilter]);
+
+  useEffect(() => {
+    // Apply search and availability filters to equipment
+    let filtered = equipment;
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(item =>
+        item.product_name.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply availability filter
+    if (availabilityFilter.type === 'available') {
+      filtered = filtered.filter(item => item.status === 'available');
+    } else if (availabilityFilter.type === 'custom' && availabilityFilter.date) {
+      // Check if equipment is available on the custom date
+      filtered = filtered.filter(async item => {
+        const bookings = await demoMode.query('bookings', { equipment_id: item.id });
+        const isBooked = bookings.some(booking => {
+          const start = new Date(booking.start_date);
+          const end = new Date(booking.end_date);
+          const checkDate = new Date(availabilityFilter.date);
+          return checkDate >= start && checkDate <= end && booking.status === 'approved';
+        });
+        return !isBooked;
+      });
+    }
+
+    setFilteredEquipment(filtered);
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [equipment, searchQuery, availabilityFilter]);
 
   const loadSubAreas = async () => {
     try {
@@ -106,6 +149,20 @@ export default function EquipmentBrowse() {
     loadEquipment(); // Reload to show updated availability
   };
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Paginate filtered equipment
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedEquipment = filteredEquipment.slice(startIndex, endIndex);
+
   return (
     <div className="equipment-browse">
       <div className="browse-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
@@ -119,6 +176,14 @@ export default function EquipmentBrowse() {
           Book Multiple Items
         </button>
       </div>
+
+      <SearchBar
+        onSearch={handleSearch}
+        placeholder="Search equipment by name, description, or category..."
+        ariaLabel="Search equipment"
+      />
+
+      <AvailabilityFilter onFilterChange={setAvailabilityFilter} />
 
       <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
         <div style={{ marginBottom: '0.5rem' }}>
@@ -176,10 +241,34 @@ export default function EquipmentBrowse() {
       </div>
 
       {loading ? (
-        <div className="loading">Loading equipment...</div>
+        viewMode === 'large' ? (
+          <div className="equipment-grid">
+            <LoadingSkeleton type="card" count={6} />
+          </div>
+        ) : (
+          <table className="equipment-table-compact">
+            <thead>
+              <tr>
+                <th>Equipment</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <LoadingSkeleton type="table-row" count={8} />
+            </tbody>
+          </table>
+        )
+      ) : filteredEquipment.length === 0 ? (
+        <div className="empty-state">
+          <p>No equipment found matching your search criteria.</p>
+        </div>
       ) : viewMode === 'large' ? (
-        <div className="equipment-grid">
-          {equipment.map(item => (
+        <>
+          <div className="equipment-grid">
+            {paginatedEquipment.map(item => (
             <div key={item.id} className="equipment-card" data-testid="equipment-card">
               <div className="equipment-image" onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>
                 <div className="equipment-category-label">
@@ -215,20 +304,29 @@ export default function EquipmentBrowse() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredEquipment.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            loading={loading}
+          />
+        </>
       ) : (
-        <table className="equipment-table-compact" data-testid="equipment-table-compact">
-          <thead>
-            <tr>
-              <th>Equipment</th>
-              <th>Category</th>
-              <th>Department</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {equipment.map(item => (
+        <>
+          <table className="equipment-table-compact" data-testid="equipment-table-compact">
+            <thead>
+              <tr>
+                <th>Equipment</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedEquipment.map(item => (
               <tr key={item.id} data-testid="equipment-row-compact">
                 <td onClick={() => handleCardClick(item)} style={{ cursor: 'pointer', fontWeight: '600' }}>
                   {item.product_name}
@@ -259,8 +357,16 @@ export default function EquipmentBrowse() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredEquipment.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            loading={loading}
+          />
+        </>
       )}
 
       {showDetails && selectedEquipment && (

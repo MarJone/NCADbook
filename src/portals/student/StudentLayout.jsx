@@ -1,5 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import NotificationCenter from '../../components/common/NotificationCenter';
 import StudentDashboard from './StudentDashboard';
 import EquipmentBrowse from './EquipmentBrowse';
 import MyBookings from './MyBookings';
@@ -13,6 +14,7 @@ export default function StudentLayout() {
         <div className="header-content">
           <h1>NCADbook - Student Portal</h1>
           <div className="header-actions">
+            <NotificationCenter />
             <span className="user-info">
               {user?.full_name} ({user?.department})
             </span>

@@ -3,6 +3,7 @@ import { bookingService } from '../../services/booking.service';
 import { useAuth } from '../../hooks/useAuth';
 import { emailService } from '../../services/email.service';
 import { demoMode } from '../../mocks/demo-mode';
+import BookingConflictCalendar from './BookingConflictCalendar';
 
 export default function BookingModal({ equipment, onClose, onSuccess }) {
   const { user } = useAuth();
@@ -143,6 +144,18 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
               />
               {fieldErrors.purpose && <div className="field-error" role="alert">{fieldErrors.purpose}</div>}
             </div>
+
+            {/* Show conflict calendar if dates are selected */}
+            {startDate && endDate && (
+              <div className="form-group">
+                <label>Booking Availability Calendar</label>
+                <BookingConflictCalendar
+                  equipmentId={equipment.id}
+                  selectedStartDate={startDate}
+                  selectedEndDate={endDate}
+                />
+              </div>
+            )}
 
             {error && <div className="error-message" role="alert">{error}</div>}
 

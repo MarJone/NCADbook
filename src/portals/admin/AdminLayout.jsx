@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useState, useEffect, useRef } from 'react';
+import NotificationCenter from '../../components/common/NotificationCenter';
 import Dashboard from './Dashboard';
 import BookingApprovals from './BookingApprovals';
 import EquipmentManagement from './EquipmentManagement';
@@ -49,6 +50,7 @@ export default function AdminLayout() {
         <div className="header-content">
           <h1>NCADbook - Admin Portal</h1>
           <div className="header-actions">
+            <NotificationCenter />
             <span className="user-info">{user?.full_name} - {user?.role}</span>
             <button onClick={logout} className="btn btn-secondary btn-sm">Logout</button>
           </div>

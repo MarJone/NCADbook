@@ -1,5 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import NotificationCenter from '../../components/common/NotificationCenter';
 import StaffDashboard from './StaffDashboard';
 import RoomBooking from './RoomBooking';
 import EquipmentBrowse from '../student/EquipmentBrowse';
@@ -14,6 +15,7 @@ export default function StaffLayout() {
         <div className="header-content">
           <h1>NCADbook - Staff Portal</h1>
           <div className="header-actions">
+            <NotificationCenter />
             <span className="user-info">{user?.full_name} - {user?.department}</span>
             <button onClick={logout} className="btn btn-secondary btn-sm">Logout</button>
           </div>

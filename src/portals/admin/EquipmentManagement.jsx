@@ -1,17 +1,42 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
 import EquipmentNotes from '../../components/equipment/EquipmentNotes';
+import SearchBar from '../../components/common/SearchBar';
+import Pagination from '../../components/common/Pagination';
+import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 
 export default function EquipmentManagement() {
   const [equipment, setEquipment] = useState([]);
+  const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     loadEquipment();
   }, [filter]);
+
+  useEffect(() => {
+    // Apply search filter to equipment
+    let filtered = equipment;
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(item =>
+        item.product_name.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.tracking_number.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredEquipment(filtered);
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [equipment, searchQuery]);
 
   const loadEquipment = async () => {
     setLoading(true);
@@ -36,14 +61,30 @@ export default function EquipmentManagement() {
     }
   };
 
-  if (loading) {
-    return <div className="loading">Loading equipment...</div>;
-  }
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Paginate filtered equipment
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedEquipment = filteredEquipment.slice(startIndex, endIndex);
 
   return (
     <div className="equipment-management">
       <h2>Equipment Management</h2>
       <p className="subtitle">Manage equipment inventory and status</p>
+
+      <SearchBar
+        onSearch={handleSearch}
+        placeholder="Search by name, tracking number, or category..."
+        ariaLabel="Search equipment"
+      />
 
       <div className="management-controls">
         <div className="filter-controls">
@@ -59,20 +100,44 @@ export default function EquipmentManagement() {
         </div>
       </div>
 
-      <div className="equipment-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Equipment</th>
-              <th>Category</th>
-              <th>Tracking #</th>
-              <th>Department</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {equipment.map(item => (
+      {loading ? (
+        <div className="equipment-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Equipment</th>
+                <th>Category</th>
+                <th>Tracking #</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <LoadingSkeleton type="table-row" count={10} />
+            </tbody>
+          </table>
+        </div>
+      ) : filteredEquipment.length === 0 ? (
+        <div className="empty-state">
+          <p>No equipment found{searchQuery ? ' matching your search' : ''}</p>
+        </div>
+      ) : (
+        <>
+          <div className="equipment-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Equipment</th>
+                  <th>Category</th>
+                  <th>Tracking #</th>
+                  <th>Department</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedEquipment.map(item => (
               <tr key={item.id}>
                 <td>
                   <strong>{item.product_name}</strong>
@@ -107,13 +172,19 @@ export default function EquipmentManagement() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
+              </tbody>
+            </table>
+          </div>
 
-      <div className="equipment-stats">
-        <p>Showing {equipment.length} equipment item(s)</p>
-      </div>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredEquipment.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            loading={loading}
+          />
+        </>
+      )}
 
       {showDetailModal && selectedEquipment && (
         <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
