@@ -4,12 +4,12 @@ import { useAuth } from '../../hooks/useAuth';
 import Toast from '../../components/common/Toast';
 import { useToast } from '../../hooks/useToast';
 
-export default function SubAreaManagement() {
+export default function DepartmentManagement() {
   const { user } = useAuth();
-  const [subAreas, setSubAreas] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [editingSubArea, setEditingSubArea] = useState(null);
+  const [editingDepartment, setEditingDepartment] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -21,33 +21,33 @@ export default function SubAreaManagement() {
   const isMasterAdmin = user?.role === 'master_admin';
 
   useEffect(() => {
-    loadSubAreas();
+    loadDepartments();
   }, []);
 
-  const loadSubAreas = async () => {
+  const loadDepartments = async () => {
     setLoading(true);
     try {
       // In production, this would query the sub_areas table
       const data = await demoMode.query('sub_areas') || [];
-      setSubAreas(data);
+      setDepartments(data);
     } catch (error) {
-      console.error('Failed to load sub-areas:', error);
-      showToast('Failed to load sub-areas', 'error');
+      console.error('Failed to load departments:', error);
+      showToast('Failed to load departments', 'error');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleOpenModal = (subArea = null) => {
-    if (subArea) {
-      setEditingSubArea(subArea);
+  const handleOpenModal = (department = null) => {
+    if (department) {
+      setEditingDepartment(department);
       setFormData({
-        name: subArea.name,
-        description: subArea.description || '',
-        parent_department: subArea.parent_department || ''
+        name: department.name,
+        description: department.description || '',
+        parent_department: department.parent_department || ''
       });
     } else {
-      setEditingSubArea(null);
+      setEditingDepartment(null);
       setFormData({
         name: '',
         description: '',
@@ -59,7 +59,7 @@ export default function SubAreaManagement() {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setEditingSubArea(null);
+    setEditingDepartment(null);
     setFormData({
       name: '',
       description: '',
@@ -71,39 +71,39 @@ export default function SubAreaManagement() {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      showToast('Sub-area name is required', 'error');
+      showToast('Department name is required', 'error');
       return;
     }
 
     try {
-      if (editingSubArea) {
-        // Update existing sub-area
-        await demoMode.update('sub_areas', editingSubArea.id, formData);
-        showToast('Sub-area updated successfully', 'success');
+      if (editingDepartment) {
+        // Update existing department
+        await demoMode.update('sub_areas', editingDepartment.id, formData);
+        showToast('Department updated successfully', 'success');
       } else {
-        // Create new sub-area
+        // Create new department
         await demoMode.insert('sub_areas', formData);
-        showToast('Sub-area created successfully', 'success');
+        showToast('Department created successfully', 'success');
       }
 
       handleCloseModal();
-      await loadSubAreas();
+      await loadDepartments();
     } catch (error) {
-      showToast(`Failed to ${editingSubArea ? 'update' : 'create'} sub-area: ${error.message}`, 'error');
+      showToast(`Failed to ${editingDepartment ? 'update' : 'create'} department: ${error.message}`, 'error');
     }
   };
 
-  const handleDelete = async (subAreaId) => {
-    if (!confirm('Are you sure you want to delete this sub-area? This will affect all associated equipment and users.')) {
+  const handleDelete = async (departmentId) => {
+    if (!confirm('Are you sure you want to delete this department? This will affect all associated equipment and users.')) {
       return;
     }
 
     try {
-      await demoMode.delete('sub_areas', subAreaId);
-      showToast('Sub-area deleted successfully', 'success');
-      await loadSubAreas();
+      await demoMode.delete('sub_areas', departmentId);
+      showToast('Department deleted successfully', 'success');
+      await loadDepartments();
     } catch (error) {
-      showToast('Failed to delete sub-area: ' + error.message, 'error');
+      showToast('Failed to delete department: ' + error.message, 'error');
     }
   };
 
@@ -111,52 +111,52 @@ export default function SubAreaManagement() {
     return (
       <div className="access-denied">
         <h2>Access Denied</h2>
-        <p>Only master administrators can manage sub-areas.</p>
+        <p>Only master administrators can manage departments.</p>
       </div>
     );
   }
 
   if (loading) {
-    return <div className="loading">Loading sub-areas...</div>;
+    return <div className="loading">Loading departments...</div>;
   }
 
   return (
-    <div className="sub-area-management">
+    <div className="department-management">
       <div className="approvals-header">
         <div>
-          <h2>Sub-Area Management</h2>
-          <p className="subtitle">Manage sub-areas and departments within NCAD</p>
+          <h2>Department Management</h2>
+          <p className="subtitle">Manage departments and areas within NCAD</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
           className="btn btn-primary"
-          data-testid="add-sub-area-btn"
+          data-testid="add-department-btn"
         >
-          Add Sub-Area
+          Add Department
         </button>
       </div>
 
       <div className="stats-grid" style={{ marginBottom: 'var(--spacing-xl)' }}>
         <div className="stat-card stat-primary">
           <div className="stat-content">
-            <h3>{subAreas.length}</h3>
-            <p>Total Sub-Areas</p>
+            <h3>{departments.length}</h3>
+            <p>Total Departments</p>
           </div>
         </div>
         <div className="stat-card stat-secondary">
           <div className="stat-content">
-            <h3>{new Set(subAreas.map(sa => sa.parent_department).filter(Boolean)).size}</h3>
-            <p>Parent Departments</p>
+            <h3>{new Set(departments.map(sa => sa.parent_department).filter(Boolean)).size}</h3>
+            <p>Parent Schools</p>
           </div>
         </div>
       </div>
 
-      {subAreas.length === 0 ? (
+      {departments.length === 0 ? (
         <div className="empty-state">
-          <h2>No Sub-Areas Yet</h2>
-          <p>Create your first sub-area to organize equipment and students.</p>
+          <h2>No Departments Yet</h2>
+          <p>Create your first department to organize equipment and students.</p>
           <button onClick={() => handleOpenModal()} className="btn btn-primary">
-            Create Sub-Area
+            Create Department
           </button>
         </div>
       ) : (
@@ -166,31 +166,31 @@ export default function SubAreaManagement() {
               <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Parent Department</th>
+                <th>Parent School</th>
                 <th>Created</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {subAreas.map(subArea => (
-                <tr key={subArea.id} data-testid="sub-area-row">
-                  <td style={{ fontWeight: '600' }}>{subArea.name}</td>
-                  <td>{subArea.description || '-'}</td>
-                  <td>{subArea.parent_department || '-'}</td>
-                  <td>{new Date(subArea.created_at).toLocaleDateString()}</td>
+              {departments.map(department => (
+                <tr key={department.id} data-testid="department-row">
+                  <td style={{ fontWeight: '600' }}>{department.name}</td>
+                  <td>{department.description || '-'}</td>
+                  <td>{department.parent_department || '-'}</td>
+                  <td>{new Date(department.created_at).toLocaleDateString()}</td>
                   <td>
                     <div className="action-buttons">
                       <button
-                        onClick={() => handleOpenModal(subArea)}
+                        onClick={() => handleOpenModal(department)}
                         className="btn btn-sm btn-secondary"
-                        data-testid="edit-sub-area-btn"
+                        data-testid="edit-department-btn"
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(subArea.id)}
+                        onClick={() => handleDelete(department.id)}
                         className="btn btn-sm btn-danger"
-                        data-testid="delete-sub-area-btn"
+                        data-testid="delete-department-btn"
                       >
                         Delete
                       </button>
@@ -205,9 +205,9 @@ export default function SubAreaManagement() {
 
       {showModal && (
         <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} data-testid="sub-area-modal">
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} data-testid="department-modal">
             <div className="modal-header">
-              <h2>{editingSubArea ? 'Edit Sub-Area' : 'Create Sub-Area'}</h2>
+              <h2>{editingDepartment ? 'Edit Department' : 'Create Department'}</h2>
               <button className="modal-close" onClick={handleCloseModal}>&times;</button>
             </div>
             <form onSubmit={handleSubmit}>
@@ -222,7 +222,7 @@ export default function SubAreaManagement() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="e.g., Communication Design"
                     required
-                    data-testid="sub-area-name-input"
+                    data-testid="department-name-input"
                   />
                 </div>
 
@@ -233,22 +233,22 @@ export default function SubAreaManagement() {
                     className="form-textarea"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Brief description of this sub-area"
+                    placeholder="Brief description of this department"
                     rows="3"
-                    data-testid="sub-area-description-input"
+                    data-testid="department-description-input"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="parent_department">Parent Department</label>
+                  <label htmlFor="parent_department">Parent School</label>
                   <select
                     id="parent_department"
                     className="form-select"
                     value={formData.parent_department}
                     onChange={(e) => setFormData({ ...formData, parent_department: e.target.value })}
-                    data-testid="sub-area-parent-select"
+                    data-testid="department-parent-select"
                   >
-                    <option value="">-- Select Department --</option>
+                    <option value="">-- Select School --</option>
                     <option value="School of Design">School of Design</option>
                     <option value="School of Fine Art">School of Fine Art</option>
                     <option value="School of Education">School of Education</option>
@@ -260,8 +260,8 @@ export default function SubAreaManagement() {
                   <button type="button" onClick={handleCloseModal} className="btn btn-secondary">
                     Cancel
                   </button>
-                  <button type="submit" className="btn btn-primary" data-testid="save-sub-area-btn">
-                    {editingSubArea ? 'Update' : 'Create'} Sub-Area
+                  <button type="submit" className="btn btn-primary" data-testid="save-department-btn">
+                    {editingDepartment ? 'Update' : 'Create'} Department
                   </button>
                 </div>
               </div>

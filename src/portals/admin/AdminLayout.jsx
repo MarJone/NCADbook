@@ -11,7 +11,7 @@ import UserManagement from './UserManagement';
 import CSVImport from './CSVImport';
 import AdminPermissions from './AdminPermissions';
 import KitManagement from './KitManagement';
-import SubAreaManagement from './SubAreaManagement';
+import DepartmentManagement from './SubAreaManagement';
 import StudentAssignment from './StudentAssignment';
 import InterdisciplinaryAccess from './InterdisciplinaryAccess';
 import AccessRequests from './AccessRequests';
@@ -61,8 +61,8 @@ export default function AdminLayout() {
         <Link to="/admin" className="nav-link">Dashboard</Link>
         <Link to="/admin/approvals" className="nav-link">Approvals</Link>
 
-        {/* Sub-Area Admin: Quick Actions */}
-        {user?.role === 'sub_area_admin' && (
+        {/* Department Admin: Quick Actions */}
+        {user?.role === 'department_admin' && (
           <>
             <Link to="/admin/equipment" className="nav-link">Equipment</Link>
             <Link to="/admin/approvals" className="nav-link btn-quick-action">Approve Bookings</Link>
@@ -71,7 +71,7 @@ export default function AdminLayout() {
         )}
 
         {/* Equipment & Content Dropdown */}
-        {(hasPermission('manage_equipment') || hasPermission('manage_kits')) && user?.role !== 'sub_area_admin' && (
+        {(hasPermission('manage_equipment') || hasPermission('manage_kits')) && user?.role !== 'department_admin' && (
           <div className={`nav-dropdown ${openDropdown === 'content' ? 'open' : ''}`}>
             <button
               className="nav-link dropdown-toggle"
@@ -120,19 +120,19 @@ export default function AdminLayout() {
           </div>
         )}
 
-        {/* Master Admin: Sub-Area Management Dropdown */}
+        {/* Master Admin: Department Management Dropdown */}
         {user?.role === 'master_admin' && (
-          <div className={`nav-dropdown ${openDropdown === 'subareas' ? 'open' : ''}`}>
+          <div className={`nav-dropdown ${openDropdown === 'departments' ? 'open' : ''}`}>
             <button
               className="nav-link dropdown-toggle"
-              onClick={() => toggleDropdown('subareas')}
+              onClick={() => toggleDropdown('departments')}
             >
-              Sub-Areas
+              Departments
               <span className="dropdown-arrow">▼</span>
             </button>
             <div className="dropdown-menu">
-              <Link to="/admin/sub-areas" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Manage Sub-Areas
+              <Link to="/admin/departments" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
+                Manage Departments
               </Link>
               <Link to="/admin/student-assignment" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
                 Student Assignment
@@ -180,7 +180,7 @@ export default function AdminLayout() {
           <Route path="analytics" element={<Analytics />} />
           <Route path="users" element={<UserManagement />} />
           <Route path="kits" element={<KitManagement />} />
-          <Route path="sub-areas" element={<SubAreaManagement />} />
+          <Route path="departments" element={<DepartmentManagement />} />
           <Route path="student-assignment" element={<StudentAssignment />} />
           <Route path="interdisciplinary" element={<InterdisciplinaryAccess />} />
           <Route path="access-requests" element={<AccessRequests />} />

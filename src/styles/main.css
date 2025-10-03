@@ -445,7 +445,7 @@ body[data-portal="master"] {
   font-weight: var(--font-weight-semibold);
 }
 
-/* Quick Action Buttons for Sub-Area Admin */
+/* Quick Action Buttons for Department Admin */
 .btn-quick-action {
   background: var(--color-primary) !important;
   color: white !important;
@@ -2585,15 +2585,15 @@ input:disabled + .slider {
    SUB-AREA SYSTEM STYLES - NCAD Design Language
    ======================================== */
 
-/* Sub-Area Management */
-.sub-area-grid {
+/* Department Management */
+.department-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-3xl);
   padding: var(--spacing-4xl) 0;
 }
 
-.sub-area-card {
+.department-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3xl);
@@ -2602,7 +2602,7 @@ input:disabled + .slider {
   border: 1px solid var(--border-color-light);
 }
 
-.sub-area-card:hover {
+.department-card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -2673,7 +2673,7 @@ input:disabled + .slider {
   gap: 4px;
 }
 
-/* Sub-Area Stat Badges */
+/* Department Stat Badges */
 .stat-badge {
   display: inline-flex;
   align-items: center;
@@ -2713,9 +2713,9 @@ input:disabled + .slider {
   color: var(--color-warning);
 }
 
-/* Responsive Adjustments for Sub-Area System */
+/* Responsive Adjustments for Department System */
 @media (max-width: 768px) {
-  .sub-area-grid {
+  .department-grid {
     grid-template-columns: 1fr;
   }
 

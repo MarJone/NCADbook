@@ -4,17 +4,17 @@
 export const demoUsers = [
   // Test accounts (4)
   { id: '1', email: 'master@ncad.ie', password: 'master123', first_name: 'Master', surname: 'Admin', full_name: 'Master Admin', role: 'master_admin', department: 'Administration', created_at: '2024-01-01' },
-  { id: '2', email: 'admin@ncad.ie', password: 'admin123', first_name: 'Admin', surname: 'User', full_name: 'Admin User', role: 'sub_area_admin', managed_sub_area_id: 'sa5', department: 'Moving Image', created_at: '2024-01-01' },
+  { id: '2', email: 'admin@ncad.ie', password: 'admin123', first_name: 'Admin', surname: 'User', full_name: 'Admin User', role: 'department_admin', managed_department_id: 'sa5', department: 'Moving Image', created_at: '2024-01-01' },
   { id: '3', email: 'staff@ncad.ie', password: 'staff123', first_name: 'Staff', surname: 'Member', full_name: 'Staff Member', role: 'staff', department: 'Moving Image', created_at: '2024-01-01' },
   { id: '4', email: 'demo@ncad.ie', password: 'demo123', first_name: 'Demo', surname: 'Student', full_name: 'Demo Student', role: 'student', department: 'Moving Image', created_at: '2024-01-01' },
 
-  // Sub-Area Admins (7 total - one for each sub-area)
-  { id: '5', email: 'admin.gd@ncad.ie', password: 'admin123', first_name: 'Sarah', surname: 'Johnson', full_name: 'Sarah Johnson', role: 'sub_area_admin', managed_sub_area_id: 'sa7', department: 'Graphic Design', created_at: '2024-01-15' },
-  { id: '101', email: 'admin.commdesign@ncad.ie', password: 'admin123', first_name: 'Patricia', surname: 'Moore', full_name: 'Patricia Moore', role: 'sub_area_admin', managed_sub_area_id: 'sa1', department: 'Communication Design', created_at: '2024-01-15' },
-  { id: '102', email: 'admin.fineart@ncad.ie', password: 'admin123', first_name: 'Robert', surname: 'Clarke', full_name: 'Robert Clarke', role: 'sub_area_admin', managed_sub_area_id: 'sa2', department: 'Fine Art Media', created_at: '2024-01-15' },
-  { id: '103', email: 'admin.sculpture@ncad.ie', password: 'admin123', first_name: 'Jennifer', surname: 'Taylor', full_name: 'Jennifer Taylor', role: 'sub_area_admin', managed_sub_area_id: 'sa3', department: 'Sculpture', created_at: '2024-01-15' },
-  { id: '104', email: 'admin.illustration@ncad.ie', password: 'admin123', first_name: 'Thomas', surname: 'Anderson', full_name: 'Thomas Anderson', role: 'sub_area_admin', managed_sub_area_id: 'sa4', department: 'Illustration', created_at: '2024-01-15' },
-  { id: '105', email: 'admin.photography@ncad.ie', password: 'admin123', first_name: 'Margaret', surname: 'Wilson', full_name: 'Margaret Wilson', role: 'sub_area_admin', managed_sub_area_id: 'sa6', department: 'Photography', created_at: '2024-01-15' },
+  // Department Admins (7 total - one for each department)
+  { id: '5', email: 'admin.gd@ncad.ie', password: 'admin123', first_name: 'Sarah', surname: 'Johnson', full_name: 'Sarah Johnson', role: 'department_admin', managed_department_id: 'sa7', department: 'Graphic Design', created_at: '2024-01-15' },
+  { id: '101', email: 'admin.commdesign@ncad.ie', password: 'admin123', first_name: 'Patricia', surname: 'Moore', full_name: 'Patricia Moore', role: 'department_admin', managed_department_id: 'sa1', department: 'Communication Design', created_at: '2024-01-15' },
+  { id: '102', email: 'admin.fineart@ncad.ie', password: 'admin123', first_name: 'Robert', surname: 'Clarke', full_name: 'Robert Clarke', role: 'department_admin', managed_department_id: 'sa2', department: 'Fine Art Media', created_at: '2024-01-15' },
+  { id: '103', email: 'admin.sculpture@ncad.ie', password: 'admin123', first_name: 'Jennifer', surname: 'Taylor', full_name: 'Jennifer Taylor', role: 'department_admin', managed_department_id: 'sa3', department: 'Sculpture', created_at: '2024-01-15' },
+  { id: '104', email: 'admin.illustration@ncad.ie', password: 'admin123', first_name: 'Thomas', surname: 'Anderson', full_name: 'Thomas Anderson', role: 'department_admin', managed_department_id: 'sa4', department: 'Illustration', created_at: '2024-01-15' },
+  { id: '105', email: 'admin.photography@ncad.ie', password: 'admin123', first_name: 'Margaret', surname: 'Wilson', full_name: 'Margaret Wilson', role: 'department_admin', managed_department_id: 'sa6', department: 'Photography', created_at: '2024-01-15' },
 
   // Staff Members (5)
   { id: '6', email: 'staff.illustration@ncad.ie', password: 'staff123', first_name: 'Michael', surname: 'O\'Brien', full_name: 'Michael O\'Brien', role: 'staff', department: 'Illustration', created_at: '2024-02-01' },
