@@ -37,7 +37,6 @@ export default function Login() {
               className="btn btn-primary btn-large"
               disabled={loading}
             >
-              <span className="role-icon">🎓</span>
               <span className="role-name">Student</span>
               <span className="role-desc">Browse & book equipment</span>
             </button>
@@ -46,25 +45,22 @@ export default function Login() {
               className="btn btn-primary btn-large"
               disabled={loading}
             >
-              <span className="role-icon">👨‍🏫</span>
               <span className="role-name">Staff</span>
               <span className="role-desc">Equipment + room booking</span>
             </button>
             <button
-              onClick={() => quickLogin('admin@ncad.ie', 'admin123', 'Admin')}
+              onClick={() => quickLogin('admin@ncad.ie', 'admin123', 'Sub-Area Admin')}
               className="btn btn-primary btn-large"
               disabled={loading}
             >
-              <span className="role-icon">⚙️</span>
-              <span className="role-name">Admin</span>
-              <span className="role-desc">Manage bookings & equipment</span>
+              <span className="role-name">Sub-Area Admin</span>
+              <span className="role-desc">Manage sub-area & request access</span>
             </button>
             <button
               onClick={() => quickLogin('master@ncad.ie', 'master123', 'Master Admin')}
               className="btn btn-primary btn-large"
               disabled={loading}
             >
-              <span className="role-icon">👑</span>
               <span className="role-name">Master Admin</span>
               <span className="role-desc">Full system control</span>
             </button>

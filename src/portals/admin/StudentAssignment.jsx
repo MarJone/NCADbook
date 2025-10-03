@@ -235,21 +235,18 @@ export default function StudentAssignment() {
       {/* Stats */}
       <div className="stats-grid" style={{ marginBottom: 'var(--spacing-xl)' }}>
         <div className="stat-card stat-info">
-          <div className="stat-icon">👥</div>
           <div className="stat-content">
             <h3>{filteredStudents.length}</h3>
             <p>Students Found</p>
           </div>
         </div>
         <div className="stat-card stat-primary">
-          <div className="stat-icon">✓</div>
           <div className="stat-content">
             <h3>{selectedStudents.length}</h3>
             <p>Selected</p>
           </div>
         </div>
         <div className="stat-card stat-secondary">
-          <div className="stat-icon">📚</div>
           <div className="stat-content">
             <h3>{assignments.length}</h3>
             <p>Total Assignments</p>

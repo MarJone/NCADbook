@@ -193,21 +193,18 @@ export default function InterdisciplinaryAccess() {
       {/* Stats */}
       <div className="stats-grid" style={{ marginBottom: 'var(--spacing-xl)' }}>
         <div className="stat-card stat-success">
-          <div className="stat-icon">✓</div>
           <div className="stat-content">
             <h3>{activeGrants.length}</h3>
             <p>Active Grants</p>
           </div>
         </div>
         <div className="stat-card stat-warning">
-          <div className="stat-icon">⏸</div>
           <div className="stat-content">
             <h3>{inactiveGrants.length}</h3>
             <p>Inactive/Expired</p>
           </div>
         </div>
         <div className="stat-card stat-info">
-          <div className="stat-icon">📊</div>
           <div className="stat-content">
             <h3>{accessGrants.length}</h3>
             <p>Total Grants</p>
@@ -372,8 +369,8 @@ export default function InterdisciplinaryAccess() {
                   </small>
                 </div>
 
-                <div style={{ textAlign: 'center', margin: 'var(--spacing-md) 0', fontSize: '1.5rem' }}>
-                  ⬇
+                <div style={{ textAlign: 'center', margin: 'var(--spacing-md) 0', fontSize: 'var(--font-size-sm)', color: 'var(--text-muted)', fontWeight: '500' }}>
+                  will have access to
                 </div>
 
                 <div className="form-group">

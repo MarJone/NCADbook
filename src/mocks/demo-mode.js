@@ -1,4 +1,4 @@
-import { demoUsers, demoEquipment, demoSpaces, demoBookings, demoSpaceBookings, demoFeatureFlags } from './demo-data.js';
+import { demoUsers, demoEquipment, demoSpaces, demoBookings, demoSpaceBookings, demoFeatureFlags, demoSubAreas, demoUserSubAreas, demoInterdisciplinaryAccess, demoAccessRequests } from './demo-data.js';
 
 const STORAGE_KEY = 'ncadbook_demo_data';
 
@@ -17,6 +17,10 @@ class DemoMode {
         bookings: demoBookings,
         spaceBookings: demoSpaceBookings,
         featureFlags: demoFeatureFlags,
+        sub_areas: demoSubAreas,
+        user_sub_areas: demoUserSubAreas,
+        interdisciplinary_access: demoInterdisciplinaryAccess,
+        access_requests: demoAccessRequests,
         currentUser: null
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));

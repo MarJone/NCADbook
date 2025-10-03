@@ -5,33 +5,78 @@ import MultiItemBookingModal from '../../components/booking/MultiItemBookingModa
 import EquipmentDetails from '../../components/equipment/EquipmentDetails';
 import Toast from '../../components/common/Toast';
 import { useToast } from '../../hooks/useToast';
+import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
 
 export default function EquipmentBrowse() {
   const [equipment, setEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const [viewMode, setViewMode] = useState('large');
+  const [viewMode, setViewMode] = useState('list'); // Changed default from 'large' to 'list'
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showMultiModal, setShowMultiModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [subAreas, setSubAreas] = useState([]);
+  const [subAreaFilter, setSubAreaFilter] = useState('all');
   const { toasts, showToast, removeToast } = useToast();
 
   useEffect(() => {
     loadEquipment();
-  }, [filter]);
+    loadSubAreas();
+  }, [filter, subAreaFilter]);
+
+  const loadSubAreas = async () => {
+    try {
+      const areas = await getAllSubAreas();
+      setSubAreas(areas);
+    } catch (error) {
+      console.error('Failed to load sub-areas:', error);
+    }
+  };
 
   const loadEquipment = async () => {
     setLoading(true);
     try {
-      const filters = filter === 'all' ? {} : { category: filter };
-      const data = await demoMode.query('equipment', filters);
-      setEquipment(data);
+      const currentUser = demoMode.getCurrentUser();
+
+      // If user is student, filter by sub-area access
+      if (currentUser && currentUser.role === 'student') {
+        const accessibleEquip = await getAccessibleEquipment(currentUser.id);
+
+        // Apply category filter
+        let filtered = accessibleEquip;
+        if (filter !== 'all') {
+          filtered = filtered.filter(item => item.category === filter);
+        }
+
+        // Apply sub-area filter
+        if (subAreaFilter !== 'all') {
+          filtered = filtered.filter(item => item.sub_area_id === subAreaFilter);
+        }
+
+        setEquipment(filtered);
+      } else {
+        // Admin/staff see all equipment
+        const filters = filter === 'all' ? {} : { category: filter };
+        let data = await demoMode.query('equipment', filters);
+
+        // Apply sub-area filter for admins/staff too
+        if (subAreaFilter !== 'all') {
+          data = data.filter(item => item.sub_area_id === subAreaFilter);
+        }
+
+        setEquipment(data);
+      }
     } catch (error) {
       console.error('Failed to load equipment:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const getSubAreaName = (subAreaId) => {
+    const subArea = subAreas.find(sa => sa.id === subAreaId);
+    return subArea ? subArea.name : '';
   };
 
   const categories = ['all', 'Camera', 'Computer', 'Lighting', 'Support'];
@@ -75,7 +120,10 @@ export default function EquipmentBrowse() {
         </button>
       </div>
 
-      <div className="filter-controls" style={{ marginTop: '1rem' }}>
+      <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
+          <strong>Category:</strong>
+        </div>
         {categories.map(cat => (
           <button
             key={cat}
@@ -86,6 +134,29 @@ export default function EquipmentBrowse() {
           </button>
         ))}
       </div>
+
+      {subAreas.length > 0 && (
+        <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+          <div style={{ marginBottom: '0.5rem' }}>
+            <strong>Sub-Area:</strong>
+          </div>
+          <button
+            onClick={() => setSubAreaFilter('all')}
+            className={subAreaFilter === 'all' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+          >
+            All Sub-Areas
+          </button>
+          {subAreas.map(subArea => (
+            <button
+              key={subArea.id}
+              onClick={() => setSubAreaFilter(subArea.id)}
+              className={subAreaFilter === subArea.id ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+            >
+              {subArea.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="view-toggle">
         <button
@@ -125,6 +196,11 @@ export default function EquipmentBrowse() {
                   </span>
                   <span className="department">{item.department}</span>
                 </div>
+                {item.isInterdisciplinary && (
+                  <div className="interdisciplinary-badge">
+                    Available via {getSubAreaName(item.fromSubAreaId)}
+                  </div>
+                )}
                 <button
                   className="btn btn-primary btn-block"
                   onClick={(e) => {
@@ -158,7 +234,14 @@ export default function EquipmentBrowse() {
                   {item.product_name}
                 </td>
                 <td>{item.category}</td>
-                <td>{item.department}</td>
+                <td>
+                  {item.department}
+                  {item.isInterdisciplinary && (
+                    <div className="interdisciplinary-badge" style={{ marginTop: '0.25rem' }}>
+                      Via {getSubAreaName(item.fromSubAreaId)}
+                    </div>
+                  )}
+                </td>
                 <td>
                   <span className={`status status-${item.status}`}>
                     {item.status}

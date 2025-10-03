@@ -32,7 +32,8 @@
       "Bash(npm test)",
       "Bash(pip install:*)",
       "Bash(python:*)",
-      "Bash(timeout 5 bash -c 'cd \"\"c:\\Users\\Media Admin\\AIprojects\\NCADbook\"\" && until curl -s http://localhost:5178 > /dev/null 2>&1; do sleep 1; done; echo \"\"Server is ready\"\"')"
+      "Bash(timeout 5 bash -c 'cd \"\"c:\\Users\\Media Admin\\AIprojects\\NCADbook\"\" && until curl -s http://localhost:5178 > /dev/null 2>&1; do sleep 1; done; echo \"\"Server is ready\"\"')",
+      "Bash(netlify:*)"
     ],
     "deny": [],
     "ask": []

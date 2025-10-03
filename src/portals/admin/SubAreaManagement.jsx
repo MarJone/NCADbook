@@ -138,14 +138,12 @@ export default function SubAreaManagement() {
 
       <div className="stats-grid" style={{ marginBottom: 'var(--spacing-xl)' }}>
         <div className="stat-card stat-primary">
-          <div className="stat-icon">📚</div>
           <div className="stat-content">
             <h3>{subAreas.length}</h3>
             <p>Total Sub-Areas</p>
           </div>
         </div>
         <div className="stat-card stat-secondary">
-          <div className="stat-icon">🏫</div>
           <div className="stat-content">
             <h3>{new Set(subAreas.map(sa => sa.parent_department).filter(Boolean)).size}</h3>
             <p>Parent Departments</p>

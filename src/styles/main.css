@@ -441,6 +441,93 @@ body[data-portal="master"] {
   color: var(--color-primary);
   font-weight: var(--font-weight-semibold);
 }
+
+/* Quick Action Buttons for Sub-Area Admin */
+.btn-quick-action {
+  background: var(--color-primary) !important;
+  color: white !important;
+  font-weight: var(--font-weight-medium);
+  padding: var(--spacing-sm) var(--spacing-lg) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-quick-action:hover {
+  background: var(--color-primary-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Dropdown Navigation Styles */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.dropdown-arrow {
+  font-size: var(--font-size-xs);
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.nav-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  min-width: 220px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: var(--spacing-sm);
+}
+
+.nav-dropdown.open .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  transition: var(--transition-bg), var(--transition-color);
+  white-space: nowrap;
+}
+
+.dropdown-item:first-child {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.dropdown-item:last-child {
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.dropdown-item:hover {
+  background: var(--bg-secondary);
+  color: var(--color-primary);
+}
+
 .portal-main { padding: var(--spacing-xl); max-width: 1200px; margin: 0 auto; }
 /* ========================================
    DASHBOARD STYLES - NCAD Design Language
@@ -2489,5 +2576,157 @@ input:disabled + .slider {
 
 .gradient-secondary {
   background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+}
+
+/* ========================================
+   SUB-AREA SYSTEM STYLES - NCAD Design Language
+   ======================================== */
+
+/* Sub-Area Management */
+.sub-area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-3xl);
+  padding: var(--spacing-4xl) 0;
+}
+
+.sub-area-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3xl);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-shadow);
+  border: 1px solid var(--border-color-light);
+}
+
+.sub-area-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Student Assignment */
+.assignment-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--spacing-3xl);
+}
+
+.student-table-row.selected {
+  background: var(--portal-admin-bg);
+}
+
+.bulk-action-bar {
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+/* Interdisciplinary Access */
+.interdisciplinary-layout {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: var(--spacing-4xl);
+}
+
+.access-grant-form {
+  background: var(--bg-card);
+  padding: var(--spacing-3xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.access-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.access-row.active {
+  background: var(--color-success-pale);
+}
+
+.access-row.expired {
+  background: var(--color-error-pale);
+  opacity: 0.7;
+}
+
+/* Interdisciplinary Badge */
+.interdisciplinary-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: var(--color-tertiary-light);
+  color: var(--color-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  margin-top: var(--spacing-sm);
+  align-items: center;
+  gap: 4px;
+}
+
+/* Sub-Area Stat Badges */
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.stat-badge.equipment {
+  background: var(--color-secondary-pale);
+  color: var(--color-secondary);
+}
+
+.stat-badge.students {
+  background: var(--color-info-pale);
+  color: var(--color-info);
+}
+
+/* Access Badge Styles */
+.access-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.access-badge.permanent {
+  background: var(--color-info-pale);
+  color: var(--color-info);
+}
+
+.access-badge.temporary {
+  background: var(--color-warning-pale);
+  color: var(--color-warning);
+}
+
+/* Responsive Adjustments for Sub-Area System */
+@media (max-width: 768px) {
+  .sub-area-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .assignment-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .interdisciplinary-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .bulk-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
