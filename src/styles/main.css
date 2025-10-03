@@ -1,4 +1,15 @@
+/* Import NCAD Design System Variables */
+@import './ncad-variables.css';
+
+/* Import Original Variables for Compatibility */
 @import './variables.css';
+
+/* Import Proxima Nova Font from Adobe Fonts (Typekit) */
+@import url('https://use.typekit.net/qpk8hon.css');
+
+/* ========================================
+   BASE STYLES - NCAD Design Language
+   ======================================== */
 
 * {
   margin: 0;
@@ -7,48 +18,154 @@
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base); /* 17px - more spacious */
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+  line-height: var(--line-height-relaxed); /* 1.75 - very spacious */
+  letter-spacing: var(--letter-spacing-normal); /* 0.3px for elegance */
+}
+
+p {
+  margin-bottom: var(--spacing-lg); /* 16px between paragraphs */
+  line-height: var(--line-height-relaxed);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
   color: var(--text-primary);
-  background-color: var(--background);
-  line-height: 1.5;
+  line-height: var(--line-height-tight); /* 1.3 - more breathing room */
+  letter-spacing: var(--letter-spacing-tight); /* -0.3px for headings */
+}
+
+h1 { font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-2xl); /* 32px */ }
+h2 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xl); /* 24px */ }
+h3 { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-lg); /* 16px */ }
+h4 { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-lg); }
+h5 { font-size: var(--font-size-md); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md); }
+h6 { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md); }
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-color);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
 }
 
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-center: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: var(--spacing-lg);
+  justify-content: center;
+  /* Neutral background gradient */
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f0 100%);
+  padding: var(--spacing-4xl);
 }
 
 .login-card {
-  background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-md);
-  padding: var(--spacing-2xl);
+  background: #ffffff;
+  border-radius: var(--radius-xl); /* 16px */
+  padding: var(--spacing-5xl); /* 64px - very spacious */
   width: 100%;
-  max-width: 600px;
+  max-width: 480px;
+
+  /* 3D Effect */
+  box-shadow:
+    0 1px 1px var(--shadow-3d-light) inset,
+    0 8px 24px var(--shadow-3d-dark),
+    0 16px 48px var(--shadow-3d-darker);
+
+  /* Subtle border for depth */
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
-.login-header { text-align: center; margin-bottom: var(--spacing-xl); }
-.login-header h1 { font-size: 2rem; color: var(--primary-color); }
+.login-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.login-header h1 {
+  font-size: var(--font-size-3xl); /* 42px */
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2xl);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
 .login-header .demo-note {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  margin-top: var(--spacing-sm);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-md);
+  line-height: var(--line-height-relaxed);
 }
-.form-group { margin-bottom: var(--spacing-lg); }
-.form-group label { display: block; margin-bottom: var(--spacing-sm); font-weight: 500; }
-.form-group input {
-  width: 100%;
-  padding: var(--spacing-md);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+/* ========================================
+   FORM STYLES - NCAD Design Language
+   ======================================== */
+
+.form-group {
+  margin-bottom: var(--spacing-3xl); /* 40px between form sections */
 }
 
-.form-group input:focus { outline: none; border-color: var(--primary-color); }
-.error-message { background: #fee2e2; color: var(--error-color); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); }
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-sm); /* 8px */
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm); /* 15px */
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.form-group input,
+.form-input {
+  width: 100%;
+  padding: 14px 18px; /* More vertical padding */
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base); /* 17px */
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  transition: var(--transition-border);
+  line-height: var(--line-height-normal); /* 1.6 */
+  margin-bottom: var(--spacing-lg); /* Space between fields */
+}
+
+.form-group input:focus,
+.form-input:focus {
+  outline: none;
+  border-color: var(--border-color-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+.form-group input::placeholder,
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-select,
+.select-input {
+  width: 100%;
+  padding: var(--padding-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  cursor: pointer;
+  transition: var(--transition-border);
+}
+
+.form-select:focus,
+.select-input:focus {
+  outline: none;
+  border-color: var(--border-color-focus);
+  box-shadow: var(--shadow-focus);
+}
+.error-message { background: var(--color-error-pale); color: var(--color-error); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-lg); }
 .demo-accounts h3 {
   text-align: center;
   margin-bottom: var(--spacing-lg);
@@ -70,8 +187,16 @@ body {
   justify-content: center;
 }
 .role-icon {
-  font-size: 3rem;
+  font-size: 1rem;
   line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
 }
 .role-name {
   font-size: 1.125rem;
@@ -98,26 +223,180 @@ body {
   }
 }
 
+/* ========================================
+   BUTTON STYLES - NCAD Design Language
+   ======================================== */
+
 .btn {
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: 14px 28px; /* Taller buttons */
   border: none;
-  border-radius: var(--border-radius);
-  font-weight: 500;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base); /* 17px */
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 200ms ease;
+  min-height: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+  margin: var(--spacing-sm) 0; /* Vertical spacing */
 }
 
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-primary { background-color: var(--primary-color); color: white; }
-.btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); }
-.btn-secondary { background-color: var(--secondary-color); color: white; }
-.btn-sm { padding: var(--spacing-sm) var(--spacing-md); font-size: 0.875rem; }
-.btn-block { width: 100%; margin-top: var(--spacing-md); }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Primary Button - 3D Effect */
+.btn-primary {
+  background: linear-gradient(180deg, #0066FF 0%, #0052CC 100%);
+  color: white;
+  position: relative;
+
+  /* 3D Effect */
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+    0 4px 8px rgba(0, 102, 255, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+
+  transform: translateY(0);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #0052CC 0%, #0047B3 100%);
+
+  /* Lift effect on hover */
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 6px 16px rgba(0, 102, 255, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+
+  transform: translateY(-2px);
+}
+
+.btn-primary:active:not(:disabled) {
+  /* Pressed effect */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2) inset,
+    0 2px 4px rgba(0, 102, 255, 0.2);
+
+  transform: translateY(1px);
+}
+
+/* Secondary Button - 3D Effect */
+.btn-secondary {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+
+  /* 3D Effect */
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+
+  transition: all 200ms ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 6px 16px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active:not(:disabled) {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.15) inset;
+  transform: translateY(1px);
+}
+
+/* Outline Button - SimplyBook Style */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  transition: var(--transition-all);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: var(--text-light);
+  box-shadow: var(--shadow-button-hover);
+  transform: translateY(-1px);
+}
+
+/* Button Sizes */
+.btn-sm {
+  padding: calc(var(--spacing-md) / 2) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  min-height: auto;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: var(--spacing-md);
+}
+
+/* ========================================
+   PORTAL HEADER - NCAD Design Language
+   ======================================== */
 
 .portal-header {
-  background-color: var(--primary-color);
-  color: white;
+  background: white;
+  color: var(--text-primary);
   padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+/* Portal Color Coding - Low Intensity (20-30%) */
+.student-portal,
+.student-dashboard,
+body[data-portal="student"] {
+  background: var(--portal-student-bg); /* Soft blue 8% */
+}
+
+.student-portal .portal-header {
+  background: white;
+  border-bottom: 3px solid var(--portal-student-accent); /* 25% blue */
+}
+
+.staff-portal,
+body[data-portal="staff"] {
+  background: var(--portal-staff-bg); /* Soft purple 8% */
+}
+
+.staff-portal .portal-header {
+  background: white;
+  border-bottom: 3px solid var(--portal-staff-accent); /* 25% purple */
+}
+
+.admin-portal,
+body[data-portal="admin"] {
+  background: var(--portal-admin-bg); /* Soft teal 8% */
+}
+
+.admin-portal .portal-header {
+  background: white;
+  border-bottom: 3px solid var(--portal-admin-accent); /* 25% teal */
+}
+
+.master-admin-portal,
+body[data-portal="master"] {
+  background: var(--portal-master-bg); /* Soft amber 8% */
+}
+
+.master-admin-portal .portal-header {
+  background: white;
+  border-bottom: 3px solid var(--portal-master-accent); /* 25% amber */
 }
 
 .header-content {
@@ -130,78 +409,190 @@ body {
 
 .header-actions { display: flex; gap: var(--spacing-md); align-items: center; }
 .portal-nav {
-  background-color: var(--surface);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color-light);
   padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
   gap: var(--spacing-lg);
+  box-shadow: var(--shadow-xs);
 }
+
+/* ========================================
+   NAVIGATION STYLES - NCAD Design Language
+   ======================================== */
 
 .nav-link {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
   color: var(--text-primary);
   text-decoration: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-color), var(--transition-bg);
 }
 
-.nav-link:hover { background-color: var(--border-color); }
+.nav-link:hover {
+  color: var(--color-primary);
+  background-color: var(--bg-secondary);
+}
+
+.nav-link.active {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
 .portal-main { padding: var(--spacing-xl); max-width: 1200px; margin: 0 auto; }
-.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg); margin-top: var(--spacing-xl); }
+/* ========================================
+   DASHBOARD STYLES - NCAD Design Language
+   ======================================== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
 .dashboard-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-xl);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3xl); /* 40px */
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-all);
 }
 
-.equipment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--spacing-lg); }
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.dashboard-card p,
+.card-content {
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ========================================
+   EQUIPMENT CARD STYLES - NCAD Design Language
+   ======================================== */
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-3xl); /* 40px between cards */
+  padding: var(--spacing-4xl) 0; /* Top/bottom spacing */
+}
+
 .equipment-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-all);
+  padding: var(--spacing-3xl); /* 40px internal padding */
 }
 
-.equipment-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.equipment-image { background: var(--surface); height: 200px; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
-.equipment-info { padding: var(--spacing-lg); }
-.equipment-meta { display: flex; justify-content: space-between; margin-bottom: var(--spacing-md); }
-.status { padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-weight: 500; text-transform: capitalize; }
-.status-available { background-color: #d1fae5; color: var(--success-color); }
+.equipment-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
 
-.loading-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.loading-spinner { width: 48px; height: 48px; border: 4px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.equipment-image {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color-light);
+}
+
+.equipment-category-label {
+  font-size: var(--font-size-md); /* 19px */
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.equipment-info {
+  padding: var(--spacing-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+.equipment-info p {
+  margin-bottom: var(--spacing-lg);
+}
+.equipment-meta { display: flex; justify-content: space-between; margin-bottom: var(--spacing-md); }
+.status {
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+  font-size: var(--font-size-sm);
+}
+.status-available { background-color: var(--color-success-pale); color: var(--color-success); }
+
+/* ========================================
+   LOADING SPINNER - NCAD Design Language
+   ======================================== */
+
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 @media (max-width: 768px) {
   .equipment-grid { grid-template-columns: 1fr; }
   .header-content { flex-direction: column; gap: var(--spacing-md); }
 }
 
-/* Modal Styles */
+/* ========================================
+   MODAL STYLES - NCAD Design Language
+   ======================================== */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-modal-backdrop);
   padding: var(--spacing-lg);
 }
 
 .modal-content {
-  background: white;
-  border-radius: var(--border-radius);
-  max-width: 500px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  max-width: 600px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-xl);
+  padding: var(--padding-card-lg);
 }
 
 .modal-header {
@@ -288,10 +679,12 @@ body {
 }
 
 .booking-item {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-shadow);
 }
 
 .booking-header {
@@ -311,19 +704,26 @@ body {
   margin: 0;
 }
 
+/* ========================================
+   STATUS BADGE STYLES - NCAD Design Language
+   ======================================== */
+
 .status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: capitalize;
+  display: inline-block;
+  line-height: var(--line-height-tight);
 }
 
-.status-warning { background: #fef3c7; color: #f59e0b; }
-.status-success { background: #d1fae5; color: #10b981; }
-.status-error { background: #fee2e2; color: #ef4444; }
-.status-primary { background: #dbeafe; color: #2563eb; }
-.status-secondary { background: var(--surface); color: var(--text-secondary); }
+.status-warning { background: var(--color-warning-pale); color: var(--color-warning); }
+.status-success { background: var(--color-success-pale); color: var(--color-success); }
+.status-error { background: var(--color-error-pale); color: var(--color-error); }
+.status-primary { background: var(--color-primary-pale); color: var(--color-primary); }
+.status-secondary { background: var(--bg-secondary); color: var(--text-primary); }
 
 .booking-details {
   display: flex;
@@ -380,15 +780,20 @@ body {
   margin-bottom: var(--spacing-2xl);
 }
 
+/* ========================================
+   STAT CARD STYLES - NCAD Design Language
+   ======================================== */
+
 .stat-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  transition: var(--transition);
+  transition: var(--transition-all);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-card:hover {
@@ -397,34 +802,46 @@ body {
 }
 
 .stat-icon {
-  font-size: 2.5rem;
-  opacity: 0.8;
+  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary-pale);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
 }
 
 .stat-content h3 {
   font-size: 2rem;
   margin: 0;
   color: var(--text-primary);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .stat-content p {
   margin: 0;
   color: var(--text-secondary);
   font-size: 0.875rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
-.stat-primary { border-left: 4px solid var(--primary-color); }
-.stat-success { border-left: 4px solid var(--success-color); }
-.stat-warning { border-left: 4px solid #f59e0b; }
-.stat-error { border-left: 4px solid var(--error-color); }
-.stat-info { border-left: 4px solid #3b82f6; }
-.stat-secondary { border-left: 4px solid var(--secondary-color); }
+.stat-primary { border-left: 4px solid var(--color-primary); }
+.stat-success { border-left: 4px solid var(--color-success); }
+.stat-warning { border-left: 4px solid var(--color-warning); }
+.stat-error { border-left: 4px solid var(--color-error); }
+.stat-info { border-left: 4px solid var(--color-info); }
+.stat-secondary { border-left: 4px solid var(--color-secondary); }
 
 .dashboard-actions {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
 }
 
 .dashboard-actions h3 {
@@ -454,10 +871,12 @@ body {
 }
 
 .approval-item {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-shadow);
 }
 
 .approval-header {
@@ -532,11 +951,12 @@ body {
 }
 
 .space-details {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
 }
 
 .space-details h3 {
@@ -553,10 +973,11 @@ body {
 }
 
 .time-slots-grid {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
 }
 
 .time-slots-grid h3 {
@@ -572,31 +993,45 @@ body {
 .time-slot {
   padding: var(--spacing-lg);
   border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: white;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
   cursor: pointer;
-  transition: var(--transition);
-  font-weight: 500;
+  transition: var(--transition-all);
+  font-weight: var(--font-weight-medium);
   position: relative;
 }
 
 .time-slot-available {
-  border-color: var(--success-color);
-  color: var(--success-color);
+  border-color: var(--color-success);
+  color: var(--color-success);
 }
 
 .time-slot-available:hover {
-  background: #d1fae5;
+  background: var(--color-success-pale);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
 .time-slot-booked {
-  border-color: var(--error-color);
-  background: #fee2e2;
-  color: var(--error-color);
+  border-color: var(--color-error);
+  background: var(--color-error-pale);
+  color: var(--color-error);
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.time-slot-selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-pale);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-md);
+}
+
+.time-slot-selected:hover {
+  background: var(--color-primary-pale);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .slot-status {
@@ -633,12 +1068,12 @@ body {
 }
 
 .warning-banner {
-  background: #fef3c7;
-  color: #f59e0b;
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius);
+  background: var(--color-warning-pale);
+  color: var(--color-warning);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
   margin-bottom: var(--spacing-xl);
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid var(--color-warning);
 }
 
 .flags-list {
@@ -649,14 +1084,16 @@ body {
 }
 
 .flag-item {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-shadow);
 }
 
 .flag-info h3 {
@@ -768,34 +1205,48 @@ input:disabled + .slider {
 }
 
 /* Equipment Management Table */
-.equipment-table {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+/* ========================================
+   TABLE STYLES - NCAD Design Language
+   ======================================== */
+
+.equipment-table,
+.users-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   overflow-x: auto;
   margin: var(--spacing-xl) 0;
+  box-shadow: var(--shadow-sm);
 }
 
-.equipment-table table {
+.equipment-table table,
+.users-table table {
   width: 100%;
   border-collapse: collapse;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
 }
 
 .equipment-table th,
-.equipment-table td {
-  padding: var(--spacing-md);
+.equipment-table td,
+.users-table th,
+.users-table td {
+  padding: var(--spacing-lg) var(--spacing-xl); /* 16px 24px */
   text-align: left;
   border-bottom: 1px solid var(--border-color);
+  line-height: var(--line-height-normal);
 }
 
-.equipment-table th {
-  background: var(--surface);
-  font-weight: 600;
+.equipment-table th,
+.users-table th {
+  background: var(--bg-secondary);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
-.equipment-table tbody tr:hover {
-  background: var(--surface);
+.equipment-table tbody tr:hover,
+.users-table tbody tr:hover {
+  background: var(--bg-secondary);
 }
 
 .tracking-number {
@@ -834,10 +1285,12 @@ input:disabled + .slider {
 }
 
 .analytics-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-shadow);
 }
 
 .analytics-card h3 {
@@ -871,8 +1324,9 @@ input:disabled + .slider {
 
 .progress-fill {
   height: 100%;
-  background: var(--primary-color);
+  background: linear-gradient(90deg, var(--color-secondary) 0%, var(--color-primary) 100%);
   transition: width 0.3s ease;
+  border-radius: var(--radius-sm);
 }
 
 .item-count {
@@ -932,16 +1386,18 @@ input:disabled + .slider {
 }
 
 .note-item {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-left: 4px solid var(--primary-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
-  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-all);
 }
 
 .note-item:hover {
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .note-header {
@@ -959,7 +1415,15 @@ input:disabled + .slider {
 }
 
 .note-icon {
-  font-size: 1.25rem;
+  font-size: 0.875rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-tertiary-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-tertiary);
 }
 
 .note-type-label {
@@ -991,20 +1455,24 @@ input:disabled + .slider {
   white-space: pre-wrap;
 }
 
-.form-textarea {
+.form-textarea,
+.form-group textarea {
   width: 100%;
-  padding: var(--spacing-md);
+  padding: var(--padding-input);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-family: inherit;
-  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
   resize: vertical;
   min-height: 100px;
+  transition: var(--transition-border);
 }
 
-.form-textarea:focus {
+.form-textarea:focus,
+.form-group textarea:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--border-color-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 /* Equipment Detail Modal */
@@ -1079,46 +1547,21 @@ input:disabled + .slider {
 .search-input {
   flex: 1;
   min-width: 250px;
-  padding: var(--spacing-md);
+  padding: var(--padding-input);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  font-family: var(--font-primary);
+  transition: var(--transition-border);
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--border-color-focus);
+  box-shadow: var(--shadow-focus);
 }
 
-.users-table {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  overflow-x: auto;
-  margin-bottom: var(--spacing-lg);
-}
-
-.users-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.users-table th,
-.users-table td {
-  padding: var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.users-table th {
-  background: var(--surface);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.users-table tbody tr:hover {
-  background: var(--surface);
-}
+/* Users table styles defined above in TABLE STYLES section */
 
 .role-badge {
   padding: 0.25rem 0.75rem;
@@ -1130,23 +1573,23 @@ input:disabled + .slider {
 }
 
 .role-student {
-  background: #dbeafe;
-  color: #2563eb;
+  background: var(--color-info-pale);
+  color: var(--color-info);
 }
 
 .role-staff {
-  background: #d1fae5;
-  color: #10b981;
+  background: var(--color-success-pale);
+  color: var(--color-success);
 }
 
 .role-admin {
-  background: #fef3c7;
-  color: #f59e0b;
+  background: var(--color-warning-pale);
+  color: var(--color-warning);
 }
 
 .role-master_admin {
-  background: #fecaca;
-  color: #ef4444;
+  background: var(--color-error-pale);
+  color: var(--color-error);
 }
 
 .action-buttons {
@@ -1154,9 +1597,10 @@ input:disabled + .slider {
   gap: var(--spacing-sm);
 }
 
+/* Danger Button */
 .btn-danger {
-  background-color: var(--error-color);
-  color: white;
+  background-color: var(--color-error);
+  color: var(--text-light);
 }
 
 .btn-danger:hover:not(:disabled) {
@@ -1198,11 +1642,12 @@ input:disabled + .slider {
 .access-denied {
   text-align: center;
   padding: var(--spacing-2xl);
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-xl);
   margin: var(--spacing-2xl) auto;
   max-width: 600px;
+  box-shadow: var(--shadow-lg);
 }
 
 .access-denied h2 {
@@ -1741,17 +2186,17 @@ input:disabled + .slider {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-md);
-  padding: var(--spacing-md);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-lg);
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-width: 300px;
   max-width: 500px;
-  animation: slideIn 0.3s ease-out;
-  z-index: 10000;
+  animation: slideIn 0.3s var(--easing-decelerate);
+  z-index: var(--z-tooltip);
 }
 
 @keyframes slideIn {
@@ -1766,15 +2211,15 @@ input:disabled + .slider {
 }
 
 .toast-success {
-  border-left: 4px solid var(--success-color);
+  border-left: 4px solid var(--color-success);
 }
 
 .toast-error {
-  border-left: 4px solid var(--danger-color);
+  border-left: 4px solid var(--color-error);
 }
 
 .toast-info {
-  border-left: 4px solid var(--info-color);
+  border-left: 4px solid var(--color-info);
 }
 
 .toast-content {
@@ -1784,20 +2229,29 @@ input:disabled + .slider {
 }
 
 .toast-icon {
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-size: 0.875rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
 }
 
 .toast-success .toast-icon {
-  color: var(--success-color);
+  background: var(--color-success-pale);
+  color: var(--color-success);
 }
 
 .toast-error .toast-icon {
-  color: var(--danger-color);
+  background: var(--color-error-pale);
+  color: var(--color-error);
 }
 
 .toast-info .toast-icon {
-  color: var(--info-color);
+  background: var(--color-info-pale);
+  color: var(--color-info);
 }
 
 .toast-message {
@@ -1818,6 +2272,99 @@ input:disabled + .slider {
 
 .toast-close:hover {
   color: var(--text-primary);
+}
+
+/* View Toggle Styles */
+.view-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
+
+.btn-view {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-all);
+  font-size: 14px;
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.btn-view.active {
+  background: var(--color-primary);
+  color: var(--text-light);
+  border-color: var(--color-primary);
+}
+
+.btn-view:hover:not(.active) {
+  border-color: var(--color-primary);
+  background: var(--bg-secondary);
+}
+
+/* Compact Table Styles */
+.equipment-table-compact {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color-light);
+}
+
+.equipment-table-compact thead {
+  background: var(--bg-secondary);
+}
+
+.equipment-table-compact th,
+.equipment-table-compact td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.equipment-table-compact tbody tr:hover {
+  background: var(--bg-secondary);
+  cursor: pointer;
+}
+
+.equipment-table-compact th {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+}
+
+.equipment-table-compact td {
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+}
+
+.equipment-table-compact tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .view-toggle {
+    justify-content: center;
+  }
+
+  .equipment-table-compact {
+    font-size: 0.875rem;
+  }
+
+  .equipment-table-compact th,
+  .equipment-table-compact td {
+    padding: 8px;
+  }
 }
 
 /* Equipment Details Modal */
@@ -1866,7 +2413,8 @@ input:disabled + .slider {
 }
 
 .equipment-image-large .image-placeholder {
-  font-size: 8rem;
+  font-size: 3rem;
+  color: var(--text-muted);
 }
 
 .equipment-details-info {
@@ -1909,5 +2457,37 @@ input:disabled + .slider {
   margin-top: var(--spacing-lg);
   padding-top: var(--spacing-lg);
   border-top: 1px solid var(--border-color);
+}
+
+/* ========================================
+   ANIMATION UTILITIES - SimplyBook Style
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 300ms var(--easing-decelerate);
+}
+
+/* Gradient utilities using new design system */
+.gradient-primary {
+  background: var(--color-primary-gradient);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, var(--color-success) 0%, var(--color-success-light) 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
 }
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
 import BookingModal from '../../components/booking/BookingModal';
+import MultiItemBookingModal from '../../components/booking/MultiItemBookingModal';
 import EquipmentDetails from '../../components/equipment/EquipmentDetails';
 import Toast from '../../components/common/Toast';
 import { useToast } from '../../hooks/useToast';
@@ -9,8 +10,10 @@ export default function EquipmentBrowse() {
   const [equipment, setEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [viewMode, setViewMode] = useState('large');
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showMultiModal, setShowMultiModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const { toasts, showToast, removeToast } = useToast();
 
@@ -52,34 +55,64 @@ export default function EquipmentBrowse() {
     setShowModal(false);
   };
 
+  const handleMultiBookingSuccess = () => {
+    showToast('Multiple bookings created successfully! Awaiting admin approval.', 'success');
+    setShowMultiModal(false);
+    loadEquipment(); // Reload to show updated availability
+  };
+
   return (
     <div className="equipment-browse">
-      <div className="browse-header">
+      <div className="browse-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <h2>Browse Equipment</h2>
-        <div className="filter-controls">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={filter === cat ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-            >
-              {cat === 'all' ? 'All' : cat}
-            </button>
-          ))}
-        </div>
+        <button
+          onClick={() => setShowMultiModal(true)}
+          className="btn btn-primary"
+          data-testid="book-multiple-items-btn"
+          style={{ whiteSpace: 'nowrap' }}
+        >
+          Book Multiple Items
+        </button>
+      </div>
+
+      <div className="filter-controls" style={{ marginTop: '1rem' }}>
+        {categories.map(cat => (
+          <button
+            key={cat}
+            onClick={() => setFilter(cat)}
+            className={filter === cat ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+          >
+            {cat === 'all' ? 'All' : cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="view-toggle">
+        <button
+          className={`btn-view ${viewMode === 'large' ? 'active' : ''}`}
+          onClick={() => setViewMode('large')}
+          data-testid="view-large-btn"
+        >
+          Large Details
+        </button>
+        <button
+          className={`btn-view ${viewMode === 'compact' ? 'active' : ''}`}
+          onClick={() => setViewMode('compact')}
+          data-testid="view-compact-btn"
+        >
+          Compact List
+        </button>
       </div>
 
       {loading ? (
         <div className="loading">Loading equipment...</div>
-      ) : (
+      ) : viewMode === 'large' ? (
         <div className="equipment-grid">
           {equipment.map(item => (
             <div key={item.id} className="equipment-card" data-testid="equipment-card">
               <div className="equipment-image" onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>
-                <div className="image-placeholder">
-                  {item.category === 'Camera' ? '📷' :
-                   item.category === 'Computer' ? '💻' :
-                   item.category === 'Lighting' ? '💡' : '🎬'}
+                <div className="equipment-category-label">
+                  {item.category}
                 </div>
               </div>
               <div className="equipment-info">
@@ -107,6 +140,44 @@ export default function EquipmentBrowse() {
             </div>
           ))}
         </div>
+      ) : (
+        <table className="equipment-table-compact" data-testid="equipment-table-compact">
+          <thead>
+            <tr>
+              <th>Equipment</th>
+              <th>Category</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {equipment.map(item => (
+              <tr key={item.id} data-testid="equipment-row-compact">
+                <td onClick={() => handleCardClick(item)} style={{ cursor: 'pointer', fontWeight: '600' }}>
+                  {item.product_name}
+                </td>
+                <td>{item.category}</td>
+                <td>{item.department}</td>
+                <td>
+                  <span className={`status status-${item.status}`}>
+                    {item.status}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handleBookClick(item)}
+                    disabled={item.status !== 'available'}
+                    data-testid="book-equipment-btn-compact"
+                  >
+                    {item.status === 'available' ? 'Book' : 'Unavailable'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
 
       {showDetails && selectedEquipment && (
@@ -122,6 +193,13 @@ export default function EquipmentBrowse() {
           equipment={selectedEquipment}
           onClose={() => setShowModal(false)}
           onSuccess={handleBookingSuccess}
+        />
+      )}
+
+      {showMultiModal && (
+        <MultiItemBookingModal
+          onClose={() => setShowMultiModal(false)}
+          onSuccess={handleMultiBookingSuccess}
         />
       )}
 

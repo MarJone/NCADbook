@@ -26,7 +26,13 @@
       "Bash(if [ ! -d \"tests/integration\" ])",
       "Bash(then mkdir tests/integration)",
       "Bash(if [ ! -d \"tests/mobile\" ])",
-      "Bash(then mkdir tests/mobile)"
+      "Bash(then mkdir tests/mobile)",
+      "Bash(npm run build:*)",
+      "Bash(netlify deploy:*)",
+      "Bash(npm test)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(timeout 5 bash -c 'cd \"\"c:\\Users\\Media Admin\\AIprojects\\NCADbook\"\" && until curl -s http://localhost:5178 > /dev/null 2>&1; do sleep 1; done; echo \"\"Server is ready\"\"')"
     ],
     "deny": [],
     "ask": []

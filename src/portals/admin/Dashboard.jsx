@@ -50,7 +50,6 @@ export default function Dashboard() {
 
       <div className="stats-grid">
         <div className="stat-card stat-primary">
-          <div className="stat-icon">📋</div>
           <div className="stat-content">
             <h3>{stats.totalBookings}</h3>
             <p>Total Bookings</p>
@@ -58,7 +57,6 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card stat-warning">
-          <div className="stat-icon">⏳</div>
           <div className="stat-content">
             <h3>{stats.pendingBookings}</h3>
             <p>Pending Approval</p>
@@ -66,7 +64,6 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card stat-success">
-          <div className="stat-icon">✓</div>
           <div className="stat-content">
             <h3>{stats.approvedBookings}</h3>
             <p>Approved</p>
@@ -74,7 +71,6 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card stat-info">
-          <div className="stat-icon">📦</div>
           <div className="stat-content">
             <h3>{stats.availableEquipment}/{stats.totalEquipment}</h3>
             <p>Equipment Available</p>
@@ -82,7 +78,6 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card stat-secondary">
-          <div className="stat-icon">👥</div>
           <div className="stat-content">
             <h3>{stats.totalUsers}</h3>
             <p>Students</p>

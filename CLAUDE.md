@@ -206,3 +206,280 @@ Early setup phase. Key next steps:
 - **Components**: Self-contained with co-located styles
 - **Naming**: BEM methodology for CSS classes (`.component__element--modifier`)
 - **Accessibility**: Always include ARIA labels, ensure keyboard navigation
+
+## Project Memory & Workflow Optimization
+
+### ProjectMemory.md Overview
+This project maintains a comprehensive development history in [ProjectMemory.md](ProjectMemory.md) that tracks:
+- Development timeline with all phases
+- Architecture evolution and design decisions
+- Challenges faced and solutions implemented
+- Testing strategy and coverage
+- Performance optimizations
+- Lessons learned
+- Future considerations
+
+**Purpose:** This file will be used at the end of the development phase to inform a workflow optimization process. It captures institutional knowledge, helps onboard new developers, and provides context for future architectural decisions.
+
+### When to Update ProjectMemory.md
+
+Update [ProjectMemory.md](ProjectMemory.md) at these milestones:
+
+1. **End of Sprint/Phase** (Every 1-2 weeks)
+   - Add completed features to Development Timeline
+   - Document any architectural changes
+   - Record challenges encountered and solutions
+
+2. **After Major Feature Implementation**
+   - Multi-component features (3+ files)
+   - New architectural patterns introduced
+   - Breaking changes or refactors
+   - Integration of new external services
+
+3. **After Encountering Significant Challenges**
+   - Bugs that took >2 hours to resolve
+   - Performance issues and optimizations
+   - Test failures requiring architectural changes
+   - User feedback requiring UX pivots
+
+4. **Before Major Deployments**
+   - Production releases
+   - Stakeholder demos
+   - User testing sessions
+
+### How to Update ProjectMemory.md
+
+**Section-by-Section Guide:**
+
+#### 1. Development Timeline
+Add new phase entry:
+```markdown
+### Phase X: [Feature Name] (Date)
+**Objective:** [One-line goal]
+
+**Completed:**
+- ✅ [Feature 1]
+- ✅ [Feature 2]
+
+**Key Files:**
+- [List main files created/modified]
+
+**Challenges:**
+- [Key challenge and solution]
+
+**Design Decisions:**
+- [Important decision and rationale]
+```
+
+#### 2. Architecture Evolution
+Update when:
+- New patterns introduced (hooks, contexts, utilities)
+- Data layer changes (new API methods, storage patterns)
+- Component structure changes
+- New dependencies added
+
+#### 3. Key Design Decisions
+Add entry for each significant decision:
+```markdown
+### N. [Decision Name]
+**Decision:** [What was decided]
+**Rationale:**
+- [Reason 1]
+- [Reason 2]
+
+**Trade-offs:**
+- [Pro/Con consideration]
+
+**Implementation:**
+- [How it was implemented]
+```
+
+#### 4. Challenges & Solutions
+Document any challenge that took >1 hour to solve:
+```markdown
+### Challenge N: [Challenge Name]
+**Problem:** [Description]
+**Symptoms:**
+- [Observable issue 1]
+- [Observable issue 2]
+
+**Solution:** [How it was resolved]
+
+**Files Changed:**
+- [List of files]
+
+**Lesson:** [Key takeaway]
+```
+
+#### 5. Testing Strategy
+Update after:
+- Adding new test files
+- Achieving coverage milestones
+- Changing testing approach
+- Fixing flaky tests
+
+#### 6. Performance Optimizations
+Track all performance work:
+- Bundle size changes (>10% difference)
+- Load time improvements
+- Optimization techniques applied
+- Before/after metrics
+
+#### 7. Future Considerations
+**Add items to:**
+- **Short-Term** - Within 2-4 weeks
+- **Mid-Term** - 1-2 months
+- **Long-Term** - 3-6 months
+
+**Remove/move items when:**
+- Completed (move to Development Timeline)
+- No longer relevant (delete with explanation)
+- Priority changed (move to different timeframe)
+
+#### 8. Lessons Learned
+Add after each phase:
+- Technical lessons (code, architecture)
+- Process lessons (workflow, communication)
+- Collaboration lessons (teamwork, tools)
+
+### Update Template
+
+When updating ProjectMemory.md, use this template:
+
+```markdown
+---
+**Update Date:** [YYYY-MM-DD]
+**Updated By:** [Name or "Claude Code"]
+**Context:** [Brief description of what triggered this update]
+
+[Add your updates to relevant sections]
+
+---
+```
+
+### Pre-Optimization Workflow
+
+**Before beginning the optimization phase:**
+
+1. **Review ProjectMemory.md Completeness**
+   - Ensure all phases documented
+   - Verify all major challenges recorded
+   - Check all design decisions captured
+   - Confirm lessons learned section updated
+
+2. **Generate Optimization Report**
+   - Extract patterns from challenges section
+   - Identify recurring issues
+   - List most time-consuming tasks
+   - Highlight workflow bottlenecks
+
+3. **Create Optimization Backlog**
+   - Prioritize improvements by impact
+   - Estimate effort for each optimization
+   - Group related optimizations
+   - Define success metrics
+
+4. **Update CLAUDE.md with Optimizations**
+   - Add new workflow guidelines based on learnings
+   - Update architecture sections if patterns changed
+   - Revise code style preferences if needed
+   - Add new "gotchas" to Important Implementation Notes
+
+### Example Optimization Process
+
+**Input:** ProjectMemory.md sections
+- Challenges & Solutions
+- Lessons Learned
+- Testing Strategy
+
+**Analysis Questions:**
+1. Which types of challenges occurred most frequently?
+2. What patterns emerge from successful solutions?
+3. Which workflow steps took longest?
+4. What could have been caught earlier?
+5. Which documentation gaps caused confusion?
+
+**Output:** Updated workflow in CLAUDE.md
+- New guidelines to prevent common challenges
+- Improved architecture patterns
+- Enhanced testing strategy
+- Better documentation structure
+
+### Continuous Improvement Cycle
+
+```
+Development Phase
+      ↓
+Document in ProjectMemory.md
+      ↓
+Identify Patterns & Issues
+      ↓
+Create Optimization Plan
+      ↓
+Update CLAUDE.md Workflow
+      ↓
+Apply in Next Development Phase
+      ↓
+(Repeat)
+```
+
+### ProjectMemory.md Quality Checklist
+
+Before marking a phase complete, ensure ProjectMemory.md includes:
+
+- [ ] **Timeline** - All features documented with dates
+- [ ] **Files** - Key files listed for each feature
+- [ ] **Decisions** - Major architectural decisions explained
+- [ ] **Challenges** - Significant problems and solutions recorded
+- [ ] **Tests** - Test coverage and strategy documented
+- [ ] **Performance** - Any performance work tracked
+- [ ] **Lessons** - Key learnings captured
+- [ ] **Future** - Considerations for next phase listed
+- [ ] **Metrics** - Relevant metrics tracked (bundle size, test count, etc.)
+
+### Integration with Development Workflow
+
+**Recommended workflow per feature:**
+
+1. **Planning** - Review relevant ProjectMemory.md sections for context
+2. **Implementation** - Take notes on challenges/decisions as you work
+3. **Testing** - Document test strategy and coverage
+4. **Completion** - Update ProjectMemory.md with phase summary
+5. **Reflection** - Add lessons learned section
+
+**Time Investment:**
+- ~15 minutes per feature during development (quick notes)
+- ~30 minutes at end of phase (comprehensive update)
+- ~2 hours before optimization phase (full review and analysis)
+
+**ROI:**
+- Faster onboarding for new developers
+- Reduced time debugging recurring issues
+- Better architectural consistency
+- Evidence-based workflow improvements
+- Institutional knowledge preservation
+
+---
+
+## Quick Reference Commands
+
+**Development:**
+```bash
+npm run dev          # Start dev server (port 5178)
+npm run build        # Production build
+npm run preview      # Preview production build
+```
+
+**Testing:**
+```bash
+npm test                              # Run all Playwright tests
+npx playwright test --ui              # Interactive test mode
+npx playwright test --project=chromium-desktop  # Single browser
+npx playwright show-report            # View test report
+```
+
+**Code Quality:**
+```bash
+npm run lint         # (To be configured)
+npm run format       # (To be configured)
+```

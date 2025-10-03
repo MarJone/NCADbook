@@ -21,10 +21,8 @@ export default function EquipmentDetails({ equipment, onClose, onBookClick }) {
 
         <div className="modal-body">
           <div className="equipment-image-large">
-            <div className="image-placeholder">
-              {equipment.category === 'Camera' ? '📷' :
-               equipment.category === 'Computer' ? '💻' :
-               equipment.category === 'Lighting' ? '💡' : '🎬'}
+            <div className="equipment-category-label">
+              {equipment.category}
             </div>
           </div>
 

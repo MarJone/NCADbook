@@ -45,7 +45,6 @@ export default function StaffDashboard() {
 
       <div className="stats-grid">
         <div className="stat-card stat-primary">
-          <div className="stat-icon">📦</div>
           <div className="stat-content">
             <h3>{stats.myBookings}</h3>
             <p>Equipment Bookings</p>
@@ -53,7 +52,6 @@ export default function StaffDashboard() {
         </div>
 
         <div className="stat-card stat-success">
-          <div className="stat-icon">🏢</div>
           <div className="stat-content">
             <h3>{stats.mySpaceBookings}</h3>
             <p>Room Bookings</p>
@@ -61,7 +59,6 @@ export default function StaffDashboard() {
         </div>
 
         <div className="stat-card stat-info">
-          <div className="stat-icon">🚪</div>
           <div className="stat-content">
             <h3>{stats.availableSpaces}</h3>
             <p>Spaces Available</p>
@@ -87,10 +84,10 @@ export default function StaffDashboard() {
       <div className="dashboard-card">
         <h3>Staff Features</h3>
         <ul>
-          <li>✓ Book rooms and spaces by the hour</li>
-          <li>✓ Book equipment for projects</li>
-          <li>✓ Manage all your bookings in one place</li>
-          <li>✓ Auto-approved room bookings</li>
+          <li>Book rooms and spaces by the hour</li>
+          <li>Book equipment for projects</li>
+          <li>Manage all your bookings in one place</li>
+          <li>Auto-approved room bookings</li>
         </ul>
       </div>
     </div>

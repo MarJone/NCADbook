@@ -7,9 +7,17 @@ import Analytics from './Analytics';
 import FeatureFlagManager from './FeatureFlagManager';
 import UserManagement from './UserManagement';
 import CSVImport from './CSVImport';
+import AdminPermissions from './AdminPermissions';
+import KitManagement from './KitManagement';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
+
+  // Check if user has specific permissions (for general admins)
+  const hasPermission = (permission) => {
+    if (user?.role === 'master_admin') return true;
+    return user?.admin_permissions?.[permission] || false;
+  };
 
   return (
     <div className="portal-layout">
@@ -26,12 +34,22 @@ export default function AdminLayout() {
       <nav className="portal-nav">
         <Link to="/admin" className="nav-link">Dashboard</Link>
         <Link to="/admin/approvals" className="nav-link">Approvals</Link>
-        <Link to="/admin/equipment" className="nav-link">Equipment</Link>
-        <Link to="/admin/analytics" className="nav-link">Analytics</Link>
+        {hasPermission('manage_equipment') && (
+          <Link to="/admin/equipment" className="nav-link">Equipment</Link>
+        )}
+        {hasPermission('view_analytics') && (
+          <Link to="/admin/analytics" className="nav-link">Analytics</Link>
+        )}
+        {hasPermission('manage_users') && (
+          <Link to="/admin/users" className="nav-link">Users</Link>
+        )}
+        {hasPermission('manage_kits') && (
+          <Link to="/admin/kits" className="nav-link">Equipment Kits</Link>
+        )}
         {user?.role === 'master_admin' && (
           <>
-            <Link to="/admin/users" className="nav-link">Users</Link>
             <Link to="/admin/csv-import" className="nav-link">CSV Import</Link>
+            <Link to="/admin/permissions" className="nav-link">Admin Permissions</Link>
             <Link to="/admin/features" className="nav-link">Features</Link>
           </>
         )}
@@ -44,7 +62,9 @@ export default function AdminLayout() {
           <Route path="equipment" element={<EquipmentManagement />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="users" element={<UserManagement />} />
+          <Route path="kits" element={<KitManagement />} />
           <Route path="csv-import" element={<CSVImport />} />
+          <Route path="permissions" element={<AdminPermissions />} />
           <Route path="features" element={<FeatureFlagManager />} />
         </Routes>
       </main>

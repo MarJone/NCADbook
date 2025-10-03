@@ -1,0 +1,310 @@
+/**
+ * SimplyBook.me Inspired Design System
+ * Modern, clean, professional booking interface
+ * Updated: 2025-10-03
+ */
+
+:root {
+  /* ========================================
+     TYPOGRAPHY - Modern Sans-Serif
+     ======================================== */
+
+  /* Font Families - Inter/SF Pro style */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --font-secondary: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Font Sizes - Spacious & Readable */
+  --font-size-xs: 13px;        /* Small text, not too compressed */
+  --font-size-sm: 15px;        /* Small elements */
+  --font-size-base: 17px;      /* Base body text - more spacious */
+  --font-size-md: 19px;        /* Large body text */
+  --font-size-lg: 22px;        /* Small headings */
+  --font-size-xl: 26px;        /* Medium headings */
+  --font-size-2xl: 34px;       /* Large headings */
+  --font-size-3xl: 42px;       /* Extra large headings */
+  --font-size-4xl: 52px;       /* Hero headings */
+  --font-size-5xl: 68px;       /* Massive hero text */
+
+  /* Font Weights - Modern Scale */
+  --font-weight-normal: 400;    /* Body text */
+  --font-weight-medium: 500;    /* Buttons, emphasized text */
+  --font-weight-semibold: 600;  /* Headings, important text */
+  --font-weight-bold: 700;      /* Strong emphasis */
+
+  /* Line Heights - Extra Spacious */
+  --line-height-tight: 1.3;     /* Headings - more breathing room */
+  --line-height-normal: 1.6;    /* Comfortable reading */
+  --line-height-relaxed: 1.75;  /* Body text, very spacious */
+  --line-height-loose: 2.0;     /* Extra spacious */
+
+  /* Letter Spacing - Elegant */
+  --letter-spacing-tight: -0.3px;
+  --letter-spacing-normal: 0.3px;   /* Slight spacing for elegance */
+  --letter-spacing-wide: 0.8px;     /* Uppercase elements */
+  --letter-spacing-wider: 1.2px;    /* Very wide for headings */
+
+  /* ========================================
+     COLORS - SimplyBook.me Inspired
+     Vibrant, professional, modern
+     ======================================== */
+
+  /* Primary Brand Color - Vibrant Blue */
+  --color-primary: #0066FF;           /* Vibrant blue */
+  --color-primary-hover: #0052CC;     /* Darker blue on hover */
+  --color-primary-active: #0047B3;    /* Even darker when active */
+  --color-primary-light: #3385FF;     /* Lighter blue */
+  --color-primary-pale: #E6F0FF;      /* Very light blue background */
+  --color-primary-gradient: linear-gradient(135deg, #0066FF 0%, #6B4BFF 100%);
+
+  /* Secondary Colors - Soft Purple/Lavender Accents */
+  --color-secondary: #6B4BFF;         /* Purple accent */
+  --color-secondary-hover: #5939E6;   /* Darker purple */
+  --color-secondary-light: #8B6FFF;   /* Lighter purple */
+  --color-secondary-pale: #F0EDFF;    /* Very light purple */
+
+  /* Success Color - Bright Teal/Turquoise */
+  --color-success: #00D4AA;           /* Bright teal */
+  --color-success-hover: #00B891;     /* Darker teal */
+  --color-success-light: #33DDBB;     /* Lighter teal */
+  --color-success-pale: #E6FBF7;      /* Very light teal */
+
+  /* Warning Color - Bright Amber */
+  --color-warning: #FFB020;           /* Bright amber */
+  --color-warning-hover: #E69A00;     /* Darker amber */
+  --color-warning-pale: #FFF4E6;      /* Very light amber */
+
+  /* Error Color - Vibrant Red */
+  --color-error: #FF4D4F;             /* Vibrant red */
+  --color-error-hover: #E63946;       /* Darker red */
+  --color-error-pale: #FFE6E6;        /* Very light red */
+
+  /* Info Color - Sky Blue */
+  --color-info: #40A9FF;              /* Sky blue */
+  --color-info-hover: #2890E6;        /* Darker sky blue */
+  --color-info-pale: #E6F7FF;         /* Very light sky blue */
+
+  /* Neutral Colors - Professional Grays */
+  --color-gray-900: #212529;          /* Almost black - headings */
+  --color-gray-800: #343A40;          /* Dark charcoal */
+  --color-gray-700: #495057;          /* Medium dark */
+  --color-gray-600: #6C757D;          /* Medium gray - body text */
+  --color-gray-500: #ADB5BD;          /* Mid gray */
+  --color-gray-400: #CED4DA;          /* Light gray */
+  --color-gray-300: #DEE2E6;          /* Very light gray - borders */
+  --color-gray-200: #E9ECEF;          /* Nearly white - dividers */
+  --color-gray-100: #F8F9FA;          /* Off-white - section backgrounds */
+  --color-white: #FFFFFF;             /* Pure white */
+
+  /* Background Colors */
+  --bg-primary: #FFFFFF;              /* Pure white */
+  --bg-secondary: #F8F9FA;            /* Subtle gray for sections */
+  --bg-tertiary: #E9ECEF;             /* Light gray */
+  --bg-card: #FFFFFF;                 /* White cards */
+  --bg-hover: #F8F9FA;                /* Light hover */
+  --bg-overlay: rgba(33, 37, 41, 0.7);/* Dark overlay for modals */
+  --bg-dark: #212529;                 /* Dark footer/sections */
+
+  /* Text Colors */
+  --text-primary: #212529;            /* Dark charcoal - headings */
+  --text-secondary: #6C757D;          /* Medium gray - body */
+  --text-light: #FFFFFF;              /* White text */
+  --text-muted: #ADB5BD;              /* Muted text */
+  --text-disabled: #CED4DA;           /* Disabled state */
+
+  /* Portal Color Coding - Low Intensity (20-30%) */
+  --portal-student-bg: rgba(0, 102, 255, 0.08);      /* Soft blue tint */
+  --portal-student-accent: rgba(0, 102, 255, 0.25);  /* Stronger blue */
+
+  --portal-staff-bg: rgba(107, 75, 255, 0.08);       /* Soft purple tint */
+  --portal-staff-accent: rgba(107, 75, 255, 0.25);   /* Stronger purple */
+
+  --portal-admin-bg: rgba(0, 212, 170, 0.08);        /* Soft teal tint */
+  --portal-admin-accent: rgba(0, 212, 170, 0.25);    /* Stronger teal */
+
+  --portal-master-bg: rgba(255, 180, 32, 0.08);      /* Soft amber tint */
+  --portal-master-accent: rgba(255, 180, 32, 0.25);  /* Stronger amber */
+
+  /* 3D Effect Colors */
+  --shadow-3d-light: rgba(255, 255, 255, 0.5);
+  --shadow-3d-dark: rgba(0, 0, 0, 0.15);
+  --shadow-3d-darker: rgba(0, 0, 0, 0.25);
+
+  /* ========================================
+     SPACING - Generous Whitespace
+     ======================================== */
+
+  /* Spacing Scale - SimplyBook Style */
+  --spacing-0: 0;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 40px;
+  --spacing-4xl: 48px;
+  --spacing-5xl: 64px;
+  --spacing-6xl: 80px;
+
+  /* Component Padding */
+  --padding-button-sm: 8px 16px;
+  --padding-button-md: 12px 24px;
+  --padding-button-lg: 16px 32px;
+  --padding-card: 32px;
+  --padding-card-lg: 40px;
+  --padding-section-y: 60px;
+  --padding-section-lg-y: 80px;
+  --padding-input: 12px 16px;
+
+  /* Section Margins */
+  --margin-section: 60px 0;
+  --margin-section-lg: 80px 0;
+  --margin-element: 24px;
+  --margin-element-sm: 16px;
+
+  /* ========================================
+     BORDERS & RADIUS - Modern Rounded
+     ======================================== */
+
+  /* Border Radius - SimplyBook Style */
+  --radius-none: 0;
+  --radius-sm: 6px;          /* Buttons, inputs */
+  --radius-md: 8px;          /* Small cards */
+  --radius-lg: 12px;         /* Cards, modals */
+  --radius-xl: 16px;         /* Large containers */
+  --radius-2xl: 20px;        /* Hero sections */
+  --radius-full: 9999px;     /* Pills/circular */
+
+  /* Border Widths */
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 3px;
+
+  /* Border Colors */
+  --border-color: #DEE2E6;         /* Standard border */
+  --border-color-light: #E9ECEF;   /* Light border */
+  --border-color-dark: #CED4DA;    /* Dark border */
+  --border-color-focus: #0066FF;   /* Focus state */
+
+  /* ========================================
+     SHADOWS - Modern Elevation
+     ======================================== */
+
+  /* Box Shadows - SimplyBook Style */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);       /* Extra subtle */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);       /* Cards, subtle elevation */
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);      /* Hover states */
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);      /* Modals, popovers */
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.20);     /* Large modals */
+
+  /* Focused/Active Shadows */
+  --shadow-focus: 0 0 0 3px rgba(0, 102, 255, 0.1); /* Focus ring */
+  --shadow-button-hover: 0 4px 12px rgba(0, 102, 255, 0.2); /* Button lift */
+
+  /* Colored Shadows */
+  --shadow-primary: 0 4px 16px rgba(0, 102, 255, 0.2);   /* Primary blue */
+  --shadow-success: 0 4px 16px rgba(0, 212, 170, 0.2);   /* Success teal */
+  --shadow-error: 0 4px 16px rgba(255, 77, 79, 0.2);     /* Error red */
+
+  /* Text Shadows */
+  --text-shadow-none: none;
+
+  /* ========================================
+     TRANSITIONS & ANIMATIONS - Smooth & Professional
+     ======================================== */
+
+  /* Easing Functions */
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);     /* Material Design */
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);     /* Ease out */
+  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);     /* Ease in */
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce */
+
+  /* Durations */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 400ms;
+
+  /* Combined Transitions */
+  --transition-all: all 200ms var(--easing-standard);
+  --transition-color: color 200ms var(--easing-standard);
+  --transition-bg: background-color 200ms var(--easing-standard);
+  --transition-transform: transform 300ms var(--easing-decelerate);
+  --transition-shadow: box-shadow 200ms var(--easing-standard);
+  --transition-border: border-color 200ms var(--easing-standard);
+
+  /* ========================================
+     LAYOUT - Max Widths & Breakpoints
+     ======================================== */
+
+  /* Container Widths */
+  --container-xs: 540px;
+  --container-sm: 720px;
+  --container-md: 960px;
+  --container-lg: 1200px;
+  --container-xl: 1400px;
+  --container-full: 100%;
+
+  /* Responsive Breakpoints */
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* Touch Targets */
+  --touch-target-min: 48px;
+
+  /* ========================================
+     LEGACY COMPATIBILITY
+     (for existing code that uses old variable names)
+     ======================================== */
+
+  /* Map old variables to new NCAD variables */
+  --primary-color: var(--color-primary);
+  --primary-hover: var(--color-primary-hover);
+  --secondary-color: var(--color-secondary);
+  --success-color: var(--color-success);
+  --error-color: var(--color-error);
+  --background: var(--bg-primary);
+  --surface: var(--bg-secondary);
+  --border-color: var(--border-color);
+  --border-radius: var(--radius-sm);
+  --shadow-sm: var(--shadow-none);
+  --shadow-md: var(--shadow-subtle);
+  --transition: var(--transition-all);
+
+  /* Update font family for body */
+  --font-family: var(--font-primary);
+
+  /* Remap spacing to match NCAD scale more closely */
+  /* Note: Keep existing variable names but adjust values to NCAD standards */
+  /* --spacing-sm: 4px; (already matches) */
+  /* --spacing-md: 10px; (already matches) */
+  /* --spacing-lg: 20px; (already matches) */
+  /* --spacing-xl: 25px; (already matches) */
+  /* --spacing-2xl: 30px; (already matches) */
+
+  /* Additional semantic colors for compatibility */
+  --success-bg: #d1fae5;
+  --warning-bg: #fef3c7;
+  --warning-color: #f59e0b;
+  --error-bg: #fee2e2;
+  --danger-color: var(--color-error);
+  --info-color: var(--color-info);
+  --card-bg: var(--bg-primary);
+  --shadow: var(--shadow-subtle);
+  --input-bg: var(--bg-primary);
+  --gray-100: var(--bg-secondary);
+}

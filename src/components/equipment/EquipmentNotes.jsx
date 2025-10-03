@@ -72,10 +72,10 @@ export default function EquipmentNotes({ equipmentId, equipmentName }) {
 
   const getNoteTypeIcon = (type) => {
     const icons = {
-      maintenance: '🔧',
-      damage: '⚠️',
-      usage: '📊',
-      general: '📝'
+      maintenance: 'M',
+      damage: 'D',
+      usage: 'U',
+      general: 'G'
     };
     return icons[type] || icons.general;
   };

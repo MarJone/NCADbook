@@ -12,7 +12,8 @@ export default function RoomBooking() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [bookedSlots, setBookedSlots] = useState([]);
   const [showBookingModal, setShowBookingModal] = useState(false);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [selectedSlots, setSelectedSlots] = useState([]);
+  const [isBlockBooking, setIsBlockBooking] = useState(false);
   const [purpose, setPurpose] = useState('');
   const [loading, setLoading] = useState(true);
   const { toasts, showToast, removeToast } = useToast();
@@ -77,7 +78,39 @@ export default function RoomBooking() {
       showToast('This time slot is already booked', 'error');
       return;
     }
-    setSelectedTimeSlot(slot);
+
+    // Toggle slot selection for multi-hour booking
+    const slotIndex = selectedSlots.findIndex(s => s.start === slot.start);
+    if (slotIndex >= 0) {
+      // Remove slot if already selected
+      setSelectedSlots(selectedSlots.filter(s => s.start !== slot.start));
+    } else {
+      // Add slot
+      setSelectedSlots([...selectedSlots, slot]);
+    }
+  };
+
+  const isSlotSelected = (slot) => {
+    return selectedSlots.some(s => s.start === slot.start);
+  };
+
+  const handleBlockBookingToggle = (checked) => {
+    setIsBlockBooking(checked);
+    if (checked) {
+      // Select all available slots for the day
+      const allSlots = generateTimeSlots();
+      const availableSlots = allSlots.filter(slot => !isSlotBooked(slot));
+      setSelectedSlots(availableSlots);
+    } else {
+      setSelectedSlots([]);
+    }
+  };
+
+  const handleOpenBookingModal = () => {
+    if (selectedSlots.length === 0) {
+      showToast('Please select at least one time slot', 'error');
+      return;
+    }
     setShowBookingModal(true);
   };
 
@@ -88,18 +121,27 @@ export default function RoomBooking() {
     }
 
     try {
+      // Sort slots by start time to get the full range
+      const sortedSlots = [...selectedSlots].sort((a, b) => {
+        return spaceService.timeToMinutes(a.start) - spaceService.timeToMinutes(b.start);
+      });
+
+      const startTime = sortedSlots[0].start;
+      const endTime = sortedSlots[sortedSlots.length - 1].end;
+
       await spaceService.createSpaceBooking({
         space_id: selectedSpace.id,
         booking_date: selectedDate,
-        start_time: selectedTimeSlot.start,
-        end_time: selectedTimeSlot.end,
+        start_time: startTime,
+        end_time: endTime,
         user_id: user.id,
         purpose
       });
 
       setShowBookingModal(false);
       setPurpose('');
-      setSelectedTimeSlot(null);
+      setSelectedSlots([]);
+      setIsBlockBooking(false);
       await loadBookedSlots();
       showToast('Room booked successfully!', 'success');
     } catch (error) {
@@ -164,27 +206,69 @@ export default function RoomBooking() {
       )}
 
       <div className="time-slots-grid">
-        <h3>Available Time Slots</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+          <h3 style={{ margin: 0 }}>Available Time Slots</h3>
+          <div className="booking-options">
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={isBlockBooking}
+                onChange={(e) => handleBlockBookingToggle(e.target.checked)}
+                data-testid="block-booking-toggle"
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+              />
+              <span style={{ fontWeight: '500' }}>Book Entire Day (9am - 6pm)</span>
+            </label>
+          </div>
+        </div>
+
+        {selectedSlots.length > 0 && (
+          <div style={{
+            background: 'var(--color-success-pale)',
+            padding: 'var(--spacing-md)',
+            borderRadius: 'var(--radius-sm)',
+            marginBottom: 'var(--spacing-lg)',
+            border: '1px solid var(--color-success)'
+          }}>
+            <strong>{selectedSlots.length} slot{selectedSlots.length !== 1 ? 's' : ''} selected</strong>
+            <button
+              onClick={handleOpenBookingModal}
+              className="btn btn-primary"
+              style={{ marginLeft: 'var(--spacing-md)' }}
+              data-testid="proceed-booking-btn"
+            >
+              Proceed to Book
+            </button>
+          </div>
+        )}
+
         <div className="slots-container" data-testid="time-slots-container">
           {timeSlots.map(slot => {
             const booked = isSlotBooked(slot);
+            const selected = isSlotSelected(slot);
+            let slotClass = 'time-slot';
+            if (booked) slotClass += ' time-slot-booked';
+            else if (selected) slotClass += ' time-slot-selected';
+            else slotClass += ' time-slot-available';
+
             return (
               <button
                 key={slot.start}
                 onClick={() => handleSlotClick(slot)}
-                className={booked ? 'time-slot time-slot-booked' : 'time-slot time-slot-available'}
+                className={slotClass}
                 disabled={booked}
                 data-testid={`time-slot-${slot.start}`}
               >
                 {slot.label}
                 {booked && <span className="slot-status">Booked</span>}
+                {selected && !booked && <span className="slot-status">Selected</span>}
               </button>
             );
           })}
         </div>
       </div>
 
-      {showBookingModal && selectedTimeSlot && (
+      {showBookingModal && selectedSlots.length > 0 && (
         <div className="modal-overlay" onClick={() => setShowBookingModal(false)} data-testid="modal-overlay">
           <div className="modal-content" onClick={(e) => e.stopPropagation()} data-testid="room-booking-modal">
             <div className="modal-header">
@@ -195,7 +279,13 @@ export default function RoomBooking() {
               <div className="booking-summary">
                 <p><strong>Space:</strong> {selectedSpace.name}</p>
                 <p><strong>Date:</strong> {new Date(selectedDate).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {selectedTimeSlot.label}</p>
+                <p><strong>Time Slots:</strong> {selectedSlots.length} slot{selectedSlots.length !== 1 ? 's' : ''}</p>
+                <p><strong>Duration:</strong> {(() => {
+                  const sortedSlots = [...selectedSlots].sort((a, b) =>
+                    spaceService.timeToMinutes(a.start) - spaceService.timeToMinutes(b.start)
+                  );
+                  return `${sortedSlots[0].start} - ${sortedSlots[sortedSlots.length - 1].end}`;
+                })()}</p>
               </div>
 
               <div className="form-group">

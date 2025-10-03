@@ -94,7 +94,7 @@ export default function Analytics() {
 
       <div className="stats-grid">
         <div className="stat-card stat-primary">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon" style={{ background: 'var(--color-primary-pale)', color: 'var(--color-primary)' }}>📊</div>
           <div className="stat-content">
             <h3>{analytics.totalBookings}</h3>
             <p>Total Bookings</p>
@@ -102,7 +102,7 @@ export default function Analytics() {
         </div>
 
         <div className="stat-card stat-success">
-          <div className="stat-icon">✓</div>
+          <div className="stat-icon" style={{ background: 'var(--color-success-pale)', color: 'var(--color-success)' }}>✓</div>
           <div className="stat-content">
             <h3>{analytics.approvalRate}%</h3>
             <p>Approval Rate</p>
