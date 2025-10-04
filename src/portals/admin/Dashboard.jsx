@@ -40,63 +40,81 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return <div className="loading">Loading dashboard...</div>;
+    return (
+      <div className="admin-dashboard">
+        <div className="admin-stats-grid">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="admin-skeleton" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="admin-dashboard">
-      <h2>Welcome, {user?.first_name}!</h2>
-      <p className="subtitle">Admin Dashboard Overview</p>
+      <div className="admin-welcome">
+        <h2>Welcome, {user?.first_name}! 👋</h2>
+        <p>{user?.role === 'master_admin' ? 'Master Admin' : 'Department Admin'} Dashboard Overview</p>
+      </div>
 
-      <div className="stats-grid">
-        <div className="stat-card stat-primary">
-          <div className="stat-content">
-            <h3>{stats.totalBookings}</h3>
-            <p>Total Bookings</p>
-          </div>
+      <div className="admin-stats-grid">
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon">📊</div>
+          <div className="admin-stat-number">{stats.totalBookings}</div>
+          <div className="admin-stat-label">Total Bookings</div>
         </div>
 
-        <div className="stat-card stat-warning">
-          <div className="stat-content">
-            <h3>{stats.pendingBookings}</h3>
-            <p>Pending Approval</p>
-          </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon">⏳</div>
+          <div className="admin-stat-number">{stats.pendingBookings}</div>
+          <div className="admin-stat-label">Pending Approval</div>
         </div>
 
-        <div className="stat-card stat-success">
-          <div className="stat-content">
-            <h3>{stats.approvedBookings}</h3>
-            <p>Approved</p>
-          </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon">✅</div>
+          <div className="admin-stat-number">{stats.approvedBookings}</div>
+          <div className="admin-stat-label">Approved</div>
         </div>
 
-        <div className="stat-card stat-info">
-          <div className="stat-content">
-            <h3>{stats.availableEquipment}/{stats.totalEquipment}</h3>
-            <p>Equipment Available</p>
-          </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon">📦</div>
+          <div className="admin-stat-number">{stats.availableEquipment}/{stats.totalEquipment}</div>
+          <div className="admin-stat-label">Equipment Available</div>
         </div>
 
-        <div className="stat-card stat-secondary">
-          <div className="stat-content">
-            <h3>{stats.totalUsers}</h3>
-            <p>Students</p>
-          </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon">👥</div>
+          <div className="admin-stat-number">{stats.totalUsers}</div>
+          <div className="admin-stat-label">Students</div>
         </div>
       </div>
 
-      <div className="dashboard-actions">
-        <h3>Quick Actions</h3>
-        <div className="action-buttons">
-          <a href="/admin/approvals" className="btn btn-primary">
-            Review Pending Bookings ({stats.pendingBookings})
-          </a>
-          <a href="/admin/equipment" className="btn btn-secondary">
-            Manage Equipment
-          </a>
-          <a href="/admin/users" className="btn btn-secondary">
-            Manage Users
-          </a>
+      <div className="admin-dashboard-grid">
+        <div className="admin-card">
+          <h3><span className="admin-card-icon">⚡</span> Quick Actions</h3>
+          <div className="admin-quick-actions">
+            <a href="/admin/approvals" className="admin-action-btn">
+              ✅ Review Pending Bookings ({stats.pendingBookings})
+            </a>
+            <a href="/admin/equipment" className="admin-action-btn secondary">
+              📦 Manage Equipment
+            </a>
+            {user?.role === 'master_admin' && (
+              <a href="/admin/users" className="admin-action-btn secondary">
+                👥 Manage Users
+              </a>
+            )}
+          </div>
+        </div>
+
+        <div className="admin-card">
+          <h3><span className="admin-card-icon">📋</span> Admin Info</h3>
+          <div className="admin-info-content">
+            <p><strong>Role:</strong> {user?.role === 'master_admin' ? 'Master Admin' : 'Department Admin'}</p>
+            <p><strong>Department:</strong> {user?.department || 'System'}</p>
+            <p><strong>Email:</strong> {user?.email}</p>
+          </div>
         </div>
       </div>
     </div>

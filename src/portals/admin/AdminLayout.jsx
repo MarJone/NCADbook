@@ -1,6 +1,5 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, NavLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useState, useEffect, useRef } from 'react';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
 import Dashboard from './Dashboard';
@@ -21,169 +20,76 @@ import DepartmentStaffPermissions from './DepartmentStaffPermissions';
 import SystemSettings from '../master-admin/SystemSettings';
 import CrossDepartmentRequests from './CrossDepartmentRequests';
 import EquipmentKitsManagement from './EquipmentKitsManagement';
+import './AdminPortal.css';
+import '../../styles/role-colors.css';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const dropdownRef = useRef(null);
-
-  // Check if user has specific permissions (for general admins)
-  const hasPermission = (permission) => {
-    if (user?.role === 'master_admin') return true;
-    return user?.admin_permissions?.[permission] || false;
-  };
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const toggleDropdown = (dropdownName) => {
-    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
-  };
 
   return (
-    <div className="portal-layout">
-      <header className="portal-header">
-        <div className="header-content">
-          <h1>NCADbook - Admin Portal</h1>
-          <div className="header-actions">
+    <div className="admin-portal">
+      <header className="admin-header">
+        <div className="admin-header-content">
+          <h1>🎯 NCADbook {user?.role === 'master_admin' ? 'Master Admin' : 'Department Admin'}</h1>
+          <div className="admin-header-actions">
             <NotificationCenter />
-            <span className="user-info">{user?.full_name} - {user?.role}</span>
-            <button onClick={logout} className="btn btn-secondary btn-sm">Logout</button>
+            <span className="admin-user-info">
+              {user?.full_name} • {user?.department || 'System'}
+            </span>
+            <button onClick={logout} className="btn btn-secondary btn-sm">
+              Logout
+            </button>
           </div>
         </div>
       </header>
 
-      <nav className="portal-nav" ref={dropdownRef}>
-        <Link to="/admin" className="nav-link">Dashboard</Link>
-        <Link to="/admin/approvals" className="nav-link">Approvals</Link>
-
-        {/* Department Admin: Quick Actions */}
-        {user?.role === 'department_admin' && (
-          <>
-            <Link to="/admin/equipment" className="nav-link">Equipment</Link>
-            <Link to="/admin/approvals" className="nav-link btn-quick-action">Approve Bookings</Link>
-            <Link to="/admin/access-requests" className="nav-link btn-quick-action">Request Access</Link>
-            <Link to="/admin/cross-department-requests" className="nav-link">Cross-Dept Requests</Link>
-            <Link to="/admin/equipment-kits" className="nav-link">Equipment Kits</Link>
-            <Link to="/admin/department-staff-permissions" className="nav-link">Manage Staff Permissions</Link>
-          </>
-        )}
-
-        {/* Equipment & Content Dropdown */}
-        {(hasPermission('manage_equipment') || hasPermission('manage_kits')) && user?.role !== 'department_admin' && (
-          <div className={`nav-dropdown ${openDropdown === 'content' ? 'open' : ''}`}>
-            <button
-              className="nav-link dropdown-toggle"
-              onClick={() => toggleDropdown('content')}
-            >
-              Content
-              <span className="dropdown-arrow">▼</span>
-            </button>
-            <div className="dropdown-menu">
-              {hasPermission('manage_equipment') && (
-                <Link to="/admin/equipment" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                  Equipment Management
-                </Link>
-              )}
-              {hasPermission('manage_kits') && (
-                <Link to="/admin/kits" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                  Equipment Kits
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Users & Access Dropdown */}
-        {(hasPermission('manage_users') || hasPermission('view_analytics')) && (
-          <div className={`nav-dropdown ${openDropdown === 'users' ? 'open' : ''}`}>
-            <button
-              className="nav-link dropdown-toggle"
-              onClick={() => toggleDropdown('users')}
-            >
-              Users & Reports
-              <span className="dropdown-arrow">▼</span>
-            </button>
-            <div className="dropdown-menu">
-              {hasPermission('manage_users') && (
-                <Link to="/admin/users" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                  User Management
-                </Link>
-              )}
-              {hasPermission('view_analytics') && (
-                <Link to="/admin/analytics" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                  Analytics & Reports
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Master Admin: Department Management Dropdown */}
-        {user?.role === 'master_admin' && (
-          <div className={`nav-dropdown ${openDropdown === 'departments' ? 'open' : ''}`}>
-            <button
-              className="nav-link dropdown-toggle"
-              onClick={() => toggleDropdown('departments')}
-            >
-              Departments
-              <span className="dropdown-arrow">▼</span>
-            </button>
-            <div className="dropdown-menu">
-              <Link to="/admin/departments" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Manage Departments
-              </Link>
-              <Link to="/admin/student-assignment" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Student Assignment
-              </Link>
-              <Link to="/admin/interdisciplinary" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Interdisciplinary Access
-              </Link>
-              <Link to="/admin/manage-access-requests" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Access Requests
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Master Admin: System Settings Dropdown */}
-        {user?.role === 'master_admin' && (
-          <div className={`nav-dropdown ${openDropdown === 'system' ? 'open' : ''}`}>
-            <button
-              className="nav-link dropdown-toggle"
-              onClick={() => toggleDropdown('system')}
-            >
-              System
-              <span className="dropdown-arrow">▼</span>
-            </button>
-            <div className="dropdown-menu">
-              <Link to="/admin/system-settings" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                System Settings
-              </Link>
-              <Link to="/admin/csv-import" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                CSV Import
-              </Link>
-              <Link to="/admin/permissions" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Admin Permissions
-              </Link>
-              <Link to="/admin/features" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
-                Feature Flags
-              </Link>
-            </div>
-          </div>
-        )}
+      <nav className="admin-nav">
+        <div className="admin-nav-container">
+          <NavLink to="/admin" end className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            🏠 Dashboard
+          </NavLink>
+          <NavLink to="/admin/approvals" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            ✅ Approvals
+          </NavLink>
+          <NavLink to="/admin/equipment" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            📦 Equipment
+          </NavLink>
+          <NavLink to="/admin/equipment-kits" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            🎒 Equipment Kits
+          </NavLink>
+          {user?.role === 'master_admin' && (
+            <>
+              <NavLink to="/admin/users" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                👥 Users
+              </NavLink>
+              <NavLink to="/admin/analytics" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                📊 Analytics
+              </NavLink>
+              <NavLink to="/admin/departments" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                🏢 Departments
+              </NavLink>
+              <NavLink to="/admin/csv-import" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                📁 CSV Import
+              </NavLink>
+              <NavLink to="/admin/system-settings" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                ⚙️ Settings
+              </NavLink>
+            </>
+          )}
+          {user?.role === 'department_admin' && (
+            <>
+              <NavLink to="/admin/cross-department-requests" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                🔄 Cross-Dept Requests
+              </NavLink>
+              <NavLink to="/admin/department-staff-permissions" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                🔐 Staff Permissions
+              </NavLink>
+            </>
+          )}
+        </div>
       </nav>
 
-      <main className="portal-main">
+      <main className="admin-main">
         <Routes>
           <Route index element={<Dashboard />} />
           <Route path="approvals" element={<BookingApprovals />} />
