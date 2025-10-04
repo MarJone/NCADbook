@@ -1,0 +1,197 @@
+/* Cross-Department Request Form Styles */
+
+.cross-dept-request-modal {
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.25rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.form-group small.text-error {
+  color: #d32f2f;
+}
+
+.form-group small.text-success {
+  color: #4caf50;
+}
+
+/* Availability Preview */
+.availability-preview {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.availability-preview h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.no-availability {
+  color: #d32f2f;
+  font-weight: 600;
+  margin: 0;
+}
+
+.availability-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.availability-table th,
+.availability-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.availability-table thead th {
+  background-color: #e0e0e0;
+  font-weight: 600;
+  color: #333;
+}
+
+.availability-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.availability-count {
+  font-weight: 600;
+  color: #4caf50;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Routing Preview */
+.routing-preview {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.routing-preview h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.routing-preview p {
+  margin: 0;
+  color: #555;
+}
+
+.routing-preview.routing-single {
+  background-color: #e8f5e9;
+  border-left-color: #4caf50;
+}
+
+.routing-preview.routing-single h4 {
+  color: #2e7d32;
+}
+
+.routing-preview.routing-broadcast {
+  background-color: #fff3e0;
+  border-left-color: #ff9800;
+}
+
+.routing-preview.routing-broadcast h4 {
+  color: #e65100;
+}
+
+.routing-preview.routing-none {
+  background-color: #ffebee;
+  border-left-color: #f44336;
+}
+
+.routing-preview.routing-none h4 {
+  color: #c62828;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .cross-dept-request-modal {
+    max-width: 95vw;
+    padding: 1rem;
+  }
+
+  .availability-table {
+    font-size: 0.9rem;
+  }
+
+  .availability-table th,
+  .availability-table td {
+    padding: 0.5rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}

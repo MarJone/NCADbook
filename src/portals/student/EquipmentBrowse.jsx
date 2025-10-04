@@ -12,6 +12,8 @@ import PullToRefresh from '../../components/common/PullToRefresh';
 import { useToast } from '../../hooks/useToast';
 import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
 import { useAuth } from '../../contexts/AuthContext';
+import { isCrossDepartmentBrowsingEnabled } from '../../services/systemSettings.service';
+import { getDepartmentsBySchool, SCHOOLS } from '../../config/departments';
 
 export default function EquipmentBrowse() {
   const { user } = useAuth();
@@ -31,7 +33,8 @@ export default function EquipmentBrowse() {
   const itemsPerPage = 20;
   const [availabilityFilter, setAvailabilityFilter] = useState({ type: 'all' });
   const { toasts, showToast, removeToast } = useToast();
-  const [showAllDepartments, setShowAllDepartments] = useState(false);
+  const [crossDeptBrowsingEnabled, setCrossDeptBrowsingEnabled] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState('my_department'); // 'my_department' or department ID
 
   // Check if user has permission to view catalog (for staff only)
   const canViewCatalog = () => {
@@ -46,9 +49,22 @@ export default function EquipmentBrowse() {
   };
 
   useEffect(() => {
+    checkCrossDeptBrowsing();
+  }, []);
+
+  useEffect(() => {
     loadEquipment();
     loadSubAreas();
-  }, [filter, subAreaFilter, showAllDepartments]);
+  }, [filter, subAreaFilter, selectedDepartment]);
+
+  const checkCrossDeptBrowsing = async () => {
+    try {
+      const enabled = await isCrossDepartmentBrowsingEnabled();
+      setCrossDeptBrowsingEnabled(enabled);
+    } catch (error) {
+      console.error('Failed to check cross-dept browsing setting:', error);
+    }
+  };
 
   useEffect(() => {
     // Apply search and availability filters to equipment
@@ -108,9 +124,12 @@ export default function EquipmentBrowse() {
           filtered = filtered.filter(item => item.category === filter);
         }
 
-        // Filter by department: show only student's department unless showAllDepartments is true
-        if (!showAllDepartments && currentUser.department) {
+        // Filter by department based on selected department
+        if (selectedDepartment === 'my_department' && currentUser.department) {
           filtered = filtered.filter(item => item.department === currentUser.department);
+        } else if (selectedDepartment !== 'my_department') {
+          // Filter to show only equipment from selected department
+          filtered = filtered.filter(item => item.department === selectedDepartment);
         }
 
         // Apply sub-area filter
@@ -250,31 +269,47 @@ export default function EquipmentBrowse() {
 
       <AvailabilityFilter onFilterChange={setAvailabilityFilter} />
 
-      {user && user.role === 'student' && (
-        <div className="department-filter-toggle" style={{
+      {user && user.role === 'student' && crossDeptBrowsingEnabled && (
+        <div className="department-filter-dropdown" style={{
           marginTop: '1rem',
           marginBottom: '1rem',
           padding: '0.75rem',
-          backgroundColor: showAllDepartments ? '#e3f2fd' : '#f5f5f5',
+          backgroundColor: '#f5f5f5',
           borderRadius: '4px',
           border: '1px solid #ddd'
         }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-            <input
-              type="checkbox"
-              checked={showAllDepartments}
-              onChange={(e) => setShowAllDepartments(e.target.checked)}
-              style={{ width: '18px', height: '18px' }}
-            />
-            <span style={{ fontWeight: '500' }}>
-              Browse equipment from other departments
-            </span>
+          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+            Browse by Department
           </label>
-          {!showAllDepartments && (
-            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
-              Currently showing: {user.department} equipment only
-            </p>
-          )}
+          <select
+            value={selectedDepartment}
+            onChange={(e) => setSelectedDepartment(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.5rem',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              fontSize: '1rem',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="my_department">My Department ({user.department})</option>
+            <optgroup label="───────────────" />
+            {Object.entries(getDepartmentsBySchool()).map(([school, departments]) => (
+              <optgroup key={school} label={school}>
+                {departments.map(dept => (
+                  <option key={dept.id} value={dept.id}>
+                    {dept.name}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
+            {selectedDepartment === 'my_department'
+              ? `Showing equipment from your department`
+              : `Browsing equipment from other departments`}
+          </p>
         </div>
       )}
 
