@@ -1,8 +1,8 @@
-/* Import NCAD Design System Variables */
-@import './ncad-variables.css';
-
-/* Import Original Variables for Compatibility */
-@import './variables.css';
+/* ============================================
+   NCAD DESIGN SYSTEM - NEW (2025-10-04)
+   Import comprehensive design system
+   ============================================ */
+@import './design-system.css';
 
 /* Import Phase 2-5 Enhancements */
 @import './phases-enhancements.css';

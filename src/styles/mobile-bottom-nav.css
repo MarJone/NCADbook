@@ -1,14 +1,21 @@
-/* Mobile Bottom Navigation */
+/**
+ * ============================================
+ * MOBILE BOTTOM NAVIGATION - Design System v2
+ * Portal-aware, touch-optimized navigation
+ * ============================================
+ */
+
+/* Mobile Bottom Navigation - Base Styles */
 .mobile-bottom-nav {
   display: none; /* Hidden by default, shown on mobile */
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  padding: 0.5rem 0;
-  z-index: 1000;
+  background: var(--role-bg-primary, #ffffff);
+  border-top: 1px solid var(--role-border-light, #e0e0e0);
+  padding: var(--space-sm) 0;
+  z-index: var(--z-fixed);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -18,40 +25,99 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: var(--space-xs);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  min-height: 44px; /* Minimum touch target size */
-  color: #666;
-  transition: all 0.2s ease;
+  padding: var(--space-sm);
+  min-height: var(--touch-target-min); /* 44px minimum touch target */
+  color: var(--theme-text-tertiary, #666);
+  transition: all var(--duration-fast) var(--ease-in-out);
   text-decoration: none;
 }
 
 .mobile-bottom-nav .nav-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--role-bg-tertiary, #f5f5f5);
 }
 
 .mobile-bottom-nav .nav-item:active {
-  background-color: #e0e0e0;
+  background-color: var(--role-bg-secondary, #e0e0e0);
   transform: scale(0.95);
 }
 
 .mobile-bottom-nav .nav-item.active {
-  color: #1976d2;
-  background-color: #e3f2fd;
+  color: var(--role-accent, #1976d2);
+  background-color: var(--role-border-light, #e3f2fd);
 }
 
 .mobile-bottom-nav .nav-icon {
-  font-size: 1.5rem;
+  font-size: 24px;
   line-height: 1;
 }
 
 .mobile-bottom-nav .nav-label {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
   line-height: 1;
+}
+
+/* ========================================
+   PORTAL-SPECIFIC STYLES
+   ======================================== */
+
+/* Student Portal - Coral Warmth */
+.student-portal .mobile-bottom-nav {
+  height: 64px; /* Generous height for student portal */
+}
+
+.student-portal .mobile-bottom-nav .nav-item {
+  min-height: var(--touch-target-comfortable); /* 48px */
+}
+
+.student-portal .mobile-bottom-nav .nav-item.active {
+  color: var(--student-accent-primary);
+  background: linear-gradient(to top, var(--student-bg-tertiary), transparent);
+  border-top: 3px solid var(--student-accent-primary);
+}
+
+/* Staff Portal - Teal Trust */
+.staff-portal .mobile-bottom-nav .nav-item.active {
+  color: var(--staff-accent-primary);
+  background: linear-gradient(to top, var(--staff-bg-tertiary), transparent);
+  border-top: 3px solid var(--staff-accent-primary);
+}
+
+/* Admin Portals - Compact */
+.admin-portal .mobile-bottom-nav,
+.master-admin-portal .mobile-bottom-nav {
+  height: 56px; /* Slightly more compact for admin */
+}
+
+.admin-portal .mobile-bottom-nav .nav-item.active {
+  color: var(--dept-accent-primary);
+  background: linear-gradient(to top, var(--dept-bg-tertiary), transparent);
+  border-top: 3px solid var(--dept-accent-primary);
+}
+
+/* Master Admin Portal - Dark Mode */
+.master-admin-portal .mobile-bottom-nav {
+  background: var(--master-bg-secondary);
+  border-top-color: var(--master-border-light);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.master-admin-portal .mobile-bottom-nav .nav-item {
+  color: var(--master-text-secondary);
+}
+
+.master-admin-portal .mobile-bottom-nav .nav-item:hover {
+  background-color: var(--master-bg-tertiary);
+}
+
+.master-admin-portal .mobile-bottom-nav .nav-item.active {
+  color: var(--master-accent-primary);
+  background: linear-gradient(to top, rgba(123, 31, 162, 0.15), transparent);
+  border-top: 3px solid var(--master-accent-primary);
 }
 
 /* Show on mobile and tablet */
@@ -98,33 +164,59 @@
   }
 }
 
-/* Accessibility: Focus states */
-.mobile-bottom-nav .nav-item:focus {
-  outline: 2px solid #1976d2;
-  outline-offset: -2px;
+/* ========================================
+   ACCESSIBILITY - Focus States
+   ======================================== */
+
+.mobile-bottom-nav .nav-item:focus-visible {
+  outline: 3px solid var(--role-accent);
+  outline-offset: 2px;
 }
 
-.mobile-bottom-nav .nav-item:focus:not(:focus-visible) {
-  outline: none;
+/* Student Portal Focus */
+.student-portal .mobile-bottom-nav .nav-item:focus-visible {
+  outline-color: var(--student-accent-primary);
 }
 
-/* Dark mode support (if implemented) */
-@media (prefers-color-scheme: dark) {
-  .mobile-bottom-nav {
-    background: #1e1e1e;
-    border-top-color: #333;
-  }
+/* Staff Portal Focus */
+.staff-portal .mobile-bottom-nav .nav-item:focus-visible {
+  outline-color: var(--staff-accent-primary);
+}
 
+/* Admin Portal Focus */
+.admin-portal .mobile-bottom-nav .nav-item:focus-visible {
+  outline-color: var(--dept-accent-primary);
+}
+
+/* Master Admin Portal Focus */
+.master-admin-portal .mobile-bottom-nav .nav-item:focus-visible {
+  outline-color: var(--master-accent-primary);
+}
+
+/* ========================================
+   ACCESSIBILITY - Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
   .mobile-bottom-nav .nav-item {
-    color: #aaa;
+    transition: none;
   }
 
-  .mobile-bottom-nav .nav-item:hover {
-    background-color: #2a2a2a;
+  .mobile-bottom-nav .nav-item:active {
+    transform: none;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .mobile-bottom-nav {
+    border-top-width: 2px;
   }
 
   .mobile-bottom-nav .nav-item.active {
-    color: #64b5f6;
-    background-color: #1a3a52;
+    border-top-width: 4px;
   }
 }

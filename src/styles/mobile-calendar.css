@@ -1,4 +1,11 @@
-/* Mobile-Optimized Calendar */
+/**
+ * ============================================
+ * MOBILE-OPTIMIZED CALENDAR - Design System v2
+ * Portal-aware, touch-optimized booking calendar
+ * ============================================
+ */
+
+/* Mobile Calendar - Base Styles */
 .mobile-calendar {
   width: 100%;
   max-width: 100%;
@@ -8,68 +15,77 @@
   touch-action: pan-y;
 }
 
-/* Calendar header with month navigation */
+/* ========================================
+   CALENDAR HEADER
+   ======================================== */
+
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0.5rem;
-  margin-bottom: 0.5rem;
+  padding: var(--space-md) var(--space-sm);
+  margin-bottom: var(--space-sm);
 }
 
 .calendar-month-year {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
   margin: 0;
   flex: 1;
   text-align: center;
 }
 
 .calendar-nav-btn {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  width: 44px; /* Minimum touch target */
-  height: 44px;
-  font-size: 1.5rem;
+  background: var(--role-bg-secondary);
+  border: 1px solid var(--role-border-light);
+  border-radius: var(--radius-md);
+  width: var(--touch-target-min); /* 44px minimum */
+  height: var(--touch-target-min);
+  font-size: 24px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) var(--ease-in-out);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: var(--theme-text-secondary);
 }
 
 .calendar-nav-btn:hover {
-  background: #e0e0e0;
-  color: #333;
+  background: var(--role-bg-tertiary);
+  color: var(--role-accent);
 }
 
 .calendar-nav-btn:active {
   transform: scale(0.95);
-  background: #d0d0d0;
 }
 
-/* Weekday labels */
+/* ========================================
+   WEEKDAY LABELS
+   ======================================== */
+
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-sm);
   padding: 0 4px;
 }
 
 .calendar-weekday {
   text-align: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #666;
-  padding: 0.5rem 0;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-tertiary);
+  padding: var(--space-sm) 0;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Calendar grid */
+/* ========================================
+   CALENDAR GRID
+   ======================================== */
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -77,27 +93,30 @@
   padding: 0 4px;
 }
 
-/* Calendar day cells */
+/* ========================================
+   CALENDAR DAY CELLS - Base Styles
+   ======================================== */
+
 .calendar-day {
   aspect-ratio: 1;
-  min-height: 48px; /* Minimum touch target for mobile */
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 0.875rem;
-  font-weight: 500;
+  min-height: 48px;
+  border: 1px solid var(--role-border-light);
+  border-radius: var(--radius-md);
+  background: var(--role-bg-primary);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast) var(--ease-out-quad);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333;
+  color: var(--theme-text-primary);
   position: relative;
 }
 
 .calendar-day:hover:not(.disabled):not(.unavailable) {
-  background: #e3f2fd;
-  border-color: #1976d2;
+  background: var(--role-bg-tertiary);
+  border-color: var(--role-accent);
   transform: scale(1.05);
 }
 
@@ -115,94 +134,256 @@
 
 /* Today indicator */
 .calendar-day.today {
-  font-weight: 700;
-  color: #1976d2;
-  border-color: #1976d2;
+  font-weight: var(--font-weight-bold);
+  color: var(--role-accent);
+  border-color: var(--role-accent);
   border-width: 2px;
 }
 
 /* Selected dates */
 .calendar-day.selected {
-  background: #1976d2;
+  background: var(--role-accent);
   color: white;
-  border-color: #1976d2;
-  font-weight: 700;
-}
-
-.calendar-day.selected:hover {
-  background: #1565c0;
-  border-color: #1565c0;
-}
-
-/* Dates in range */
-.calendar-day.in-range {
-  background: #bbdefb;
-  border-color: #90caf9;
-  color: #0d47a1;
-}
-
-.calendar-day.in-range:hover {
-  background: #90caf9;
+  border-color: var(--role-accent);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Disabled dates (past or before min) */
 .calendar-day.disabled {
-  background: #f5f5f5;
-  color: #bbb;
+  background: var(--role-bg-secondary);
+  color: var(--theme-text-tertiary);
   cursor: not-allowed;
   pointer-events: none;
+  opacity: 0.5;
 }
 
-/* Unavailable dates (booked) */
-.calendar-day.unavailable {
-  background: #ffebee;
-  color: #c62828;
+/* ========================================
+   PORTAL-SPECIFIC CALENDAR STYLES
+   ======================================== */
+
+/* Student Portal - Coral Warmth */
+.student-portal .calendar-header {
+  padding: var(--space-lg) var(--space-md);
+}
+
+.student-portal .calendar-month-year {
+  font-size: var(--student-text-h4); /* 20px */
+}
+
+.student-portal .calendar-nav-btn {
+  width: var(--touch-target-comfortable); /* 48px */
+  height: var(--touch-target-comfortable);
+  border-radius: var(--student-radius-md); /* 12px */
+}
+
+.student-portal .calendar-day {
+  min-height: 60px; /* Extra large for student portal */
+  border-radius: var(--student-radius-md);
+  font-size: var(--student-text-body); /* 16px */
+}
+
+.student-portal .calendar-day.selected {
+  background: linear-gradient(135deg, var(--student-accent-primary), var(--student-accent-secondary));
+  box-shadow: var(--student-shadow-md);
+}
+
+.student-portal .calendar-day.in-range {
+  background: var(--student-bg-tertiary);
+  border-color: var(--student-accent-secondary);
+  color: var(--student-accent-primary);
+}
+
+.student-portal .calendar-day.unavailable {
+  background: var(--student-error-bg);
+  color: var(--student-error-text);
   cursor: not-allowed;
   position: relative;
 }
 
-.calendar-day.unavailable::after {
+.student-portal .calendar-day.unavailable::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 10%;
   right: 10%;
   height: 2px;
-  background: #c62828;
+  background: var(--student-error-text);
   transform: translateY(-50%) rotate(-45deg);
 }
 
-/* Selection hint */
-.calendar-hint {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.875rem;
-  color: #666;
-  font-style: italic;
-  background: #f5f5f5;
-  border-radius: 8px;
-  margin-top: 1rem;
+/* Staff Portal - Teal Trust */
+.staff-portal .calendar-month-year {
+  font-size: var(--staff-text-h4); /* 18px */
 }
 
-/* Mobile-specific adjustments */
+.staff-portal .calendar-day {
+  min-height: 52px; /* Balanced for staff portal */
+  border-radius: var(--staff-radius-md); /* 10px */
+  font-size: var(--staff-text-body); /* 16px */
+}
+
+.staff-portal .calendar-day.selected {
+  background: var(--staff-accent-primary);
+  box-shadow: var(--staff-shadow-sm);
+}
+
+.staff-portal .calendar-day.in-range {
+  background: var(--staff-bg-tertiary);
+  border-color: var(--staff-accent-secondary);
+  color: var(--staff-accent-primary);
+}
+
+.staff-portal .calendar-day.unavailable {
+  background: var(--staff-error-bg);
+  color: var(--staff-error-text);
+}
+
+.staff-portal .calendar-day.unavailable::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--staff-error-text);
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Department Admin - Amber Authority */
+.admin-portal .calendar-month-year {
+  font-size: var(--dept-text-h4); /* 17px */
+}
+
+.admin-portal .calendar-day {
+  min-height: 44px; /* Compact for admin portal */
+  border-radius: var(--dept-radius-md); /* 8px */
+  font-size: var(--dept-text-body); /* 15px */
+}
+
+.admin-portal .calendar-day.selected {
+  background: var(--dept-accent-primary);
+}
+
+.admin-portal .calendar-day.in-range {
+  background: var(--dept-bg-tertiary);
+  border-color: var(--dept-accent-secondary);
+  color: var(--dept-accent-primary);
+}
+
+.admin-portal .calendar-day.unavailable {
+  background: var(--dept-error-bg);
+  color: var(--dept-error-text);
+}
+
+.admin-portal .calendar-day.unavailable::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--dept-error-text);
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Master Admin - Purple Power (Dark Mode) */
+.master-admin-portal .calendar-month-year {
+  font-size: var(--master-text-h4); /* 16px */
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .calendar-weekday {
+  color: var(--master-text-tertiary);
+}
+
+.master-admin-portal .calendar-nav-btn {
+  background: var(--master-bg-tertiary);
+  border-color: var(--master-border-light);
+  color: var(--master-text-secondary);
+}
+
+.master-admin-portal .calendar-nav-btn:hover {
+  background: var(--master-bg-tertiary);
+  color: var(--master-accent-primary);
+}
+
+.master-admin-portal .calendar-day {
+  min-height: 40px; /* Dense for master admin */
+  border-radius: var(--master-radius-md); /* 6px */
+  font-size: var(--master-text-body); /* 14px */
+  background: var(--master-bg-secondary);
+  border-color: var(--master-border-light);
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .calendar-day:hover:not(.disabled):not(.unavailable) {
+  background: var(--master-bg-tertiary);
+  border-color: var(--master-accent-primary);
+}
+
+.master-admin-portal .calendar-day.today {
+  color: var(--master-accent-secondary);
+  border-color: var(--master-accent-secondary);
+}
+
+.master-admin-portal .calendar-day.selected {
+  background: var(--master-accent-primary);
+  color: white;
+}
+
+.master-admin-portal .calendar-day.in-range {
+  background: rgba(123, 31, 162, 0.15);
+  border-color: var(--master-accent-secondary);
+  color: var(--master-accent-secondary);
+}
+
+.master-admin-portal .calendar-day.disabled {
+  background: var(--master-bg-primary);
+  color: var(--master-text-tertiary);
+  opacity: 0.3;
+}
+
+.master-admin-portal .calendar-day.unavailable {
+  background: var(--master-error-bg);
+  color: var(--master-error-text);
+}
+
+.master-admin-portal .calendar-day.unavailable::after {
+  background: var(--master-error-text);
+}
+
+/* ========================================
+   CALENDAR HINT
+   ======================================== */
+
+.calendar-hint {
+  text-align: center;
+  padding: var(--space-md);
+  font-size: 14px;
+  color: var(--theme-text-secondary);
+  font-style: italic;
+  background: var(--role-bg-secondary);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-md);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+/* Mobile-specific (320px - 768px) */
 @media (max-width: 768px) {
-  .calendar-day {
-    min-height: 60px; /* Larger touch targets on mobile */
-    font-size: 1rem;
+  .student-portal .calendar-day {
+    min-height: 60px; /* Keep large for student */
   }
 
-  .calendar-weekday {
-    font-size: 0.6875rem;
+  .staff-portal .calendar-day {
+    min-height: 56px;
   }
 
-  .calendar-month-year {
-    font-size: 1.25rem;
-  }
-
-  .calendar-nav-btn {
-    width: 48px;
-    height: 48px;
-    font-size: 1.75rem;
+  .admin-portal .calendar-day,
+  .master-admin-portal .calendar-day {
+    min-height: 48px;
   }
 
   .calendar-grid {
@@ -214,41 +395,95 @@
   }
 }
 
-/* Tablet adjustments */
+/* Tablet (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .calendar-day {
+  .student-portal .calendar-day {
+    min-height: 56px;
+  }
+
+  .staff-portal .calendar-day {
     min-height: 52px;
+  }
+
+  .admin-portal .calendar-day {
+    min-height: 48px;
+  }
+
+  .master-admin-portal .calendar-day {
+    min-height: 44px;
   }
 }
 
-/* Desktop adjustments */
+/* Desktop (1025px+) */
 @media (min-width: 1025px) {
   .mobile-calendar {
     max-width: 400px;
   }
 
-  .calendar-day {
-    min-height: 44px;
-  }
-
   .calendar-hint {
-    display: none; /* Hide hint on desktop, use mouse cursor */
+    display: none; /* Hide hint on desktop */
   }
 }
 
-/* Accessibility - Focus states */
-.calendar-day:focus {
-  outline: 2px solid #1976d2;
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .calendar-day {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .calendar-grid {
+    gap: 4px;
+  }
+
+  .calendar-weekdays {
+    gap: 4px;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY - Focus States
+   ======================================== */
+
+.calendar-day:focus-visible {
+  outline: 3px solid var(--role-accent);
   outline-offset: 2px;
   z-index: 1;
 }
 
-.calendar-nav-btn:focus {
-  outline: 2px solid #1976d2;
+.calendar-nav-btn:focus-visible {
+  outline: 3px solid var(--role-accent);
   outline-offset: 2px;
 }
 
-/* Reduce motion support */
+/* Student Portal Focus */
+.student-portal .calendar-day:focus-visible,
+.student-portal .calendar-nav-btn:focus-visible {
+  outline-color: var(--student-accent-primary);
+}
+
+/* Staff Portal Focus */
+.staff-portal .calendar-day:focus-visible,
+.staff-portal .calendar-nav-btn:focus-visible {
+  outline-color: var(--staff-accent-primary);
+}
+
+/* Admin Portal Focus */
+.admin-portal .calendar-day:focus-visible,
+.admin-portal .calendar-nav-btn:focus-visible {
+  outline-color: var(--dept-accent-primary);
+}
+
+/* Master Admin Focus */
+.master-admin-portal .calendar-day:focus-visible,
+.master-admin-portal .calendar-nav-btn:focus-visible {
+  outline-color: var(--master-accent-primary);
+}
+
+/* ========================================
+   ACCESSIBILITY - Reduced Motion
+   ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   .calendar-day,
   .calendar-nav-btn {
@@ -256,88 +491,16 @@
   }
 
   .calendar-day:hover,
-  .calendar-day:active {
-    transform: none;
-  }
-
+  .calendar-day:active,
   .calendar-nav-btn:active {
     transform: none;
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .mobile-calendar {
-    background: #1e1e1e;
-  }
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
 
-  .calendar-month-year {
-    color: #fff;
-  }
-
-  .calendar-weekday {
-    color: #aaa;
-  }
-
-  .calendar-day {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #fff;
-  }
-
-  .calendar-day:hover:not(.disabled):not(.unavailable) {
-    background: #1a3a52;
-    border-color: #64b5f6;
-  }
-
-  .calendar-day.today {
-    color: #64b5f6;
-    border-color: #64b5f6;
-  }
-
-  .calendar-day.selected {
-    background: #1976d2;
-    border-color: #1976d2;
-  }
-
-  .calendar-day.in-range {
-    background: #1a3a52;
-    border-color: #64b5f6;
-    color: #90caf9;
-  }
-
-  .calendar-day.disabled {
-    background: #1a1a1a;
-    color: #666;
-  }
-
-  .calendar-day.unavailable {
-    background: #3a1a1a;
-    color: #ef5350;
-  }
-
-  .calendar-day.unavailable::after {
-    background: #ef5350;
-  }
-
-  .calendar-hint {
-    background: #2a2a2a;
-    color: #aaa;
-  }
-
-  .calendar-nav-btn {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #aaa;
-  }
-
-  .calendar-nav-btn:hover {
-    background: #3a3a3a;
-    color: #fff;
-  }
-}
-
-/* High contrast mode */
 @media (prefers-contrast: high) {
   .calendar-day {
     border-width: 2px;
@@ -349,21 +512,5 @@
 
   .calendar-day.unavailable::after {
     height: 3px;
-  }
-}
-
-/* Landscape mobile adjustments */
-@media (max-width: 768px) and (orientation: landscape) {
-  .calendar-day {
-    min-height: 44px;
-    font-size: 0.875rem;
-  }
-
-  .calendar-grid {
-    gap: 4px;
-  }
-
-  .calendar-weekdays {
-    gap: 4px;
   }
 }

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Configuration - Master Admin | NCAD Booking</title>
+  <link rel="stylesheet" href="../styles/main.css">
+  <link rel="stylesheet" href="../styles/master-admin-config.css">
+</head>
+<body>
+  <div class="admin-container">
+    <header class="admin-header">
+      <h1>System Configuration</h1>
+      <p class="subtitle">Master Admin Controls - Feature Flags & Role Management</p>
+    </header>
+
+    <!-- Feature Flags Section -->
+    <section class="config-section" id="feature-flags">
+      <div class="section-header">
+        <h2>🎛️ Feature Flags</h2>
+        <p>Enable or disable system features and user roles. Changes take effect immediately for all users.</p>
+      </div>
+
+      <!-- Role Toggles -->
+      <div class="feature-category">
+        <h3>User Roles</h3>
+        <p class="category-desc">Toggle availability of advanced user roles in the system</p>
+
+        <div class="feature-grid">
+          <!-- View-Only Staff -->
+          <div class="feature-card" data-feature="role_view_only_staff">
+            <div class="feature-header">
+              <div class="feature-icon">👀</div>
+              <div class="feature-info">
+                <h4>View-Only Staff</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="role_view_only_staff">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Enables teaching faculty to view equipment availability and booking statistics without
+              management permissions. Ideal for course planning and student advising.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Users:</strong> <span data-count="view_only_staff">0</span></span>
+              <span class="meta-item"><strong>Version:</strong> 1.0</span>
+            </div>
+          </div>
+
+          <!-- Accounts Officer -->
+          <div class="feature-card" data-feature="role_accounts_officer">
+            <div class="feature-header">
+              <div class="feature-icon">💰</div>
+              <div class="feature-info">
+                <h4>Accounts Officer</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="role_accounts_officer">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Grants finance department access to equipment costs, depreciation calculations, budget
+              allocation reports, and financial analytics. Read-only access to protect data integrity.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Users:</strong> <span data-count="accounts_officer">0</span></span>
+              <span class="meta-item"><strong>Requires:</strong> Financial Module</span>
+            </div>
+          </div>
+
+          <!-- Payroll Coordinator -->
+          <div class="feature-card" data-feature="role_payroll_coordinator">
+            <div class="feature-header">
+              <div class="feature-icon">⏱️</div>
+              <div class="feature-info">
+                <h4>Payroll Coordinator</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="role_payroll_coordinator">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Enables HR/Payroll staff to track admin time allocation across departments for accurate
+              cost center attribution and workload balancing. GDPR-compliant anonymization.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Users:</strong> <span data-count="payroll_coordinator">0</span></span>
+              <span class="meta-item"><strong>Requires:</strong> Payroll Tracking Module</span>
+            </div>
+          </div>
+
+          <!-- IT Support Technician -->
+          <div class="feature-card" data-feature="role_it_support_technician">
+            <div class="feature-header">
+              <div class="feature-icon">🔧</div>
+              <div class="feature-info">
+                <h4>IT Support Technician</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="role_it_support_technician">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Allows IT department to manage equipment lifecycle, create help desk tickets, schedule
+              preventive maintenance, and track IT security compliance status.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Users:</strong> <span data-count="it_support_technician">0</span></span>
+              <span class="meta-item"><strong>Requires:</strong> IT Asset Lifecycle Module</span>
+            </div>
+          </div>
+
+          <!-- Budget Manager -->
+          <div class="feature-card" data-feature="role_budget_manager">
+            <div class="feature-header">
+              <div class="feature-icon">📊</div>
+              <div class="feature-info">
+                <h4>Budget Manager</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="role_budget_manager">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Empowers department heads with strategic planning tools: ROI analytics, replacement
+              priority matrix, budget forecasting, and cross-department sharing optimization.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Users:</strong> <span data-count="budget_manager">0</span></span>
+              <span class="meta-item"><strong>Requires:</strong> Budget Analytics Module</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Modules -->
+      <div class="feature-category">
+        <h3>Feature Modules</h3>
+        <p class="category-desc">Core functionality modules that power advanced roles</p>
+
+        <div class="feature-grid">
+          <!-- Financial Management -->
+          <div class="feature-card" data-feature="feature_financial_management">
+            <div class="feature-header">
+              <div class="feature-icon">📈</div>
+              <div class="feature-info">
+                <h4>Financial Management Module</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="feature_financial_management">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Enables Total Cost of Ownership tracking, GAAP-compliant depreciation calculation,
+              budget allocation by department, and comprehensive financial reporting.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Components:</strong> TCO, Depreciation, Budget Allocation</span>
+            </div>
+          </div>
+
+          <!-- Payroll Tracking -->
+          <div class="feature-card" data-feature="feature_payroll_tracking">
+            <div class="feature-header">
+              <div class="feature-icon">⏲️</div>
+              <div class="feature-info">
+                <h4>Payroll Time Tracking Module</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="feature_payroll_tracking">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Admin time tracking, cost center allocation, workload distribution analytics, and
+              efficiency metrics for evidence-based staffing decisions.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Components:</strong> Time Tracking, Cost Centers, Efficiency</span>
+            </div>
+          </div>
+
+          <!-- IT Asset Lifecycle -->
+          <div class="feature-card" data-feature="feature_it_asset_lifecycle">
+            <div class="feature-header">
+              <div class="feature-icon">🛠️</div>
+              <div class="feature-info">
+                <h4>IT Asset Lifecycle Module</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="feature_it_asset_lifecycle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              Help desk ticketing integration, preventive maintenance scheduling, IT compliance
+              tracking, and equipment health scoring for proactive asset management.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Components:</strong> Help Desk, Maintenance, Compliance</span>
+            </div>
+          </div>
+
+          <!-- Budget Analytics -->
+          <div class="feature-card" data-feature="feature_budget_analytics">
+            <div class="feature-header">
+              <div class="feature-icon">📉</div>
+              <div class="feature-info">
+                <h4>Budget Analytics Module</h4>
+                <span class="feature-status" data-status="disabled">Disabled</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" data-feature-key="feature_budget_analytics">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="feature-description">
+              ROI calculation, replacement priority matrix, multi-year budget forecasting, and
+              cross-department sharing optimizer for strategic equipment planning.
+            </p>
+            <div class="feature-meta">
+              <span class="meta-item"><strong>Components:</strong> ROI, Replacement Matrix, Sharing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Status -->
+    <section class="config-section" id="system-status">
+      <div class="section-header">
+        <h2>📋 System Status</h2>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <h4>Total Users</h4>
+          <div class="status-value" id="total-users">—</div>
+          <p class="status-breakdown">
+            <span>Students: <strong id="student-count">0</strong></span>
+            <span>Admins: <strong id="admin-count">0</strong></span>
+          </p>
+        </div>
+
+        <div class="status-card">
+          <h4>Active Roles</h4>
+          <div class="status-value" id="active-roles">3</div>
+          <p class="status-note">Student, General Admin, Master Admin</p>
+        </div>
+
+        <div class="status-card">
+          <h4>Enabled Features</h4>
+          <div class="status-value" id="enabled-features">0</div>
+          <p class="status-note">of 9 available features</p>
+        </div>
+
+        <div class="status-card">
+          <h4>Last Configuration Change</h4>
+          <div class="status-value" id="last-change">Never</div>
+          <p class="status-note">by <span id="last-changed-by">—</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activity Log -->
+    <section class="config-section" id="activity-log">
+      <div class="section-header">
+        <h2>📜 Configuration Activity Log</h2>
+        <button class="btn-secondary" id="export-log">Export Log</button>
+      </div>
+
+      <div class="activity-table-container">
+        <table class="activity-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Admin</th>
+              <th>Action</th>
+              <th>Feature/Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="activity-log-body">
+            <tr class="empty-state">
+              <td colspan="5">No configuration changes recorded yet</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Danger Zone -->
+    <section class="config-section danger-zone">
+      <div class="section-header">
+        <h2>⚠️ Danger Zone</h2>
+        <p class="warning-text">Actions in this section have significant system-wide impact</p>
+      </div>
+
+      <div class="danger-actions">
+        <div class="danger-action">
+          <div>
+            <h4>Disable All Advanced Roles</h4>
+            <p>Immediately disable all advanced roles (View Staff, Accounts, Payroll, IT, Budget Manager). Users with these roles will lose access.</p>
+          </div>
+          <button class="btn-danger" id="disable-all-roles">Disable All Roles</button>
+        </div>
+
+        <div class="danger-action">
+          <div>
+            <h4>Reset Feature Flags to Default</h4>
+            <p>Reset all feature flags to their default (disabled) state. This action cannot be undone.</p>
+          </div>
+          <button class="btn-danger" id="reset-flags">Reset to Defaults</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmation-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3 id="modal-title">Confirm Action</h3>
+      <p id="modal-message">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn-primary" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container"></div>
+
+  <script type="module" src="../js/master-admin-config.js"></script>
+</body>
+</html>
