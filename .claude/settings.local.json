@@ -10,7 +10,9 @@
       "Bash(npm uninstall:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add comprehensive design system and optimize codebase (Phase 1)\n\nBREAKING CHANGE: Remove legacy variable files (ncad-variables.css, variables.css)\nin favor of new design-tokens.css\n\nMajor Changes:\n\nDesign System (94KB):\n- Add design-tokens.css foundation (spacing, typography, shadows, colors)\n- Add portal-specific themes (student, staff, dept-admin, master-admin)\n- Add component systems (buttons, forms, cards)\n- Purple Authority theme for Master Admin portal (#9C27B0)\n- Amber theme for Department Admin portal\n- 8pt grid system and consistent spacing scale\n\nFeatures Added:\n- Analytics filtering by department, user, and date range\n- Professional PDF export with purple branding and data tables\n- System Settings for room bookings visibility control\n- Granular cross-department equipment browsing/booking controls\n- Compact UI for admin dropdowns and search fields (max 200px/400px)\n\nOptimizations (12.7KB CSS saved):\n- Remove unused npm dependencies (clsx, date-fns, zustand)\n- Remove legacy CSS variable files (ncad-variables.css 12KB, variables.css 658B)\n- Add ImageExplain/ to .gitignore (756KB untracked)\n- Update design-system.css to remove legacy imports\n\nDocumentation (55KB):\n- Add OPTIMIZATION_SUMMARY.md with metrics and Phase 2 roadmap\n- Add DESIGN_SYSTEM_GUIDE.md\n- Add DESIGN_SYSTEM_COMPLETE.md\n- Add DESIGN_SYSTEM_IMPLEMENTATION.md\n- Add DESIGN_SYSTEM_QUICKSTART.md\n\nNew Dependencies:\n- jspdf ^3.0.3 (PDF generation)\n- jspdf-autotable ^5.0.2 (PDF tables)\n\nFiles Changed: 24 files\nLines Changed: +2,155, -759\nTotal CSS: 239KB (down from 252KB)\nBeta-Ready: YES (pending Phase 2 for additional optimization)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Read(//c/Users/jones/Downloads/**)"
+      "Read(//c/Users/jones/Downloads/**)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

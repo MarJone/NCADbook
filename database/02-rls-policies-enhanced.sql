@@ -516,12 +516,11 @@ CREATE POLICY "System log audit" ON data_access_audit
 -- 12. CROSS DEPARTMENT ACCESS RLS
 -- ============================================================================
 
-ALTER TABLE cross_department_access ENABLE ROW LEVEL SECURITY;
+-- Note: RLS already enabled in 00-base-schema.sql
+-- Drop and recreate policies to avoid conflicts
 
--- Students can view their own access grants
-CREATE POLICY "Students view own access" ON cross_department_access
-  FOR SELECT
-  USING (student_id = auth.uid());
+DROP POLICY IF EXISTS "Admin view cross dept access" ON cross_department_access;
+DROP POLICY IF EXISTS "Admin manage cross dept access" ON cross_department_access;
 
 -- General admin and master admin can view all access grants
 CREATE POLICY "Admin view cross dept access" ON cross_department_access

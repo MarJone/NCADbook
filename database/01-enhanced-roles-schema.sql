@@ -94,8 +94,8 @@ COMMENT ON COLUMN users.admin_permissions IS 'Granular permissions JSON: {
   "custom_permissions": []
 }';
 
--- Add index for new roles
-CREATE INDEX IF NOT EXISTS idx_users_role_enabled ON users(role) WHERE role != 'student';
+-- Add index for new roles (simple index without function call)
+CREATE INDEX IF NOT EXISTS idx_users_role_enabled ON users(role) WHERE role NOT IN ('student', 'general_admin', 'master_admin');
 
 -- ============================================================================
 -- 3. EQUIPMENT TABLE ENHANCEMENTS (Financial & IT Data)
@@ -229,8 +229,7 @@ CREATE TABLE IF NOT EXISTS staff_cost_centers (
 CREATE UNIQUE INDEX idx_cost_center_admin_dates ON staff_cost_centers(admin_id, department, effective_from);
 CREATE INDEX idx_cost_center_admin ON staff_cost_centers(admin_id);
 CREATE INDEX idx_cost_center_department ON staff_cost_centers(department);
-CREATE INDEX idx_cost_center_active ON staff_cost_centers(effective_from, effective_to)
-  WHERE effective_to IS NULL OR effective_to >= CURRENT_DATE;
+CREATE INDEX idx_cost_center_active ON staff_cost_centers(effective_from, effective_to);
 
 -- Trigger for updated_at
 CREATE TRIGGER trigger_update_cost_centers_timestamp
@@ -352,8 +351,7 @@ CREATE INDEX idx_maintenance_equipment ON maintenance_schedules(equipment_id);
 CREATE INDEX idx_maintenance_next_due ON maintenance_schedules(next_due);
 CREATE INDEX idx_maintenance_status ON maintenance_schedules(status);
 CREATE INDEX idx_maintenance_assigned ON maintenance_schedules(assigned_to);
-CREATE INDEX idx_maintenance_overdue ON maintenance_schedules(next_due)
-  WHERE status = 'scheduled' AND next_due < CURRENT_DATE;
+CREATE INDEX idx_maintenance_overdue ON maintenance_schedules(status, next_due) WHERE status = 'scheduled';
 
 -- Trigger for updated_at
 CREATE TRIGGER trigger_update_maintenance_timestamp
