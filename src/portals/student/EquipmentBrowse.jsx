@@ -119,22 +119,15 @@ export default function EquipmentBrowse() {
     try {
       const currentUser = demoMode.getCurrentUser();
 
-      // If user is student, filter by sub-area access
+      // If user is student, filter by their department ONLY
       if (currentUser && currentUser.role === 'student') {
-        const accessibleEquip = await getAccessibleEquipment(currentUser.id);
+        // Students can ONLY see equipment from their own department
+        const allEquipment = await demoMode.query('equipment');
+        let filtered = allEquipment.filter(item => item.department === currentUser.department);
 
         // Apply category filter
-        let filtered = accessibleEquip;
         if (filter !== 'all') {
           filtered = filtered.filter(item => item.category === filter);
-        }
-
-        // Filter by department based on selected department
-        if (selectedDepartment === 'my_department' && currentUser.department) {
-          filtered = filtered.filter(item => item.department === currentUser.department);
-        } else if (selectedDepartment !== 'my_department') {
-          // Filter to show only equipment from selected department
-          filtered = filtered.filter(item => item.department === selectedDepartment);
         }
 
         // Apply sub-area filter
@@ -278,87 +271,72 @@ export default function EquipmentBrowse() {
         <KitBrowser onBookingSuccess={loadEquipment} />
       )}
 
-      {user && user.role === 'student' && crossDeptBrowsingEnabled && (
-        <div className="department-filter-dropdown" style={{
-          marginTop: '1rem',
-          marginBottom: '1rem',
-          padding: '0.75rem',
-          backgroundColor: '#f5f5f5',
-          borderRadius: '4px',
-          border: '1px solid #ddd'
-        }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-            Browse by Department
+      <div className="filter-controls-compact" style={{
+        display: 'grid',
+        gridTemplateColumns: subAreas.length > 0 ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
+        gap: '1rem',
+        marginTop: '1rem',
+        marginBottom: '1rem',
+        padding: '1rem',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '8px',
+        border: '1px solid #dee2e6'
+      }}>
+        <div>
+          <label htmlFor="category-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
+            Category
           </label>
           <select
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
+            id="category-filter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
             style={{
               width: '100%',
               padding: '0.5rem',
               borderRadius: '4px',
-              border: '1px solid #ccc',
-              fontSize: '1rem',
-              cursor: 'pointer'
+              border: '1px solid #ced4da',
+              fontSize: '0.95rem',
+              cursor: 'pointer',
+              backgroundColor: 'white'
             }}
           >
-            <option value="my_department">My Department ({user.department})</option>
-            <optgroup label="───────────────" />
-            {Object.entries(getDepartmentsBySchool()).map(([school, departments]) => (
-              <optgroup key={school} label={school}>
-                {departments.map(dept => (
-                  <option key={dept.id} value={dept.id}>
-                    {dept.name}
-                  </option>
-                ))}
-              </optgroup>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>
+                {cat === 'all' ? 'All Categories' : cat}
+              </option>
             ))}
           </select>
-          <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
-            {selectedDepartment === 'my_department'
-              ? `Showing equipment from your department`
-              : `Browsing equipment from other departments`}
-          </p>
         </div>
-      )}
 
-      <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '0.5rem' }}>
-          <strong>Category:</strong>
-        </div>
-        {categories.map(cat => (
-          <button
-            key={cat}
-            onClick={() => setFilter(cat)}
-            className={filter === cat ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-          >
-            {cat === 'all' ? 'All' : cat}
-          </button>
-        ))}
-      </div>
-
-      {subAreas.length > 0 && (
-        <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-          <div style={{ marginBottom: '0.5rem' }}>
-            <strong>Department:</strong>
-          </div>
-          <button
-            onClick={() => setSubAreaFilter('all')}
-            className={subAreaFilter === 'all' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-          >
-            All Departments
-          </button>
-          {subAreas.map(subArea => (
-            <button
-              key={subArea.id}
-              onClick={() => setSubAreaFilter(subArea.id)}
-              className={subAreaFilter === subArea.id ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+        {subAreas.length > 0 && (
+          <div>
+            <label htmlFor="department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
+              Department
+            </label>
+            <select
+              id="department-filter"
+              value={subAreaFilter}
+              onChange={(e) => setSubAreaFilter(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                borderRadius: '4px',
+                border: '1px solid #ced4da',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                backgroundColor: 'white'
+              }}
             >
-              {subArea.name}
-            </button>
-          ))}
-        </div>
-      )}
+              <option value="all">All Departments</option>
+              {subAreas.map(subArea => (
+                <option key={subArea.id} value={subArea.id}>
+                  {subArea.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
 
       <div className="view-toggle">
         <button

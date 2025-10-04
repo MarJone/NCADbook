@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getEquipmentAvailabilityByType, determineRequestRouting, createCrossDepartmentRequest } from '../../services/crossDepartmentRequests.service';
 import { demoMode } from '../../mocks/demo-mode';
@@ -6,7 +7,8 @@ import Toast from '../../components/common/Toast';
 import { useToast } from '../../hooks/useToast';
 import '../../styles/cross-dept-request.css';
 
-export default function CrossDepartmentRequestForm({ onClose, onSuccess }) {
+export default function CrossDepartmentRequestForm() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [equipmentType, setEquipmentType] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -84,21 +86,9 @@ export default function CrossDepartmentRequestForm({ onClose, onSuccess }) {
         'success'
       );
 
-      if (onSuccess) {
-        onSuccess(result);
-      }
-
-      // Reset form
-      setEquipmentType('');
-      setQuantity(1);
-      setStartDate('');
-      setEndDate('');
-      setJustification('');
-      setAvailabilityPreview(null);
-      setRoutingPreview(null);
-
+      // Navigate to My Requests page after short delay
       setTimeout(() => {
-        if (onClose) onClose();
+        navigate('/staff/my-cross-department-requests');
       }, 1500);
     } catch (error) {
       console.error('Failed to create request:', error);
@@ -108,14 +98,27 @@ export default function CrossDepartmentRequestForm({ onClose, onSuccess }) {
     }
   };
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content cross-dept-request-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Request Equipment from Another Department</h2>
-          <button onClick={onClose} className="modal-close">&times;</button>
-        </div>
+  const handleCancel = () => {
+    navigate('/staff');
+  };
 
+  return (
+    <div className="page-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem 1rem' }}>
+      <div className="page-header" style={{ marginBottom: '2rem' }}>
+        <button
+          onClick={handleCancel}
+          className="btn btn-secondary btn-sm"
+          style={{ marginBottom: '1rem' }}
+        >
+          ← Back
+        </button>
+        <h2>Request Equipment from Another Department</h2>
+        <p style={{ color: '#666', marginTop: '0.5rem' }}>
+          Request equipment from other departments when your department doesn't have what you need
+        </p>
+      </div>
+
+      <div className="cross-dept-request-form">
         <form onSubmit={handleSubmit}>
           <div className="form-section">
             <h3>Equipment Details</h3>
@@ -246,8 +249,15 @@ export default function CrossDepartmentRequestForm({ onClose, onSuccess }) {
             </div>
           </div>
 
-          <div className="modal-actions">
-            <button type="button" onClick={onClose} className="btn btn-secondary" disabled={loading}>
+          <div className="form-actions" style={{
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'flex-end',
+            marginTop: '2rem',
+            paddingTop: '1.5rem',
+            borderTop: '1px solid #dee2e6'
+          }}>
+            <button type="button" onClick={handleCancel} className="btn btn-secondary" disabled={loading}>
               Cancel
             </button>
             <button type="submit" className="btn btn-primary" disabled={loading || (routingPreview && routingPreview.routingType === 'none')}>
