@@ -1,12 +1,12 @@
 import { Routes, Route, NavLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import ThemeToggle from '../../components/common/ThemeToggle';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
 import StudentDashboard from './StudentDashboard';
 import EquipmentBrowse from './EquipmentBrowse';
 import MyBookings from './MyBookings';
 import './StudentPortal.css';
+import '../../styles/role-colors.css';
 
 export default function StudentLayout() {
   const { user, logout } = useAuth();
@@ -17,7 +17,6 @@ export default function StudentLayout() {
         <div className="student-header-content">
           <h1>📚 NCADbook</h1>
           <div className="student-header-actions">
-            <ThemeToggle />
             <NotificationCenter />
             <span className="student-user-info">
               {user?.full_name}

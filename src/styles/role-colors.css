@@ -1,0 +1,155 @@
+/* ============================================
+   ROLE-BASED COLOR SCHEMES
+   Subtle color-coded backgrounds for each portal
+   ============================================ */
+
+/* ========== STUDENT PORTAL - Soft Blue-Gray ========== */
+/* Theme: Calm, Learning-Focused, Approachable */
+
+.student-portal {
+  --role-bg-primary: #FFFFFF;
+  --role-bg-secondary: #F0F4F8;
+  --role-bg-tertiary: #E1E8ED;
+  --role-accent: #3B82F6;
+  --role-accent-hover: #2563EB;
+  --role-accent-light: #DBEAFE;
+  --role-gradient-start: #3B82F6;
+  --role-gradient-end: #2563EB;
+}
+
+/* ========== STAFF PORTAL - Soft Green-Gray ========== */
+/* Theme: Productive, Balanced, Professional */
+
+.staff-portal {
+  --role-bg-primary: #FFFFFF;
+  --role-bg-secondary: #F0F7F4;
+  --role-bg-tertiary: #E1EDE8;
+  --role-accent: #10B981;
+  --role-accent-hover: #059669;
+  --role-accent-light: #D1FAE5;
+  --role-gradient-start: #10B981;
+  --role-gradient-end: #059669;
+}
+
+/* ========== DEPARTMENT ADMIN - Soft Amber-Gray ========== */
+/* Theme: Warm, Managerial, Organized */
+
+.admin-portal {
+  --role-bg-primary: #FFFFFF;
+  --role-bg-secondary: #FBF8F3;
+  --role-bg-tertiary: #F4EDE3;
+  --role-accent: #F59E0B;
+  --role-accent-hover: #D97706;
+  --role-accent-light: #FEF3C7;
+  --role-gradient-start: #F59E0B;
+  --role-gradient-end: #D97706;
+}
+
+/* ========== MASTER ADMIN - Soft Purple-Gray ========== */
+/* Theme: Authoritative, System-Wide, Strategic */
+
+.master-admin-portal {
+  --role-bg-primary: #FFFFFF;
+  --role-bg-secondary: #F5F3F7;
+  --role-bg-tertiary: #EBE7EF;
+  --role-accent: #8B5CF6;
+  --role-accent-hover: #7C3AED;
+  --role-accent-light: #EDE9FE;
+  --role-gradient-start: #8B5CF6;
+  --role-gradient-end: #7C3AED;
+}
+
+/* ========== APPLY ROLE COLORS TO THEME VARIABLES ========== */
+
+.student-portal,
+.staff-portal,
+.admin-portal,
+.master-admin-portal {
+  background: var(--role-bg-secondary);
+}
+
+/* Override theme variables with role-specific colors */
+.student-portal {
+  --theme-bg-primary: var(--role-bg-primary);
+  --theme-bg-secondary: var(--role-bg-secondary);
+  --theme-bg-tertiary: var(--role-bg-tertiary);
+  --theme-accent-primary: var(--role-accent);
+  --theme-accent-primary-hover: var(--role-accent-hover);
+}
+
+.staff-portal {
+  --theme-bg-primary: var(--role-bg-primary);
+  --theme-bg-secondary: var(--role-bg-secondary);
+  --theme-bg-tertiary: var(--role-bg-tertiary);
+  --theme-accent-primary: var(--role-accent);
+  --theme-accent-primary-hover: var(--role-accent-hover);
+}
+
+.admin-portal {
+  --theme-bg-primary: var(--role-bg-primary);
+  --theme-bg-secondary: var(--role-bg-secondary);
+  --theme-bg-tertiary: var(--role-bg-tertiary);
+  --theme-accent-primary: var(--role-accent);
+  --theme-accent-primary-hover: var(--role-accent-hover);
+}
+
+.master-admin-portal {
+  --theme-bg-primary: var(--role-bg-primary);
+  --theme-bg-secondary: var(--role-bg-secondary);
+  --theme-bg-tertiary: var(--role-bg-tertiary);
+  --theme-accent-primary: var(--role-accent);
+  --theme-accent-primary-hover: var(--role-accent-hover);
+}
+
+/* ========== ROLE COLOR UTILITIES ========== */
+
+/* Accent gradient buttons with role colors */
+.student-portal .student-action-btn:not(.secondary) {
+  background: linear-gradient(135deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+.staff-portal .staff-action-btn:not(.secondary) {
+  background: linear-gradient(135deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+.admin-portal .admin-action-btn:not(.secondary) {
+  background: linear-gradient(135deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+.master-admin-portal .master-action-btn:not(.secondary) {
+  background: linear-gradient(135deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+/* Stat card accent bars with role colors */
+.student-portal .student-stat-card::before {
+  background: linear-gradient(180deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+.staff-portal .staff-stat-card::before {
+  background: linear-gradient(180deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+.admin-portal .admin-stat-card::before {
+  background: linear-gradient(180deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+.master-admin-portal .master-stat-card::before {
+  background: linear-gradient(180deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
+}
+
+/* Stat numbers with role colors */
+.student-portal .student-stat-number {
+  color: var(--role-accent);
+}
+
+.staff-portal .staff-stat-number {
+  color: var(--role-accent);
+}
+
+.admin-portal .admin-stat-number {
+  color: var(--role-accent);
+}
+
+.master-admin-portal .master-stat-number {
+  color: var(--role-accent);
+}
