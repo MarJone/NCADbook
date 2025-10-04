@@ -288,7 +288,7 @@
   min-height: 64px;
   padding: var(--space-3) var(--space-4);
   background: linear-gradient(135deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
-  color: var(--theme-text-inverse);
+  color: #FFFFFF; /* White text on colored gradient backgrounds */
   border: none;
   border-radius: var(--radius-md);
   font-weight: var(--font-semibold);
@@ -430,6 +430,19 @@
 
 .master-admin-portal .admin-action-btn {
   background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  color: #FFFFFF; /* Ensure white text on purple background */
+}
+
+.master-admin-portal .admin-action-btn.secondary {
+  background: #FFFFFF;
+  color: #7C3AED;
+  border: 2px solid #7C3AED;
+}
+
+.master-admin-portal .admin-action-btn.secondary:hover {
+  background: #F3E8FF;
+  color: #6D28D9;
+  border-color: #6D28D9;
 }
 
 .master-admin-portal .admin-action-btn:focus-visible,
