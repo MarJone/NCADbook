@@ -35,60 +35,75 @@ export default function StaffDashboard() {
   };
 
   if (loading) {
-    return <div className="loading">Loading dashboard...</div>;
+    return (
+      <div className="staff-dashboard">
+        <div className="staff-skeleton"></div>
+        <div className="staff-skeleton"></div>
+        <div className="staff-skeleton"></div>
+      </div>
+    );
   }
 
   return (
     <div className="staff-dashboard" data-testid="staff-dashboard">
-      <h2>Welcome, {user?.first_name}!</h2>
-      <p className="subtitle">Staff Dashboard - Equipment & Space Management</p>
+      <div className="staff-welcome">
+        <h2>Welcome, {user?.first_name}! 👋</h2>
+        <p>Staff Dashboard - Equipment & Space Management</p>
+      </div>
 
-      <div className="stats-grid">
-        <div className="stat-card stat-primary">
-          <div className="stat-content">
-            <h3>{stats.myBookings}</h3>
-            <p>Equipment Bookings</p>
-          </div>
+      {/* Stats Grid */}
+      <div className="staff-stats-grid">
+        <div className="staff-stat-card">
+          <div className="staff-stat-icon">📦</div>
+          <div className="staff-stat-number">{stats.myBookings}</div>
+          <div className="staff-stat-label">Equipment Bookings</div>
         </div>
 
-        <div className="stat-card stat-success">
-          <div className="stat-content">
-            <h3>{stats.mySpaceBookings}</h3>
-            <p>Room Bookings</p>
-          </div>
+        <div className="staff-stat-card">
+          <div className="staff-stat-icon">🚪</div>
+          <div className="staff-stat-number">{stats.mySpaceBookings}</div>
+          <div className="staff-stat-label">Room Bookings</div>
         </div>
 
-        <div className="stat-card stat-info">
-          <div className="stat-content">
-            <h3>{stats.availableSpaces}</h3>
-            <p>Spaces Available</p>
-          </div>
+        <div className="staff-stat-card">
+          <div className="staff-stat-icon">✨</div>
+          <div className="staff-stat-number">{stats.availableSpaces}</div>
+          <div className="staff-stat-label">Spaces Available</div>
         </div>
       </div>
 
-      <div className="dashboard-actions">
-        <h3>Quick Actions</h3>
-        <div className="action-buttons">
-          <Link to="/staff/rooms" className="btn btn-primary" data-testid="book-room-link">
-            Book a Room/Space
-          </Link>
-          <Link to="/staff/equipment" className="btn btn-secondary" data-testid="browse-equipment-link">
-            Browse Equipment
-          </Link>
-          <Link to="/staff/bookings" className="btn btn-secondary" data-testid="view-bookings-link">
-            View My Bookings
-          </Link>
+      {/* Dashboard Grid */}
+      <div className="staff-dashboard-grid">
+        {/* Quick Actions */}
+        <div className="staff-card">
+          <h3><span className="staff-card-icon">⚡</span> Quick Actions</h3>
+          <div className="staff-quick-actions">
+            <Link to="/staff/rooms" className="staff-action-btn" data-testid="book-room-link">
+              🚪 Book a Room
+            </Link>
+            <Link to="/staff/equipment" className="staff-action-btn secondary" data-testid="browse-equipment-link">
+              📦 Browse Equipment
+            </Link>
+            <Link to="/staff/bookings" className="staff-action-btn secondary" data-testid="view-bookings-link">
+              📅 My Bookings
+            </Link>
+            <Link to="/staff/cross-department-requests" className="staff-action-btn secondary">
+              🔄 Request Equipment
+            </Link>
+          </div>
         </div>
-      </div>
 
-      <div className="dashboard-card">
-        <h3>Staff Features</h3>
-        <ul>
-          <li>Book rooms and spaces by the hour</li>
-          <li>Book equipment for projects</li>
-          <li>Manage all your bookings in one place</li>
-          <li>Auto-approved room bookings</li>
-        </ul>
+        {/* Staff Features */}
+        <div className="staff-card">
+          <h3><span className="staff-card-icon">⭐</span> Staff Features</h3>
+          <ul className="staff-features-list">
+            <li>Book rooms and spaces by the hour</li>
+            <li>Book equipment for projects</li>
+            <li>Manage all bookings in one place</li>
+            <li>Auto-approved room bookings</li>
+            <li>Request cross-department equipment</li>
+          </ul>
+        </div>
       </div>
     </div>
   );
