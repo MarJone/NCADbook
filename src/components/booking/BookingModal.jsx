@@ -4,15 +4,19 @@ import { useAuth } from '../../hooks/useAuth';
 import { emailService } from '../../services/email.service';
 import { demoMode } from '../../mocks/demo-mode';
 import BookingConflictCalendar from './BookingConflictCalendar';
+import MobileCalendar from './MobileCalendar';
 
 export default function BookingModal({ equipment, onClose, onSuccess }) {
   const { user } = useAuth();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [startDateObj, setStartDateObj] = useState(null);
+  const [endDateObj, setEndDateObj] = useState(null);
   const [purpose, setPurpose] = useState('');
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [useMobileCalendar, setUseMobileCalendar] = useState(window.innerWidth <= 768);
 
   // Check if user has permission to create bookings (for staff only)
   const canCreateBooking = () => {
@@ -91,6 +95,27 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
 
   const today = new Date().toISOString().split('T')[0];
 
+  // Handle mobile calendar date changes
+  const handleMobileStartDateChange = (date) => {
+    setStartDateObj(date);
+    setStartDate(formatDateForInput(date));
+  };
+
+  const handleMobileEndDateChange = (date) => {
+    setEndDateObj(date);
+    if (date) {
+      setEndDate(formatDateForInput(date));
+    }
+  };
+
+  const formatDateForInput = (date) => {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   // Check if user has permission
   if (!canCreateBooking()) {
     return (
@@ -130,37 +155,58 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
           </div>
 
           <form onSubmit={handleSubmit} data-testid="booking-form" noValidate>
-            <div className="form-group">
-              <label htmlFor="start-date">Start Date</label>
-              <input
-                id="start-date"
-                name="startDate"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                min={today}
-                required
-                data-testid="start-date-input"
-                className={fieldErrors.startDate ? 'error' : ''}
-              />
-              {fieldErrors.startDate && <div className="field-error" role="alert">{fieldErrors.startDate}</div>}
-            </div>
+            {useMobileCalendar ? (
+              <div className="form-group">
+                <label>Select Dates</label>
+                <MobileCalendar
+                  selectedStartDate={startDateObj}
+                  selectedEndDate={endDateObj}
+                  onStartDateChange={handleMobileStartDateChange}
+                  onEndDateChange={handleMobileEndDateChange}
+                  minDate={new Date()}
+                  mode="range"
+                />
+                {(fieldErrors.startDate || fieldErrors.endDate) && (
+                  <div className="field-error" role="alert">
+                    {fieldErrors.startDate || fieldErrors.endDate}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="form-group">
+                  <label htmlFor="start-date">Start Date</label>
+                  <input
+                    id="start-date"
+                    name="startDate"
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    min={today}
+                    required
+                    data-testid="start-date-input"
+                    className={fieldErrors.startDate ? 'error' : ''}
+                  />
+                  {fieldErrors.startDate && <div className="field-error" role="alert">{fieldErrors.startDate}</div>}
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="end-date">End Date</label>
-              <input
-                id="end-date"
-                name="endDate"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                min={startDate || today}
-                required
-                data-testid="end-date-input"
-                className={fieldErrors.endDate ? 'error' : ''}
-              />
-              {fieldErrors.endDate && <div className="field-error" role="alert">{fieldErrors.endDate}</div>}
-            </div>
+                <div className="form-group">
+                  <label htmlFor="end-date">End Date</label>
+                  <input
+                    id="end-date"
+                    name="endDate"
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    min={startDate || today}
+                    required
+                    data-testid="end-date-input"
+                    className={fieldErrors.endDate ? 'error' : ''}
+                  />
+                  {fieldErrors.endDate && <div className="field-error" role="alert">{fieldErrors.endDate}</div>}
+                </div>
+              </>
+            )}
 
             <div className="form-group">
               <label htmlFor="purpose">

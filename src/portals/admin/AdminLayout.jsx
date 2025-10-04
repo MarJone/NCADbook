@@ -2,6 +2,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useState, useEffect, useRef } from 'react';
 import NotificationCenter from '../../components/common/NotificationCenter';
+import MobileBottomNav from '../../components/common/MobileBottomNav';
 import Dashboard from './Dashboard';
 import BookingApprovals from './BookingApprovals';
 import EquipmentManagement from './EquipmentManagement';
@@ -193,6 +194,8 @@ export default function AdminLayout() {
           <Route path="department-staff-permissions" element={<DepartmentStaffPermissions />} />
         </Routes>
       </main>
+
+      <MobileBottomNav />
     </div>
   );
 }

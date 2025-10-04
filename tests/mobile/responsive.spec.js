@@ -50,9 +50,13 @@ test.describe('Mobile Responsive - Student Portal', () => {
   });
 
   test('should display mobile navigation', async ({ page }) => {
-    // Mobile nav should be visible
-    const nav = page.locator('nav, [data-testid="mobile-nav"], [data-testid="navigation"]');
-    await expect(nav).toBeVisible();
+    // Mobile bottom nav should be visible
+    const mobileNav = page.locator('[data-testid="mobile-bottom-nav"]');
+    await expect(mobileNav).toBeVisible();
+
+    // Should have navigation items
+    const navItems = mobileNav.locator('.nav-item');
+    await expect(navItems.first()).toBeVisible();
   });
 
   test('should stack equipment cards vertically', async ({ page }) => {

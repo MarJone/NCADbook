@@ -8,6 +8,7 @@ import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 import AvailabilityFilter from '../../components/equipment/AvailabilityFilter';
+import PullToRefresh from '../../components/common/PullToRefresh';
 import { useToast } from '../../hooks/useToast';
 import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
 import { useAuth } from '../../contexts/AuthContext';
@@ -18,7 +19,7 @@ export default function EquipmentBrowse() {
   const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const [viewMode, setViewMode] = useState('list'); // Changed default from 'large' to 'list'
+  const [viewMode, setViewMode] = useState('large'); // Default to large view for equipment cards
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showMultiModal, setShowMultiModal] = useState(false);
@@ -30,6 +31,7 @@ export default function EquipmentBrowse() {
   const itemsPerPage = 20;
   const [availabilityFilter, setAvailabilityFilter] = useState({ type: 'all' });
   const { toasts, showToast, removeToast } = useToast();
+  const [showAllDepartments, setShowAllDepartments] = useState(false);
 
   // Check if user has permission to view catalog (for staff only)
   const canViewCatalog = () => {
@@ -46,7 +48,7 @@ export default function EquipmentBrowse() {
   useEffect(() => {
     loadEquipment();
     loadSubAreas();
-  }, [filter, subAreaFilter]);
+  }, [filter, subAreaFilter, showAllDepartments]);
 
   useEffect(() => {
     // Apply search and availability filters to equipment
@@ -104,6 +106,11 @@ export default function EquipmentBrowse() {
         let filtered = accessibleEquip;
         if (filter !== 'all') {
           filtered = filtered.filter(item => item.category === filter);
+        }
+
+        // Filter by department: show only student's department unless showAllDepartments is true
+        if (!showAllDepartments && currentUser.department) {
+          filtered = filtered.filter(item => item.department === currentUser.department);
         }
 
         // Apply sub-area filter
@@ -172,6 +179,11 @@ export default function EquipmentBrowse() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleRefresh = async () => {
+    await loadEquipment();
+    await loadSubAreas();
+  };
+
   // Paginate filtered equipment
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -217,17 +229,18 @@ export default function EquipmentBrowse() {
 
   return (
     <div className="equipment-browse">
-      <div className="browse-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <h2>Browse Equipment</h2>
-        <button
-          onClick={() => setShowMultiModal(true)}
-          className="btn btn-primary"
-          data-testid="book-multiple-items-btn"
-          style={{ whiteSpace: 'nowrap' }}
-        >
-          Book Multiple Items
-        </button>
-      </div>
+      <PullToRefresh onRefresh={handleRefresh}>
+        <div className="browse-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <h2>Browse Equipment</h2>
+          <button
+            onClick={() => setShowMultiModal(true)}
+            className="btn btn-primary"
+            data-testid="book-multiple-items-btn"
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            Book Multiple Items
+          </button>
+        </div>
 
       <SearchBar
         onSearch={handleSearch}
@@ -236,6 +249,34 @@ export default function EquipmentBrowse() {
       />
 
       <AvailabilityFilter onFilterChange={setAvailabilityFilter} />
+
+      {user && user.role === 'student' && (
+        <div className="department-filter-toggle" style={{
+          marginTop: '1rem',
+          marginBottom: '1rem',
+          padding: '0.75rem',
+          backgroundColor: showAllDepartments ? '#e3f2fd' : '#f5f5f5',
+          borderRadius: '4px',
+          border: '1px solid #ddd'
+        }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={showAllDepartments}
+              onChange={(e) => setShowAllDepartments(e.target.checked)}
+              style={{ width: '18px', height: '18px' }}
+            />
+            <span style={{ fontWeight: '500' }}>
+              Browse equipment from other departments
+            </span>
+          </label>
+          {!showAllDepartments && (
+            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
+              Currently showing: {user.department} equipment only
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
         <div style={{ marginBottom: '0.5rem' }}>
@@ -420,6 +461,7 @@ export default function EquipmentBrowse() {
           />
         </>
       )}
+      </PullToRefresh>
 
       {showDetails && selectedEquipment && (
         <EquipmentDetails

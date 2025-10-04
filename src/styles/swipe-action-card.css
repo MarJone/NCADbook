@@ -1,0 +1,168 @@
+/* Swipe Action Card Component */
+.swipe-action-card {
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  touch-action: pan-y; /* Allow vertical scrolling but enable horizontal swipe */
+}
+
+.swipe-action-card.dragging {
+  cursor: grabbing;
+}
+
+/* Swipe action backgrounds */
+.swipe-action-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  z-index: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 8px;
+}
+
+.swipe-approve {
+  left: 0;
+  background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
+}
+
+.swipe-deny {
+  right: 0;
+  background: linear-gradient(90deg, #ef5350 0%, #f44336 100%);
+}
+
+.swipe-action-bg .action-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.swipe-action-bg .action-text {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Card content wrapper */
+.swipe-action-card .approval-item {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.swipe-action-card.dragging .approval-item {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Visual feedback for action hints */
+.swipe-action-card.hint-approve .approval-item {
+  border-left: 4px solid #4caf50;
+}
+
+.swipe-action-card.hint-deny .approval-item {
+  border-right: 4px solid #f44336;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .swipe-action-card {
+    touch-action: pan-y;
+  }
+
+  .swipe-action-bg {
+    width: 120px;
+  }
+
+  .swipe-action-bg .action-icon {
+    font-size: 1.75rem;
+  }
+
+  .swipe-action-bg .action-text {
+    font-size: 0.75rem;
+  }
+
+  /* Add swipe hint for first-time users */
+  .swipe-action-card:first-of-type .approval-item::after {
+    content: '← Swipe to approve/deny →';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    animation: swipeHintFadeIn 0.5s ease 1s forwards, swipeHintFadeOut 0.5s ease 5s forwards;
+  }
+}
+
+@keyframes swipeHintFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes swipeHintFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Desktop - hide swipe backgrounds, rely on buttons */
+@media (min-width: 769px) {
+  .swipe-action-card {
+    cursor: default;
+  }
+
+  .swipe-action-bg {
+    display: none;
+  }
+
+  /* Disable swipe on desktop */
+  .swipe-action-card.dragging .approval-item {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Accessibility - ensure keyboard navigation works */
+.swipe-action-card:focus-within {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .swipe-action-card {
+    transition: none;
+  }
+
+  .swipe-action-card .approval-item {
+    transition: none;
+  }
+
+  .swipe-action-bg {
+    transition: none;
+  }
+
+  .swipe-action-card:first-of-type .approval-item::after {
+    animation: none;
+    opacity: 0;
+  }
+}

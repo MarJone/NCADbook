@@ -40,7 +40,11 @@
       "Bash(npm run test:report:*)",
       "Bash(timeout:*)",
       "Bash(npm audit:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git config:*)",
+      "Bash(npm test:*)",
+      "Bash(/dev/null)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

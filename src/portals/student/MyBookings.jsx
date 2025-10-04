@@ -5,6 +5,7 @@ import { bookingService } from '../../services/booking.service';
 import { exportService } from '../../services/export.service';
 import Toast from '../../components/common/Toast';
 import BookingModal from '../../components/booking/BookingModal';
+import PullToRefresh from '../../components/common/PullToRefresh';
 import { useToast } from '../../hooks/useToast';
 
 export default function MyBookings() {
@@ -111,6 +112,10 @@ export default function MyBookings() {
     showToast('Opening PDF export...', 'success');
   };
 
+  const handleRefresh = async () => {
+    await loadBookings();
+  };
+
   if (loading) {
     return <div className="loading">Loading your bookings...</div>;
   }
@@ -165,11 +170,12 @@ export default function MyBookings() {
 
   return (
     <div className="my-bookings">
-      <div className="bookings-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div>
-          <h2>My Bookings</h2>
-          <p className="subtitle">{bookings.length} total booking(s)</p>
-        </div>
+      <PullToRefresh onRefresh={handleRefresh}>
+        <div className="bookings-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <div>
+            <h2>My Bookings</h2>
+            <p className="subtitle">{bookings.length} total booking(s)</p>
+          </div>
         {canExportData() && (
           <div className="export-actions">
             <button onClick={handleExportCSV} className="btn btn-secondary btn-sm" data-testid="export-csv-btn">
@@ -249,6 +255,7 @@ export default function MyBookings() {
           </div>
         ))}
       </div>
+      </PullToRefresh>
 
       {showRebookModal && selectedEquipment && (
         <BookingModal

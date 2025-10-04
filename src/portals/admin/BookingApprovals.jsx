@@ -7,6 +7,8 @@ import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 import BulkActionBar from '../../components/common/BulkActionBar';
+import SwipeActionCard from '../../components/booking/SwipeActionCard';
+import PullToRefresh from '../../components/common/PullToRefresh';
 import { useToast } from '../../hooks/useToast';
 
 export default function BookingApprovals() {
@@ -99,6 +101,11 @@ export default function BookingApprovals() {
     }
   };
 
+  const handleSwipeDeny = (booking) => {
+    setSelectedBooking(booking);
+    setShowDenyModal(true);
+  };
+
   const handleDeny = async () => {
     if (!denyReason.trim()) {
       showToast('Please provide a reason for denial', 'error');
@@ -165,6 +172,10 @@ export default function BookingApprovals() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleRefresh = async () => {
+    await loadBookings();
   };
 
   const handleSelectBooking = (bookingId) => {
@@ -274,27 +285,28 @@ export default function BookingApprovals() {
 
   return (
     <div className="booking-approvals" data-testid="booking-approvals">
-      <div className="approvals-header">
-        <h2>Booking Approvals</h2>
-        <div className="filter-controls">
-          {['pending', 'approved', 'denied', 'cancelled', 'all'].map(status => (
-            <button
-              key={status}
-              onClick={() => setFilter(status)}
-              className={filter === status ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
-              data-testid={`filter-${status}`}
-            >
-              {status.charAt(0).toUpperCase() + status.slice(1)}
-            </button>
-          ))}
+      <PullToRefresh onRefresh={handleRefresh}>
+        <div className="approvals-header">
+          <h2>Booking Approvals</h2>
+          <div className="filter-controls">
+            {['pending', 'approved', 'denied', 'cancelled', 'all'].map(status => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={filter === status ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
+                data-testid={`filter-${status}`}
+              >
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <SearchBar
-        onSearch={handleSearch}
-        placeholder="Search by equipment, student name, or purpose..."
-        ariaLabel="Search bookings"
-      />
+        <SearchBar
+          onSearch={handleSearch}
+          placeholder="Search by equipment, student name, or purpose..."
+          ariaLabel="Search bookings"
+        />
 
       {filter === 'pending' && paginatedBookings.length > 0 && (
         <BulkActionBar
@@ -331,57 +343,16 @@ export default function BookingApprovals() {
           )}
           <div className="approvals-list" data-testid="bookings-list">
             {paginatedBookings.map(booking => (
-            <div key={booking.id} className="approval-item" data-testid="booking-card">
-              <div className="approval-header">
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  {booking.status === 'pending' && (
-                    <input
-                      type="checkbox"
-                      checked={selectedBookings.includes(booking.id)}
-                      onChange={() => handleSelectBooking(booking.id)}
-                      data-testid={`select-booking-${booking.id}`}
-                      aria-label={`Select booking for ${booking.equipment?.product_name}`}
-                      style={{ marginTop: '0.25rem' }}
-                    />
-                  )}
-                  <div>
-                    <h3>{booking.equipment?.product_name || 'Unknown Equipment'}</h3>
-                    <p className="student-name">
-                      Requested by: {booking.student?.full_name || 'Unknown'}
-                      ({booking.student?.department})
-                    </p>
-                  </div>
-                </div>
-                <span className={'status-badge status-' + getStatusColor(booking.status)}>
-                  {booking.status}
-                </span>
-              </div>
-
-              <div className="approval-details">
-                <div className="detail-row">
-                  <span className="label">Equipment:</span>
-                  <span>{booking.equipment?.category} - {booking.equipment?.tracking_number}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label">Dates:</span>
-                  <span>{formatDate(booking.start_date)} - {formatDate(booking.end_date)}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label">Purpose:</span>
-                  <span>{booking.purpose || 'Not provided'}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label">Requested:</span>
-                  <span>{formatDate(booking.created_at)}</span>
-                </div>
-                {booking.denial_reason && (
-                  <div className="detail-row error">
-                    <span className="label">Denial Reason:</span>
-                    <span>{booking.denial_reason}</span>
-                  </div>
-                )}
-              </div>
-
+            <SwipeActionCard
+              key={booking.id}
+              booking={booking}
+              onApprove={handleApprove}
+              onDeny={handleSwipeDeny}
+              onSelectToggle={handleSelectBooking}
+              isSelected={selectedBookings.includes(booking.id)}
+              formatDate={formatDate}
+              getStatusColor={getStatusColor}
+            >
               {booking.status === 'pending' && (
                 <div className="approval-actions">
                   <button
@@ -403,7 +374,7 @@ export default function BookingApprovals() {
                   </button>
                 </div>
               )}
-            </div>
+            </SwipeActionCard>
           ))}
           </div>
           <Pagination
@@ -415,6 +386,7 @@ export default function BookingApprovals() {
           />
         </>
       )}
+      </PullToRefresh>
 
       {showDenyModal && (
         <div className="modal-overlay" onClick={() => setShowDenyModal(false)} data-testid="modal-overlay">

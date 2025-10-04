@@ -1,0 +1,170 @@
+/* Pull to Refresh Component */
+.pull-to-refresh-container {
+  position: relative;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  height: 100%;
+  width: 100%;
+}
+
+/* Pull indicator */
+.pull-indicator {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.pull-indicator .spinner {
+  width: 24px;
+  height: 24px;
+  color: #1976d2;
+}
+
+.pull-indicator .spinner svg {
+  display: block;
+}
+
+.pull-indicator .spinner svg circle {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 15;
+}
+
+/* Spinning animation when refreshing */
+.pull-indicator.refreshing .spinner {
+  animation: spin 1s linear infinite;
+}
+
+.pull-indicator.refreshing .spinner svg circle {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 15;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 60;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 30, 60;
+    stroke-dashoffset: -15;
+  }
+  100% {
+    stroke-dasharray: 30, 60;
+    stroke-dashoffset: -45;
+  }
+}
+
+/* Status message */
+.pull-indicator .status-message {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Content wrapper */
+.pull-to-refresh-content {
+  min-height: 100%;
+  will-change: transform;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .pull-to-refresh-container {
+    /* Ensure smooth touch scrolling */
+    touch-action: pan-y;
+  }
+
+  .pull-indicator {
+    top: -70px;
+    height: 70px;
+  }
+
+  .pull-indicator .spinner {
+    width: 28px;
+    height: 28px;
+  }
+
+  .pull-indicator .status-message {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Desktop - disable pull-to-refresh */
+@media (min-width: 769px) {
+  .pull-to-refresh-container {
+    overflow-y: auto;
+  }
+
+  .pull-indicator {
+    display: none;
+  }
+
+  .pull-to-refresh-content {
+    transform: none !important;
+  }
+}
+
+/* Accessibility - reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .pull-indicator,
+  .pull-to-refresh-content {
+    transition: none !important;
+  }
+
+  .pull-indicator.refreshing .spinner {
+    animation: none;
+  }
+
+  .pull-indicator.refreshing .spinner svg circle {
+    animation: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .pull-indicator .spinner {
+    color: #64b5f6;
+  }
+
+  .pull-indicator .status-message {
+    color: #aaa;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pull-indicator .spinner {
+    color: #000;
+  }
+
+  .pull-indicator .status-message {
+    color: #000;
+    font-weight: 600;
+  }
+}
+
+/* Loading state overlay (optional, for blocking interactions during refresh) */
+.pull-to-refresh-container.blocking {
+  pointer-events: none;
+}
+
+.pull-to-refresh-container.blocking .pull-to-refresh-content {
+  opacity: 0.7;
+}

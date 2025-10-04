@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
+import MobileBottomNav from '../../components/common/MobileBottomNav';
 import StudentDashboard from './StudentDashboard';
 import EquipmentBrowse from './EquipmentBrowse';
 import MyBookings from './MyBookings';
@@ -38,6 +39,8 @@ export default function StudentLayout() {
           <Route path="bookings" element={<MyBookings />} />
         </Routes>
       </main>
+
+      <MobileBottomNav />
     </div>
   );
 }
