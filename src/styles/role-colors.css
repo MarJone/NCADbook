@@ -1,59 +1,60 @@
 /* ============================================
    ROLE-BASED COLOR SCHEMES
    Subtle color-coded backgrounds for each portal
+   Updated for better contrast and legibility
    ============================================ */
 
-/* ========== STUDENT PORTAL - Soft Blue-Gray ========== */
+/* ========== STUDENT PORTAL - Soft Blue ========== */
 /* Theme: Calm, Learning-Focused, Approachable */
 
 .student-portal {
   --role-bg-primary: #FFFFFF;
-  --role-bg-secondary: #F0F4F8;
-  --role-bg-tertiary: #E1E8ED;
-  --role-accent: #3B82F6;
-  --role-accent-hover: #2563EB;
+  --role-bg-secondary: #F8FAFC;
+  --role-bg-tertiary: #F1F5F9;
+  --role-accent: #1E40AF;
+  --role-accent-hover: #1E3A8A;
   --role-accent-light: #DBEAFE;
-  --role-gradient-start: #3B82F6;
-  --role-gradient-end: #2563EB;
+  --role-gradient-start: #2563EB;
+  --role-gradient-end: #1E40AF;
 }
 
-/* ========== STAFF PORTAL - Soft Green-Gray ========== */
+/* ========== STAFF PORTAL - Soft Green ========== */
 /* Theme: Productive, Balanced, Professional */
 
 .staff-portal {
   --role-bg-primary: #FFFFFF;
-  --role-bg-secondary: #F0F7F4;
-  --role-bg-tertiary: #E1EDE8;
-  --role-accent: #10B981;
-  --role-accent-hover: #059669;
+  --role-bg-secondary: #F9FAFB;
+  --role-bg-tertiary: #F3F4F6;
+  --role-accent: #059669;
+  --role-accent-hover: #047857;
   --role-accent-light: #D1FAE5;
   --role-gradient-start: #10B981;
   --role-gradient-end: #059669;
 }
 
-/* ========== DEPARTMENT ADMIN - Soft Amber-Gray ========== */
+/* ========== DEPARTMENT ADMIN - Soft Amber ========== */
 /* Theme: Warm, Managerial, Organized */
 
 .admin-portal {
   --role-bg-primary: #FFFFFF;
-  --role-bg-secondary: #FBF8F3;
-  --role-bg-tertiary: #F4EDE3;
-  --role-accent: #F59E0B;
-  --role-accent-hover: #D97706;
+  --role-bg-secondary: #FEFCE8;
+  --role-bg-tertiary: #FEF9C3;
+  --role-accent: #D97706;
+  --role-accent-hover: #B45309;
   --role-accent-light: #FEF3C7;
   --role-gradient-start: #F59E0B;
   --role-gradient-end: #D97706;
 }
 
-/* ========== MASTER ADMIN - Soft Purple-Gray ========== */
+/* ========== MASTER ADMIN - Soft Purple ========== */
 /* Theme: Authoritative, System-Wide, Strategic */
 
 .master-admin-portal {
   --role-bg-primary: #FFFFFF;
-  --role-bg-secondary: #F5F3F7;
-  --role-bg-tertiary: #EBE7EF;
-  --role-accent: #8B5CF6;
-  --role-accent-hover: #7C3AED;
+  --role-bg-secondary: #FAF5FF;
+  --role-bg-tertiary: #F3E8FF;
+  --role-accent: #7C3AED;
+  --role-accent-hover: #6D28D9;
   --role-accent-light: #EDE9FE;
   --role-gradient-start: #8B5CF6;
   --role-gradient-end: #7C3AED;
@@ -137,7 +138,7 @@
   background: linear-gradient(180deg, var(--role-gradient-start) 0%, var(--role-gradient-end) 100%);
 }
 
-/* Stat numbers with role colors */
+/* Stat numbers with role colors - darker for better contrast */
 .student-portal .student-stat-number {
   color: var(--role-accent);
 }
