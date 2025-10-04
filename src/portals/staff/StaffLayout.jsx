@@ -6,6 +6,8 @@ import StaffDashboard from './StaffDashboard';
 import RoomBooking from './RoomBooking';
 import EquipmentBrowse from '../student/EquipmentBrowse';
 import MyBookings from '../student/MyBookings';
+import CrossDepartmentRequestForm from './CrossDepartmentRequestForm';
+import MyCrossDepartmentRequests from './MyCrossDepartmentRequests';
 
 export default function StaffLayout() {
   const { user, logout } = useAuth();
@@ -28,6 +30,8 @@ export default function StaffLayout() {
         <Link to="/staff/rooms" className="nav-link">Book Rooms</Link>
         <Link to="/staff/equipment" className="nav-link">Equipment</Link>
         <Link to="/staff/bookings" className="nav-link">My Bookings</Link>
+        <Link to="/staff/cross-department-requests" className="nav-link">Request Equipment</Link>
+        <Link to="/staff/my-cross-department-requests" className="nav-link">My Requests</Link>
       </nav>
 
       <main className="portal-main">
@@ -36,6 +40,8 @@ export default function StaffLayout() {
           <Route path="rooms" element={<RoomBooking />} />
           <Route path="equipment" element={<EquipmentBrowse />} />
           <Route path="bookings" element={<MyBookings />} />
+          <Route path="cross-department-requests" element={<CrossDepartmentRequestForm />} />
+          <Route path="my-cross-department-requests" element={<MyCrossDepartmentRequests />} />
         </Routes>
       </main>
 

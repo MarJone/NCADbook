@@ -19,6 +19,8 @@ import AccessRequests from './AccessRequests';
 import ManageAccessRequests from './ManageAccessRequests';
 import DepartmentStaffPermissions from './DepartmentStaffPermissions';
 import SystemSettings from '../master-admin/SystemSettings';
+import CrossDepartmentRequests from './CrossDepartmentRequests';
+import EquipmentKitsManagement from './EquipmentKitsManagement';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -70,6 +72,8 @@ export default function AdminLayout() {
             <Link to="/admin/equipment" className="nav-link">Equipment</Link>
             <Link to="/admin/approvals" className="nav-link btn-quick-action">Approve Bookings</Link>
             <Link to="/admin/access-requests" className="nav-link btn-quick-action">Request Access</Link>
+            <Link to="/admin/cross-department-requests" className="nav-link">Cross-Dept Requests</Link>
+            <Link to="/admin/equipment-kits" className="nav-link">Equipment Kits</Link>
             <Link to="/admin/department-staff-permissions" className="nav-link">Manage Staff Permissions</Link>
           </>
         )}
@@ -197,6 +201,8 @@ export default function AdminLayout() {
           <Route path="features" element={<FeatureFlagManager />} />
           <Route path="department-staff-permissions" element={<DepartmentStaffPermissions />} />
           <Route path="system-settings" element={<SystemSettings />} />
+          <Route path="cross-department-requests" element={<CrossDepartmentRequests />} />
+          <Route path="equipment-kits" element={<EquipmentKitsManagement />} />
         </Routes>
       </main>
 

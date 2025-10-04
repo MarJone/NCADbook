@@ -9,10 +9,11 @@ import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 import AvailabilityFilter from '../../components/equipment/AvailabilityFilter';
 import PullToRefresh from '../../components/common/PullToRefresh';
+import KitBrowser from '../../components/equipment/KitBrowser';
 import { useToast } from '../../hooks/useToast';
 import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
 import { useAuth } from '../../contexts/AuthContext';
-import { isCrossDepartmentBrowsingEnabled } from '../../services/systemSettings.service';
+import { isCrossDepartmentBrowsingEnabled, areEquipmentKitsEnabled } from '../../services/systemSettings.service';
 import { getDepartmentsBySchool, SCHOOLS } from '../../config/departments';
 
 export default function EquipmentBrowse() {
@@ -35,6 +36,7 @@ export default function EquipmentBrowse() {
   const { toasts, showToast, removeToast } = useToast();
   const [crossDeptBrowsingEnabled, setCrossDeptBrowsingEnabled] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState('my_department'); // 'my_department' or department ID
+  const [kitsEnabled, setKitsEnabled] = useState(false);
 
   // Check if user has permission to view catalog (for staff only)
   const canViewCatalog = () => {
@@ -59,10 +61,13 @@ export default function EquipmentBrowse() {
 
   const checkCrossDeptBrowsing = async () => {
     try {
-      const enabled = await isCrossDepartmentBrowsingEnabled();
-      setCrossDeptBrowsingEnabled(enabled);
+      const browsing = await isCrossDepartmentBrowsingEnabled();
+      setCrossDeptBrowsingEnabled(browsing);
+
+      const kits = await areEquipmentKitsEnabled();
+      setKitsEnabled(kits);
     } catch (error) {
-      console.error('Failed to check cross-dept browsing setting:', error);
+      console.error('Failed to check system settings:', error);
     }
   };
 
@@ -268,6 +273,10 @@ export default function EquipmentBrowse() {
       />
 
       <AvailabilityFilter onFilterChange={setAvailabilityFilter} />
+
+      {user && user.role === 'student' && kitsEnabled && (
+        <KitBrowser onBookingSuccess={loadEquipment} />
+      )}
 
       {user && user.role === 'student' && crossDeptBrowsingEnabled && (
         <div className="department-filter-dropdown" style={{
