@@ -1,6 +1,6 @@
 # Project Memory: NCADbook Development History
 
-**Last Updated:** 2025-10-02
+**Last Updated:** 2025-10-04
 **Project:** NCAD Equipment Booking System (NCADbook)
 **Tech Stack:** React + Vite, Supabase (planned), localStorage (current demo mode)
 **Repository:** https://github.com/MarJone/NCADbook
@@ -218,6 +218,187 @@ Mobile-first equipment booking system for NCAD College to replace manual Excel-b
 - Implemented permission-based rendering in navigation
 - Created reusable modal pattern for multi-step flows
 - Added visual distinction between user and admin kits (⭐ icon)
+
+---
+
+### Phase 7: Mobile Enhancements & Department Isolation (Commit: 09c5620)
+**Objective:** Mobile-first improvements and department-based access control
+
+**Completed:**
+- ✅ Sub-Area renamed to Department system-wide
+- ✅ Department-level permissions management for staff
+- ✅ Master admin control over staff permissions
+- ✅ Department isolation for equipment and bookings
+- ✅ Mobile responsive improvements across all portals
+- ✅ Netlify deployment configuration
+
+**Files Modified:**
+- Database schema updated: `sub_areas` → `departments`
+- Staff permissions UI created
+- Mobile CSS optimizations
+
+---
+
+### Phase 8: Cross-Department Access & Equipment Kits (Oct 4, 2025)
+**Objective:** Advanced cross-department workflows and equipment kit management
+
+**Completed:**
+- ✅ System-wide settings controlled by master admin
+- ✅ Cross-department browsing for students (master admin toggle)
+- ✅ Cross-department equipment request system for staff
+- ✅ Smart routing algorithm for equipment requests
+- ✅ Department admin equipment kit management
+- ✅ Student equipment kit browsing and booking
+- ✅ Auto-booking system for equipment kits
+- ✅ Comprehensive 10-department structure based on NCAD's 4 Schools
+
+**New Features:**
+
+**1. System Settings (Master Admin Control)**
+- Global toggles for cross-department browsing, staff requests, equipment kits
+- Impact messages showing effect of each setting
+- Last modified timestamp tracking
+- File: `src/portals/master-admin/SystemSettings.jsx`
+- Service: `src/services/systemSettings.service.js`
+
+**2. Cross-Department Browsing (Students)**
+- Master admin controls visibility via system setting
+- School-grouped department dropdown (HTML optgroup)
+- Students can VIEW equipment from other departments
+- Booking still requires cross-department access grant
+- Integration: `src/portals/student/EquipmentBrowse.jsx`
+
+**3. Cross-Department Request System (Staff)**
+- Staff can request equipment from other departments
+- Smart routing algorithm:
+  - Single department: Routes if one dept has enough equipment
+  - Broadcast: Routes to all departments if no single dept has enough
+- Real-time availability preview by department
+- Request history view with status tracking
+- Files:
+  - `src/portals/staff/CrossDepartmentRequestForm.jsx`
+  - `src/portals/staff/MyCrossDepartmentRequests.jsx`
+  - `src/services/crossDepartmentRequests.service.js`
+
+**4. Department Admin Request Approval**
+- Approve/deny cross-department requests
+- Custom pickup/return instructions template
+- Instructions include: date, time, location, contact info
+- Denial requires reason (min 20 chars)
+- File: `src/portals/admin/CrossDepartmentRequests.jsx`
+
+**5. Equipment Kits Management (Department Admins)**
+- Create/edit/deactivate equipment kits for their department
+- Department-specific visibility (only their students see kits)
+- Equipment selection grouped by category
+- Select all/deselect all functionality
+- Files:
+  - `src/portals/admin/EquipmentKitsManagement.jsx`
+  - `src/portals/admin/EquipmentKitForm.jsx`
+  - `src/services/equipmentKits.service.js`
+
+**6. Equipment Kit Browsing & Booking (Students)**
+- Browse kits available in their department
+- View kit details with all equipment items
+- Check availability for specific date ranges
+- Auto-booking: Creates individual booking for each item in kit
+- File: `src/components/equipment/KitBrowser.jsx`
+
+**7. Department Structure Overhaul**
+- 10 departments across 4 schools:
+  - **School of Design:** Communication Design, Product Design
+  - **School of Fine Art:** Painting, Print, Media (3 admins), Sculpture & Applied Materials
+  - **School of Education:** Education
+  - **School of Visual Culture:** Visual Culture
+  - **First Year Studies:** Ground Floor, Top Floor (separate equipment pools)
+- Media department has 3 department admins (Photography, Video, Physical Computing)
+- File: `src/config/departments.js`
+
+**Demo Data:**
+- 150 users distributed across 10 departments
+- 65 equipment items created (Communication Design: 40, Product Design: 25)
+- 3 equipment kits (Video Production, Photography, Design)
+- 5 cross-department requests with varied statuses
+- Files:
+  - `src/mocks/demo-data-phase8.js`
+  - `src/mocks/demo-data-phase8-features.js`
+
+**Key Algorithms:**
+
+**Smart Routing Algorithm:**
+```javascript
+async function determineRequestRouting(equipmentType, quantity) {
+  const availability = await getEquipmentAvailabilityByType(equipmentType);
+  const departmentWithEnough = availability.find(dept => dept.availableCount >= quantity);
+
+  if (departmentWithEnough) {
+    return {
+      routingType: 'single',
+      targetDepartments: [departmentWithEnough],
+      message: `Request will be sent to ${departmentWithEnough.departmentName}`
+    };
+  } else {
+    return {
+      routingType: 'broadcast',
+      targetDepartments: availability,
+      message: `Request exceeds any single department's capacity. Will be broadcast to all ${availability.length} departments.`
+    };
+  }
+}
+```
+
+**Auto-Booking for Kits:**
+```javascript
+async function bookKit(kitBookingData) {
+  const { kitId, userId, startDate, endDate, justification } = kitBookingData;
+
+  // Check all items available
+  const availability = await checkKitAvailability(kitId, startDate, endDate);
+  if (!availability.available) throw new Error('Some equipment in this kit is not available');
+
+  // Create individual booking for each equipment item
+  for (const equipmentId of kit.equipment_ids) {
+    const booking = {
+      equipment_id: equipmentId,
+      user_id: userId,
+      start_date: startDate,
+      end_date: endDate,
+      kit_booking_id: kitBookingId,
+      status: 'pending'
+    };
+    data.bookings.push(booking);
+  }
+
+  return kitBooking;
+}
+```
+
+**Routing Added:**
+- Staff: `/staff/cross-department-requests`, `/staff/my-cross-department-requests`
+- Admin: `/admin/cross-department-requests`, `/admin/equipment-kits`
+- Master Admin: `/admin/system-settings`
+
+**Challenges:**
+- Login test helper used incorrect button selectors (`.role-name` needed)
+- Department structure complexity (10 depts, 4 schools, grouped UI)
+- Smart routing logic required availability aggregation across departments
+- Kit availability checking across multiple equipment items simultaneously
+
+**Design Decisions:**
+1. **Master Admin Control:** System settings centralized for consistent global control
+2. **School-Grouped Dropdowns:** Used HTML `<optgroup>` for hierarchical department selection
+3. **Smart Routing:** Algorithm automatically determines optimal request routing to minimize admin overhead
+4. **Auto-Booking Pattern:** Kit booking creates individual bookings for easier tracking and status management
+5. **Department-Specific Kits:** Keeps equipment organization aligned with department ownership
+
+**Commits:**
+- `4e28deb`: Phase 8 Foundation (12 files)
+- `4282807`: Phase 8 UI Components (5 files)
+- `fb2ddbb`: Phase 8 Kits & Routing Complete (8 files)
+- `9dd214b`: Fix login helper button selectors
+
+**Test Fixes:**
+- Updated `tests/utils/test-helpers.js` to use `.role-name` selector for login buttons
 
 ---
 
