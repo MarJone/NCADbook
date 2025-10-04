@@ -47,51 +47,76 @@ export default function StudentDashboard() {
   };
 
   return (
-    <div className="dashboard">
-      <h2>Welcome, {user?.first_name}!</h2>
-      <p>Your equipment booking dashboard</p>
+    <div className="student-dashboard">
+      <div className="student-welcome">
+        <h2>Welcome, {user?.first_name}! 👋</h2>
+        <p>Your equipment booking dashboard</p>
+      </div>
 
-      <div className="dashboard-grid">
-        <div className="dashboard-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h3>Stats</h3>
+      <div className="student-dashboard-grid">
+        {/* Stats Card */}
+        <div className="student-card student-stat-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
+            <h3><span className="student-card-icon">📊</span> Your Stats</h3>
             <button
               onClick={() => setShowDetailedStats(!showDetailedStats)}
               className="btn btn-secondary btn-sm"
-              style={{ fontSize: '0.75rem' }}
+              style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem' }}
             >
-              {showDetailedStats ? 'Quick' : 'Detailed'}
+              {showDetailedStats ? 'Simple' : 'Detailed'}
             </button>
           </div>
 
           {showDetailedStats ? (
-            <>
-              <p><strong>Total Bookings:</strong> {totalBookings}</p>
-              <p><strong>Active Bookings:</strong> {activeBookings}</p>
-              <p><strong>Pending Approvals:</strong> {pendingBookings}</p>
-              <p><strong>Denied:</strong> {bookings.filter(b => b.status === 'denied').length}</p>
-              <p><strong>Completed:</strong> {bookings.filter(b => b.status === 'completed').length}</p>
-            </>
+            <div className="student-stat-grid">
+              <div className="student-stat-item">
+                <strong>{totalBookings}</strong>
+                <span>Total</span>
+              </div>
+              <div className="student-stat-item">
+                <strong>{activeBookings}</strong>
+                <span>Active</span>
+              </div>
+              <div className="student-stat-item">
+                <strong>{pendingBookings}</strong>
+                <span>Pending</span>
+              </div>
+              <div className="student-stat-item">
+                <strong>{bookings.filter(b => b.status === 'completed').length}</strong>
+                <span>Completed</span>
+              </div>
+            </div>
           ) : (
-            <>
-              <p>Active Bookings: {activeBookings}</p>
-              <p>Pending Approvals: {pendingBookings}</p>
-            </>
+            <div>
+              <div className="student-stat-number">{activeBookings}</div>
+              <div className="student-stat-label">Active Bookings</div>
+              {pendingBookings > 0 && (
+                <div style={{ marginTop: 'var(--space-2)', padding: 'var(--space-2)', background: 'var(--theme-warning-bg)', borderRadius: 'var(--radius-sm)' }}>
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--theme-warning-text)', fontWeight: 'var(--font-semibold)' }}>
+                    ⏱ {pendingBookings} pending approval
+                  </span>
+                </div>
+              )}
+            </div>
           )}
         </div>
 
-        <div className="dashboard-card">
-          <h3>Recent Activity</h3>
+        {/* Recent Activity Card */}
+        <div className="student-card">
+          <h3><span className="student-card-icon">📋</span> Recent Activity</h3>
           {bookings.length === 0 ? (
-            <p>No recent activity</p>
+            <div className="student-empty-state">
+              <div className="student-empty-state-icon">📦</div>
+              <p>No recent activity</p>
+            </div>
           ) : (
-            <div style={{ fontSize: '0.875rem' }}>
+            <div className="student-activity-list">
               {bookings.slice(0, 3).map(booking => (
-                <div key={booking.id} style={{ marginBottom: '0.5rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <div style={{ fontWeight: '600' }}>{booking.equipment_name}</div>
-                  <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>
-                    {new Date(booking.start_date).toLocaleDateString()} -
-                    <span className={`status-badge status-${booking.status === 'approved' ? 'success' : booking.status === 'pending' ? 'warning' : 'error'}`} style={{ marginLeft: '0.5rem' }}>
+                <div key={booking.id} className="student-activity-item">
+                  <div className="student-activity-title">{booking.equipment_name}</div>
+                  <div className="student-activity-meta">
+                    <span>{new Date(booking.start_date).toLocaleDateString()}</span>
+                    <span className={`student-status-badge ${booking.status}`}>
                       {booking.status}
                     </span>
                   </div>
@@ -101,34 +126,37 @@ export default function StudentDashboard() {
           )}
         </div>
 
-        <div className="dashboard-card">
-          <h3>Saved Equipment Kits ({savedKits.length})</h3>
+        {/* Saved Kits Card */}
+        <div className="student-card">
+          <h3><span className="student-card-icon">🎒</span> Saved Kits ({savedKits.length})</h3>
           {savedKits.length === 0 ? (
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-              No saved kits yet. Create custom kits when booking equipment!
-            </p>
+            <div className="student-empty-state">
+              <div className="student-empty-state-icon">🎒</div>
+              <p>No saved kits yet. Create custom kits when booking equipment!</p>
+            </div>
           ) : (
-            <div style={{ fontSize: '0.875rem', maxHeight: '200px', overflowY: 'auto' }}>
+            <div className="student-kit-list">
               {savedKits.map(kit => (
                 <div
                   key={kit.id}
-                  style={{
-                    marginBottom: '0.75rem',
-                    padding: '0.75rem',
-                    background: kit.type === 'admin' ? 'var(--color-tertiary-light)' : 'var(--bg-secondary)',
-                    borderRadius: 'var(--radius-sm)',
-                    cursor: 'pointer',
-                    border: `1px solid ${kit.type === 'admin' ? 'var(--color-tertiary)' : 'var(--border-color)'}`
-                  }}
+                  className={`student-kit-item ${kit.type === 'admin' ? 'admin-kit' : ''}`}
                   onClick={() => {
                     showToast(`Booking kit: ${kit.name}`, 'info');
                     setShowMultiModal(true);
                   }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      showToast(`Booking kit: ${kit.name}`, 'info');
+                      setShowMultiModal(true);
+                    }
+                  }}
                 >
-                  <div style={{ fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    {kit.name}
+                  <div className="student-kit-name">
+                    {kit.type === 'admin' ? '⭐' : '📦'} {kit.name}
                   </div>
-                  <div style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>
+                  <div className="student-kit-meta">
                     {kit.equipment_ids?.length || 0} items
                     {kit.type === 'admin' && ' • Admin Kit'}
                   </div>
@@ -138,21 +166,22 @@ export default function StudentDashboard() {
           )}
         </div>
 
-        <div className="dashboard-card">
-          <h3>Quick Actions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        {/* Quick Actions Card */}
+        <div className="student-card">
+          <h3><span className="student-card-icon">⚡</span> Quick Actions</h3>
+          <div className="student-quick-actions">
             <button
               onClick={() => setShowMultiModal(true)}
-              className="btn btn-primary btn-block"
+              className="student-action-btn"
               data-testid="quick-book-multiple"
             >
-              Book Multiple Items
+              📦 Book Multiple Items
             </button>
             <button
               onClick={() => navigate('/student/equipment')}
-              className="btn btn-secondary btn-block"
+              className="student-action-btn secondary"
             >
-              Browse Equipment
+              🔍 Browse Equipment
             </button>
           </div>
         </div>
