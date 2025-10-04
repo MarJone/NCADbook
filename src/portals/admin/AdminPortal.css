@@ -2,6 +2,11 @@
    ADMIN PORTAL - Desktop-Optimized Design
    Design: Warm, managerial, organized
    Target: Desktop (1024px+), Large Desktop (1440px+)
+   Master Admin: 4K Optimized (2560px+)
+
+   Color Themes:
+   - Department Admin: Amber (#D97706)
+   - Master Admin: Purple (#7C3AED)
    ============================================ */
 
 /* ========== PORTAL LAYOUT ========== */
@@ -389,5 +394,117 @@
 
   .admin-action-btn {
     border: 2px solid currentColor;
+  }
+}
+
+/* ========== MASTER ADMIN - PURPLE THEME ========== */
+
+.master-admin-portal .admin-portal {
+  --role-bg-primary: #FFFFFF;
+  --role-bg-secondary: #FAF5FF;
+  --role-bg-tertiary: #F3E8FF;
+  --role-accent: #7C3AED;
+  --role-accent-hover: #6D28D9;
+  --role-gradient-start: #8B5CF6;
+  --role-gradient-end: #7C3AED;
+}
+
+/* Override colors for Master Admin */
+.master-admin-portal .admin-stat-number {
+  color: #7C3AED;
+}
+
+.master-admin-portal .admin-nav-link.active {
+  color: #7C3AED;
+  border-bottom-color: #7C3AED;
+}
+
+.master-admin-portal .admin-nav-link:hover {
+  color: #7C3AED;
+  background: #F3E8FF;
+}
+
+.master-admin-portal .admin-stat-card::before {
+  background: linear-gradient(180deg, #8B5CF6 0%, #7C3AED 100%);
+}
+
+.master-admin-portal .admin-action-btn {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+}
+
+.master-admin-portal .admin-action-btn:focus-visible,
+.master-admin-portal .admin-nav-link:focus-visible {
+  outline-color: #7C3AED;
+}
+
+/* ========== 4K OPTIMIZATION (2560px+) ========== */
+
+@media (min-width: 2560px) {
+  .admin-header-content,
+  .admin-nav-container,
+  .admin-main {
+    max-width: 2400px; /* Wider for 4K displays */
+  }
+
+  .admin-header h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .admin-nav-link {
+    font-size: var(--text-base);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(6, 1fr); /* 6 columns on 4K */
+    gap: var(--space-4);
+  }
+
+  .admin-stat-number {
+    font-size: 4rem; /* Larger stats */
+  }
+
+  .admin-stat-icon {
+    font-size: 4rem;
+  }
+
+  .admin-card h3 {
+    font-size: var(--text-2xl);
+  }
+
+  .admin-action-btn {
+    min-height: 72px; /* Larger touch targets */
+    font-size: var(--text-lg);
+  }
+
+  .admin-dashboard-grid {
+    grid-template-columns: 2fr 1fr 1fr; /* 3-column on 4K */
+  }
+
+  /* More content visible on large screens */
+  .admin-welcome h2 {
+    font-size: 3rem;
+  }
+
+  .admin-welcome p {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ========== ULTRA-WIDE 4K (3440px+) ========== */
+
+@media (min-width: 3440px) {
+  .admin-header-content,
+  .admin-nav-container,
+  .admin-main {
+    max-width: 3200px; /* Ultra-wide support */
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(8, 1fr); /* 8 columns on ultra-wide */
+  }
+
+  .admin-dashboard-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4-column on ultra-wide */
   }
 }

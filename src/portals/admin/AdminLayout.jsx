@@ -27,7 +27,7 @@ export default function AdminLayout() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="admin-portal">
+    <div className={`admin-portal ${user?.role === 'master_admin' ? 'master-admin-portal' : ''}`}>
       <header className="admin-header">
         <div className="admin-header-content">
           <h1>🎯 NCADbook {user?.role === 'master_admin' ? 'Master Admin' : 'Department Admin'}</h1>
