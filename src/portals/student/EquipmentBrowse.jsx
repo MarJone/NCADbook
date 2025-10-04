@@ -3,6 +3,7 @@ import { demoMode } from '../../mocks/demo-mode';
 import BookingModal from '../../components/booking/BookingModal';
 import MultiItemBookingModal from '../../components/booking/MultiItemBookingModal';
 import EquipmentDetails from '../../components/equipment/EquipmentDetails';
+import EquipmentImage from '../../components/equipment/EquipmentImage';
 import Toast from '../../components/common/Toast';
 import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
@@ -420,10 +421,11 @@ export default function EquipmentBrowse() {
           <div className="equipment-grid">
             {paginatedEquipment.map(item => (
             <div key={item.id} className="equipment-card" data-testid="equipment-card">
-              <div className="equipment-image" onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>
-                <div className="equipment-category-label">
-                  {item.category}
-                </div>
+              <div onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>
+                <EquipmentImage
+                  equipment={item}
+                  size="medium"
+                />
               </div>
               <div className="equipment-info">
                 <h3 onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>{item.product_name}</h3>

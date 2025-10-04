@@ -1,3 +1,5 @@
+import EquipmentImage from './EquipmentImage';
+
 export default function EquipmentDetails({ equipment, onClose, onBookClick }) {
   if (!equipment) return null;
 
@@ -20,11 +22,11 @@ export default function EquipmentDetails({ equipment, onClose, onBookClick }) {
         </div>
 
         <div className="modal-body">
-          <div className="equipment-image-large">
-            <div className="equipment-category-label">
-              {equipment.category}
-            </div>
-          </div>
+          <EquipmentImage
+            equipment={equipment}
+            size="detail"
+            showCategory={true}
+          />
 
           <div className="equipment-details-info">
             <div className="detail-row">
