@@ -154,6 +154,55 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
             <p>{equipment.category} - {equipment.department}</p>
           </div>
 
+          {/* Cross-Department Access Notice */}
+          {equipment.isCrossDepartment && (
+            <div className="cross-department-notice" style={{
+              marginTop: '1rem',
+              marginBottom: '1.5rem',
+              padding: '1rem',
+              backgroundColor: '#e3f2fd',
+              border: '2px solid #2196f3',
+              borderRadius: '8px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}>🔄</span>
+                <h4 style={{ margin: 0, color: '#1976d2', fontSize: '1.1rem' }}>Cross-Department Equipment</h4>
+              </div>
+
+              <p style={{ margin: '0.5rem 0', color: '#333', fontSize: '0.95rem' }}>
+                <strong>From:</strong> {equipment.lendingDepartment}
+              </p>
+
+              <div style={{
+                marginTop: '1rem',
+                padding: '0.75rem',
+                backgroundColor: '#fff',
+                borderRadius: '4px',
+                border: '1px solid #bbdefb'
+              }}>
+                <h5 style={{ margin: '0 0 0.5rem 0', color: '#1976d2', fontSize: '0.9rem' }}>📍 Collection Instructions</h5>
+                <p style={{ margin: 0, fontSize: '0.875rem', lineHeight: '1.5', color: '#333', whiteSpace: 'pre-wrap' }}>
+                  {equipment.collectionInstructions}
+                </p>
+              </div>
+
+              {equipment.crossDeptTerms && (
+                <div style={{
+                  marginTop: '0.75rem',
+                  padding: '0.75rem',
+                  backgroundColor: '#fff8e1',
+                  borderRadius: '4px',
+                  border: '1px solid #ffe082'
+                }}>
+                  <h5 style={{ margin: '0 0 0.5rem 0', color: '#f57c00', fontSize: '0.9rem' }}>⚠️ Terms & Conditions</h5>
+                  <p style={{ margin: 0, fontSize: '0.875rem', lineHeight: '1.5', color: '#333', whiteSpace: 'pre-wrap' }}>
+                    {equipment.crossDeptTerms}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} data-testid="booking-form" noValidate>
             {useMobileCalendar ? (
               <div className="form-group">
