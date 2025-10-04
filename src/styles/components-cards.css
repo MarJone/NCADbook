@@ -1,0 +1,538 @@
+/**
+ * ============================================
+ * COMPREHENSIVE CARD SYSTEM - Design System v2
+ * Portal-aware card components
+ * ============================================
+ */
+
+/* ========================================
+   BASE CARD STYLES
+   ======================================== */
+
+.card {
+  background: var(--role-bg-primary);
+  border: 1px solid var(--role-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.card-header {
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--role-border-light);
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+}
+
+.card-subtitle {
+  margin: var(--space-xs) 0 0;
+  font-size: 14px;
+  color: var(--theme-text-secondary);
+}
+
+.card-body {
+  margin-bottom: var(--space-md);
+}
+
+.card-footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--role-border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ========================================
+   STUDENT PORTAL CARDS - Coral Warmth
+   Generous sizing, playful hover effects
+   ======================================== */
+
+.student-portal .card,
+.student-portal .student-card {
+  background: var(--student-bg-primary);
+  border-radius: var(--student-radius-lg); /* 16px */
+  padding: var(--student-card-padding); /* 24px */
+  box-shadow: var(--student-shadow-md);
+  transition: all var(--duration-normal) var(--ease-out-quad);
+}
+
+.student-portal .card:hover,
+.student-portal .student-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--student-shadow-lg);
+}
+
+.student-portal .card-title,
+.student-portal .student-card h3 {
+  font-size: var(--student-text-h4); /* 20px */
+  font-weight: var(--font-weight-semibold);
+  color: var(--student-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.student-portal .card-subtitle {
+  font-size: var(--student-text-body-sm); /* 14px */
+}
+
+/* Student Portal - Equipment Cards */
+.student-portal .equipment-card {
+  cursor: pointer;
+}
+
+.student-portal .equipment-card-image {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--student-radius-md);
+  object-fit: cover;
+  margin-bottom: var(--space-md);
+}
+
+.student-portal .equipment-card-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--student-radius-full);
+  font-size: var(--student-text-caption);
+  font-weight: var(--font-weight-medium);
+  background: var(--student-accent-primary);
+  color: white;
+}
+
+/* Student Portal - Stat Cards */
+.student-portal .stat-card,
+.student-portal .student-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.student-portal .stat-card::before,
+.student-portal .student-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--student-accent-primary) 0%, #D64965 100%);
+}
+
+.student-portal .stat-number,
+.student-portal .student-stat-number {
+  font-size: var(--student-text-hero); /* 56px */
+  font-weight: var(--font-weight-bold);
+  color: var(--student-accent-primary);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.student-portal .stat-label,
+.student-portal .student-stat-label {
+  font-size: var(--student-text-body-sm);
+  color: var(--student-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   STAFF PORTAL CARDS - Teal Trust
+   Balanced sizing, professional feel
+   ======================================== */
+
+.staff-portal .card,
+.staff-portal .staff-card {
+  background: var(--staff-bg-primary);
+  border-radius: var(--staff-radius-lg); /* 12px */
+  padding: var(--staff-card-padding); /* 20px */
+  box-shadow: var(--staff-shadow-sm);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.staff-portal .card:hover,
+.staff-portal .staff-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--staff-shadow-md);
+}
+
+.staff-portal .card-title,
+.staff-portal .staff-card h3 {
+  font-size: var(--staff-text-h4); /* 18px */
+  font-weight: var(--font-weight-semibold);
+  color: var(--staff-text-primary);
+}
+
+/* Staff Portal - Equipment Cards */
+.staff-portal .equipment-card-image {
+  width: 100%;
+  height: 150px;
+  border-radius: var(--staff-radius-md);
+  object-fit: cover;
+  margin-bottom: var(--space-sm);
+}
+
+/* Staff Portal - Stat Cards */
+.staff-portal .stat-card,
+.staff-portal .staff-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.staff-portal .stat-card::before,
+.staff-portal .staff-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--staff-accent-primary) 0%, #229A8C 100%);
+}
+
+.staff-portal .stat-number,
+.staff-portal .staff-stat-number {
+  font-size: var(--staff-text-hero); /* 48px */
+  font-weight: var(--font-weight-bold);
+  color: var(--staff-accent-primary);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+/* ========================================
+   DEPARTMENT ADMIN CARDS - Amber Authority
+   Compact sizing, data-dense
+   ======================================== */
+
+.admin-portal .card,
+.admin-portal .admin-card {
+  background: var(--dept-bg-primary);
+  border-radius: var(--dept-radius-lg); /* 10px */
+  padding: var(--dept-card-padding); /* 16px */
+  box-shadow: var(--dept-shadow-sm);
+  border: 1px solid var(--dept-border-light);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.admin-portal .card:hover,
+.admin-portal .admin-card:hover {
+  background: rgba(255, 167, 38, 0.02);
+}
+
+.admin-portal .card-title,
+.admin-portal .admin-card h3 {
+  font-size: var(--dept-text-h4); /* 17px */
+  font-weight: var(--font-weight-semibold);
+  color: var(--dept-text-primary);
+}
+
+/* Admin Portal - Equipment Cards */
+.admin-portal .equipment-card-image {
+  width: 100%;
+  height: 120px;
+  border-radius: var(--dept-radius-md);
+  object-fit: cover;
+  margin-bottom: var(--space-sm);
+}
+
+/* Admin Portal - Stat Cards */
+.admin-portal .stat-card,
+.admin-portal .admin-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-portal .stat-card::before,
+.admin-portal .admin-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--dept-accent-primary) 0%, #FB8C00 100%);
+}
+
+.admin-portal .stat-number,
+.admin-portal .admin-stat-number {
+  font-size: var(--dept-text-hero); /* 40px */
+  font-weight: var(--font-weight-bold);
+  color: var(--dept-accent-primary);
+  line-height: 1;
+}
+
+/* ========================================
+   MASTER ADMIN CARDS - Purple Power
+   Dense sizing, dark mode
+   ======================================== */
+
+.master-admin-portal .card,
+.master-admin-portal .admin-card {
+  background: var(--master-bg-secondary);
+  border-radius: var(--master-radius-lg); /* 8px */
+  padding: var(--master-card-padding); /* 12px */
+  border: 1px solid var(--master-border-light);
+  transition: all var(--duration-instant) var(--ease-in-out);
+}
+
+.master-admin-portal .card:hover,
+.master-admin-portal .admin-card:hover {
+  border-color: var(--master-accent-secondary);
+  background: var(--master-bg-tertiary);
+}
+
+.master-admin-portal .card-title,
+.master-admin-portal .admin-card h3 {
+  font-size: var(--master-text-h4); /* 16px */
+  font-weight: var(--font-weight-semibold);
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .card-subtitle {
+  color: var(--master-text-secondary);
+}
+
+/* Master Admin - Equipment Cards */
+.master-admin-portal .equipment-card-image {
+  width: 100%;
+  height: 100px;
+  border-radius: var(--master-radius-md);
+  object-fit: cover;
+  margin-bottom: var(--space-sm);
+}
+
+/* Master Admin - Stat Cards */
+.master-admin-portal .stat-card,
+.master-admin-portal .admin-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.master-admin-portal .stat-card::before,
+.master-admin-portal .admin-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--master-accent-primary) 0%, #AB47BC 100%);
+}
+
+.master-admin-portal .stat-number,
+.master-admin-portal .admin-stat-number {
+  font-size: var(--master-text-hero); /* 36px */
+  font-weight: var(--font-weight-bold);
+  color: var(--master-accent-secondary); /* Brighter for dark mode */
+  line-height: 1;
+}
+
+.master-admin-portal .stat-label {
+  color: var(--master-text-secondary);
+}
+
+/* ========================================
+   CARD VARIANTS
+   ======================================== */
+
+/* Clickable cards */
+.card-clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-clickable:active {
+  transform: scale(0.98);
+}
+
+/* Highlighted cards */
+.card-highlight {
+  border-left-width: 4px;
+}
+
+.student-portal .card-highlight {
+  border-left-color: var(--student-accent-primary);
+}
+
+.staff-portal .card-highlight {
+  border-left-color: var(--staff-accent-primary);
+}
+
+.admin-portal .card-highlight {
+  border-left-color: var(--dept-accent-primary);
+}
+
+.master-admin-portal .card-highlight {
+  border-left-color: var(--master-accent-primary);
+}
+
+/* Compact cards (less padding) */
+.card-compact {
+  padding: var(--space-sm) !important;
+}
+
+/* Image cards */
+.card-image-top {
+  width: calc(100% + 2 * var(--space-lg));
+  margin: calc(-1 * var(--space-lg));
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.student-portal .card-image-top {
+  border-radius: var(--student-radius-lg) var(--student-radius-lg) 0 0;
+}
+
+/* ========================================
+   CARD GRID LAYOUTS
+   ======================================== */
+
+.card-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* Student Portal - Generous Grid */
+.student-portal .card-grid {
+  grid-template-columns: 1fr;
+  gap: var(--student-card-gap); /* 48px */
+}
+
+@media (min-width: 768px) {
+  .student-portal .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .student-portal .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Staff Portal - Balanced Grid */
+.staff-portal .card-grid {
+  grid-template-columns: 1fr;
+  gap: var(--staff-card-gap); /* 24px */
+}
+
+@media (min-width: 768px) {
+  .staff-portal .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .staff-portal .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Admin Portal - Compact Grid */
+.admin-portal .card-grid {
+  grid-template-columns: 1fr;
+  gap: var(--dept-card-gap); /* 20px */
+}
+
+@media (min-width: 768px) {
+  .admin-portal .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-portal .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Master Admin - Dense Grid */
+.master-admin-portal .card-grid {
+  grid-template-columns: 1fr;
+  gap: var(--master-card-gap); /* 16px */
+}
+
+@media (min-width: 768px) {
+  .master-admin-portal .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .master-admin-portal .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 2560px) {
+  .master-admin-portal .card-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY - Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none !important;
+  }
+
+  .card:hover,
+  .card-clickable:active {
+    transform: none !important;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .card {
+    border-width: 2px;
+  }
+
+  .card-highlight {
+    border-left-width: 6px;
+  }
+}
+
+/* ========================================
+   LOADING SKELETON CARDS
+   ======================================== */
+
+.card-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--role-bg-tertiary) 0%,
+    var(--role-bg-secondary) 50%,
+    var(--role-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+  height: 200px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.master-admin-portal .card-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--master-bg-tertiary) 0%,
+    var(--master-bg-secondary) 50%,
+    var(--master-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+}

@@ -1,0 +1,232 @@
+/**
+ * ============================================
+ * STUDENT PORTAL - "CORAL WARMTH" THEME
+ * Design Philosophy: Warm, Inviting, Energetic
+ * ============================================
+ *
+ * Characteristics:
+ * - Generous white space and breathing room
+ * - Soft shadows and rounded corners (16-24px)
+ * - Large, touch-friendly components
+ * - Playful micro-interactions
+ */
+
+.student-portal {
+  /* ========================================
+     COLOR PALETTE - Coral Warmth
+     ======================================== */
+
+  /* Primary Colors */
+  --student-base-dark: #455A64;
+  --student-base-light: #F5F7FA;
+  --student-accent-primary: #E85D75;         /* Vibrant Coral */
+  --student-accent-secondary: #FF8FA3;       /* Soft Pink */
+  --student-success: #FFAB91;                /* Warm Peach */
+  --student-unavailable: #B0BEC5;            /* Muted Gray */
+
+  /* Backgrounds */
+  --student-bg-primary: #FFFFFF;
+  --student-bg-secondary: #F5F7FA;
+  --student-bg-tertiary: #FFEEF2;            /* Soft coral tint */
+
+  /* Text */
+  --student-text-primary: #1A1A1A;
+  --student-text-secondary: #455A64;
+  --student-text-tertiary: #78909C;
+  --student-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --student-border-light: rgba(226, 93, 117, 0.1);
+  --student-border-medium: rgba(226, 93, 117, 0.2);
+  --student-border-strong: rgba(226, 93, 117, 0.3);
+
+  /* Status Colors */
+  --student-success-bg: #FFEBE6;
+  --student-success-text: #D84315;
+  --student-warning-bg: #FFF8E1;
+  --student-warning-text: #F57C00;
+  --student-error-bg: #FFEBEE;
+  --student-error-text: #C62828;
+  --student-info-bg: #E3F2FD;
+  --student-info-text: #1565C0;
+
+  /* ========================================
+     TYPOGRAPHY - Progressive Sizing (Generous)
+     ======================================== */
+
+  --student-text-hero: 56px;           /* 3.5rem */
+  --student-text-h1: 40px;             /* 2.5rem */
+  --student-text-h2: 32px;             /* 2rem */
+  --student-text-h3: 24px;             /* 1.5rem */
+  --student-text-h4: 20px;             /* 1.25rem */
+  --student-text-body-lg: 18px;        /* 1.125rem */
+  --student-text-body: 16px;           /* 1rem */
+  --student-text-body-sm: 14px;        /* 0.875rem */
+  --student-text-caption: 12px;        /* 0.75rem */
+
+  /* Line Heights */
+  --student-line-height-tight: 1.1;
+  --student-line-height-heading: 1.2;
+  --student-line-height-body: 1.6;
+
+  /* ========================================
+     SPACING - Generous Whitespace
+     ======================================== */
+
+  --student-card-padding: var(--space-lg);      /* 24px */
+  --student-card-gap: var(--space-2xl);         /* 48px */
+  --student-section-gap: var(--space-3xl);      /* 64px */
+  --student-component-gap: var(--space-lg);     /* 24px */
+
+  /* ========================================
+     BORDER RADIUS - Soft & Rounded
+     ======================================== */
+
+  --student-radius-sm: 8px;
+  --student-radius-md: 12px;
+  --student-radius-lg: 16px;
+  --student-radius-xl: 20px;
+  --student-radius-2xl: 24px;
+  --student-radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS - Soft Elevation
+     ======================================== */
+
+  --student-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --student-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --student-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+  --student-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  --student-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+  /* ========================================
+     COMPONENT SIZING - Touch-Friendly
+     ======================================== */
+
+  --student-button-height: 48px;
+  --student-button-padding: 0 24px;
+  --student-input-height: 52px;
+  --student-input-padding: 0 16px;
+
+  /* ========================================
+     ANIMATIONS - Playful
+     ======================================== */
+
+  --student-transition-duration: var(--duration-normal);
+  --student-transition-timing: var(--ease-bounce);
+
+  /* ========================================
+     THEME VARIABLE MAPPINGS
+     (Used by existing components)
+     ======================================== */
+
+  --role-bg-primary: var(--student-bg-primary);
+  --role-bg-secondary: var(--student-bg-secondary);
+  --role-bg-tertiary: var(--student-bg-tertiary);
+  --role-accent: var(--student-accent-primary);
+  --role-accent-hover: #D64965;  /* Darker coral */
+  --role-accent-light: var(--student-accent-secondary);
+  --role-gradient-start: var(--student-accent-primary);
+  --role-gradient-end: #D64965;
+
+  --theme-bg-primary: var(--student-bg-primary);
+  --theme-bg-secondary: var(--student-bg-secondary);
+  --theme-bg-tertiary: var(--student-bg-tertiary);
+  --theme-accent-primary: var(--student-accent-primary);
+  --theme-accent-primary-hover: #D64965;
+
+  --theme-text-primary: var(--student-text-primary);
+  --theme-text-secondary: var(--student-text-secondary);
+  --theme-text-tertiary: var(--student-text-tertiary);
+  --theme-text-inverse: var(--student-text-inverse);
+
+  --theme-border-light: var(--student-border-light);
+  --theme-border-medium: var(--student-border-medium);
+
+  --theme-shadow-sm: var(--student-shadow-sm);
+  --theme-shadow-md: var(--student-shadow-md);
+  --theme-shadow-lg: var(--student-shadow-lg);
+
+  --theme-success-bg: var(--student-success-bg);
+  --theme-success-text: var(--student-success-text);
+  --theme-warning-bg: var(--student-warning-bg);
+  --theme-warning-text: var(--student-warning-text);
+  --theme-error-bg: var(--student-error-bg);
+  --theme-error-text: var(--student-error-text);
+  --theme-info-bg: var(--student-info-bg);
+  --theme-info-text: var(--student-info-text);
+
+  /* Legacy text size mappings */
+  --text-xs: var(--student-text-caption);
+  --text-sm: var(--student-text-body-sm);
+  --text-base: var(--student-text-body);
+  --text-lg: var(--student-text-h4);
+  --text-xl: var(--student-text-h3);
+  --text-2xl: var(--student-text-h2);
+  --text-3xl: var(--student-text-h1);
+  --text-4xl: var(--student-text-hero);
+
+  /* Spacing for components */
+  --space-1: var(--space-xs);
+  --space-2: var(--space-sm);
+  --space-3: var(--space-md);
+  --space-4: var(--space-lg);
+  --space-5: var(--space-xl);
+  --space-6: var(--space-2xl);
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC OVERRIDES
+   ======================================== */
+
+.student-portal .btn-primary {
+  height: var(--student-button-height);
+  padding: var(--student-button-padding);
+  border-radius: var(--student-radius-md);
+  background: var(--student-accent-primary);
+  color: var(--student-text-inverse);
+  font-size: var(--student-text-body);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--student-transition-duration) var(--student-transition-timing);
+}
+
+.student-portal .btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: var(--student-shadow-md);
+}
+
+.student-portal .btn-primary:active {
+  transform: scale(0.98);
+}
+
+.student-portal .card {
+  background: var(--student-bg-primary);
+  border-radius: var(--student-radius-lg);
+  padding: var(--student-card-padding);
+  box-shadow: var(--student-shadow-md);
+  transition: all var(--duration-normal) var(--ease-out-quad);
+}
+
+.student-portal .card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--student-shadow-lg);
+}
+
+.student-portal input,
+.student-portal select,
+.student-portal textarea {
+  height: var(--student-input-height);
+  padding: var(--student-input-padding);
+  border-radius: var(--student-radius-md);
+  border: 1px solid var(--student-border-medium);
+  font-size: var(--student-text-body);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.student-portal input:focus,
+.student-portal select:focus,
+.student-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--student-accent-primary);
+  box-shadow: 0 0 0 4px rgba(232, 93, 117, 0.1);
+}

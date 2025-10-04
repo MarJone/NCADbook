@@ -1,0 +1,60 @@
+/**
+ * ============================================
+ * NCAD EQUIPMENT BOOKING - DESIGN SYSTEM
+ * Master Import File
+ * ============================================
+ *
+ * This file imports all design system components in the correct order.
+ * Import this file in your main.css or application entry point.
+ *
+ * Order matters:
+ * 1. Design Tokens (foundation)
+ * 2. Portal Themes (build on tokens)
+ * 3. Component styles (use theme variables)
+ */
+
+/* ========================================
+   STEP 1: FOUNDATION - Design Tokens
+   ======================================== */
+
+@import './design-tokens.css';
+
+/* ========================================
+   STEP 2: PORTAL THEMES
+   ======================================== */
+
+@import './theme-student.css';
+@import './theme-staff.css';
+@import './theme-dept-admin.css';
+@import './theme-master-admin.css';
+
+/* ========================================
+   STEP 3: COMPONENT SYSTEMS
+   ======================================== */
+
+@import './components-buttons.css';
+@import './components-forms.css';
+@import './components-cards.css';
+
+/* ========================================
+   STEP 4: LEGACY COMPATIBILITY - REMOVED
+   Legacy variable files (ncad-variables.css, variables.css) have been
+   replaced by design-tokens.css and are no longer needed.
+   ======================================== */
+
+/**
+ * USAGE NOTES:
+ *
+ * Portal-specific styling is applied via CSS classes:
+ * - .student-portal - Coral Warmth theme
+ * - .staff-portal - Teal Trust theme
+ * - .admin-portal - Amber Authority theme
+ * - .master-admin-portal - Purple Power theme (dark mode)
+ *
+ * Example:
+ * <div class="student-portal">
+ *   <button class="btn-primary">Book Equipment</button>
+ * </div>
+ *
+ * The button will automatically use student portal colors and sizing.
+ */

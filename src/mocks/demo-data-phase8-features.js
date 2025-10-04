@@ -7,11 +7,26 @@
 
 // ===== SYSTEM SETTINGS =====
 export const demoSystemSettings = [
+  // Cross-Department Equipment Access
   {
     key: 'cross_department_browsing_enabled',
     value: false,
     description: 'Allow students to browse equipment from other departments',
     modified_by: '1', // master admin
+    modified_at: '2024-01-15T10:00:00Z'
+  },
+  {
+    key: 'cross_department_booking_enabled',
+    value: false,
+    description: 'Allow students to book equipment from other departments',
+    modified_by: '1',
+    modified_at: '2024-01-15T10:00:00Z'
+  },
+  {
+    key: 'cross_department_approval_required',
+    value: true,
+    description: 'Require department admin approval for cross-department bookings',
+    modified_by: '1',
     modified_at: '2024-01-15T10:00:00Z'
   },
   {
@@ -21,10 +36,35 @@ export const demoSystemSettings = [
     modified_by: '1',
     modified_at: '2024-01-15T10:00:00Z'
   },
+
+  // Equipment Kits
   {
     key: 'equipment_kits_enabled',
     value: true,
     description: 'Enable equipment kit functionality for department admins',
+    modified_by: '1',
+    modified_at: '2024-01-15T10:00:00Z'
+  },
+
+  // Room Bookings System
+  {
+    key: 'room_bookings_enabled',
+    value: true,
+    description: 'Master toggle for entire room bookings system',
+    modified_by: '1',
+    modified_at: '2024-01-15T10:00:00Z'
+  },
+  {
+    key: 'room_bookings_visible_staff',
+    value: true,
+    description: 'Show room bookings in Staff portal',
+    modified_by: '1',
+    modified_at: '2024-01-15T10:00:00Z'
+  },
+  {
+    key: 'room_bookings_visible_dept_admin',
+    value: true,
+    description: 'Show room bookings in Department Admin portal',
     modified_by: '1',
     modified_at: '2024-01-15T10:00:00Z'
   }

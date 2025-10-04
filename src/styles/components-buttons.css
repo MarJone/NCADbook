@@ -1,0 +1,502 @@
+/**
+ * ============================================
+ * COMPREHENSIVE BUTTON SYSTEM - Design System v2
+ * Portal-aware button components
+ * ============================================
+ */
+
+/* ========================================
+   BASE BUTTON STYLES
+   ======================================== */
+
+.btn,
+button:not(.unstyled) {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  border: none;
+  transition: all var(--duration-fast) var(--ease-in-out);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:disabled,
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ========================================
+   STUDENT PORTAL BUTTONS - Coral Warmth
+   Generous sizing, playful interactions
+   ======================================== */
+
+.student-portal .btn-primary,
+.student-portal .student-action-btn {
+  height: var(--student-button-height); /* 48px */
+  padding: var(--student-button-padding); /* 0 24px */
+  border-radius: var(--student-radius-md); /* 12px */
+  background: linear-gradient(135deg, var(--student-accent-primary) 0%, #D64965 100%);
+  color: white;
+  font-size: var(--student-text-body); /* 16px */
+  box-shadow: var(--student-shadow-sm);
+  transition: all var(--student-transition-duration) var(--student-transition-timing);
+}
+
+.student-portal .btn-primary:hover,
+.student-portal .student-action-btn:hover {
+  transform: scale(1.02);
+  box-shadow: var(--student-shadow-md);
+}
+
+.student-portal .btn-primary:active,
+.student-portal .student-action-btn:active {
+  transform: scale(0.98);
+}
+
+.student-portal .btn-secondary,
+.student-portal .student-action-btn.secondary {
+  height: var(--student-button-height);
+  padding: var(--student-button-padding);
+  border-radius: var(--student-radius-md);
+  background: transparent;
+  color: var(--student-accent-primary);
+  border: 2px solid var(--student-accent-primary);
+  font-size: var(--student-text-body);
+}
+
+.student-portal .btn-secondary:hover,
+.student-portal .student-action-btn.secondary:hover {
+  background: var(--student-accent-primary);
+  color: white;
+  transform: scale(1.02);
+}
+
+.student-portal .btn-text {
+  height: var(--student-button-height);
+  padding: var(--student-button-padding);
+  background: transparent;
+  color: var(--student-accent-primary);
+  font-size: var(--student-text-body);
+}
+
+.student-portal .btn-text:hover {
+  background: var(--student-bg-tertiary);
+  border-radius: var(--student-radius-md);
+}
+
+/* Student Portal - Icon Buttons */
+.student-portal .btn-icon {
+  width: var(--student-button-height);
+  height: var(--student-button-height);
+  padding: 0;
+  border-radius: var(--student-radius-md);
+  background: var(--student-bg-secondary);
+  color: var(--student-accent-primary);
+}
+
+.student-portal .btn-icon:hover {
+  background: var(--student-accent-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ========================================
+   STAFF PORTAL BUTTONS - Teal Trust
+   Balanced sizing, professional transitions
+   ======================================== */
+
+.staff-portal .btn-primary,
+.staff-portal .staff-action-btn {
+  height: var(--staff-button-height); /* 40px */
+  padding: var(--staff-button-padding); /* 0 20px */
+  border-radius: var(--staff-radius-md); /* 10px */
+  background: var(--staff-accent-primary);
+  color: white;
+  font-size: 15px;
+  box-shadow: var(--staff-shadow-sm);
+  transition: all var(--staff-transition-duration) var(--staff-transition-timing);
+}
+
+.staff-portal .btn-primary:hover,
+.staff-portal .staff-action-btn:hover {
+  background: #229A8C; /* Darker teal */
+  box-shadow: var(--staff-shadow-md);
+}
+
+.staff-portal .btn-secondary,
+.staff-portal .staff-action-btn.secondary {
+  height: var(--staff-button-height);
+  padding: var(--staff-button-padding);
+  border-radius: var(--staff-radius-md);
+  background: transparent;
+  color: var(--staff-accent-primary);
+  border: 2px solid var(--staff-accent-primary);
+  font-size: 15px;
+}
+
+.staff-portal .btn-secondary:hover,
+.staff-portal .staff-action-btn.secondary:hover {
+  background: var(--staff-bg-tertiary);
+  border-color: #229A8C;
+  color: #229A8C;
+}
+
+.staff-portal .btn-text {
+  height: var(--staff-button-height);
+  padding: var(--staff-button-padding);
+  background: transparent;
+  color: var(--staff-accent-primary);
+  font-size: 15px;
+}
+
+.staff-portal .btn-text:hover {
+  background: var(--staff-bg-tertiary);
+  border-radius: var(--staff-radius-md);
+}
+
+/* Staff Portal - Icon Buttons */
+.staff-portal .btn-icon {
+  width: var(--staff-button-height);
+  height: var(--staff-button-height);
+  padding: 0;
+  border-radius: var(--staff-radius-md);
+  background: var(--staff-bg-secondary);
+  color: var(--staff-accent-primary);
+}
+
+.staff-portal .btn-icon:hover {
+  background: var(--staff-accent-primary);
+  color: white;
+}
+
+/* ========================================
+   DEPARTMENT ADMIN BUTTONS - Amber Authority
+   Compact sizing, minimal animation
+   ======================================== */
+
+.admin-portal .btn-primary,
+.admin-portal .admin-action-btn {
+  height: var(--dept-button-height); /* 36px */
+  padding: var(--dept-button-padding); /* 0 16px */
+  border-radius: var(--dept-radius-md); /* 8px */
+  background: linear-gradient(135deg, #FB8C00 0%, #F57C00 100%);
+  color: white;
+  font-size: 14px;
+  transition: all var(--dept-transition-duration) var(--dept-transition-timing);
+}
+
+.admin-portal .btn-primary:hover,
+.admin-portal .admin-action-btn:hover {
+  filter: brightness(1.1);
+}
+
+.admin-portal .btn-secondary,
+.admin-portal .admin-action-btn.secondary {
+  height: var(--dept-button-height);
+  padding: var(--dept-button-padding);
+  border-radius: var(--dept-radius-md);
+  background: transparent;
+  color: var(--dept-accent-primary);
+  border: 2px solid var(--dept-accent-primary);
+  font-size: 14px;
+}
+
+.admin-portal .btn-secondary:hover,
+.admin-portal .admin-action-btn.secondary:hover {
+  background: var(--dept-bg-tertiary);
+  border-color: #FB8C00;
+  color: #FB8C00;
+}
+
+.admin-portal .btn-text {
+  height: var(--dept-button-height);
+  padding: var(--dept-button-padding);
+  background: transparent;
+  color: var(--dept-accent-primary);
+  font-size: 14px;
+}
+
+.admin-portal .btn-text:hover {
+  background: var(--dept-bg-tertiary);
+  border-radius: var(--dept-radius-md);
+}
+
+/* Admin Portal - Icon Buttons */
+.admin-portal .btn-icon {
+  width: var(--dept-button-height);
+  height: var(--dept-button-height);
+  padding: 0;
+  border-radius: var(--dept-radius-md);
+  background: var(--dept-bg-secondary);
+  color: var(--dept-accent-primary);
+}
+
+.admin-portal .btn-icon:hover {
+  background: var(--dept-accent-primary);
+  color: white;
+}
+
+/* ========================================
+   MASTER ADMIN BUTTONS - Purple Power
+   Dense sizing, instant interactions, dark mode
+   ======================================== */
+
+.master-admin-portal .btn-primary,
+.master-admin-portal .admin-action-btn:not(.secondary) {
+  height: var(--master-button-height); /* 32px */
+  padding: var(--master-button-padding); /* 0 12px */
+  border-radius: var(--master-radius-md); /* 6px */
+  background: linear-gradient(135deg, var(--master-accent-primary) 0%, #AB47BC 100%);
+  color: white;
+  font-size: 13px;
+  transition: all var(--master-transition-duration) var(--master-transition-timing);
+  box-shadow: 0 0 0 0 rgba(186, 104, 200, 0);
+}
+
+.master-admin-portal .btn-primary:hover,
+.master-admin-portal .admin-action-btn:not(.secondary):hover {
+  background: linear-gradient(135deg, #AB47BC 0%, #BA68C8 100%);
+  box-shadow: 0 0 0 1px rgba(186, 104, 200, 0.4);
+}
+
+.master-admin-portal .btn-secondary,
+.master-admin-portal .admin-action-btn.secondary {
+  height: var(--master-button-height);
+  padding: var(--master-button-padding);
+  border-radius: var(--master-radius-md);
+  background: transparent;
+  color: var(--master-accent-primary);
+  border: 1px solid var(--master-border-medium);
+  font-size: 13px;
+}
+
+.master-admin-portal .btn-secondary:hover,
+.master-admin-portal .admin-action-btn.secondary:hover {
+  background: var(--master-bg-tertiary);
+  border-color: var(--master-accent-primary);
+}
+
+.master-admin-portal .btn-text {
+  height: var(--master-button-height);
+  padding: var(--master-button-padding);
+  background: transparent;
+  color: var(--master-accent-primary);
+  font-size: 13px;
+}
+
+.master-admin-portal .btn-text:hover {
+  background: var(--master-bg-hover);
+  border-radius: var(--master-radius-md);
+}
+
+/* Master Admin - Icon Buttons */
+.master-admin-portal .btn-icon {
+  width: var(--master-button-height);
+  height: var(--master-button-height);
+  padding: 0;
+  border-radius: var(--master-radius-md);
+  background: var(--master-bg-tertiary);
+  color: var(--master-text-secondary);
+}
+
+.master-admin-portal .btn-icon:hover {
+  background: var(--master-bg-hover);
+  color: var(--master-accent-secondary);
+}
+
+/* ========================================
+   BUTTON GROUPS
+   ======================================== */
+
+.btn-group {
+  display: inline-flex;
+  gap: var(--space-sm);
+}
+
+.btn-group .btn:not(:last-child) {
+  margin-right: 0;
+}
+
+/* ========================================
+   BUTTON SIZES - Overrides
+   ======================================== */
+
+/* Small buttons */
+.btn-sm {
+  font-size: 13px;
+  padding: var(--space-xs) var(--space-md);
+}
+
+.student-portal .btn-sm {
+  height: 40px;
+}
+
+.staff-portal .btn-sm {
+  height: 36px;
+}
+
+.admin-portal .btn-sm {
+  height: 32px;
+}
+
+.master-admin-portal .btn-sm {
+  height: 28px;
+}
+
+/* Large buttons */
+.btn-lg {
+  font-size: 18px;
+  padding: var(--space-md) var(--space-xl);
+}
+
+.student-portal .btn-lg {
+  height: 56px;
+}
+
+.staff-portal .btn-lg {
+  height: 48px;
+}
+
+.admin-portal .btn-lg {
+  height: 44px;
+}
+
+.master-admin-portal .btn-lg {
+  height: 40px;
+}
+
+/* ========================================
+   SEMANTIC BUTTON STATES
+   ======================================== */
+
+/* Success buttons */
+.btn-success {
+  background: #43A047 !important;
+  color: white !important;
+}
+
+.btn-success:hover {
+  background: #388E3C !important;
+}
+
+/* Warning buttons */
+.btn-warning {
+  background: #FF9800 !important;
+  color: white !important;
+}
+
+.btn-warning:hover {
+  background: #F57C00 !important;
+}
+
+/* Danger buttons */
+.btn-danger {
+  background: #D32F2F !important;
+  color: white !important;
+}
+
+.btn-danger:hover {
+  background: #C62828 !important;
+}
+
+/* ========================================
+   ACCESSIBILITY - Focus States
+   ======================================== */
+
+.student-portal .btn:focus-visible {
+  outline: 3px solid var(--student-accent-primary);
+  outline-offset: 2px;
+}
+
+.staff-portal .btn:focus-visible {
+  outline: 3px solid var(--staff-accent-primary);
+  outline-offset: 2px;
+}
+
+.admin-portal .btn:focus-visible {
+  outline: 3px solid var(--dept-accent-primary);
+  outline-offset: 2px;
+}
+
+.master-admin-portal .btn:focus-visible {
+  outline: 3px solid var(--master-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   ACCESSIBILITY - Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  button {
+    transition: none !important;
+  }
+
+  .student-portal .btn:hover,
+  .student-portal .btn:active {
+    transform: none !important;
+  }
+
+  .staff-portal .btn-icon:hover {
+    transform: none !important;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .btn,
+  button {
+    border-width: 2px !important;
+  }
+
+  .btn-secondary {
+    border-width: 3px !important;
+  }
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Master Admin loading spinner - visible on dark background */
+.master-admin-portal .btn-loading::after {
+  border-top-color: white;
+}

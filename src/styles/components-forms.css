@@ -1,0 +1,513 @@
+/**
+ * ============================================
+ * COMPREHENSIVE FORM SYSTEM - Design System v2
+ * Portal-aware form components
+ * ============================================
+ */
+
+/* ========================================
+   BASE FORM STYLES
+   ======================================== */
+
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-primary);
+}
+
+.form-hint {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 13px;
+  color: var(--theme-text-tertiary);
+}
+
+.form-error {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 13px;
+  color: var(--theme-error-text, #C62828);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   STUDENT PORTAL FORMS - Coral Warmth
+   Large, touch-friendly inputs
+   ======================================== */
+
+.student-portal .form-label {
+  font-size: var(--student-text-body-sm); /* 14px */
+  margin-bottom: var(--space-sm);
+}
+
+.student-portal input[type="text"],
+.student-portal input[type="email"],
+.student-portal input[type="password"],
+.student-portal input[type="number"],
+.student-portal input[type="tel"],
+.student-portal input[type="date"],
+.student-portal input[type="time"],
+.student-portal select,
+.student-portal textarea {
+  width: 100%;
+  height: var(--student-input-height); /* 52px */
+  padding: var(--student-input-padding); /* 0 16px */
+  border-radius: var(--student-radius-md); /* 12px */
+  border: 1px solid var(--student-border-medium);
+  background: var(--student-bg-primary);
+  color: var(--student-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--student-text-body); /* 16px */
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.student-portal textarea {
+  height: auto;
+  min-height: 120px;
+  padding: var(--space-md);
+  resize: vertical;
+}
+
+.student-portal input:focus,
+.student-portal select:focus,
+.student-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--student-accent-primary);
+  box-shadow: 0 0 0 4px rgba(232, 93, 117, 0.1);
+  padding-left: calc(var(--space-md) - 1px); /* Compensate for border */
+}
+
+.student-portal input::placeholder,
+.student-portal textarea::placeholder {
+  color: var(--student-text-tertiary);
+}
+
+.student-portal input[type="checkbox"],
+.student-portal input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  margin-right: var(--space-sm);
+  accent-color: var(--student-accent-primary);
+  cursor: pointer;
+}
+
+/* ========================================
+   STAFF PORTAL FORMS - Teal Trust
+   Balanced inputs
+   ======================================== */
+
+.staff-portal .form-label {
+  font-size: var(--staff-text-body-sm); /* 14px */
+}
+
+.staff-portal input[type="text"],
+.staff-portal input[type="email"],
+.staff-portal input[type="password"],
+.staff-portal input[type="number"],
+.staff-portal input[type="tel"],
+.staff-portal input[type="date"],
+.staff-portal input[type="time"],
+.staff-portal select,
+.staff-portal textarea {
+  width: 100%;
+  height: var(--staff-input-height); /* 44px */
+  padding: var(--staff-input-padding); /* 0 14px */
+  border-radius: var(--staff-radius-md); /* 10px */
+  border: 1px solid var(--staff-border-medium);
+  background: var(--staff-bg-primary);
+  color: var(--staff-text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.staff-portal textarea {
+  height: auto;
+  min-height: 100px;
+  padding: var(--space-md);
+  resize: vertical;
+}
+
+.staff-portal input:focus,
+.staff-portal select:focus,
+.staff-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--staff-accent-primary);
+  box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.1);
+  padding-left: calc(14px - 1px);
+}
+
+.staff-portal input::placeholder,
+.staff-portal textarea::placeholder {
+  color: var(--staff-text-tertiary);
+}
+
+.staff-portal input[type="checkbox"],
+.staff-portal input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin-right: var(--space-sm);
+  accent-color: var(--staff-accent-primary);
+  cursor: pointer;
+}
+
+/* ========================================
+   DEPARTMENT ADMIN FORMS - Amber Authority
+   Compact inputs
+   ======================================== */
+
+.admin-portal .form-label {
+  font-size: var(--dept-text-body-sm); /* 13px */
+}
+
+.admin-portal input[type="text"],
+.admin-portal input[type="email"],
+.admin-portal input[type="password"],
+.admin-portal input[type="number"],
+.admin-portal input[type="tel"],
+.admin-portal input[type="date"],
+.admin-portal input[type="time"],
+.admin-portal select,
+.admin-portal textarea {
+  width: 100%;
+  height: var(--dept-input-height); /* 38px */
+  padding: var(--dept-input-padding); /* 0 12px */
+  border-radius: var(--dept-radius-md); /* 8px */
+  border: 1px solid var(--dept-border-medium);
+  background: var(--dept-bg-primary);
+  color: var(--dept-text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.admin-portal textarea {
+  height: auto;
+  min-height: 90px;
+  padding: var(--space-sm);
+  resize: vertical;
+}
+
+.admin-portal input:focus,
+.admin-portal select:focus,
+.admin-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--dept-accent-primary);
+  box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.1);
+  padding-left: calc(12px - 1px);
+}
+
+.admin-portal input::placeholder,
+.admin-portal textarea::placeholder {
+  color: var(--dept-text-tertiary);
+}
+
+.admin-portal input[type="checkbox"],
+.admin-portal input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-xs);
+  accent-color: var(--dept-accent-primary);
+  cursor: pointer;
+}
+
+/* ========================================
+   MASTER ADMIN FORMS - Purple Power
+   Dense inputs, dark mode
+   ======================================== */
+
+.master-admin-portal .form-label {
+  font-size: var(--master-text-body-sm); /* 12px */
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal input[type="text"],
+.master-admin-portal input[type="email"],
+.master-admin-portal input[type="password"],
+.master-admin-portal input[type="number"],
+.master-admin-portal input[type="tel"],
+.master-admin-portal input[type="date"],
+.master-admin-portal input[type="time"],
+.master-admin-portal select,
+.master-admin-portal textarea {
+  width: 100%;
+  height: var(--master-input-height); /* 34px - responsive via media queries */
+  padding: var(--master-input-padding); /* 0 10px */
+  border-radius: var(--master-radius-md); /* 6px */
+  border: 1px solid var(--master-border-medium);
+  background: var(--master-bg-primary);  /* White background for light mode */
+  color: var(--master-text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  transition: all var(--duration-instant) var(--ease-in-out);
+}
+
+.master-admin-portal textarea {
+  height: auto;
+  min-height: 80px;
+  padding: var(--space-sm);
+  resize: vertical;
+}
+
+.master-admin-portal input:focus,
+.master-admin-portal select:focus,
+.master-admin-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--master-accent-primary);
+  box-shadow: 0 0 0 3px var(--master-accent-pale);
+  padding-left: calc(10px - 1px);
+  background: var(--master-bg-primary);
+}
+
+.master-admin-portal input::placeholder,
+.master-admin-portal textarea::placeholder {
+  color: var(--master-text-tertiary);
+}
+
+.master-admin-portal input[type="checkbox"],
+.master-admin-portal input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-xs);
+  accent-color: var(--master-accent-primary);
+  cursor: pointer;
+}
+
+/* ========================================
+   FORM VALIDATION STATES
+   ======================================== */
+
+/* Error state */
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea,
+input.error,
+select.error,
+textarea.error {
+  border-color: #D32F2F !important;
+}
+
+.student-portal .form-group.has-error input:focus,
+.student-portal input.error:focus {
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1) !important;
+}
+
+.staff-portal .form-group.has-error input:focus,
+.staff-portal input.error:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1) !important;
+}
+
+.admin-portal .form-group.has-error input:focus,
+.admin-portal input.error:focus,
+.master-admin-portal .form-group.has-error input:focus,
+.master-admin-portal input.error:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1) !important;
+}
+
+/* Success state */
+.form-group.has-success input,
+.form-group.has-success select,
+.form-group.has-success textarea,
+input.success,
+select.success,
+textarea.success {
+  border-color: #43A047 !important;
+}
+
+/* ========================================
+   SELECT DROPDOWNS
+   ======================================== */
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.master-admin-portal select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+}
+
+/* ========================================
+   INPUT GROUPS (with icons/buttons)
+   ======================================== */
+
+.input-group {
+  display: flex;
+  width: 100%;
+}
+
+.input-group input {
+  flex: 1;
+  border-radius: 0;
+}
+
+.input-group input:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.input-group input:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.input-group-addon {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  background: var(--role-bg-secondary);
+  border: 1px solid var(--role-border-medium);
+  color: var(--theme-text-secondary);
+}
+
+.input-group-addon:first-child {
+  border-right: none;
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.input-group-addon:last-child {
+  border-left: none;
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+/* ========================================
+   DISABLED STATE
+   ======================================== */
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--role-bg-secondary) !important;
+}
+
+/* ========================================
+   ACCESSIBILITY - Focus Visible
+   ======================================== */
+
+.student-portal input:focus-visible,
+.student-portal select:focus-visible,
+.student-portal textarea:focus-visible {
+  outline: 3px solid var(--student-accent-primary);
+  outline-offset: 2px;
+}
+
+.staff-portal input:focus-visible,
+.staff-portal select:focus-visible,
+.staff-portal textarea:focus-visible {
+  outline: 3px solid var(--staff-accent-primary);
+  outline-offset: 2px;
+}
+
+.admin-portal input:focus-visible,
+.admin-portal select:focus-visible,
+.admin-portal textarea:focus-visible {
+  outline: 3px solid var(--dept-accent-primary);
+  outline-offset: 2px;
+}
+
+.master-admin-portal input:focus-visible,
+.master-admin-portal select:focus-visible,
+.master-admin-portal textarea:focus-visible {
+  outline: 3px solid var(--master-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   ACCESSIBILITY - High Contrast
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  input,
+  select,
+  textarea {
+    border-width: 2px !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-width: 3px !important;
+  }
+}
+
+/* ========================================
+   CUSTOM CHECKBOX/RADIO SWITCHES
+   ======================================== */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.switch input:checked + .switch-slider {
+  background-color: var(--role-accent);
+}
+
+.switch input:checked + .switch-slider:before {
+  transform: translateX(24px);
+}
+
+.switch input:focus + .switch-slider {
+  box-shadow: 0 0 0 3px rgba(var(--role-accent-rgb, 0, 0, 0), 0.1);
+}
+
+/* Portal-specific switch colors */
+.student-portal .switch input:checked + .switch-slider {
+  background-color: var(--student-accent-primary);
+}
+
+.staff-portal .switch input:checked + .switch-slider {
+  background-color: var(--staff-accent-primary);
+}
+
+.admin-portal .switch input:checked + .switch-slider {
+  background-color: var(--dept-accent-primary);
+}
+
+.master-admin-portal .switch input:checked + .switch-slider {
+  background-color: var(--master-accent-primary);
+}

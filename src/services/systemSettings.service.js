@@ -99,3 +99,56 @@ export async function areEquipmentKitsEnabled() {
   const value = await getSystemSetting('equipment_kits_enabled');
   return value === true || value === 'true';
 }
+
+/**
+ * Check if cross-department booking is enabled
+ * @returns {Promise<boolean>}
+ */
+export async function isCrossDepartmentBookingEnabled() {
+  const value = await getSystemSetting('cross_department_booking_enabled');
+  return value === true || value === 'true';
+}
+
+/**
+ * Check if cross-department approval is required
+ * @returns {Promise<boolean>}
+ */
+export async function isCrossDepartmentApprovalRequired() {
+  const value = await getSystemSetting('cross_department_approval_required');
+  return value === true || value === 'true';
+}
+
+/**
+ * Check if room bookings system is enabled globally
+ * @returns {Promise<boolean>}
+ */
+export async function areRoomBookingsEnabled() {
+  const value = await getSystemSetting('room_bookings_enabled');
+  return value === true || value === 'true';
+}
+
+/**
+ * Check if room bookings are visible in Staff portal
+ * @returns {Promise<boolean>}
+ */
+export async function areRoomBookingsVisibleForStaff() {
+  // Check both master toggle and staff-specific setting
+  const systemEnabled = await areRoomBookingsEnabled();
+  if (!systemEnabled) return false;
+
+  const value = await getSystemSetting('room_bookings_visible_staff');
+  return value === true || value === 'true';
+}
+
+/**
+ * Check if room bookings are visible in Department Admin portal
+ * @returns {Promise<boolean>}
+ */
+export async function areRoomBookingsVisibleForDeptAdmin() {
+  // Check both master toggle and dept admin-specific setting
+  const systemEnabled = await areRoomBookingsEnabled();
+  if (!systemEnabled) return false;
+
+  const value = await getSystemSetting('room_bookings_visible_dept_admin');
+  return value === true || value === 'true';
+}

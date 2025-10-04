@@ -1,0 +1,226 @@
+/**
+ * ============================================
+ * STAFF PORTAL - "TEAL TRUST" THEME
+ * Design Philosophy: Professional, Efficient, Trustworthy
+ * ============================================
+ *
+ * Characteristics:
+ * - Balanced layouts with clear information zones
+ * - Moderate shadows and corners (12-16px)
+ * - Medium-density components
+ * - Functional transitions
+ */
+
+.staff-portal {
+  /* ========================================
+     COLOR PALETTE - Teal Trust
+     ======================================== */
+
+  /* Primary Colors */
+  --staff-base-dark: #34495E;
+  --staff-base-light: #E8EEF2;
+  --staff-accent-primary: #26A69A;           /* Teal */
+  --staff-accent-secondary: #4DD0E1;         /* Cyan */
+  --staff-success: #42A5F5;                  /* Ocean Blue */
+  --staff-alert: #FF9800;                    /* Warm Orange */
+
+  /* Backgrounds */
+  --staff-bg-primary: #FFFFFF;
+  --staff-bg-secondary: #E8EEF2;
+  --staff-bg-tertiary: #E0F2F1;              /* Soft teal tint */
+
+  /* Text */
+  --staff-text-primary: #212121;
+  --staff-text-secondary: #34495E;
+  --staff-text-tertiary: #607D8B;
+  --staff-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --staff-border-light: rgba(38, 166, 154, 0.1);
+  --staff-border-medium: rgba(38, 166, 154, 0.2);
+  --staff-border-strong: rgba(38, 166, 154, 0.3);
+
+  /* Status Colors */
+  --staff-success-bg: #E0F2F1;
+  --staff-success-text: #00796B;
+  --staff-warning-bg: #FFF3E0;
+  --staff-warning-text: #E65100;
+  --staff-error-bg: #FFEBEE;
+  --staff-error-text: #C62828;
+  --staff-info-bg: #E3F2FD;
+  --staff-info-text: #1565C0;
+
+  /* ========================================
+     TYPOGRAPHY - Balanced Sizing
+     ======================================== */
+
+  --staff-text-hero: 48px;            /* 3rem */
+  --staff-text-h1: 36px;              /* 2.25rem */
+  --staff-text-h2: 28px;              /* 1.75rem */
+  --staff-text-h3: 22px;              /* 1.375rem */
+  --staff-text-h4: 18px;              /* 1.125rem */
+  --staff-text-body-lg: 17px;         /* 1.0625rem */
+  --staff-text-body: 16px;            /* 1rem */
+  --staff-text-body-sm: 14px;         /* 0.875rem */
+  --staff-text-caption: 12px;         /* 0.75rem */
+
+  /* Line Heights */
+  --staff-line-height-tight: 1.2;
+  --staff-line-height-heading: 1.3;
+  --staff-line-height-body: 1.6;
+
+  /* ========================================
+     SPACING - Balanced
+     ======================================== */
+
+  --staff-card-padding: 20px;                /* Custom between md/lg */
+  --staff-card-gap: var(--space-lg);         /* 24px */
+  --staff-section-gap: var(--space-2xl);     /* 48px */
+  --staff-component-gap: var(--space-md);    /* 16px */
+
+  /* ========================================
+     BORDER RADIUS - Balanced
+     ======================================== */
+
+  --staff-radius-sm: 8px;
+  --staff-radius-md: 10px;
+  --staff-radius-lg: 12px;
+  --staff-radius-xl: 16px;
+  --staff-radius-2xl: 20px;
+  --staff-radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS - Professional Elevation
+     ======================================== */
+
+  --staff-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --staff-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --staff-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+  --staff-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* ========================================
+     COMPONENT SIZING - Efficient
+     ======================================== */
+
+  --staff-button-height: 40px;
+  --staff-button-padding: 0 20px;
+  --staff-input-height: 44px;
+  --staff-input-padding: 0 14px;
+
+  /* ========================================
+     ANIMATIONS - Functional
+     ======================================== */
+
+  --staff-transition-duration: var(--duration-fast);
+  --staff-transition-timing: var(--ease-out-quad);
+
+  /* ========================================
+     THEME VARIABLE MAPPINGS
+     ======================================== */
+
+  --role-bg-primary: var(--staff-bg-primary);
+  --role-bg-secondary: var(--staff-bg-secondary);
+  --role-bg-tertiary: var(--staff-bg-tertiary);
+  --role-accent: var(--staff-accent-primary);
+  --role-accent-hover: #229A8C;  /* Darker teal */
+  --role-accent-light: var(--staff-accent-secondary);
+  --role-gradient-start: var(--staff-accent-primary);
+  --role-gradient-end: #229A8C;
+
+  --theme-bg-primary: var(--staff-bg-primary);
+  --theme-bg-secondary: var(--staff-bg-secondary);
+  --theme-bg-tertiary: var(--staff-bg-tertiary);
+  --theme-accent-primary: var(--staff-accent-primary);
+  --theme-accent-primary-hover: #229A8C;
+
+  --theme-text-primary: var(--staff-text-primary);
+  --theme-text-secondary: var(--staff-text-secondary);
+  --theme-text-tertiary: var(--staff-text-tertiary);
+  --theme-text-inverse: var(--staff-text-inverse);
+
+  --theme-border-light: var(--staff-border-light);
+  --theme-border-medium: var(--staff-border-medium);
+
+  --theme-shadow-sm: var(--staff-shadow-sm);
+  --theme-shadow-md: var(--staff-shadow-md);
+  --theme-shadow-lg: var(--staff-shadow-lg);
+
+  --theme-success-bg: var(--staff-success-bg);
+  --theme-success-text: var(--staff-success-text);
+  --theme-warning-bg: var(--staff-warning-bg);
+  --theme-warning-text: var(--staff-warning-text);
+  --theme-error-bg: var(--staff-error-bg);
+  --theme-error-text: var(--staff-error-text);
+  --theme-info-bg: var(--staff-info-bg);
+  --theme-info-text: var(--staff-info-text);
+
+  /* Legacy text size mappings */
+  --text-xs: var(--staff-text-caption);
+  --text-sm: var(--staff-text-body-sm);
+  --text-base: var(--staff-text-body);
+  --text-lg: var(--staff-text-h4);
+  --text-xl: var(--staff-text-h3);
+  --text-2xl: var(--staff-text-h2);
+  --text-3xl: var(--staff-text-h1);
+  --text-4xl: var(--staff-text-hero);
+
+  /* Spacing for components */
+  --space-1: var(--space-xs);
+  --space-2: var(--space-sm);
+  --space-3: var(--space-md);
+  --space-4: var(--space-lg);
+  --space-5: var(--space-xl);
+  --space-6: var(--space-2xl);
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC OVERRIDES
+   ======================================== */
+
+.staff-portal .btn-primary {
+  height: var(--staff-button-height);
+  padding: var(--staff-button-padding);
+  border-radius: var(--staff-radius-md);
+  background: var(--staff-accent-primary);
+  color: var(--staff-text-inverse);
+  font-size: 15px;
+  font-weight: var(--font-weight-medium);
+  transition: background var(--duration-fast) var(--ease-in-out);
+}
+
+.staff-portal .btn-primary:hover {
+  background: #229A8C;
+  box-shadow: var(--staff-shadow-sm);
+}
+
+.staff-portal .card {
+  background: var(--staff-bg-primary);
+  border-radius: var(--staff-radius-lg);
+  padding: var(--staff-card-padding);
+  box-shadow: var(--staff-shadow-sm);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.staff-portal .card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--staff-shadow-md);
+}
+
+.staff-portal input,
+.staff-portal select,
+.staff-portal textarea {
+  height: var(--staff-input-height);
+  padding: var(--staff-input-padding);
+  border-radius: var(--staff-radius-md);
+  border: 1px solid var(--staff-border-medium);
+  font-size: 15px;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.staff-portal input:focus,
+.staff-portal select:focus,
+.staff-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--staff-accent-primary);
+  box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.1);
+}

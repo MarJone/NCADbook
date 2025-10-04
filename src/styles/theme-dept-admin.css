@@ -1,0 +1,232 @@
+/**
+ * ============================================
+ * DEPARTMENT ADMIN - "AMBER AUTHORITY" THEME
+ * Design Philosophy: Authoritative, Strategic, Data-Rich
+ * ============================================
+ *
+ * Characteristics:
+ * - Information-dense layouts with multi-panel sections
+ * - Subtle shadows and corners (8-12px)
+ * - Compact components
+ * - Minimal, purposeful animation
+ */
+
+.admin-portal {
+  /* ========================================
+     COLOR PALETTE - Amber Authority
+     ======================================== */
+
+  /* Primary Colors */
+  --dept-base-dark: #263238;
+  --dept-base-light: #CFD8DC;
+  --dept-accent-primary: #FFA726;            /* Amber/Gold */
+  --dept-accent-secondary: #FF7043;          /* Burnt Orange */
+  --dept-success: #FFB300;                   /* Deep Gold */
+  --dept-critical: #D32F2F;                  /* Dark Red */
+
+  /* Backgrounds */
+  --dept-bg-primary: #FAFAFA;
+  --dept-bg-secondary: #CFD8DC;
+  --dept-bg-tertiary: #FFF8E1;               /* Soft amber tint */
+
+  /* Text */
+  --dept-text-primary: #1A1A1A;
+  --dept-text-secondary: #263238;
+  --dept-text-tertiary: #546E7A;
+  --dept-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --dept-border-light: rgba(255, 167, 38, 0.1);
+  --dept-border-medium: rgba(255, 167, 38, 0.2);
+  --dept-border-strong: rgba(255, 167, 38, 0.3);
+
+  /* Status Colors */
+  --dept-success-bg: #FFF9E6;
+  --dept-success-text: #F57C00;
+  --dept-warning-bg: #FFF3E0;
+  --dept-warning-text: #E65100;
+  --dept-error-bg: #FFEBEE;
+  --dept-error-text: #C62828;
+  --dept-info-bg: #E3F2FD;
+  --dept-info-text: #1565C0;
+
+  /* ========================================
+     TYPOGRAPHY - Compact Sizing
+     ======================================== */
+
+  --dept-text-hero: 40px;             /* 2.5rem */
+  --dept-text-h1: 32px;               /* 2rem */
+  --dept-text-h2: 24px;               /* 1.5rem */
+  --dept-text-h3: 20px;               /* 1.25rem */
+  --dept-text-h4: 17px;               /* 1.0625rem */
+  --dept-text-body-lg: 16px;          /* 1rem */
+  --dept-text-body: 15px;             /* 0.9375rem */
+  --dept-text-body-sm: 13px;          /* 0.8125rem */
+  --dept-text-caption: 11px;          /* 0.6875rem */
+
+  /* Line Heights */
+  --dept-line-height-tight: 1.2;
+  --dept-line-height-heading: 1.3;
+  --dept-line-height-body: 1.5;
+
+  /* ========================================
+     SPACING - Compact
+     ======================================== */
+
+  --dept-card-padding: var(--space-md);      /* 16px */
+  --dept-card-gap: 20px;                     /* Custom */
+  --dept-section-gap: var(--space-xl);       /* 32px */
+  --dept-component-gap: 12px;                /* Custom */
+
+  /* ========================================
+     BORDER RADIUS - Sharper
+     ======================================== */
+
+  --dept-radius-sm: 6px;
+  --dept-radius-md: 8px;
+  --dept-radius-lg: 10px;
+  --dept-radius-xl: 12px;
+  --dept-radius-2xl: 16px;
+  --dept-radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS - Subtle Elevation
+     ======================================== */
+
+  --dept-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --dept-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --dept-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+
+  /* ========================================
+     COMPONENT SIZING - Compact
+     ======================================== */
+
+  --dept-button-height: 36px;
+  --dept-button-padding: 0 16px;
+  --dept-input-height: 38px;
+  --dept-input-padding: 0 12px;
+
+  /* ========================================
+     ANIMATIONS - Minimal
+     ======================================== */
+
+  --dept-transition-duration: var(--duration-fast);
+  --dept-transition-timing: var(--ease-in-out);
+
+  /* ========================================
+     THEME VARIABLE MAPPINGS
+     ======================================== */
+
+  --role-bg-primary: var(--dept-bg-primary);
+  --role-bg-secondary: var(--dept-bg-secondary);
+  --role-bg-tertiary: var(--dept-bg-tertiary);
+  --role-accent: var(--dept-accent-primary);
+  --role-accent-hover: #FB8C00;  /* Darker amber */
+  --role-accent-light: var(--dept-accent-secondary);
+  --role-gradient-start: var(--dept-accent-primary);
+  --role-gradient-end: #FB8C00;
+
+  --theme-bg-primary: var(--dept-bg-primary);
+  --theme-bg-secondary: var(--dept-bg-secondary);
+  --theme-bg-tertiary: var(--dept-bg-tertiary);
+  --theme-accent-primary: var(--dept-accent-primary);
+  --theme-accent-primary-hover: #FB8C00;
+
+  --theme-text-primary: var(--dept-text-primary);
+  --theme-text-secondary: var(--dept-text-secondary);
+  --theme-text-tertiary: var(--dept-text-tertiary);
+  --theme-text-inverse: var(--dept-text-inverse);
+
+  --theme-border-light: var(--dept-border-light);
+  --theme-border-medium: var(--dept-border-medium);
+
+  --theme-shadow-sm: var(--dept-shadow-sm);
+  --theme-shadow-md: var(--dept-shadow-md);
+  --theme-shadow-lg: var(--dept-shadow-lg);
+
+  --theme-success-bg: var(--dept-success-bg);
+  --theme-success-text: var(--dept-success-text);
+  --theme-warning-bg: var(--dept-warning-bg);
+  --theme-warning-text: var(--dept-warning-text);
+  --theme-error-bg: var(--dept-error-bg);
+  --theme-error-text: var(--dept-error-text);
+  --theme-info-bg: var(--dept-info-bg);
+  --theme-info-text: var(--dept-info-text);
+
+  /* Legacy text size mappings */
+  --text-xs: var(--dept-text-caption);
+  --text-sm: var(--dept-text-body-sm);
+  --text-base: var(--dept-text-body);
+  --text-lg: var(--dept-text-h4);
+  --text-xl: var(--dept-text-h3);
+  --text-2xl: var(--dept-text-h2);
+  --text-3xl: var(--dept-text-h1);
+  --text-4xl: var(--dept-text-hero);
+
+  /* Spacing for components */
+  --space-1: var(--space-xs);
+  --space-2: var(--space-sm);
+  --space-3: var(--dept-component-gap);
+  --space-4: var(--space-md);
+  --space-5: var(--dept-card-gap);
+  --space-6: var(--space-xl);
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC OVERRIDES
+   ======================================== */
+
+.admin-portal .btn-primary {
+  height: var(--dept-button-height);
+  padding: var(--dept-button-padding);
+  border-radius: var(--dept-radius-md);
+  background: var(--dept-accent-primary);
+  color: var(--dept-text-inverse);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  transition: background var(--duration-fast) var(--ease-in-out);
+}
+
+.admin-portal .btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.admin-portal .card {
+  background: var(--dept-bg-primary);
+  border-radius: var(--dept-radius-lg);
+  padding: var(--dept-card-padding);
+  box-shadow: var(--dept-shadow-sm);
+  border: 1px solid var(--dept-border-light);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.admin-portal .card:hover {
+  background: rgba(255, 167, 38, 0.02);
+}
+
+.admin-portal input,
+.admin-portal select,
+.admin-portal textarea {
+  height: var(--dept-input-height);
+  padding: var(--dept-input-padding);
+  border-radius: var(--dept-radius-md);
+  border: 1px solid var(--dept-border-medium);
+  font-size: 14px;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.admin-portal input:focus,
+.admin-portal select:focus,
+.admin-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--dept-accent-primary);
+  box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.1);
+}
+
+/* Fix contrast for text on amber background */
+.admin-portal .btn-primary,
+.admin-portal .admin-action-btn:not(.secondary) {
+  /* Use darker amber for better contrast */
+  background: linear-gradient(135deg, #FB8C00 0%, #F57C00 100%);
+  color: #FFFFFF;
+}

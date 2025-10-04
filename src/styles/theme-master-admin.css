@@ -1,0 +1,711 @@
+/**
+ * ============================================
+ * MASTER ADMIN - "PURPLE AUTHORITY" THEME
+ * Design Philosophy: Authoritative, Strategic, Data-Rich
+ * ============================================
+ *
+ * Characteristics:
+ * - Information-dense layouts with multi-panel sections
+ * - Subtle shadows and corners (8-12px)
+ * - Compact components
+ * - Minimal, purposeful animation
+ * - Same style as Department Admin, purple color scheme
+ */
+
+.master-admin-portal {
+  /* ========================================
+     COLOR PALETTE - Purple Authority
+     ======================================== */
+
+  /* Primary Colors */
+  --master-base-dark: #263238;
+  --master-base-light: #CFD8DC;
+  --master-accent-primary: #9C27B0;            /* Purple */
+  --master-accent-secondary: #7B1FA2;          /* Deep Purple */
+  --master-success: #8E24AA;                   /* Deep Purple */
+  --master-critical: #D32F2F;                  /* Dark Red */
+
+  /* Backgrounds */
+  --master-bg-primary: #FAFAFA;
+  --master-bg-secondary: #CFD8DC;
+  --master-bg-tertiary: #F3E5F5;               /* Soft purple tint */
+
+  /* Text */
+  --master-text-primary: #1A1A1A;
+  --master-text-secondary: #263238;
+  --master-text-tertiary: #546E7A;
+  --master-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --master-border-light: rgba(156, 39, 176, 0.1);
+  --master-border-medium: rgba(156, 39, 176, 0.2);
+  --master-border-strong: rgba(156, 39, 176, 0.3);
+
+  /* Status Colors */
+  --master-success-bg: #F3E5F5;
+  --master-success-text: #7B1FA2;
+  --master-warning-bg: #FFF3E0;
+  --master-warning-text: #E65100;
+  --master-error-bg: #FFEBEE;
+  --master-error-text: #C62828;
+  --master-info-bg: #E3F2FD;
+  --master-info-text: #1565C0;
+
+  /* ========================================
+     TYPOGRAPHY - Compact Sizing
+     ======================================== */
+
+  --master-text-hero: 40px;             /* 2.5rem */
+  --master-text-h1: 32px;               /* 2rem */
+  --master-text-h2: 24px;               /* 1.5rem */
+  --master-text-h3: 20px;               /* 1.25rem */
+  --master-text-h4: 17px;               /* 1.0625rem */
+  --master-text-body-lg: 16px;          /* 1rem */
+  --master-text-body: 15px;             /* 0.9375rem */
+  --master-text-body-sm: 13px;          /* 0.8125rem */
+  --master-text-caption: 11px;          /* 0.6875rem */
+
+  /* Line Heights */
+  --master-line-height-tight: 1.2;
+  --master-line-height-heading: 1.3;
+  --master-line-height-body: 1.5;
+
+  /* ========================================
+     SPACING - Compact
+     ======================================== */
+
+  --master-card-padding: var(--space-md);      /* 16px */
+  --master-card-gap: 20px;                     /* Custom */
+  --master-section-gap: var(--space-xl);       /* 32px */
+  --master-component-gap: 12px;                /* Custom */
+
+  /* ========================================
+     BORDER RADIUS - Sharper
+     ======================================== */
+
+  --master-radius-sm: 6px;
+  --master-radius-md: 8px;
+  --master-radius-lg: 10px;
+  --master-radius-xl: 12px;
+  --master-radius-2xl: 16px;
+  --master-radius-full: 9999px;
+
+  /* ========================================
+     SHADOWS - Subtle Elevation
+     ======================================== */
+
+  --master-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --master-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --master-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+
+  /* ========================================
+     COMPONENT SIZING - Compact
+     ======================================== */
+
+  --master-button-height: 36px;
+  --master-button-padding: 0 16px;
+  --master-input-height: 38px;
+  --master-input-padding: 0 12px;
+
+  /* ========================================
+     ANIMATIONS - Minimal
+     ======================================== */
+
+  --master-transition-duration: var(--duration-fast);
+  --master-transition-timing: var(--ease-in-out);
+
+  /* ========================================
+     THEME VARIABLE MAPPINGS
+     ======================================== */
+
+  --role-bg-primary: var(--master-bg-primary);
+  --role-bg-secondary: var(--master-bg-secondary);
+  --role-bg-tertiary: var(--master-bg-tertiary);
+  --role-accent: var(--master-accent-primary);
+  --role-accent-hover: #AB47BC;  /* Lighter purple */
+  --role-accent-light: var(--master-accent-secondary);
+  --role-gradient-start: var(--master-accent-primary);
+  --role-gradient-end: #AB47BC;
+
+  --theme-bg-primary: var(--master-bg-primary);
+  --theme-bg-secondary: var(--master-bg-secondary);
+  --theme-bg-tertiary: var(--master-bg-tertiary);
+  --theme-accent-primary: var(--master-accent-primary);
+  --theme-accent-primary-hover: #AB47BC;
+
+  --theme-text-primary: var(--master-text-primary);
+  --theme-text-secondary: var(--master-text-secondary);
+  --theme-text-tertiary: var(--master-text-tertiary);
+  --theme-text-inverse: var(--master-text-inverse);
+
+  --theme-border-light: var(--master-border-light);
+  --theme-border-medium: var(--master-border-medium);
+
+  --theme-shadow-sm: var(--master-shadow-sm);
+  --theme-shadow-md: var(--master-shadow-md);
+  --theme-shadow-lg: var(--master-shadow-lg);
+
+  --theme-success-bg: var(--master-success-bg);
+  --theme-success-text: var(--master-success-text);
+  --theme-warning-bg: var(--master-warning-bg);
+  --theme-warning-text: var(--master-warning-text);
+  --theme-error-bg: var(--master-error-bg);
+  --theme-error-text: var(--master-error-text);
+  --theme-info-bg: var(--master-info-bg);
+  --theme-info-text: var(--master-info-text);
+
+  /* Legacy text size mappings */
+  --text-xs: var(--master-text-caption);
+  --text-sm: var(--master-text-body-sm);
+  --text-base: var(--master-text-body);
+  --text-lg: var(--master-text-h4);
+  --text-xl: var(--master-text-h3);
+  --text-2xl: var(--master-text-h2);
+  --text-3xl: var(--master-text-h1);
+  --text-4xl: var(--master-text-hero);
+
+  /* Spacing for components */
+  --space-1: var(--space-xs);
+  --space-2: var(--space-sm);
+  --space-3: var(--master-component-gap);
+  --space-4: var(--space-md);
+  --space-5: var(--master-card-gap);
+  --space-6: var(--space-xl);
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC OVERRIDES
+   ======================================== */
+
+.master-admin-portal .btn-primary {
+  height: var(--master-button-height);
+  padding: var(--master-button-padding);
+  border-radius: var(--master-radius-md);
+  background: var(--master-accent-primary);
+  color: var(--master-text-inverse);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  transition: background var(--duration-fast) var(--ease-in-out);
+}
+
+.master-admin-portal .btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.master-admin-portal .card {
+  background: var(--master-bg-primary);
+  border-radius: var(--master-radius-lg);
+  padding: var(--master-card-padding);
+  box-shadow: var(--master-shadow-sm);
+  border: 1px solid var(--master-border-light);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.master-admin-portal .card:hover {
+  background: rgba(156, 39, 176, 0.02);
+}
+
+.master-admin-portal input,
+.master-admin-portal select,
+.master-admin-portal textarea {
+  height: var(--master-input-height);
+  padding: var(--master-input-padding);
+  border-radius: var(--master-radius-md);
+  border: 1px solid var(--master-border-medium);
+  font-size: 14px;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.master-admin-portal input:focus,
+.master-admin-portal select:focus,
+.master-admin-portal textarea:focus {
+  outline: none;
+  border: 2px solid var(--master-accent-primary);
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+}
+
+/* Fix contrast for text on purple background */
+.master-admin-portal .btn-primary,
+.master-admin-portal .admin-action-btn:not(.secondary) {
+  /* Use gradient purple for better visual appeal */
+  background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%);
+  color: #FFFFFF;
+}
+
+/* ========================================
+   ACCESSIBILITY - FOCUS STATES
+   ======================================== */
+
+.master-admin-portal *:focus-visible {
+  outline: 3px solid var(--master-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   RESPONSIVE DENSITY SYSTEM
+   Progressive data density across screen sizes
+   ======================================== */
+
+/* Mobile (320px - 768px): COMPACT LAYOUT */
+@media (max-width: 767px) {
+  .master-admin-portal {
+    --master-input-height: 40px;  /* Larger for touch */
+    --master-button-height: 40px;
+    --master-card-padding: 16px;  /* More breathing room */
+    --master-card-gap: 16px;
+    --master-text-body: 15px;     /* Slightly larger */
+  }
+
+  .master-admin-portal .admin-stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .master-admin-portal .admin-stat-number {
+    font-size: 32px !important;
+  }
+}
+
+/* Tablet (768px - 1023px): BALANCED LAYOUT */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .master-admin-portal {
+    --master-input-height: 36px;
+    --master-button-height: 36px;
+    --master-card-padding: 14px;
+    --master-card-gap: 16px;
+  }
+
+  .master-admin-portal .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px;
+  }
+}
+
+/* Desktop (1024px - 2559px): STANDARD DENSE LAYOUT */
+@media (min-width: 1024px) and (max-width: 2559px) {
+  .master-admin-portal {
+    --master-input-height: 38px;
+    --master-button-height: 36px;
+    --master-card-padding: 16px;
+    --master-card-gap: 20px;
+  }
+
+  .master-admin-portal .admin-stats-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px;
+  }
+
+  .master-admin-portal .admin-main {
+    max-width: 1600px;
+  }
+}
+
+/* 4K (2560px+): DATA-HEAVY LAYOUT */
+@media (min-width: 2560px) {
+  .master-admin-portal {
+    --master-input-height: 38px;     /* Slightly larger for 4K */
+    --master-button-height: 36px;
+    --master-card-padding: 16px;     /* More space on huge screens */
+    --master-card-gap: 24px;
+    --master-text-body: 15px;        /* Larger text for 4K */
+    --master-text-h4: 18px;
+    --master-text-h3: 20px;
+    --master-text-h2: 24px;
+  }
+
+  /* 6-column stats grid for maximum data density */
+  .master-admin-portal .admin-stats-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 24px;
+  }
+
+  /* Larger stat numbers for 4K visibility */
+  .master-admin-portal .admin-stat-number {
+    font-size: 48px !important;
+  }
+
+  /* Wider content on 4K */
+  .master-admin-portal .admin-main {
+    max-width: 2400px;
+  }
+
+  /* 4-column dashboard for data density */
+  .master-admin-portal .admin-dashboard-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  /* 4-column card grids */
+  .master-admin-portal .card-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* Ultra-Wide 4K (3440px+): MAXIMUM DATA DENSITY */
+@media (min-width: 3440px) {
+  .master-admin-portal .admin-stats-grid {
+    grid-template-columns: repeat(8, 1fr) !important;
+    gap: 28px;
+  }
+
+  .master-admin-portal .admin-main {
+    max-width: 3200px;
+  }
+
+  .master-admin-portal .card-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC FIXES
+   Search bars, tables, dropdowns, filters
+   ======================================== */
+
+/* SEARCH BAR */
+.master-admin-portal .search-bar {
+  margin-bottom: var(--space-lg);
+}
+
+.master-admin-portal .search-input {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-primary) !important;
+  border: 1px solid var(--master-border-medium) !important;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.master-admin-portal .search-input:focus {
+  background: var(--master-bg-primary) !important;
+  border-color: var(--master-accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1) !important;
+}
+
+.master-admin-portal .search-input::placeholder {
+  color: var(--master-text-tertiary) !important;
+}
+
+.master-admin-portal .btn-clear-search {
+  color: var(--master-text-secondary);
+}
+
+.master-admin-portal .btn-clear-search:hover {
+  color: var(--master-accent-primary);
+}
+
+/* SELECT DROPDOWNS */
+.master-admin-portal select {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-primary) !important;
+  border: 1px solid var(--master-border-medium) !important;
+  padding: 10px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.master-admin-portal select:focus {
+  background: var(--master-bg-primary) !important;
+  border-color: var(--master-accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1) !important;
+}
+
+/* FILTER CONTROLS */
+.master-admin-portal .filter-controls {
+  margin-bottom: var(--space-lg);
+  gap: var(--space-sm);
+}
+
+.master-admin-portal .filter-controls .btn-secondary {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-secondary) !important;
+  border: 1px solid var(--master-border-medium) !important;
+}
+
+.master-admin-portal .filter-controls .btn-secondary:hover {
+  background: rgba(156, 39, 176, 0.05) !important;
+  color: var(--master-accent-primary) !important;
+  border-color: var(--master-accent-primary) !important;
+}
+
+.master-admin-portal .filter-controls .btn-primary {
+  background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%) !important;
+  color: var(--master-text-inverse) !important;
+  border: none !important;
+  box-shadow: var(--master-shadow-sm) !important;
+}
+
+/* TABLES */
+.master-admin-portal .equipment-table,
+.master-admin-portal .users-table,
+.master-admin-portal .equipment-table-compact,
+.master-admin-portal .duplicate-table,
+.master-admin-portal .access-table {
+  background: var(--master-bg-primary) !important;
+  border: 1px solid var(--master-border-light) !important;
+  box-shadow: var(--master-shadow-sm) !important;
+}
+
+.master-admin-portal .equipment-table table,
+.master-admin-portal .users-table table,
+.master-admin-portal .equipment-table-compact {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-primary) !important;
+}
+
+.master-admin-portal .equipment-table th,
+.master-admin-portal .users-table th,
+.master-admin-portal .equipment-table-compact th,
+.master-admin-portal .duplicate-table th {
+  background: var(--master-bg-tertiary) !important;
+  color: var(--master-text-primary) !important;
+  border-bottom: 2px solid var(--master-border-medium) !important;
+}
+
+.master-admin-portal .equipment-table td,
+.master-admin-portal .users-table td,
+.master-admin-portal .equipment-table-compact td,
+.master-admin-portal .duplicate-table td {
+  color: var(--master-text-primary) !important;
+  border-bottom: 1px solid var(--master-border-light) !important;
+}
+
+/* Hover state - purple tint */
+.master-admin-portal .equipment-table tbody tr:hover,
+.master-admin-portal .users-table tbody tr:hover,
+.master-admin-portal .equipment-table-compact tbody tr:hover,
+.master-admin-portal tbody tr:hover {
+  background: rgba(156, 39, 176, 0.05) !important;
+  cursor: pointer;
+}
+
+/* Ensure text stays visible on hover */
+.master-admin-portal .equipment-table tbody tr:hover td,
+.master-admin-portal .users-table tbody tr:hover td,
+.master-admin-portal .equipment-table-compact tbody tr:hover td {
+  color: var(--master-text-primary) !important;
+}
+
+/* MANAGEMENT PAGES */
+.master-admin-portal .equipment-management,
+.master-admin-portal .user-management,
+.master-admin-portal .booking-approvals {
+  background: var(--master-bg-secondary);
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .equipment-management h2,
+.master-admin-portal .user-management h2,
+.master-admin-portal .booking-approvals h2 {
+  color: var(--master-text-primary) !important;
+}
+
+.master-admin-portal .subtitle,
+.master-admin-portal .equipment-management p,
+.master-admin-portal .user-management p {
+  color: var(--master-text-secondary) !important;
+}
+
+/* MODAL BACKGROUNDS */
+.master-admin-portal .modal-content {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-primary) !important;
+  border: 1px solid var(--master-border-light) !important;
+  box-shadow: var(--master-shadow-lg) !important;
+}
+
+.master-admin-portal .modal-header {
+  border-bottom: 1px solid var(--master-border-light) !important;
+}
+
+.master-admin-portal .modal-footer {
+  border-top: 1px solid var(--master-border-light) !important;
+  background: var(--master-bg-secondary) !important;
+}
+
+/* BADGES */
+.master-admin-portal .role-badge,
+.master-admin-portal .status-badge {
+  background: var(--master-bg-tertiary) !important;
+  color: var(--master-text-primary) !important;
+  border: 1px solid var(--master-border-medium) !important;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.master-admin-portal .status-badge.available {
+  background: var(--master-success-bg) !important;
+  color: var(--master-success-text) !important;
+  border-color: var(--master-success-text) !important;
+}
+
+.master-admin-portal .status-badge.booked {
+  background: var(--master-warning-bg) !important;
+  color: var(--master-warning-text) !important;
+  border-color: var(--master-warning-text) !important;
+}
+
+.master-admin-portal .status-badge.maintenance {
+  background: var(--master-error-bg) !important;
+  color: var(--master-error-text) !important;
+  border-color: var(--master-error-text) !important;
+}
+
+/* PAGINATION */
+.master-admin-portal .pagination button {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-primary) !important;
+  border: 1px solid var(--master-border-medium) !important;
+}
+
+.master-admin-portal .pagination button:hover:not(:disabled) {
+  background: rgba(156, 39, 176, 0.05) !important;
+  color: var(--master-accent-primary) !important;
+  border-color: var(--master-accent-primary) !important;
+}
+
+.master-admin-portal .pagination button.active {
+  background: var(--master-accent-primary) !important;
+  color: var(--master-text-inverse) !important;
+  border-color: var(--master-accent-primary) !important;
+}
+
+.master-admin-portal .pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* TRACKING NUMBER (monospace) */
+.master-admin-portal .tracking-number {
+  color: var(--master-text-secondary) !important;
+  font-family: 'Courier New', monospace;
+}
+
+/* LOADING SKELETON */
+.master-admin-portal .loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--master-bg-secondary) 0%,
+    var(--master-bg-tertiary) 50%,
+    var(--master-bg-secondary) 100%
+  ) !important;
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+/* ANALYTICS PAGE */
+.master-admin-portal .analytics-card {
+  background: var(--master-bg-primary) !important;
+  border: 1px solid var(--master-border-light) !important;
+  box-shadow: var(--master-shadow-sm) !important;
+}
+
+/* DEPARTMENT FILTERS */
+.master-admin-portal .department-filter {
+  background: var(--master-bg-primary) !important;
+  color: var(--master-text-primary) !important;
+  border: 1px solid var(--master-border-medium) !important;
+}
+
+/* Override admin portal styles */
+.master-admin-portal .admin-portal {
+  background: var(--master-bg-secondary);
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .admin-header {
+  background: var(--master-bg-primary);
+  border-bottom: 1px solid var(--master-border-light);
+  box-shadow: var(--master-shadow-sm);
+}
+
+.master-admin-portal .admin-nav {
+  background: var(--master-bg-primary);
+  border-bottom: 1px solid var(--master-border-light);
+}
+
+.master-admin-portal .admin-nav-link {
+  color: var(--master-text-secondary);
+}
+
+.master-admin-portal .admin-nav-link:hover {
+  color: var(--master-accent-primary);
+  background: rgba(156, 39, 176, 0.05);
+}
+
+.master-admin-portal .admin-nav-link.active {
+  color: var(--master-accent-primary);
+  border-bottom-color: var(--master-accent-primary);
+  background: rgba(156, 39, 176, 0.05);
+}
+
+.master-admin-portal .admin-stat-card {
+  background: var(--master-bg-primary);
+  border-color: var(--master-border-light);
+  box-shadow: var(--master-shadow-sm);
+}
+
+.master-admin-portal .admin-stat-number {
+  color: var(--master-accent-primary);
+}
+
+.master-admin-portal .admin-action-btn.secondary {
+  background: var(--master-bg-primary);
+  color: var(--master-accent-primary);
+  border: 1px solid var(--master-border-medium);
+}
+
+.master-admin-portal .admin-action-btn.secondary:hover {
+  background: rgba(156, 39, 176, 0.05);
+  border-color: var(--master-accent-primary);
+}
+
+/* Headings */
+.master-admin-portal h1,
+.master-admin-portal h2,
+.master-admin-portal h3,
+.master-admin-portal h4,
+.master-admin-portal h5,
+.master-admin-portal h6 {
+  color: var(--master-text-primary);
+}
+
+/* Tables - consistent styling */
+.master-admin-portal table {
+  background: var(--master-bg-primary);
+  color: var(--master-text-primary);
+  border: 1px solid var(--master-border-light);
+  border-radius: var(--master-radius-md);
+  overflow: hidden;
+}
+
+.master-admin-portal th {
+  background: var(--master-bg-tertiary);
+  color: var(--master-text-primary);
+  border-bottom: 2px solid var(--master-border-medium);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+}
+
+.master-admin-portal td {
+  border-bottom: 1px solid var(--master-border-light);
+  padding: 12px 16px;
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal tbody tr:hover {
+  background: rgba(156, 39, 176, 0.05);
+  cursor: pointer;
+}
+
+/* Zebra striping for better readability */
+.master-admin-portal tbody tr:nth-child(even) {
+  background: var(--master-bg-secondary);
+}
+
+.master-admin-portal tbody tr:nth-child(even):hover {
+  background: rgba(156, 39, 176, 0.05);
+}

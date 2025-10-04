@@ -1,0 +1,196 @@
+/**
+ * ============================================
+ * NCAD EQUIPMENT BOOKING - DESIGN TOKENS
+ * Comprehensive Design System Foundation
+ * Created: 2025-10-04
+ * ============================================
+ *
+ * This file contains all design tokens for the NCAD booking system.
+ * These tokens form the foundation of our bold, creative design language
+ * that celebrates NCAD's identity as Ireland's premier art and design institution.
+ */
+
+:root {
+  /* ========================================
+     BASE SPACING - 8pt Grid System
+     ======================================== */
+
+  --space-xs: 4px;      /* 0.25rem */
+  --space-sm: 8px;      /* 0.5rem */
+  --space-md: 16px;     /* 1rem */
+  --space-lg: 24px;     /* 1.5rem */
+  --space-xl: 32px;     /* 2rem */
+  --space-2xl: 48px;    /* 3rem */
+  --space-3xl: 64px;    /* 4rem */
+  --space-4xl: 96px;    /* 6rem */
+
+  /* ========================================
+     TYPOGRAPHY - Font Stacks
+     ======================================== */
+
+  /* Display & Headings - Bold, Creative */
+  --font-display: 'Space Grotesk', 'GT America', system-ui, sans-serif;
+
+  /* Body & Interface - Clean, Readable */
+  --font-body: 'Inter', 'DM Sans', system-ui, -apple-system, sans-serif;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.01em;
+
+  /* ========================================
+     BORDER RADIUS SYSTEM
+     ======================================== */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+
+  /* ========================================
+     SHADOW SYSTEM - Elevation
+     ======================================== */
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+  /* ========================================
+     ANIMATION & TRANSITIONS
+     ======================================== */
+
+  /* Timing Functions */
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Durations */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  --duration-slower: 500ms;
+
+  /* ========================================
+     RESPONSIVE BREAKPOINTS
+     ======================================== */
+
+  --breakpoint-mobile: 320px;
+  --breakpoint-mobile-lg: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-desktop-lg: 1440px;
+  --breakpoint-desktop-xl: 1920px;
+  --breakpoint-4k: 2560px;
+
+  /* Container Max-Widths */
+  --container-mobile: 100%;
+  --container-tablet: 100%;
+  --container-desktop: 1200px;
+  --container-desktop-lg: 1440px;
+  --container-desktop-xl: 1920px;
+  --container-4k: 2400px;
+
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* ========================================
+     TOUCH TARGETS
+     ======================================== */
+
+  --touch-target-min: 44px;
+  --touch-target-comfortable: 48px;
+  --touch-target-spacious: 56px;
+}
+
+/* ========================================
+   LEGACY COMPATIBILITY MAPPINGS
+   ======================================== */
+
+:root {
+  /* Map old variables to new system for backward compatibility */
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+  --spacing-3xl: var(--space-3xl);
+  --spacing-4xl: var(--space-4xl);
+  --spacing-5xl: var(--space-4xl);
+  --spacing-6xl: var(--space-4xl);
+
+  --font-family: var(--font-body);
+  --font-primary: var(--font-body);
+  --font-secondary: var(--font-body);
+
+  --font-size-xs: 11px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-md: 18px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 40px;
+  --font-size-4xl: 48px;
+  --font-size-5xl: 64px;
+
+  --font-normal: var(--font-weight-regular);
+  --font-medium: var(--font-weight-medium);
+  --font-semibold: var(--font-weight-semibold);
+  --font-bold: var(--font-weight-bold);
+
+  --border-radius: var(--radius-md);
+  --radius-none: 0;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  --shadow-none: none;
+  --shadow-subtle: var(--shadow-sm);
+  --shadow: var(--shadow-md);
+
+  --transition: all var(--duration-fast) var(--ease-in-out);
+  --transition-all: all var(--duration-fast) var(--ease-in-out);
+  --transition-base: all var(--duration-fast) var(--ease-in-out);
+  --transition-slow: all var(--duration-slow) var(--ease-in-out);
+
+  --tracking-tight: var(--letter-spacing-tight);
+  --tracking-normal: var(--letter-spacing-normal);
+  --tracking-wide: var(--letter-spacing-wide);
+
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
