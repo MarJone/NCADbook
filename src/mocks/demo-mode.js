@@ -1,4 +1,6 @@
 import { demoUsers, demoEquipment, demoSpaces, demoBookings, demoSpaceBookings, demoFeatureFlags, demoSubAreas, demoUserSubAreas, demoInterdisciplinaryAccess, demoAccessRequests } from './demo-data.js';
+import { demoSystemSettings, demoEquipmentKits, demoCrossDepartmentRequests, demoKitBookings, phase8SubAreas } from './demo-data-phase8-features.js';
+import { phase8Users, phase8Equipment } from './demo-data-phase8.js';
 
 const STORAGE_KEY = 'ncadbook_demo_data';
 
@@ -11,13 +13,22 @@ class DemoMode {
     const existing = localStorage.getItem(STORAGE_KEY);
     if (!existing) {
       const initialData = {
-        users: demoUsers,
-        equipment: demoEquipment,
+        // Phase 8: Use new department structure and data
+        users: phase8Users,
+        equipment: phase8Equipment,
+        sub_areas: phase8SubAreas,
+
+        // Phase 8: New tables
+        system_settings: demoSystemSettings,
+        equipment_kits: demoEquipmentKits,
+        cross_department_requests: demoCrossDepartmentRequests,
+        kit_bookings: demoKitBookings,
+
+        // Legacy data (keeping for backwards compatibility)
         spaces: demoSpaces,
         bookings: demoBookings,
         spaceBookings: demoSpaceBookings,
         featureFlags: demoFeatureFlags,
-        sub_areas: demoSubAreas,
         user_sub_areas: demoUserSubAreas,
         interdisciplinary_access: demoInterdisciplinaryAccess,
         access_requests: demoAccessRequests,
@@ -34,6 +45,11 @@ class DemoMode {
 
   setData(data) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  saveData(data) {
+    // Alias for setData (used by Phase 8 services)
+    this.setData(data);
   }
 
   async query(collection, filter = {}) {

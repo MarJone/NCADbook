@@ -18,6 +18,7 @@ import InterdisciplinaryAccess from './InterdisciplinaryAccess';
 import AccessRequests from './AccessRequests';
 import ManageAccessRequests from './ManageAccessRequests';
 import DepartmentStaffPermissions from './DepartmentStaffPermissions';
+import SystemSettings from '../master-admin/SystemSettings';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -161,6 +162,9 @@ export default function AdminLayout() {
               <span className="dropdown-arrow">▼</span>
             </button>
             <div className="dropdown-menu">
+              <Link to="/admin/system-settings" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
+                System Settings
+              </Link>
               <Link to="/admin/csv-import" className="dropdown-item" onClick={() => setOpenDropdown(null)}>
                 CSV Import
               </Link>
@@ -192,6 +196,7 @@ export default function AdminLayout() {
           <Route path="permissions" element={<AdminPermissions />} />
           <Route path="features" element={<FeatureFlagManager />} />
           <Route path="department-staff-permissions" element={<DepartmentStaffPermissions />} />
+          <Route path="system-settings" element={<SystemSettings />} />
         </Routes>
       </main>
 
