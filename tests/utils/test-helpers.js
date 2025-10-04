@@ -48,16 +48,17 @@ export async function navigateAndWait(page, url) {
  */
 export async function login(page, email, password) {
   await page.goto('/');
+  await page.waitForLoadState('domcontentloaded');
 
   // Determine which button to click based on email
   if (email.includes('demo@')) {
-    await page.click('button:has-text("Student")');
+    await page.locator('.role-name:has-text("Student")').click();
   } else if (email.includes('staff@')) {
-    await page.click('button:has-text("Staff")');
+    await page.locator('.role-name:has-text("Staff")').click();
   } else if (email.includes('master@')) {
-    await page.click('button:has-text("Master Admin")');
+    await page.locator('.role-name:has-text("Master Admin")').click();
   } else if (email.includes('admin@')) {
-    await page.click('button:has-text("Admin"):not(:has-text("Master"))');
+    await page.locator('.role-name:has-text("Department Admin")').click();
   }
 
   await page.waitForLoadState('networkidle');
