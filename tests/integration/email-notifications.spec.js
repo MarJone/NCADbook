@@ -1,6 +1,9 @@
 import { test, expect, users } from '../fixtures/auth.fixtures.js';
 import { waitForLoadingComplete, login, waitForToast } from '../utils/test-helpers.js';
 
+// Increase timeout for email notification tests
+test.setTimeout(45000);
+
 // Mock EmailJS for testing
 test.beforeEach(async ({ page }) => {
   // Intercept EmailJS API calls
@@ -154,7 +157,7 @@ test.describe('Email Notifications - Booking Approved', () => {
     });
 
     try {
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 
@@ -212,7 +215,7 @@ test.describe('Email Notifications - Booking Denied', () => {
     });
 
     try {
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 
@@ -272,7 +275,7 @@ test.describe('Email Notifications - Booking Denied', () => {
     });
 
     try {
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 

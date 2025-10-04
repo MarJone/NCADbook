@@ -23,7 +23,7 @@ export default function SubAreaAdminDashboard() {
   const loadDashboardData = async () => {
     setLoading(true);
     try {
-      // Get user's sub-area assignment
+      // Get user's department assignment
       const userSubArea = await demoMode.findOne('user_sub_areas', { user_id: user.id });
 
       if (userSubArea) {
@@ -100,8 +100,8 @@ export default function SubAreaAdminDashboard() {
   if (!subArea) {
     return (
       <div className="empty-state">
-        <h2>No Sub-Area Assigned</h2>
-        <p>You are not assigned to manage any sub-area.</p>
+        <h2>No Department Assigned</h2>
+        <p>You are not assigned to manage any department.</p>
       </div>
     );
   }
@@ -110,7 +110,7 @@ export default function SubAreaAdminDashboard() {
     <div className="sub-area-dashboard" data-testid="sub-area-dashboard">
       <div className="dashboard-header">
         <h2>{subArea.name} Dashboard</h2>
-        <p className="subtitle">Quick overview of your sub-area</p>
+        <p className="subtitle">Quick overview of your department</p>
       </div>
 
       <div className="dashboard-stats">

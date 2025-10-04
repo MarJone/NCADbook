@@ -49,12 +49,12 @@ export default function Login() {
               <span className="role-desc">Equipment + room booking</span>
             </button>
             <button
-              onClick={() => quickLogin('admin@ncad.ie', 'admin123', 'Sub-Area Admin')}
+              onClick={() => quickLogin('admin@ncad.ie', 'admin123', 'Department Admin')}
               className="btn btn-primary btn-large"
               disabled={loading}
             >
-              <span className="role-name">Sub-Area Admin</span>
-              <span className="role-desc">Manage sub-area & request access</span>
+              <span className="role-name">Department Admin</span>
+              <span className="role-desc">Manage department & request access</span>
             </button>
             <button
               onClick={() => quickLogin('master@ncad.ie', 'master123', 'Master Admin')}

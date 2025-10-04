@@ -16,6 +16,7 @@ import StudentAssignment from './StudentAssignment';
 import InterdisciplinaryAccess from './InterdisciplinaryAccess';
 import AccessRequests from './AccessRequests';
 import ManageAccessRequests from './ManageAccessRequests';
+import DepartmentStaffPermissions from './DepartmentStaffPermissions';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -67,6 +68,7 @@ export default function AdminLayout() {
             <Link to="/admin/equipment" className="nav-link">Equipment</Link>
             <Link to="/admin/approvals" className="nav-link btn-quick-action">Approve Bookings</Link>
             <Link to="/admin/access-requests" className="nav-link btn-quick-action">Request Access</Link>
+            <Link to="/admin/department-staff-permissions" className="nav-link">Manage Staff Permissions</Link>
           </>
         )}
 
@@ -188,6 +190,7 @@ export default function AdminLayout() {
           <Route path="csv-import" element={<CSVImport />} />
           <Route path="permissions" element={<AdminPermissions />} />
           <Route path="features" element={<FeatureFlagManager />} />
+          <Route path="department-staff-permissions" element={<DepartmentStaffPermissions />} />
         </Routes>
       </main>
     </div>

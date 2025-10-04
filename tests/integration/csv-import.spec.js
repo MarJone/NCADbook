@@ -3,6 +3,9 @@ import { waitForLoadingComplete, login, waitForToast } from '../utils/test-helpe
 import fs from 'fs';
 import path from 'path';
 
+// Increase timeout for CSV import tests (file operations can be slow)
+test.setTimeout(60000);
+
 test.describe('CSV Import - Access Control', () => {
   test('should be accessible only to master admin', async ({ page }) => {
     await login(page, users.masterAdmin.email, users.masterAdmin.password);

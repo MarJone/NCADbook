@@ -14,6 +14,18 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  // Check if user has permission to create bookings (for staff only)
+  const canCreateBooking = () => {
+    if (!user) return false;
+    // Students and admins always have access
+    if (user.role === 'student' || user.role === 'department_admin' || user.role === 'master_admin') return true;
+    // Staff users need view_permissions
+    if (user.role === 'staff') {
+      return user.view_permissions?.can_create_bookings !== false;
+    }
+    return true;
+  };
+
   const validateForm = () => {
     const errors = {};
 
@@ -78,6 +90,30 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
   };
 
   const today = new Date().toISOString().split('T')[0];
+
+  // Check if user has permission
+  if (!canCreateBooking()) {
+    return (
+      <div className="modal-overlay" onClick={onClose} data-testid="modal-overlay">
+        <div className="modal-content modal" onClick={(e) => e.stopPropagation()} data-testid="booking-modal">
+          <div className="modal-header">
+            <h2>Access Restricted</h2>
+            <button className="modal-close" onClick={onClose} aria-label="Close">&times;</button>
+          </div>
+          <div className="modal-body">
+            <div className="restriction-message" style={{ textAlign: 'center', padding: '2rem', background: '#fff3cd', border: '2px solid #ffc107', borderRadius: '8px' }}>
+              <h3 style={{ color: '#856404', marginBottom: '1rem' }}>Cannot Create Booking</h3>
+              <p style={{ color: '#856404', marginBottom: '0.5rem' }}>You do not have permission to create equipment bookings.</p>
+              <p style={{ color: '#856404' }}>Please contact your department admin to request access.</p>
+            </div>
+            <div className="modal-actions" style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+              <button onClick={onClose} className="btn btn-secondary">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose} data-testid="modal-overlay">

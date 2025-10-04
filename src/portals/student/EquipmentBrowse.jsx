@@ -10,8 +10,10 @@ import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 import AvailabilityFilter from '../../components/equipment/AvailabilityFilter';
 import { useToast } from '../../hooks/useToast';
 import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function EquipmentBrowse() {
+  const { user } = useAuth();
   const [equipment, setEquipment] = useState([]);
   const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,18 @@ export default function EquipmentBrowse() {
   const itemsPerPage = 20;
   const [availabilityFilter, setAvailabilityFilter] = useState({ type: 'all' });
   const { toasts, showToast, removeToast } = useToast();
+
+  // Check if user has permission to view catalog (for staff only)
+  const canViewCatalog = () => {
+    if (!user) return false;
+    // Students and admins always have access
+    if (user.role === 'student' || user.role === 'department_admin' || user.role === 'master_admin') return true;
+    // Staff users need view_permissions
+    if (user.role === 'staff') {
+      return user.view_permissions?.can_view_catalog !== false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     loadEquipment();
@@ -163,6 +177,44 @@ export default function EquipmentBrowse() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedEquipment = filteredEquipment.slice(startIndex, endIndex);
 
+  // Check if user has permission to view catalog
+  if (!loading && !canViewCatalog()) {
+    return (
+      <div className="access-restricted">
+        <div className="restriction-message">
+          <h2>Access Restricted</h2>
+          <p>You do not have permission to view the equipment catalog.</p>
+          <p>Please contact your department admin to request access.</p>
+        </div>
+        <style jsx>{`
+          .access-restricted {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            padding: 2rem;
+          }
+          .restriction-message {
+            text-align: center;
+            max-width: 500px;
+            padding: 2rem;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+          }
+          .restriction-message h2 {
+            color: #856404;
+            margin-bottom: 1rem;
+          }
+          .restriction-message p {
+            color: #856404;
+            margin-bottom: 0.5rem;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   return (
     <div className="equipment-browse">
       <div className="browse-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
@@ -203,13 +255,13 @@ export default function EquipmentBrowse() {
       {subAreas.length > 0 && (
         <div className="filter-controls" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
           <div style={{ marginBottom: '0.5rem' }}>
-            <strong>Sub-Area:</strong>
+            <strong>Department:</strong>
           </div>
           <button
             onClick={() => setSubAreaFilter('all')}
             className={subAreaFilter === 'all' ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
           >
-            All Sub-Areas
+            All Departments
           </button>
           {subAreas.map(subArea => (
             <button

@@ -40,7 +40,7 @@ export default function NotificationCenter() {
             });
           }
         });
-      } else if (currentUser.role === 'sub_area_admin' || currentUser.role === 'master_admin') {
+      } else if (currentUser.role === 'department_admin' || currentUser.role === 'master_admin') {
         // Admins get notifications about pending bookings
         const pendingBookings = data.bookings.filter(b => b.status === 'pending');
         if (pendingBookings.length > 0) {

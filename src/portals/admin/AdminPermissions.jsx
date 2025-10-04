@@ -3,7 +3,17 @@ import { demoMode } from '../../mocks/demo-mode';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import Toast from '../../components/common/Toast';
-import { getAllStaff, getAllAdmins, updateAdminPermissions, updateStaffPermissions, grantAdminDepartmentAccess } from '../../services/staffPermissions.service';
+import {
+  getAllStaff,
+  getAllAdmins,
+  updateAdminPermissions,
+  updateStaffPermissions,
+  grantAdminDepartmentAccess,
+  getPermissionPresets,
+  applyPermissionPreset,
+  grantDepartmentAccessWithExpiry,
+  revokeDepartmentAccess
+} from '../../services/staffPermissions.service';
 import { getAllDepartments } from '../../services/department.service';
 
 export default function AdminPermissions() {
@@ -14,6 +24,14 @@ export default function AdminPermissions() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('all');
+  const [filterRole, setFilterRole] = useState('all');
+  const [showPermissionModal, setShowPermissionModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [departmentAccessExpiry, setDepartmentAccessExpiry] = useState({});
   const { toasts, showToast, removeToast } = useToast();
 
   useEffect(() => {
@@ -156,6 +174,9 @@ export default function AdminPermissions() {
     { key: 'manage_users', label: 'Manage Users', description: 'View and manage user accounts' },
     { key: 'manage_bookings', label: 'Approve Bookings', description: 'Approve/deny booking requests' },
     { key: 'view_analytics', label: 'View Analytics', description: 'Access analytics and reports' },
+    { key: 'export_data', label: 'Export Data', description: 'Export data as CSV/PDF' },
+    { key: 'add_equipment_notes', label: 'Add Notes', description: 'Add notes to equipment' },
+    { key: 'csv_import', label: 'CSV Import', description: 'Import users/equipment via CSV' },
     { key: 'manage_kits', label: 'Manage Kits', description: 'Create and manage equipment kits' }
   ];
 
@@ -166,7 +187,126 @@ export default function AdminPermissions() {
     { key: 'can_request_access', label: 'Request Access', description: 'Can request cross-department access' }
   ];
 
-  const currentUsers = viewMode === 'admins' ? admins : staff;
+  // Apply preset permissions
+  const applyPreset = async (userId, presetName, isAdmin = true) => {
+    try {
+      const presets = getPermissionPresets();
+      const preset = isAdmin ? presets.admin[presetName] : presets.staff[presetName];
+
+      if (!preset) {
+        showToast('Invalid preset', 'error');
+        return;
+      }
+
+      if (isAdmin) {
+        await updateAdminPermissions(userId, preset.permissions);
+        setAdmins(prevAdmins =>
+          prevAdmins.map(a =>
+            a.id === userId ? { ...a, admin_permissions: preset.permissions } : a
+          )
+        );
+      } else {
+        await updateStaffPermissions(userId, preset.permissions);
+        setStaff(prevStaff =>
+          prevStaff.map(s =>
+            s.id === userId ? { ...s, staff_permissions: preset.permissions } : s
+          )
+        );
+      }
+
+      showToast(`Applied "${preset.name}" preset successfully`, 'success');
+      setShowPermissionModal(false);
+    } catch (error) {
+      console.error('Failed to apply preset:', error);
+      showToast('Failed to apply preset', 'error');
+    }
+  };
+
+  // Handle department access with expiry
+  const handleDepartmentAccessToggle = async (userId, departmentId, isAdmin = true) => {
+    const currentUser = isAdmin
+      ? admins.find(a => a.id === userId)
+      : staff.find(s => s.id === userId);
+
+    if (!currentUser) return;
+
+    const permissionKey = isAdmin ? 'admin_permissions' : 'staff_permissions';
+    const currentPermissions = currentUser[permissionKey] || {};
+    const accessibleDepartments = currentPermissions.accessible_departments || [];
+    const hasAccess = accessibleDepartments.includes(departmentId);
+
+    if (hasAccess) {
+      // Revoke access
+      setConfirmAction({
+        message: `Revoke access to this department for ${currentUser.full_name}?`,
+        onConfirm: async () => {
+          try {
+            await revokeDepartmentAccess(userId, departmentId, isAdmin);
+            await loadData();
+            showToast('Department access revoked', 'success');
+            setShowConfirmDialog(false);
+          } catch (error) {
+            showToast('Failed to revoke access', 'error');
+          }
+        }
+      });
+      setShowConfirmDialog(true);
+    } else {
+      // Grant access - check if expiry date is set
+      const expiryKey = `${userId}-${departmentId}`;
+      const expiryDate = departmentAccessExpiry[expiryKey];
+
+      try {
+        await grantDepartmentAccessWithExpiry(userId, departmentId, expiryDate, isAdmin);
+        await loadData();
+        showToast(
+          expiryDate
+            ? `Department access granted until ${new Date(expiryDate).toLocaleDateString()}`
+            : 'Department access granted (no expiry)',
+          'success'
+        );
+        // Clear expiry date input
+        setDepartmentAccessExpiry(prev => {
+          const newState = { ...prev };
+          delete newState[expiryKey];
+          return newState;
+        });
+      } catch (error) {
+        showToast('Failed to grant access', 'error');
+      }
+    }
+  };
+
+  // Bulk grant/revoke department access
+  const bulkDepartmentAction = async (userIds, departmentId, action, isAdmin = true) => {
+    try {
+      for (const userId of userIds) {
+        if (action === 'grant') {
+          await grantDepartmentAccessWithExpiry(userId, departmentId, null, isAdmin);
+        } else {
+          await revokeDepartmentAccess(userId, departmentId, isAdmin);
+        }
+      }
+      await loadData();
+      showToast(`Bulk ${action} completed for ${userIds.length} users`, 'success');
+    } catch (error) {
+      showToast(`Bulk ${action} failed`, 'error');
+    }
+  };
+
+  // Filter and search users
+  const currentUsers = (viewMode === 'admins' ? admins : staff).filter(u => {
+    const matchesSearch = searchTerm === '' ||
+      u.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesDepartment = filterDepartment === 'all' || u.department === filterDepartment;
+
+    const matchesRole = filterRole === 'all' || u.role === filterRole;
+
+    return matchesSearch && matchesDepartment && matchesRole;
+  });
+
   const currentPermissions = viewMode === 'admins' ? adminPermissions : staffPermissions;
   const isAdmin = viewMode === 'admins';
 
@@ -198,6 +338,46 @@ export default function AdminPermissions() {
         >
           Staff Permissions ({staff.length})
         </button>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="filters-section" style={{ marginBottom: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 300px' }}>
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="input"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <div style={{ flex: '0 1 200px' }}>
+          <select
+            value={filterDepartment}
+            onChange={(e) => setFilterDepartment(e.target.value)}
+            className="input"
+            style={{ width: '100%' }}
+          >
+            <option value="all">All Departments</option>
+            {departments.map(dept => (
+              <option key={dept.id} value={dept.name}>{dept.name}</option>
+            ))}
+          </select>
+        </div>
+        <div style={{ flex: '0 1 200px' }}>
+          <select
+            value={filterRole}
+            onChange={(e) => setFilterRole(e.target.value)}
+            className="input"
+            style={{ width: '100%' }}
+          >
+            <option value="all">All Roles</option>
+            <option value="master_admin">Master Admin</option>
+            <option value="department_admin">Department Admin</option>
+            <option value="staff">Staff</option>
+          </select>
+        </div>
       </div>
 
       {/* Stats */}
@@ -297,12 +477,25 @@ export default function AdminPermissions() {
                     ))}
 
                     <td style={{ textAlign: 'center' }}>
-                      <button
-                        onClick={() => setExpandedUser(isExpanded ? null : currentUser.id)}
-                        className="btn btn-sm btn-secondary"
-                      >
-                        {isExpanded ? 'Hide' : 'Manage'} Departments
-                      </button>
+                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                        <button
+                          onClick={() => {
+                            setSelectedUser(currentUser);
+                            setShowPermissionModal(true);
+                          }}
+                          className="btn btn-sm btn-primary"
+                          title="Manage detailed permissions"
+                        >
+                          Details
+                        </button>
+                        <button
+                          onClick={() => setExpandedUser(isExpanded ? null : currentUser.id)}
+                          className="btn btn-sm btn-secondary"
+                          title="Manage department access"
+                        >
+                          {isExpanded ? 'Hide' : 'Depts'}
+                        </button>
+                      </div>
                     </td>
                   </tr>
 
@@ -318,11 +511,13 @@ export default function AdminPermissions() {
                             Grant access to additional departments beyond their primary department ({currentUser.department})
                           </p>
 
-                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem' }}>
                             {departments.map(dept => {
                               const hasAccess = permissions.accessible_departments?.includes(dept.id) || false;
                               const isPrimaryDept = currentUser.department === dept.name ||
                                 (currentUser.managed_department_id === dept.id && isAdmin);
+                              const expiryKey = `${currentUser.id}-${dept.id}`;
+                              const accessData = permissions.department_access_expiry?.[dept.id];
 
                               return (
                                 <div
@@ -334,26 +529,45 @@ export default function AdminPermissions() {
                                     background: isPrimaryDept ? 'var(--color-primary-pale)' : hasAccess ? 'var(--color-success-pale)' : 'var(--bg-card)'
                                   }}
                                 >
-                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <div>
+                                  <div style={{ marginBottom: '0.5rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                       <strong style={{ fontSize: '0.875rem' }}>{dept.name}</strong>
-                                      {isPrimaryDept && (
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', marginTop: '0.25rem' }}>
-                                          Primary Department
-                                        </div>
+                                      {!isPrimaryDept && (
+                                        <label className="switch" style={{ marginLeft: '0.5rem' }}>
+                                          <input
+                                            type="checkbox"
+                                            checked={hasAccess}
+                                            onChange={() => handleDepartmentAccessToggle(currentUser.id, dept.id, isAdmin)}
+                                          />
+                                          <span className="slider"></span>
+                                        </label>
                                       )}
                                     </div>
-                                    {!isPrimaryDept && (
-                                      <label className="switch" style={{ marginLeft: '0.5rem' }}>
-                                        <input
-                                          type="checkbox"
-                                          checked={hasAccess}
-                                          onChange={() => toggleDepartmentAccess(currentUser.id, dept.id, isAdmin)}
-                                        />
-                                        <span className="slider"></span>
-                                      </label>
+                                    {isPrimaryDept && (
+                                      <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', marginTop: '0.25rem' }}>
+                                        Home Department
+                                      </div>
+                                    )}
+                                    {!isPrimaryDept && hasAccess && accessData?.expiry && (
+                                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                                        Expires: {new Date(accessData.expiry).toLocaleDateString()}
+                                      </div>
                                     )}
                                   </div>
+                                  {!isPrimaryDept && !hasAccess && (
+                                    <input
+                                      type="date"
+                                      placeholder="Expiry date (optional)"
+                                      value={departmentAccessExpiry[expiryKey] || ''}
+                                      onChange={(e) => setDepartmentAccessExpiry(prev => ({
+                                        ...prev,
+                                        [expiryKey]: e.target.value
+                                      }))}
+                                      className="input"
+                                      style={{ fontSize: '0.75rem', padding: '0.25rem', marginTop: '0.25rem', width: '100%' }}
+                                      min={new Date().toISOString().split('T')[0]}
+                                    />
+                                  )}
                                 </div>
                               );
                             })}
@@ -380,6 +594,156 @@ export default function AdminPermissions() {
           ))}
         </ul>
       </div>
+
+      {/* Permission Details Modal */}
+      {showPermissionModal && selectedUser && (
+        <div className="modal-overlay" onClick={() => setShowPermissionModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
+            <div className="modal-header">
+              <h3>Manage Permissions: {selectedUser.full_name}</h3>
+              <button onClick={() => setShowPermissionModal(false)} className="modal-close">×</button>
+            </div>
+            <div className="modal-body">
+              <div style={{ marginBottom: '1.5rem' }}>
+                <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+                  <strong>Role:</strong> {selectedUser.role} | <strong>Department:</strong> {selectedUser.department}
+                </p>
+              </div>
+
+              {/* Permission Presets */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 style={{ marginBottom: '0.75rem' }}>Quick Apply Preset</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.5rem' }}>
+                  {isAdmin ? (
+                    <>
+                      <button
+                        onClick={() => applyPreset(selectedUser.id, 'full_access', true)}
+                        className="btn btn-sm btn-primary"
+                      >
+                        Full Access
+                      </button>
+                      <button
+                        onClick={() => applyPreset(selectedUser.id, 'booking_manager', true)}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        Booking Manager
+                      </button>
+                      <button
+                        onClick={() => applyPreset(selectedUser.id, 'equipment_manager', true)}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        Equipment Manager
+                      </button>
+                      <button
+                        onClick={() => applyPreset(selectedUser.id, 'view_only', true)}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        View Only
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => applyPreset(selectedUser.id, 'full_staff', false)}
+                        className="btn btn-sm btn-primary"
+                      >
+                        Full Staff
+                      </button>
+                      <button
+                        onClick={() => applyPreset(selectedUser.id, 'basic_staff', false)}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        Basic Staff
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Individual Permissions */}
+              <div>
+                <h4 style={{ marginBottom: '0.75rem' }}>Individual Permissions</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {currentPermissions.map(perm => {
+                    const permissionKey = isAdmin ? 'admin_permissions' : 'staff_permissions';
+                    const permissions = selectedUser[permissionKey] || {};
+                    const isMasterAdmin = selectedUser.role === 'master_admin';
+
+                    return (
+                      <div
+                        key={perm.key}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '0.75rem',
+                          background: 'var(--bg-secondary)',
+                          borderRadius: 'var(--radius-md)'
+                        }}
+                      >
+                        <div>
+                          <strong style={{ fontSize: '0.875rem' }}>{perm.label}</strong>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                            {perm.description}
+                          </p>
+                        </div>
+                        {isMasterAdmin ? (
+                          <span style={{ color: 'var(--color-success)', fontWeight: 'bold' }}>✓</span>
+                        ) : (
+                          <label className="switch">
+                            <input
+                              type="checkbox"
+                              checked={permissions[perm.key] || false}
+                              onChange={() => togglePermission(selectedUser.id, perm.key, isAdmin)}
+                            />
+                            <span className="slider"></span>
+                          </label>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Last Modified Info */}
+              {selectedUser.permissions_updated_at && (
+                <div style={{ marginTop: '1.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Last modified: {new Date(selectedUser.permissions_updated_at).toLocaleString()}
+                  {selectedUser.permissions_updated_by && ` by ${selectedUser.permissions_updated_by}`}
+                </div>
+              )}
+            </div>
+            <div className="modal-footer">
+              <button onClick={() => setShowPermissionModal(false)} className="btn btn-secondary">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && confirmAction && (
+        <div className="modal-overlay" onClick={() => setShowConfirmDialog(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '400px' }}>
+            <div className="modal-header">
+              <h3>Confirm Action</h3>
+              <button onClick={() => setShowConfirmDialog(false)} className="modal-close">×</button>
+            </div>
+            <div className="modal-body">
+              <p>{confirmAction.message}</p>
+            </div>
+            <div className="modal-footer">
+              <button onClick={() => setShowConfirmDialog(false)} className="btn btn-secondary">
+                Cancel
+              </button>
+              <button onClick={confirmAction.onConfirm} className="btn btn-danger">
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {toasts.map(toast => (
         <Toast

@@ -8,9 +8,9 @@ import {
 
 /**
  * AccessRequests Component
- * For sub-area admins to:
- * - View all sub-areas and their equipment (read-only)
- * - Request access to another sub-area's equipment
+ * For department admins to:
+ * - View all departments and their equipment (read-only)
+ * - Request access to another department's equipment
  * - View status of their pending/approved/denied requests
  */
 export default function AccessRequests() {
@@ -139,8 +139,8 @@ export default function AccessRequests() {
       <div className="page-header">
         <h1>Request Equipment Access</h1>
         <p className="page-description">
-          You manage <strong>{myManagedSubArea?.name || 'your sub-area'}</strong>.
-          Request access to equipment from other sub-areas for your students.
+          You manage <strong>{myManagedSubArea?.name || 'your department'}</strong>.
+          Request access to equipment from other departments for your students.
         </p>
       </div>
 
@@ -161,7 +161,7 @@ export default function AccessRequests() {
         <h2>Submit New Access Request</h2>
         <form onSubmit={handleSubmitRequest} className="access-request-form">
           <div className="form-group">
-            <label htmlFor="subArea">Select Sub-Area to Access:</label>
+            <label htmlFor="subArea">Select Department to Access:</label>
             <select
               id="subArea"
               value={selectedSubArea || ''}
@@ -169,7 +169,7 @@ export default function AccessRequests() {
               required
               className="form-select"
             >
-              <option value="">-- Select a sub-area --</option>
+              <option value="">-- Select a department --</option>
               {otherSubAreas.map(sa => (
                 <option key={sa.id} value={sa.id}>
                   {sa.name} ({sa.parent_department})
@@ -177,7 +177,7 @@ export default function AccessRequests() {
               ))}
             </select>
             <p className="form-help">
-              Choose the sub-area whose equipment your students need access to.
+              Choose the department whose equipment your students need access to.
             </p>
           </div>
 
@@ -190,7 +190,7 @@ export default function AccessRequests() {
               required
               rows={4}
               className="form-textarea"
-              placeholder="Explain why your students need access to this sub-area's equipment..."
+              placeholder="Explain why your students need access to this department's equipment..."
             />
             <p className="form-help">
               Provide a clear justification for your request. This will be reviewed by the master admin.
@@ -221,7 +221,7 @@ export default function AccessRequests() {
               return (
                 <div key={request.id} className="request-item">
                   <div className="request-header">
-                    <h3>{targetSubArea?.name || 'Unknown Sub-Area'}</h3>
+                    <h3>{targetSubArea?.name || 'Unknown Department'}</h3>
                     <span className={`badge ${getStatusBadgeClass(request.status)}`}>
                       {request.status.toUpperCase()}
                     </span>
@@ -247,11 +247,11 @@ export default function AccessRequests() {
         )}
       </div>
 
-      {/* Browse Other Sub-Areas (Read-Only) */}
+      {/* Browse Other Departments (Read-Only) */}
       <div className="card">
-        <h2>Browse Other Sub-Areas</h2>
+        <h2>Browse Other Departments</h2>
         <p className="text-muted">
-          View equipment from other sub-areas (read-only). Submit a request to gain booking access.
+          View equipment from other departments (read-only). Submit a request to gain booking access.
         </p>
 
         <div className="sub-areas-grid">

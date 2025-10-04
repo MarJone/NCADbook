@@ -155,7 +155,7 @@ export default function ManageAccessRequests() {
       <div className="page-header">
         <h1>Manage Access Requests</h1>
         <p className="page-description">
-          Review and approve access requests from sub-area admins.
+          Review and approve access requests from department admins.
           {pendingCount > 0 && (
             <span className="badge badge-warning ml-2">
               {pendingCount} pending

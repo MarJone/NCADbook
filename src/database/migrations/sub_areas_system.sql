@@ -1,15 +1,16 @@
 -- ========================================
--- SUB-AREA SYSTEM MIGRATION
+-- DEPARTMENT SYSTEM MIGRATION
 -- ========================================
--- Purpose: Implement comprehensive sub-area/department system
+-- Purpose: Implement comprehensive department system
 -- for equipment organization and interdisciplinary access control
 -- Date: 2025-10-02
 -- ========================================
 
 -- ========================================
--- 1. SUB-AREAS TABLE
+-- 1. DEPARTMENTS TABLE (sub_areas)
 -- ========================================
--- Represents individual sub-areas/departments (e.g., ComDes, Fine Art Media, Sculpture)
+-- Represents individual departments (e.g., ComDes, Fine Art Media, Sculpture)
+-- Note: Database table name remains 'sub_areas' for backwards compatibility
 CREATE TABLE IF NOT EXISTS sub_areas (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL UNIQUE,
@@ -24,9 +25,10 @@ CREATE INDEX IF NOT EXISTS idx_sub_areas_name ON sub_areas(name);
 CREATE INDEX IF NOT EXISTS idx_sub_areas_parent ON sub_areas(parent_department);
 
 -- ========================================
--- 2. AREA ADMINS TABLE
+-- 2. DEPARTMENT ADMINS TABLE (area_admins)
 -- ========================================
--- Links users to sub-areas they can administer
+-- Links users to departments they can administer
+-- Note: Database table name remains 'area_admins' for backwards compatibility
 CREATE TABLE IF NOT EXISTS area_admins (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -40,9 +42,10 @@ CREATE INDEX IF NOT EXISTS idx_area_admins_user ON area_admins(user_id);
 CREATE INDEX IF NOT EXISTS idx_area_admins_sub_area ON area_admins(sub_area_id);
 
 -- ========================================
--- 3. USER SUB-AREA ASSIGNMENTS
+-- 3. USER DEPARTMENT ASSIGNMENTS (user_sub_areas)
 -- ========================================
--- Links students to their sub-areas (multiple assignments allowed)
+-- Links students to their departments (multiple assignments allowed)
+-- Note: Database table name remains 'user_sub_areas' for backwards compatibility
 CREATE TABLE IF NOT EXISTS user_sub_areas (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -57,9 +60,10 @@ CREATE INDEX IF NOT EXISTS idx_user_sub_areas_user ON user_sub_areas(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_sub_areas_sub_area ON user_sub_areas(sub_area_id);
 
 -- ========================================
--- 4. EQUIPMENT SUB-AREA ASSIGNMENT
+-- 4. EQUIPMENT DEPARTMENT ASSIGNMENT
 -- ========================================
--- Add sub_area_id column to equipment table
+-- Add department assignment column to equipment table
+-- Note: Column name remains 'sub_area_id' for backwards compatibility
 ALTER TABLE equipment
 ADD COLUMN IF NOT EXISTS sub_area_id UUID REFERENCES sub_areas(id);
 
@@ -69,7 +73,7 @@ CREATE INDEX IF NOT EXISTS idx_equipment_sub_area ON equipment(sub_area_id);
 -- ========================================
 -- 5. INTERDISCIPLINARY ACCESS TABLE
 -- ========================================
--- Grants access from one sub-area to another's equipment
+-- Grants access from one department to another department's equipment
 CREATE TABLE IF NOT EXISTS interdisciplinary_access (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   from_sub_area_id UUID REFERENCES sub_areas(id) ON DELETE CASCADE,
@@ -98,16 +102,16 @@ ALTER TABLE user_sub_areas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE interdisciplinary_access ENABLE ROW LEVEL SECURITY;
 
 -- ----------------------------------------
--- SUB-AREAS POLICIES
+-- DEPARTMENTS POLICIES
 -- ----------------------------------------
 
--- Everyone can view sub-areas (needed for dropdowns/filtering)
+-- Everyone can view departments (needed for dropdowns/filtering)
 CREATE POLICY sub_areas_view_all ON sub_areas
 FOR SELECT
 TO authenticated
 USING (true);
 
--- Only master admins can insert/update/delete sub-areas
+-- Only master admins can insert/update/delete departments
 CREATE POLICY sub_areas_master_admin_manage ON sub_areas
 FOR ALL
 TO authenticated
@@ -119,10 +123,10 @@ WITH CHECK (
 );
 
 -- ----------------------------------------
--- AREA ADMINS POLICIES
+-- DEPARTMENT ADMINS POLICIES
 -- ----------------------------------------
 
--- Area admins and master admins can view area admin assignments
+-- Department admins and master admins can view department admin assignments
 CREATE POLICY area_admins_view ON area_admins
 FOR SELECT
 TO authenticated
@@ -132,7 +136,7 @@ USING (
   (SELECT role FROM users WHERE id = auth.uid()) IN ('master_admin', 'admin')
 );
 
--- Only master admins can manage area admin assignments
+-- Only master admins can manage department admin assignments
 CREATE POLICY area_admins_master_admin_manage ON area_admins
 FOR ALL
 TO authenticated
@@ -144,10 +148,10 @@ WITH CHECK (
 );
 
 -- ----------------------------------------
--- USER SUB-AREA ASSIGNMENTS POLICIES
+-- USER DEPARTMENT ASSIGNMENTS POLICIES
 -- ----------------------------------------
 
--- Students can view their own sub-area assignments
+-- Students can view their own department assignments
 -- Admins can view all assignments
 CREATE POLICY user_sub_areas_view ON user_sub_areas
 FOR SELECT
@@ -160,7 +164,7 @@ USING (
   auth.uid() IN (SELECT user_id FROM area_admins)
 );
 
--- Area admins and master admins can manage assignments for their areas
+-- Department admins and master admins can manage assignments for their departments
 CREATE POLICY user_sub_areas_manage ON user_sub_areas
 FOR ALL
 TO authenticated
@@ -208,7 +212,7 @@ WITH CHECK (
 );
 
 -- ----------------------------------------
--- EQUIPMENT POLICIES (Updated for Sub-Areas)
+-- EQUIPMENT POLICIES (Updated for Departments)
 -- ----------------------------------------
 
 -- Drop existing equipment policies if they exist
@@ -216,18 +220,18 @@ DROP POLICY IF EXISTS equipment_student_access ON equipment;
 DROP POLICY IF EXISTS equipment_area_admin_access ON equipment;
 DROP POLICY IF EXISTS equipment_master_admin_access ON equipment;
 
--- Students can only see equipment from their sub-areas OR equipment with interdisciplinary access
+-- Students can only see equipment from their departments OR equipment with interdisciplinary access
 CREATE POLICY equipment_student_access ON equipment
 FOR SELECT
 TO authenticated
 USING (
-  -- Equipment from student's own sub-areas
+  -- Equipment from student's own departments
   sub_area_id IN (
     SELECT sub_area_id FROM user_sub_areas
     WHERE user_id = auth.uid()
   )
   OR
-  -- Equipment with interdisciplinary access to student's sub-areas
+  -- Equipment with interdisciplinary access to student's departments
   sub_area_id IN (
     SELECT to_sub_area_id FROM interdisciplinary_access
     WHERE from_sub_area_id IN (
@@ -237,11 +241,11 @@ USING (
     AND (expires_at IS NULL OR expires_at > NOW())
   )
   OR
-  -- Equipment with no sub-area (legacy/shared equipment)
+  -- Equipment with no department assignment (legacy/shared equipment)
   sub_area_id IS NULL
 );
 
--- Area admins can see and manage equipment in their sub-areas
+-- Department admins can see and manage equipment in their departments
 CREATE POLICY equipment_area_admin_access ON equipment
 FOR ALL
 TO authenticated
@@ -264,7 +268,7 @@ USING (
 -- 7. HELPER FUNCTIONS
 -- ========================================
 
--- Function to check if a user has access to equipment in a sub-area
+-- Function to check if a user has access to equipment in a department
 CREATE OR REPLACE FUNCTION user_has_sub_area_access(
   p_user_id UUID,
   p_sub_area_id UUID
@@ -322,7 +326,7 @@ BEGIN
 
   UNION
 
-  -- Equipment with no sub-area (shared/legacy)
+  -- Equipment with no department assignment (shared/legacy)
   SELECT e.id, 'shared'::TEXT
   FROM equipment e
   WHERE e.sub_area_id IS NULL;
@@ -365,19 +369,19 @@ FOR EACH ROW
 EXECUTE FUNCTION update_sub_areas_timestamp();
 
 -- ========================================
--- 9. SEED DATA (Example Sub-Areas)
+-- 9. SEED DATA (Example Departments)
 -- ========================================
 
--- Insert example sub-areas (customize based on NCAD structure)
+-- Insert example departments (customize based on NCAD structure)
 INSERT INTO sub_areas (name, description, parent_department) VALUES
-  ('Communication Design', 'Communication Design sub-area', 'School of Design'),
-  ('Fashion Design', 'Fashion Design sub-area', 'School of Design'),
-  ('Graphic Design', 'Graphic Design sub-area', 'School of Design'),
-  ('Illustration', 'Illustration sub-area', 'School of Design'),
-  ('Fine Art Media', 'Fine Art Media sub-area', 'School of Fine Art'),
-  ('Sculpture', 'Sculpture sub-area', 'School of Fine Art'),
-  ('Painting', 'Painting sub-area', 'School of Fine Art'),
-  ('Moving Image', 'Moving Image Design', 'School of Design')
+  ('Communication Design', 'Communication Design department', 'School of Design'),
+  ('Fashion Design', 'Fashion Design department', 'School of Design'),
+  ('Graphic Design', 'Graphic Design department', 'School of Design'),
+  ('Illustration', 'Illustration department', 'School of Design'),
+  ('Fine Art Media', 'Fine Art Media department', 'School of Fine Art'),
+  ('Sculpture', 'Sculpture department', 'School of Fine Art'),
+  ('Painting', 'Painting department', 'School of Fine Art'),
+  ('Moving Image', 'Moving Image Design department', 'School of Design')
 ON CONFLICT (name) DO NOTHING;
 
 -- ========================================

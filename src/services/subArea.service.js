@@ -1,48 +1,49 @@
 import { demoMode } from '../mocks/demo-mode.js';
 
 /**
- * Sub-Area Service
+ * Department Service (subArea.service.js - legacy name)
  *
- * Provides functions for managing sub-areas, area admins, student assignments,
+ * Provides functions for managing departments, department admins, student assignments,
  * and interdisciplinary access grants.
+ * Note: File and function names use 'subArea' for backwards compatibility
  */
 
-// ===== SUB-AREAS =====
+// ===== DEPARTMENTS =====
 
 /**
- * Get all sub-areas
- * @returns {Promise<Array>} Array of sub-area objects
+ * Get all departments
+ * @returns {Promise<Array>} Array of department objects
  */
 export async function getAllSubAreas() {
   try {
     const subAreas = await demoMode.query('sub_areas');
     return subAreas || [];
   } catch (error) {
-    console.error('Failed to get sub-areas:', error);
+    console.error('Failed to get departments:', error);
     throw error;
   }
 }
 
 /**
- * Get a single sub-area by ID
- * @param {string} id - Sub-area ID
- * @returns {Promise<Object|null>} Sub-area object or null
+ * Get a single department by ID
+ * @param {string} id - Department ID
+ * @returns {Promise<Object|null>} Department object or null
  */
 export async function getSubAreaById(id) {
   try {
     return await demoMode.findOne('sub_areas', { id });
   } catch (error) {
-    console.error('Failed to get sub-area:', error);
+    console.error('Failed to get department:', error);
     throw error;
   }
 }
 
 /**
- * Create a new sub-area
- * @param {string} name - Sub-area name
+ * Create a new department
+ * @param {string} name - Department name
  * @param {string} description - Description
  * @param {string} parentDepartment - Parent department
- * @returns {Promise<Object>} Created sub-area object
+ * @returns {Promise<Object>} Created department object
  */
 export async function createSubArea(name, description, parentDepartment) {
   try {
@@ -59,14 +60,14 @@ export async function createSubArea(name, description, parentDepartment) {
     await demoMode.insert('sub_areas', newSubArea);
     return newSubArea;
   } catch (error) {
-    console.error('Failed to create sub-area:', error);
+    console.error('Failed to create department:', error);
     throw error;
   }
 }
 
 /**
- * Update a sub-area
- * @param {string} id - Sub-area ID
+ * Update a department
+ * @param {string} id - Department ID
  * @param {Object} updates - Fields to update
  * @returns {Promise<number>} Number of records updated
  */
@@ -79,14 +80,14 @@ export async function updateSubArea(id, updates) {
 
     return await demoMode.update('sub_areas', { id }, updateData);
   } catch (error) {
-    console.error('Failed to update sub-area:', error);
+    console.error('Failed to update department:', error);
     throw error;
   }
 }
 
 /**
- * Deactivate a sub-area
- * @param {string} id - Sub-area ID
+ * Deactivate a department
+ * @param {string} id - Department ID
  * @returns {Promise<number>} Number of records updated
  */
 export async function deactivateSubArea(id) {
@@ -96,14 +97,14 @@ export async function deactivateSubArea(id) {
       updated_at: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Failed to deactivate sub-area:', error);
+    console.error('Failed to deactivate department:', error);
     throw error;
   }
 }
 
 /**
- * Get equipment count by sub-area
- * @returns {Promise<Object>} Object mapping sub-area IDs to equipment counts
+ * Get equipment count by department
+ * @returns {Promise<Object>} Object mapping department IDs to equipment counts
  */
 export async function getEquipmentCountBySubArea() {
   try {
@@ -123,12 +124,12 @@ export async function getEquipmentCountBySubArea() {
   }
 }
 
-// ===== AREA ADMINS =====
+// ===== DEPARTMENT ADMINS =====
 
 /**
- * Get all area admins for a sub-area
- * @param {string} subAreaId - Sub-area ID
- * @returns {Promise<Array>} Array of area admin assignments
+ * Get all department admins for a department
+ * @param {string} subAreaId - Department ID
+ * @returns {Promise<Array>} Array of department admin assignments
  */
 export async function getAreaAdmins(subAreaId) {
   try {
@@ -140,9 +141,9 @@ export async function getAreaAdmins(subAreaId) {
 }
 
 /**
- * Assign a user as area admin for a sub-area
+ * Assign a user as department admin for a department
  * @param {string} userId - User ID
- * @param {string} subAreaId - Sub-area ID
+ * @param {string} subAreaId - Department ID
  * @returns {Promise<Object>} Created assignment
  */
 export async function assignAreaAdmin(userId, subAreaId) {
@@ -163,9 +164,9 @@ export async function assignAreaAdmin(userId, subAreaId) {
 }
 
 /**
- * Remove area admin assignment
+ * Remove department admin assignment
  * @param {string} userId - User ID
- * @param {string} subAreaId - Sub-area ID
+ * @param {string} subAreaId - Department ID
  * @returns {Promise<number>} Number of records deleted
  */
 export async function removeAreaAdmin(userId, subAreaId) {
@@ -183,9 +184,9 @@ export async function removeAreaAdmin(userId, subAreaId) {
 // ===== STUDENT ASSIGNMENTS =====
 
 /**
- * Get all sub-areas assigned to a user
+ * Get all departments assigned to a user
  * @param {string} userId - User ID
- * @returns {Promise<Array>} Array of sub-area assignments
+ * @returns {Promise<Array>} Array of department assignments
  */
 export async function getUserSubAreas(userId) {
   try {
@@ -197,8 +198,8 @@ export async function getUserSubAreas(userId) {
 }
 
 /**
- * Get all students in a sub-area
- * @param {string} subAreaId - Sub-area ID
+ * Get all students in a department
+ * @param {string} subAreaId - Department ID
  * @returns {Promise<Array>} Array of user objects
  */
 export async function getStudentsInSubArea(subAreaId) {
@@ -209,16 +210,16 @@ export async function getStudentsInSubArea(subAreaId) {
     const allUsers = await demoMode.query('users');
     return allUsers.filter(u => userIds.includes(u.id));
   } catch (error) {
-    console.error('Failed to get students in sub-area:', error);
+    console.error('Failed to get students in department:', error);
     throw error;
   }
 }
 
 /**
- * Assign a student to a sub-area
+ * Assign a student to a department
  * @param {string} userId - User ID
- * @param {string} subAreaId - Sub-area ID
- * @param {boolean} isPrimary - Whether this is the primary sub-area
+ * @param {string} subAreaId - Department ID
+ * @param {boolean} isPrimary - Whether this is the primary department
  * @param {string} assignedBy - ID of user who assigned
  * @returns {Promise<Object>} Created assignment
  */
@@ -236,15 +237,15 @@ export async function assignStudentToSubArea(userId, subAreaId, isPrimary = fals
     await demoMode.insert('user_sub_areas', assignment);
     return assignment;
   } catch (error) {
-    console.error('Failed to assign student to sub-area:', error);
+    console.error('Failed to assign student to department:', error);
     throw error;
   }
 }
 
 /**
- * Remove student from sub-area
+ * Remove student from department
  * @param {string} userId - User ID
- * @param {string} subAreaId - Sub-area ID
+ * @param {string} subAreaId - Department ID
  * @returns {Promise<number>} Number of records deleted
  */
 export async function removeStudentFromSubArea(userId, subAreaId) {
@@ -254,15 +255,15 @@ export async function removeStudentFromSubArea(userId, subAreaId) {
       sub_area_id: subAreaId
     });
   } catch (error) {
-    console.error('Failed to remove student from sub-area:', error);
+    console.error('Failed to remove student from department:', error);
     throw error;
   }
 }
 
 /**
- * Bulk assign students to a sub-area
+ * Bulk assign students to a department
  * @param {Array<string>} userIds - Array of user IDs
- * @param {string} subAreaId - Sub-area ID
+ * @param {string} subAreaId - Department ID
  * @param {string} assignedBy - ID of user who assigned
  * @returns {Promise<Array>} Array of created assignments
  */
@@ -320,8 +321,8 @@ export async function getInterdisciplinaryAccess(activeOnly = false) {
 
 /**
  * Grant interdisciplinary access
- * @param {string} fromSubAreaId - Source sub-area ID
- * @param {string} toSubAreaId - Target sub-area ID
+ * @param {string} fromSubAreaId - Source department ID
+ * @param {string} toSubAreaId - Target department ID
  * @param {string} expiresAt - Expiration date (ISO string) or null for permanent
  * @param {string} notes - Notes about the grant
  * @param {string} grantedBy - ID of user who granted access
@@ -378,9 +379,9 @@ export async function toggleAccess(id, isActive) {
 }
 
 /**
- * Check if a user has access to equipment from a specific sub-area
+ * Check if a user has access to equipment from a specific department
  * @param {string} userId - User ID
- * @param {string} subAreaId - Sub-area ID
+ * @param {string} subAreaId - Department ID
  * @returns {Promise<Object>} { hasAccess: boolean, accessType: 'direct' | 'interdisciplinary' | null }
  */
 export async function checkUserSubAreaAccess(userId, subAreaId) {
@@ -412,13 +413,13 @@ export async function checkUserSubAreaAccess(userId, subAreaId) {
 
     return { hasAccess: false, accessType: null };
   } catch (error) {
-    console.error('Failed to check user sub-area access:', error);
+    console.error('Failed to check user department access:', error);
     throw error;
   }
 }
 
 /**
- * Get all equipment accessible by a user (based on sub-area assignments and role)
+ * Get all equipment accessible by a user (based on department assignments and role)
  * @param {string} userId - User ID
  * @param {Object} user - User object (optional, for role checking)
  * @returns {Promise<Array>} Array of equipment with access type annotation
@@ -437,19 +438,19 @@ export async function getAccessibleEquipment(userId, user = null) {
       return allEquipment.map(eq => ({ ...eq, accessType: 'admin', isInterdisciplinary: false }));
     }
 
-    // Sub-area admins can VIEW all equipment but only BOOK their managed sub-area + grants
-    if (user?.role === 'sub_area_admin' && user?.managed_sub_area_id) {
+    // Department admins can VIEW all equipment but only BOOK their managed department + grants
+    if (user?.role === 'department_admin' && user?.managed_sub_area_id) {
       const userSubAreas = [{ sub_area_id: user.managed_sub_area_id }];
       const userSubAreaIds = [user.managed_sub_area_id];
       const interdisciplinaryGrants = await getInterdisciplinaryAccess(true);
 
       const accessibleEquipment = allEquipment.map(equipment => {
-        // Equipment with no sub-area is accessible to all
+        // Equipment with no department assignment is accessible to all
         if (!equipment.sub_area_id) {
           return { ...equipment, accessType: 'shared', isInterdisciplinary: false, canBook: true };
         }
 
-        // Check if it's their managed sub-area
+        // Check if it's their managed department
         if (equipment.sub_area_id === user.managed_sub_area_id) {
           return { ...equipment, accessType: 'direct', isInterdisciplinary: false, canBook: true };
         }
@@ -477,13 +478,13 @@ export async function getAccessibleEquipment(userId, user = null) {
       return accessibleEquipment;
     }
 
-    // Students and staff - restricted to their sub-area + grants + shared
+    // Students and staff - restricted to their department + grants + shared
     const userSubAreas = await getUserSubAreas(userId);
     const userSubAreaIds = userSubAreas.map(a => a.sub_area_id);
     const interdisciplinaryGrants = await getInterdisciplinaryAccess(true);
 
     const accessibleEquipment = allEquipment.map(equipment => {
-      // Equipment with no sub-area is accessible to all
+      // Equipment with no department assignment is accessible to all
       if (!equipment.sub_area_id) {
         return { ...equipment, accessType: 'shared', isInterdisciplinary: false, canBook: true };
       }
@@ -522,10 +523,10 @@ export async function getAccessibleEquipment(userId, user = null) {
 // ===== ACCESS REQUESTS =====
 
 /**
- * Create a new access request from a sub-area admin
- * @param {string} requestingAdminId - ID of the sub-area admin making the request
- * @param {string} fromSubAreaId - Sub-area ID they manage
- * @param {string} toSubAreaId - Sub-area ID they want access to
+ * Create a new access request from a department admin
+ * @param {string} requestingAdminId - ID of the department admin making the request
+ * @param {string} fromSubAreaId - Department ID they manage
+ * @param {string} toSubAreaId - Department ID they want access to
  * @param {string} reason - Reason for the request
  * @returns {Promise<Object>} Created access request
  */
@@ -573,15 +574,15 @@ export async function getAccessRequests(filterStatus = null) {
 }
 
 /**
- * Get access requests for a specific sub-area admin
- * @param {string} subAreaAdminId - ID of the sub-area admin
+ * Get access requests for a specific department admin
+ * @param {string} subAreaAdminId - ID of the department admin
  * @returns {Promise<Array>} Array of access requests
  */
 export async function getSubAreaAdminRequests(subAreaAdminId) {
   try {
     return await demoMode.query('access_requests', { requesting_admin_id: subAreaAdminId });
   } catch (error) {
-    console.error('Failed to get sub-area admin requests:', error);
+    console.error('Failed to get department admin requests:', error);
     throw error;
   }
 }
@@ -665,7 +666,7 @@ export async function denyAccessRequest(requestId, masterAdminId, notes) {
 }
 
 export default {
-  // Sub-Areas
+  // Departments
   getAllSubAreas,
   getSubAreaById,
   createSubArea,
@@ -673,7 +674,7 @@ export default {
   deactivateSubArea,
   getEquipmentCountBySubArea,
 
-  // Area Admins
+  // Department Admins
   getAreaAdmins,
   assignAreaAdmin,
   removeAreaAdmin,

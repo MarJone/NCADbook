@@ -17,7 +17,7 @@ export default function StudentAssignment() {
   const { toasts, showToast, removeToast } = useToast();
 
   // Check if user is admin or master admin
-  const isAdmin = user?.role === 'master_admin' || user?.role === 'admin';
+  const isAdmin = user?.role === 'master_admin' || user?.role === 'department_admin';
 
   useEffect(() => {
     loadData();
@@ -30,7 +30,7 @@ export default function StudentAssignment() {
       const studentsData = await demoMode.query('users', { role: 'student' });
       setStudents(studentsData || []);
 
-      // Load sub-areas
+      // Load departments
       const subAreasData = await demoMode.query('sub_areas') || [];
       setSubAreas(subAreasData);
 
@@ -76,7 +76,7 @@ export default function StudentAssignment() {
     }
 
     if (!selectedSubArea) {
-      showToast('Please select a sub-area', 'error');
+      showToast('Please select a department', 'error');
       return;
     }
 
@@ -101,7 +101,7 @@ export default function StudentAssignment() {
         }
       }
 
-      showToast(`Successfully assigned ${selectedStudents.length} student(s) to sub-area`, 'success');
+      showToast(`Successfully assigned ${selectedStudents.length} student(s) to department`, 'success');
       setSelectedStudents([]);
       setSelectedSubArea('');
       await loadData();
@@ -111,7 +111,7 @@ export default function StudentAssignment() {
   };
 
   const handleRemoveAssignment = async (studentId, subAreaId) => {
-    if (!confirm('Remove this sub-area assignment?')) {
+    if (!confirm('Remove this department assignment?')) {
       return;
     }
 
@@ -161,18 +161,18 @@ export default function StudentAssignment() {
 
   return (
     <div className="student-assignment">
-      <h2>Student Sub-Area Assignment</h2>
-      <p className="subtitle">Assign students to sub-areas for equipment access</p>
+      <h2>Student Department Assignment</h2>
+      <p className="subtitle">Assign students to departments for equipment access</p>
 
       {/* Bulk Assignment Section */}
       <div className="dashboard-card" style={{ marginBottom: 'var(--spacing-xl)' }}>
         <h3>Bulk Assignment</h3>
         <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-lg)' }}>
-          Select students below and assign them to a sub-area
+          Select students below and assign them to a department
         </p>
         <div style={{ display: 'flex', gap: 'var(--spacing-md)', alignItems: 'center', flexWrap: 'wrap' }}>
           <div className="form-group" style={{ flex: '1', minWidth: '250px', marginBottom: 0 }}>
-            <label htmlFor="bulk-sub-area">Sub-Area</label>
+            <label htmlFor="bulk-sub-area">Department</label>
             <select
               id="bulk-sub-area"
               className="form-select"
@@ -180,7 +180,7 @@ export default function StudentAssignment() {
               onChange={(e) => setSelectedSubArea(e.target.value)}
               data-testid="bulk-sub-area-select"
             >
-              <option value="">-- Select Sub-Area --</option>
+              <option value="">-- Select Department --</option>
               {subAreas.map(subArea => (
                 <option key={subArea.id} value={subArea.id}>
                   {subArea.name}
@@ -276,7 +276,7 @@ export default function StudentAssignment() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Department</th>
-                <th>Current Sub-Areas</th>
+                <th>Current Departments</th>
                 <th>Actions</th>
               </tr>
             </thead>

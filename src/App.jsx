@@ -15,7 +15,7 @@ function ProtectedRoute({ children, allowedRoles }) {
 
   if (!allowedRoles.includes(user.role)) {
     const getDefaultRoute = () => {
-      if (user.role === 'master_admin' || user.role === 'admin') return '/admin';
+      if (user.role === 'master_admin' || user.role === 'department_admin') return '/admin';
       if (user.role === 'staff') return '/staff';
       return '/student';
     };
@@ -40,24 +40,24 @@ function AppContent() {
   return (
     <Routes>
       <Route path="/" element={!user ? <Login /> : <Navigate to={
-        user.role === 'master_admin' || user.role === 'admin' ? '/admin' :
+        user.role === 'master_admin' || user.role === 'department_admin' ? '/admin' :
         user.role === 'staff' ? '/staff' : '/student'
       } />} />
 
       <Route path="/student/*" element={
-        <ProtectedRoute allowedRoles={['student', 'staff', 'admin', 'master_admin']}>
+        <ProtectedRoute allowedRoles={['student', 'staff', 'department_admin', 'master_admin']}>
           <StudentLayout />
         </ProtectedRoute>
       } />
 
       <Route path="/staff/*" element={
-        <ProtectedRoute allowedRoles={['staff', 'admin', 'master_admin']}>
+        <ProtectedRoute allowedRoles={['staff', 'department_admin', 'master_admin']}>
           <StaffLayout />
         </ProtectedRoute>
       } />
 
       <Route path="/admin/*" element={
-        <ProtectedRoute allowedRoles={['admin', 'master_admin']}>
+        <ProtectedRoute allowedRoles={['department_admin', 'master_admin']}>
           <AdminLayout />
         </ProtectedRoute>
       } />

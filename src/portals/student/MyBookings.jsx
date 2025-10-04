@@ -15,6 +15,34 @@ export default function MyBookings() {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const { toasts, showToast, removeToast } = useToast();
 
+  // Check permissions (for staff only)
+  const canViewHistory = () => {
+    if (!user) return false;
+    if (user.role === 'student' || user.role === 'department_admin' || user.role === 'master_admin') return true;
+    if (user.role === 'staff') {
+      return user.view_permissions?.can_view_history !== false;
+    }
+    return true;
+  };
+
+  const canCancelBooking = () => {
+    if (!user) return false;
+    if (user.role === 'student' || user.role === 'department_admin' || user.role === 'master_admin') return true;
+    if (user.role === 'staff') {
+      return user.view_permissions?.can_cancel_bookings !== false;
+    }
+    return true;
+  };
+
+  const canExportData = () => {
+    if (!user) return false;
+    if (user.role === 'student' || user.role === 'department_admin' || user.role === 'master_admin') return true;
+    if (user.role === 'staff') {
+      return user.view_permissions?.can_export_data !== false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     loadBookings();
   }, [user]);
@@ -87,6 +115,44 @@ export default function MyBookings() {
     return <div className="loading">Loading your bookings...</div>;
   }
 
+  // Check if user has permission to view booking history
+  if (!canViewHistory()) {
+    return (
+      <div className="access-restricted">
+        <div className="restriction-message">
+          <h2>Access Restricted</h2>
+          <p>You do not have permission to view booking history.</p>
+          <p>Please contact your department admin to request access.</p>
+        </div>
+        <style jsx>{`
+          .access-restricted {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            padding: 2rem;
+          }
+          .restriction-message {
+            text-align: center;
+            max-width: 500px;
+            padding: 2rem;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+          }
+          .restriction-message h2 {
+            color: #856404;
+            margin-bottom: 1rem;
+          }
+          .restriction-message p {
+            color: #856404;
+            margin-bottom: 0.5rem;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   if (bookings.length === 0) {
     return (
       <div className="empty-state" data-testid="no-bookings">
@@ -104,14 +170,16 @@ export default function MyBookings() {
           <h2>My Bookings</h2>
           <p className="subtitle">{bookings.length} total booking(s)</p>
         </div>
-        <div className="export-actions">
-          <button onClick={handleExportCSV} className="btn btn-secondary btn-sm" data-testid="export-csv-btn">
-            Export CSV
-          </button>
-          <button onClick={handleExportPDF} className="btn btn-secondary btn-sm" data-testid="export-pdf-btn">
-            Export PDF
-          </button>
-        </div>
+        {canExportData() && (
+          <div className="export-actions">
+            <button onClick={handleExportCSV} className="btn btn-secondary btn-sm" data-testid="export-csv-btn">
+              Export CSV
+            </button>
+            <button onClick={handleExportPDF} className="btn btn-secondary btn-sm" data-testid="export-pdf-btn">
+              Export PDF
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="bookings-list" data-testid="bookings-list">
@@ -154,7 +222,7 @@ export default function MyBookings() {
             </div>
 
             <div className="booking-actions">
-              {booking.status === 'pending' && (
+              {booking.status === 'pending' && canCancelBooking() && (
                 <button
                   onClick={() => handleCancel(booking.id)}
                   className="btn btn-secondary btn-sm"
@@ -162,6 +230,11 @@ export default function MyBookings() {
                 >
                   Cancel Booking
                 </button>
+              )}
+              {booking.status === 'pending' && !canCancelBooking() && (
+                <span style={{ fontSize: '0.85rem', color: '#666', fontStyle: 'italic' }}>
+                  Cannot cancel (no permission)
+                </span>
               )}
               {(booking.status === 'completed' || booking.status === 'denied') && booking.equipment && (
                 <button

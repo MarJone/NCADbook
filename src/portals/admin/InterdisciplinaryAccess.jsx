@@ -19,7 +19,7 @@ export default function InterdisciplinaryAccess() {
   const { toasts, showToast, removeToast } = useToast();
 
   // Check if user is admin or master admin
-  const isAdmin = user?.role === 'master_admin' || user?.role === 'admin';
+  const isAdmin = user?.role === 'master_admin' || user?.role === 'department_admin';
 
   useEffect(() => {
     loadData();
@@ -28,7 +28,7 @@ export default function InterdisciplinaryAccess() {
   const loadData = async () => {
     setLoading(true);
     try {
-      // Load sub-areas
+      // Load departments
       const subAreasData = await demoMode.query('sub_areas') || [];
       setSubAreas(subAreasData);
 
@@ -72,12 +72,12 @@ export default function InterdisciplinaryAccess() {
     e.preventDefault();
 
     if (!formData.from_sub_area_id || !formData.to_sub_area_id) {
-      showToast('Please select both sub-areas', 'error');
+      showToast('Please select both departments', 'error');
       return;
     }
 
     if (formData.from_sub_area_id === formData.to_sub_area_id) {
-      showToast('Cannot grant access to the same sub-area', 'error');
+      showToast('Cannot grant access to the same department', 'error');
       return;
     }
 
@@ -162,7 +162,7 @@ export default function InterdisciplinaryAccess() {
       <div className="approvals-header">
         <div>
           <h2>Interdisciplinary Access Management</h2>
-          <p className="subtitle">Grant cross-departmental equipment access between sub-areas</p>
+          <p className="subtitle">Grant cross-departmental equipment access between departments</p>
         </div>
         <button
           onClick={handleOpenModal}
@@ -185,8 +185,8 @@ export default function InterdisciplinaryAccess() {
           How Interdisciplinary Access Works
         </h4>
         <p style={{ margin: 0, color: 'var(--text-primary)' }}>
-          When you grant access FROM Sub-Area A TO Sub-Area B, students in Sub-Area A will be able to
-          view and book equipment from Sub-Area B. This is useful for collaborative projects between departments.
+          When you grant access FROM Department A TO Department B, students in Department A will be able to
+          view and book equipment from Department B. This is useful for collaborative projects between departments.
         </p>
       </div>
 
@@ -224,8 +224,8 @@ export default function InterdisciplinaryAccess() {
             <table>
               <thead>
                 <tr>
-                  <th>From Sub-Area</th>
-                  <th>To Sub-Area</th>
+                  <th>From Department</th>
+                  <th>To Department</th>
                   <th>Granted</th>
                   <th>Expires</th>
                   <th>Notes</th>
@@ -288,8 +288,8 @@ export default function InterdisciplinaryAccess() {
             <table>
               <thead>
                 <tr>
-                  <th>From Sub-Area</th>
-                  <th>To Sub-Area</th>
+                  <th>From Department</th>
+                  <th>To Department</th>
                   <th>Granted</th>
                   <th>Expires</th>
                   <th>Status</th>
@@ -348,7 +348,7 @@ export default function InterdisciplinaryAccess() {
             <form onSubmit={handleSubmit}>
               <div className="modal-body">
                 <div className="form-group">
-                  <label htmlFor="from-sub-area">From Sub-Area *</label>
+                  <label htmlFor="from-sub-area">From Department *</label>
                   <select
                     id="from-sub-area"
                     className="form-select"
@@ -357,7 +357,7 @@ export default function InterdisciplinaryAccess() {
                     required
                     data-testid="from-sub-area-select"
                   >
-                    <option value="">-- Select Sub-Area --</option>
+                    <option value="">-- Select Department --</option>
                     {subAreas.map(subArea => (
                       <option key={subArea.id} value={subArea.id}>
                         {subArea.name}
@@ -365,7 +365,7 @@ export default function InterdisciplinaryAccess() {
                     ))}
                   </select>
                   <small style={{ color: 'var(--text-secondary)' }}>
-                    Students in this sub-area will gain access
+                    Students in this department will gain access
                   </small>
                 </div>
 
@@ -374,7 +374,7 @@ export default function InterdisciplinaryAccess() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="to-sub-area">To Sub-Area (Equipment Source) *</label>
+                  <label htmlFor="to-sub-area">To Department (Equipment Source) *</label>
                   <select
                     id="to-sub-area"
                     className="form-select"
@@ -383,7 +383,7 @@ export default function InterdisciplinaryAccess() {
                     required
                     data-testid="to-sub-area-select"
                   >
-                    <option value="">-- Select Sub-Area --</option>
+                    <option value="">-- Select Department --</option>
                     {subAreas.map(subArea => (
                       <option
                         key={subArea.id}
@@ -395,7 +395,7 @@ export default function InterdisciplinaryAccess() {
                     ))}
                   </select>
                   <small style={{ color: 'var(--text-secondary)' }}>
-                    Equipment from this sub-area will be accessible
+                    Equipment from this department will be accessible
                   </small>
                 </div>
 

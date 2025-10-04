@@ -8,9 +8,16 @@ test.describe('Master Admin - Authentication & Access', () => {
   });
 
   test('should have master admin privileges', async ({ authenticatedMasterAdminPage: page }) => {
-    // Should have access to user management
-    const userMgmtLink = page.locator('a:has-text("Users"), a:has-text("User Management")');
-    await expect(userMgmtLink.first()).toBeVisible();
+    // Should have access to user management dropdown
+    // First click the dropdown toggle to reveal the menu
+    await page.click('button.dropdown-toggle:has-text("Users & Reports")');
+
+    // Wait for dropdown menu to be visible
+    await page.waitForSelector('.nav-dropdown.open .dropdown-menu', { state: 'visible' });
+
+    // Now the User Management link should be visible
+    const userMgmtLink = page.locator('a:has-text("User Management")');
+    await expect(userMgmtLink).toBeVisible();
   });
 });
 

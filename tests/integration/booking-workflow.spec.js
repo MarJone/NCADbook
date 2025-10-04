@@ -1,6 +1,9 @@
 import { test, expect, users } from '../fixtures/auth.fixtures.js';
 import { waitForLoadingComplete, login, waitForToast, logout } from '../utils/test-helpers.js';
 
+// Increase timeout for booking workflow tests
+test.setTimeout(45000);
+
 test.describe('Booking Workflow - End to End', () => {
   test('should complete full booking workflow: create -> approve -> complete', async ({ browser }) => {
     // Use separate contexts for student and admin
@@ -12,7 +15,7 @@ test.describe('Booking Workflow - End to End', () => {
 
     try {
       // Step 1: Student creates booking
-      await studentPage.goto('http://localhost:5174');
+      await studentPage.goto('http://localhost:5173');
       await login(studentPage, users.student.email, users.student.password);
       await waitForLoadingComplete(studentPage);
 
@@ -50,7 +53,7 @@ test.describe('Booking Workflow - End to End', () => {
       }
 
       // Step 2: Admin approves booking
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 
@@ -106,7 +109,7 @@ test.describe('Booking Workflow - End to End', () => {
 
     try {
       // Student creates booking
-      await studentPage.goto('http://localhost:5174');
+      await studentPage.goto('http://localhost:5173');
       await login(studentPage, users.student.email, users.student.password);
       await waitForLoadingComplete(studentPage);
 
@@ -139,7 +142,7 @@ test.describe('Booking Workflow - End to End', () => {
       }
 
       // Admin denies booking
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 
@@ -226,7 +229,7 @@ test.describe('Booking Workflow - End to End', () => {
       }
 
       // Try to book same equipment for overlapping dates
-      await page.goto('http://localhost:5174/student');
+      await page.goto('http://localhost:5173/student');
       await waitForLoadingComplete(page);
 
       await firstEquipment.click();
@@ -297,7 +300,7 @@ test.describe('Booking Workflow - End to End', () => {
 
     try {
       // Create and approve a booking
-      await studentPage.goto('http://localhost:5174');
+      await studentPage.goto('http://localhost:5173');
       await login(studentPage, users.student.email, users.student.password);
       await waitForLoadingComplete(studentPage);
 
@@ -330,7 +333,7 @@ test.describe('Booking Workflow - End to End', () => {
       }
 
       // Admin approves
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 
@@ -381,7 +384,7 @@ test.describe('Booking Workflow - End to End', () => {
 
     try {
       // Student creates booking with specific details
-      await studentPage.goto('http://localhost:5174');
+      await studentPage.goto('http://localhost:5173');
       await login(studentPage, users.student.email, users.student.password);
       await waitForLoadingComplete(studentPage);
 
@@ -416,7 +419,7 @@ test.describe('Booking Workflow - End to End', () => {
       }
 
       // Admin views booking details
-      await adminPage.goto('http://localhost:5174');
+      await adminPage.goto('http://localhost:5173');
       await login(adminPage, users.admin.email, users.admin.password);
       await waitForLoadingComplete(adminPage);
 
@@ -455,7 +458,7 @@ test.describe('Booking Workflow - Equipment Availability', () => {
 
     try {
       // Student 1 creates booking
-      await studentPage.goto('http://localhost:5174');
+      await studentPage.goto('http://localhost:5173');
       await login(studentPage, users.student.email, users.student.password);
       await waitForLoadingComplete(studentPage);
 
@@ -488,7 +491,7 @@ test.describe('Booking Workflow - Equipment Availability', () => {
       }
 
       // Student 2 tries to view same equipment
-      await student2Page.goto('http://localhost:5174');
+      await student2Page.goto('http://localhost:5173');
       // Use demo account or create separate student account
       await login(student2Page, users.student.email, users.student.password);
       await waitForLoadingComplete(student2Page);

@@ -11,7 +11,7 @@ test.describe('Student Portal - Authentication', () => {
     // Should show role selection buttons (check for role-name class to be specific)
     await expect(page.locator('.role-name:has-text("Student")')).toBeVisible();
     await expect(page.locator('.role-name:has-text("Staff")')).toBeVisible();
-    await expect(page.locator('.role-name').filter({ hasText: /^Admin$/ })).toBeVisible();
+    await expect(page.locator('.role-name:has-text("Department Admin")')).toBeVisible();
     await expect(page.locator('.role-name:has-text("Master Admin")')).toBeVisible();
   });
 
