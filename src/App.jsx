@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import StudentLayout from './portals/student/StudentLayout';
 import StaffLayout from './portals/staff/StaffLayout';
 import AdminLayout from './portals/admin/AdminLayout';
 import Login from './components/common/Login';
+import './styles/theme.css';
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user } = useAuth();
@@ -68,11 +70,13 @@ function AppContent() {
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Router>
-          <AppContent />
-        </Router>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

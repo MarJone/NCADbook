@@ -1,0 +1,319 @@
+/* ============================================
+   NCAD Equipment Booking System - Theme Variables
+   Design System: Modern SaaS Dashboard Aesthetic
+   ============================================ */
+
+/* ========== BASE THEME COLORS ========== */
+
+/* Light Theme Colors */
+:root {
+  /* Backgrounds */
+  --light-bg-primary: #FFFFFF;
+  --light-bg-secondary: #F8F9FA;
+  --light-bg-tertiary: #F3F4F6;
+  --light-bg-elevated: #FFFFFF;
+
+  /* Text Colors */
+  --light-text-primary: #1F2937;
+  --light-text-secondary: #6B7280;
+  --light-text-tertiary: #9CA3AF;
+  --light-text-inverse: #FFFFFF;
+
+  /* Accent Colors */
+  --light-accent-primary: #2563EB;
+  --light-accent-primary-hover: #1E40AF;
+  --light-accent-secondary: #3B82F6;
+  --light-accent-tertiary: #60A5FA;
+
+  /* Border Colors */
+  --light-border-light: #E5E7EB;
+  --light-border-medium: #D1D5DB;
+  --light-border-dark: #9CA3AF;
+
+  /* Status Colors */
+  --light-success: #10B981;
+  --light-success-bg: #D1FAE5;
+  --light-success-text: #065F46;
+
+  --light-warning: #F59E0B;
+  --light-warning-bg: #FEF3C7;
+  --light-warning-text: #92400E;
+
+  --light-error: #EF4444;
+  --light-error-bg: #FEE2E2;
+  --light-error-text: #991B1B;
+
+  --light-info: #3B82F6;
+  --light-info-bg: #DBEAFE;
+  --light-info-text: #1E40AF;
+
+  /* Shadows */
+  --light-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --light-shadow-md: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --light-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --light-shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme Colors */
+:root {
+  /* Backgrounds */
+  --dark-bg-primary: #1F2937;
+  --dark-bg-secondary: #111827;
+  --dark-bg-tertiary: #0F172A;
+  --dark-bg-elevated: #374151;
+
+  /* Text Colors */
+  --dark-text-primary: #F9FAFB;
+  --dark-text-secondary: #D1D5DB;
+  --dark-text-tertiary: #9CA3AF;
+  --dark-text-inverse: #1F2937;
+
+  /* Accent Colors */
+  --dark-accent-primary: #3B82F6;
+  --dark-accent-primary-hover: #2563EB;
+  --dark-accent-secondary: #60A5FA;
+  --dark-accent-tertiary: #93C5FD;
+
+  /* Border Colors */
+  --dark-border-light: #374151;
+  --dark-border-medium: #4B5563;
+  --dark-border-dark: #6B7280;
+
+  /* Status Colors */
+  --dark-success: #34D399;
+  --dark-success-bg: #064E3B;
+  --dark-success-text: #D1FAE5;
+
+  --dark-warning: #FBBF24;
+  --dark-warning-bg: #78350F;
+  --dark-warning-text: #FEF3C7;
+
+  --dark-error: #F87171;
+  --dark-error-bg: #7F1D1D;
+  --dark-error-text: #FEE2E2;
+
+  --dark-info: #60A5FA;
+  --dark-info-bg: #1E3A8A;
+  --dark-info-text: #DBEAFE;
+
+  /* Shadows */
+  --dark-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --dark-shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --dark-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --dark-shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* ========== ACTIVE THEME MAPPING ========== */
+
+/* Default: Light Theme */
+:root {
+  --theme-bg-primary: var(--light-bg-primary);
+  --theme-bg-secondary: var(--light-bg-secondary);
+  --theme-bg-tertiary: var(--light-bg-tertiary);
+  --theme-bg-elevated: var(--light-bg-elevated);
+
+  --theme-text-primary: var(--light-text-primary);
+  --theme-text-secondary: var(--light-text-secondary);
+  --theme-text-tertiary: var(--light-text-tertiary);
+  --theme-text-inverse: var(--light-text-inverse);
+
+  --theme-accent-primary: var(--light-accent-primary);
+  --theme-accent-primary-hover: var(--light-accent-primary-hover);
+  --theme-accent-secondary: var(--light-accent-secondary);
+  --theme-accent-tertiary: var(--light-accent-tertiary);
+
+  --theme-border-light: var(--light-border-light);
+  --theme-border-medium: var(--light-border-medium);
+  --theme-border-dark: var(--light-border-dark);
+
+  --theme-success: var(--light-success);
+  --theme-success-bg: var(--light-success-bg);
+  --theme-success-text: var(--light-success-text);
+
+  --theme-warning: var(--light-warning);
+  --theme-warning-bg: var(--light-warning-bg);
+  --theme-warning-text: var(--light-warning-text);
+
+  --theme-error: var(--light-error);
+  --theme-error-bg: var(--light-error-bg);
+  --theme-error-text: var(--light-error-text);
+
+  --theme-info: var(--light-info);
+  --theme-info-bg: var(--light-info-bg);
+  --theme-info-text: var(--light-info-text);
+
+  --theme-shadow-sm: var(--light-shadow-sm);
+  --theme-shadow-md: var(--light-shadow-md);
+  --theme-shadow-lg: var(--light-shadow-lg);
+  --theme-shadow-xl: var(--light-shadow-xl);
+}
+
+/* Dark Theme Override */
+[data-theme="dark"] {
+  --theme-bg-primary: var(--dark-bg-primary);
+  --theme-bg-secondary: var(--dark-bg-secondary);
+  --theme-bg-tertiary: var(--dark-bg-tertiary);
+  --theme-bg-elevated: var(--dark-bg-elevated);
+
+  --theme-text-primary: var(--dark-text-primary);
+  --theme-text-secondary: var(--dark-text-secondary);
+  --theme-text-tertiary: var(--dark-text-tertiary);
+  --theme-text-inverse: var(--dark-text-inverse);
+
+  --theme-accent-primary: var(--dark-accent-primary);
+  --theme-accent-primary-hover: var(--dark-accent-primary-hover);
+  --theme-accent-secondary: var(--dark-accent-secondary);
+  --theme-accent-tertiary: var(--dark-accent-tertiary);
+
+  --theme-border-light: var(--dark-border-light);
+  --theme-border-medium: var(--dark-border-medium);
+  --theme-border-dark: var(--dark-border-dark);
+
+  --theme-success: var(--dark-success);
+  --theme-success-bg: var(--dark-success-bg);
+  --theme-success-text: var(--dark-success-text);
+
+  --theme-warning: var(--dark-warning);
+  --theme-warning-bg: var(--dark-warning-bg);
+  --theme-warning-text: var(--dark-warning-text);
+
+  --theme-error: var(--dark-error);
+  --theme-error-bg: var(--dark-error-bg);
+  --theme-error-text: var(--dark-error-text);
+
+  --theme-info: var(--dark-info);
+  --theme-info-bg: var(--dark-info-bg);
+  --theme-info-text: var(--dark-info-text);
+
+  --theme-shadow-sm: var(--dark-shadow-sm);
+  --theme-shadow-md: var(--dark-shadow-md);
+  --theme-shadow-lg: var(--dark-shadow-lg);
+  --theme-shadow-xl: var(--dark-shadow-xl);
+}
+
+/* ========== TYPOGRAPHY SYSTEM ========== */
+
+:root {
+  /* Font Family */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Font Sizes - Responsive Scale */
+  --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.75rem);    /* 12px */
+  --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);   /* 14px */
+  --text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);     /* 16px */
+  --text-lg: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);     /* 18px */
+  --text-xl: clamp(1.1rem, 1rem + 0.5vw, 1.25rem);        /* 20px */
+  --text-2xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);    /* 24px */
+  --text-3xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);  /* 30px */
+  --text-4xl: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);      /* 36px */
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+}
+
+/* ========== SPACING SYSTEM (8px base) ========== */
+
+:root {
+  --space-0: 0;
+  --space-1: 0.5rem;    /* 8px */
+  --space-2: 1rem;      /* 16px */
+  --space-3: 1.5rem;    /* 24px */
+  --space-4: 2rem;      /* 32px */
+  --space-5: 2.5rem;    /* 40px */
+  --space-6: 3rem;      /* 48px */
+  --space-8: 4rem;      /* 64px */
+  --space-10: 5rem;     /* 80px */
+  --space-12: 6rem;     /* 96px */
+}
+
+/* ========== BORDER RADIUS ========== */
+
+:root {
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+}
+
+/* ========== TRANSITIONS ========== */
+
+:root {
+  --transition-fast: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+    --transition-slow: 0ms;
+  }
+}
+
+/* ========== Z-INDEX SCALE ========== */
+
+:root {
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+}
+
+/* ========== BREAKPOINTS (for reference in JS) ========== */
+
+:root {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-2xl: 2560px;
+}
+
+/* ========== GLOBAL THEME APPLICATION ========== */
+
+body {
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+/* Smooth theme transition */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: var(--transition-base);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable transition on specific elements */
+button, input, select, textarea {
+  transition-property: none;
+}
+
+/* Re-enable specific transitions */
+button:hover, input:focus, select:focus, textarea:focus {
+  transition: all var(--transition-base);
+}

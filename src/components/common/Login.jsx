@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import ThemeToggle from './ThemeToggle';
 
 export default function Login() {
   const [error, setError] = useState('');
@@ -20,6 +21,9 @@ export default function Login() {
 
   return (
     <div className="login-container">
+      <div className="theme-toggle-wrapper" style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+        <ThemeToggle />
+      </div>
       <div className="login-card">
         <div className="login-header">
           <h1>NCADbook</h1>

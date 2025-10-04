@@ -44,7 +44,8 @@
       "Bash(git config:*)",
       "Bash(npm test:*)",
       "Bash(/dev/null)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

@@ -9,3 +9,6 @@ storybook-static/
 *.log
 .vite
 .cache
+
+# Local Netlify folder
+.netlify
