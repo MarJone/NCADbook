@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
 import StaffDashboard from './StaffDashboard';
-import RoomBooking from './RoomBooking';
+import RoomBookingWithCalendar from './RoomBookingWithCalendar';
 import EquipmentBrowse from '../student/EquipmentBrowse';
 import MyBookings from '../student/MyBookings';
 import CrossDepartmentRequestForm from './CrossDepartmentRequestForm';
@@ -55,7 +55,7 @@ export default function StaffLayout() {
       <main className="staff-main">
         <Routes>
           <Route index element={<StaffDashboard />} />
-          <Route path="rooms" element={<RoomBooking />} />
+          <Route path="rooms" element={<RoomBookingWithCalendar />} />
           <Route path="equipment" element={<EquipmentBrowse />} />
           <Route path="bookings" element={<MyBookings />} />
           <Route path="cross-department-requests" element={<CrossDepartmentRequestForm />} />

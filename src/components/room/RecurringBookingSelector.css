@@ -1,0 +1,218 @@
+/* ============================================
+   RECURRING BOOKING SELECTOR
+   ============================================ */
+
+.recurring-booking-selector {
+  background: var(--theme-bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.recurring-header {
+  margin-bottom: var(--space-4);
+}
+
+.recurring-header h4 {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--theme-text-primary);
+}
+
+.recurring-description {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--theme-text-secondary);
+  font-style: italic;
+  padding: var(--space-2);
+  background: var(--theme-bg-tertiary);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #3b82f6;
+}
+
+/* Weekday Selector */
+.weekday-selector {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.weekday-btn {
+  flex: 1;
+  min-width: 50px;
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--theme-border-medium);
+  border-radius: var(--radius-md);
+  background: var(--theme-bg-primary);
+  color: var(--theme-text-secondary);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.weekday-btn:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: var(--theme-text-primary);
+}
+
+.weekday-btn.selected {
+  background: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* Recurrence End Options */
+.recurrence-end-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  cursor: pointer;
+}
+
+.radio-label input[type="number"],
+.radio-label input[type="date"] {
+  margin-left: var(--space-2);
+}
+
+.occurrences-input {
+  width: 80px;
+  padding: var(--space-2);
+  border: 1px solid var(--theme-border-medium);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+}
+
+.date-input {
+  padding: var(--space-2);
+  border: 1px solid var(--theme-border-medium);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+}
+
+/* Checkbox Label */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Warning */
+.recurrence-warning {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: var(--radius-md);
+  margin-top: var(--space-3);
+}
+
+.warning-icon {
+  font-size: var(--text-xl);
+  flex-shrink: 0;
+}
+
+.recurrence-warning p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: #92400e;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: var(--font-medium);
+  color: var(--theme-text-primary);
+  font-size: var(--text-sm);
+}
+
+.select-input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--theme-border-medium);
+  border-radius: var(--radius-md);
+  background: var(--theme-bg-primary);
+  font-size: var(--text-base);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  transition: border-color var(--transition-base);
+}
+
+.select-input:hover {
+  border-color: #3b82f6;
+}
+
+.select-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .weekday-selector {
+    gap: var(--space-1);
+  }
+
+  .weekday-btn {
+    min-width: 40px;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .recurrence-end-options {
+    gap: var(--space-2);
+  }
+
+  .radio-label {
+    flex-wrap: wrap;
+  }
+
+  .occurrences-input,
+  .date-input {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-top: var(--space-1);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .weekday-btn {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .weekday-btn {
+    border-width: 3px;
+  }
+
+  .recurrence-warning {
+    border-width: 2px;
+  }
+}
