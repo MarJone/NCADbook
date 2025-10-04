@@ -6,6 +6,11 @@ import StudentLayout from './portals/student/StudentLayout';
 import StaffLayout from './portals/staff/StaffLayout';
 import AdminLayout from './portals/admin/AdminLayout';
 import Login from './components/common/Login';
+import ViewOnlyStaffDemo from './portals/demo/ViewOnlyStaffDemo';
+import AccountsOfficerDemo from './portals/demo/AccountsOfficerDemo';
+import PayrollCoordinatorDemo from './portals/demo/PayrollCoordinatorDemo';
+import ITSupportDemo from './portals/demo/ITSupportDemo';
+import BudgetManagerDemo from './portals/demo/BudgetManagerDemo';
 import './styles/theme.css';
 
 function ProtectedRoute({ children, allowedRoles }) {
@@ -61,6 +66,33 @@ function AppContent() {
       <Route path="/admin/*" element={
         <ProtectedRoute allowedRoles={['department_admin', 'master_admin']}>
           <AdminLayout />
+        </ProtectedRoute>
+      } />
+
+      {/* Demo Portal Routes - Master Admin Only */}
+      <Route path="/demo/view_only_staff" element={
+        <ProtectedRoute allowedRoles={['master_admin']}>
+          <ViewOnlyStaffDemo />
+        </ProtectedRoute>
+      } />
+      <Route path="/demo/accounts_officer" element={
+        <ProtectedRoute allowedRoles={['master_admin']}>
+          <AccountsOfficerDemo />
+        </ProtectedRoute>
+      } />
+      <Route path="/demo/payroll_coordinator" element={
+        <ProtectedRoute allowedRoles={['master_admin']}>
+          <PayrollCoordinatorDemo />
+        </ProtectedRoute>
+      } />
+      <Route path="/demo/it_support_technician" element={
+        <ProtectedRoute allowedRoles={['master_admin']}>
+          <ITSupportDemo />
+        </ProtectedRoute>
+      } />
+      <Route path="/demo/budget_manager" element={
+        <ProtectedRoute allowedRoles={['master_admin']}>
+          <BudgetManagerDemo />
         </ProtectedRoute>
       } />
     </Routes>

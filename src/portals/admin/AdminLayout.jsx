@@ -18,6 +18,7 @@ import AccessRequests from './AccessRequests';
 import ManageAccessRequests from './ManageAccessRequests';
 import DepartmentStaffPermissions from './DepartmentStaffPermissions';
 import SystemSettings from '../master-admin/SystemSettings';
+import RoleManagement from '../master-admin/RoleManagement';
 import CrossDepartmentRequests from './CrossDepartmentRequests';
 import EquipmentKitsManagement from './EquipmentKitsManagement';
 import './AdminPortal.css';
@@ -74,6 +75,9 @@ export default function AdminLayout() {
               <NavLink to="/admin/system-settings" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
                 ⚙️ Settings
               </NavLink>
+              <NavLink to="/admin/role-management" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+                🎭 Role Management
+              </NavLink>
             </>
           )}
           {user?.role === 'department_admin' && (
@@ -107,6 +111,7 @@ export default function AdminLayout() {
           <Route path="features" element={<FeatureFlagManager />} />
           <Route path="department-staff-permissions" element={<DepartmentStaffPermissions />} />
           <Route path="system-settings" element={<SystemSettings />} />
+          <Route path="role-management" element={<RoleManagement />} />
           <Route path="cross-department-requests" element={<CrossDepartmentRequests />} />
           <Route path="equipment-kits" element={<EquipmentKitsManagement />} />
         </Routes>
