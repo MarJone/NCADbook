@@ -178,6 +178,61 @@ export const demoKitBookings = [
   }
 ];
 
+// ===== DEPARTMENT ACCESS GRANTS =====
+// Tracks approved cross-department equipment access for entire departments
+// When a department admin's request is approved by both the lending dept admin AND master admin,
+// ALL students in the requesting department gain access to specific equipment from the lending department
+export const demoDepartmentAccessGrants = [
+  {
+    id: 'grant1',
+    requesting_department_id: 'COMMUNICATION_DESIGN',
+    lending_department_id: 'MEDIA',
+    equipment_type: 'Sony A7 III Mirrorless Camera',
+    quantity_available: 3, // How many items students can access
+    start_date: '2024-03-01',
+    end_date: '2024-06-30',
+    status: 'active', // active, expired, revoked
+    approved_by_lending_admin: '6', // Media admin (Lisa O'Brien - Photography)
+    approved_by_master_admin: '1', // Master admin
+    collection_instructions: 'Equipment available for collection from Media Department (Room 304, 3rd Floor). Collection hours: Mon-Fri 9 AM - 5 PM. Contact Lisa O\'Brien at admin.media.photo@ncad.ie to arrange pickup. Please return equipment to the same location by 4 PM on your end date.',
+    terms: 'Students must handle equipment with care. Any damage must be reported immediately. Equipment must be returned on time or access will be revoked.',
+    created_at: '2024-02-28T10:00:00Z',
+    approved_at: '2024-02-28T14:30:00Z'
+  },
+  {
+    id: 'grant2',
+    requesting_department_id: 'PAINTING',
+    lending_department_id: 'COMMUNICATION_DESIGN',
+    equipment_type: 'iPad Pro 12.9" + Apple Pencil',
+    quantity_available: 5,
+    start_date: '2024-03-10',
+    end_date: '2024-04-30',
+    status: 'active',
+    approved_by_lending_admin: '2', // Communication Design admin
+    approved_by_master_admin: '1',
+    collection_instructions: 'iPad Pros available from Communication Design Equipment Store (Room 102, Ground Floor). Collection: Mon-Fri 10 AM - 4 PM. Contact Sarah Johnson at admin.commdesign@ncad.ie. Return to same location.',
+    terms: 'iPads must be returned fully charged. Do not install personal apps. Report any technical issues immediately.',
+    created_at: '2024-03-08T11:00:00Z',
+    approved_at: '2024-03-09T09:00:00Z'
+  },
+  {
+    id: 'grant3',
+    requesting_department_id: 'MEDIA',
+    lending_department_id: 'PRODUCT_DESIGN',
+    equipment_type: 'Meta Quest 3 VR Headset',
+    quantity_available: 2,
+    start_date: '2024-03-15',
+    end_date: '2024-05-15',
+    status: 'active',
+    approved_by_lending_admin: '3', // Product Design admin
+    approved_by_master_admin: '1',
+    collection_instructions: 'VR headsets available from Product Design Lab (Room 205, 2nd Floor). Book collection time via admin.product@ncad.ie 24 hours in advance. Return with all accessories (controllers, charging cable, case).',
+    terms: 'Handle VR equipment with extreme care. Clean lenses before return. Maximum loan period: 3 days per booking.',
+    created_at: '2024-03-12T14:00:00Z',
+    approved_at: '2024-03-13T10:30:00Z'
+  }
+];
+
 // ===== SUB-AREAS (Updated for new department structure) =====
 export const phase8SubAreas = [
   { id: 'sa_comm_design', name: 'Communication Design', school: 'School of Design', created_at: '2024-01-01' },

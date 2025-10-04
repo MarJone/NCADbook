@@ -1,5 +1,5 @@
 import { demoUsers, demoEquipment, demoSpaces, demoBookings, demoSpaceBookings, demoFeatureFlags, demoSubAreas, demoUserSubAreas, demoInterdisciplinaryAccess, demoAccessRequests } from './demo-data.js';
-import { demoSystemSettings, demoEquipmentKits, demoCrossDepartmentRequests, demoKitBookings, phase8SubAreas } from './demo-data-phase8-features.js';
+import { demoSystemSettings, demoEquipmentKits, demoCrossDepartmentRequests, demoKitBookings, phase8SubAreas, demoDepartmentAccessGrants } from './demo-data-phase8-features.js';
 import { phase8Users, phase8Equipment } from './demo-data-phase8.js';
 
 const STORAGE_KEY = 'ncadbook_demo_data';
@@ -23,6 +23,7 @@ class DemoMode {
         equipment_kits: demoEquipmentKits,
         cross_department_requests: demoCrossDepartmentRequests,
         kit_bookings: demoKitBookings,
+        department_access_grants: demoDepartmentAccessGrants,
 
         // Legacy data (keeping for backwards compatibility)
         spaces: demoSpaces,

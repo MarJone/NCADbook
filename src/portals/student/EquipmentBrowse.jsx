@@ -119,11 +119,46 @@ export default function EquipmentBrowse() {
     try {
       const currentUser = demoMode.getCurrentUser();
 
-      // If user is student, filter by their department ONLY
+      // If user is student, show their department equipment + any cross-department granted equipment
       if (currentUser && currentUser.role === 'student') {
-        // Students can ONLY see equipment from their own department
         const allEquipment = await demoMode.query('equipment');
+
+        // 1. Get equipment from student's own department
         let filtered = allEquipment.filter(item => item.department === currentUser.department);
+
+        // 2. Check for active cross-department access grants for this student's department
+        const accessGrants = await demoMode.query('department_access_grants', {
+          requesting_department_id: currentUser.department,
+          status: 'active'
+        });
+
+        // 3. Add equipment from granted departments
+        const today = new Date();
+        for (const grant of accessGrants) {
+          const grantStart = new Date(grant.start_date);
+          const grantEnd = new Date(grant.end_date);
+
+          // Check if grant is currently valid (within date range)
+          if (today >= grantStart && today <= grantEnd) {
+            // Find matching equipment from the lending department
+            const grantedEquipment = allEquipment.filter(item =>
+              item.department === grant.lending_department_id &&
+              item.product_name === grant.equipment_type
+            );
+
+            // Limit to quantity_available and mark as cross-department
+            const limitedGrantedEquip = grantedEquipment.slice(0, grant.quantity_available).map(item => ({
+              ...item,
+              isCrossDepartment: true,
+              crossDeptGrantId: grant.id,
+              collectionInstructions: grant.collection_instructions,
+              crossDeptTerms: grant.terms,
+              lendingDepartment: grant.lending_department_id
+            }));
+
+            filtered = filtered.concat(limitedGrantedEquip);
+          }
+        }
 
         // Apply category filter
         if (filter !== 'all') {
@@ -400,6 +435,21 @@ export default function EquipmentBrowse() {
                   </span>
                   <span className="department">{item.department}</span>
                 </div>
+                {item.isCrossDepartment && (
+                  <div className="cross-department-badge" style={{
+                    marginTop: '0.5rem',
+                    padding: '0.5rem',
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #2196f3',
+                    borderRadius: '4px',
+                    fontSize: '0.875rem'
+                  }}>
+                    <strong style={{ color: '#1976d2' }}>🔄 Cross-Department Access</strong>
+                    <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.8rem', color: '#666' }}>
+                      From {item.lendingDepartment}
+                    </p>
+                  </div>
+                )}
                 {item.isInterdisciplinary && (
                   <div className="interdisciplinary-badge">
                     Available via {getSubAreaName(item.fromSubAreaId)}
@@ -449,6 +499,11 @@ export default function EquipmentBrowse() {
                 <td>{item.category}</td>
                 <td>
                   {item.department}
+                  {item.isCrossDepartment && (
+                    <div style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#1976d2', fontWeight: '600' }}>
+                      🔄 From {item.lendingDepartment}
+                    </div>
+                  )}
                   {item.isInterdisciplinary && (
                     <div className="interdisciplinary-badge" style={{ marginTop: '0.25rem' }}>
                       Via {getSubAreaName(item.fromSubAreaId)}
