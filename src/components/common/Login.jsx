@@ -33,7 +33,7 @@ export default function Login() {
           <h3>Select Your Role:</h3>
           <div className="demo-accounts-grid">
             <button
-              onClick={() => quickLogin('demo@ncad.ie', 'demo123', 'Student')}
+              onClick={() => quickLogin('commdesign.student1@student.ncad.ie', 'student123', 'Student')}
               className="btn btn-primary btn-large"
               disabled={loading}
             >
@@ -41,7 +41,7 @@ export default function Login() {
               <span className="role-desc">Browse & book equipment</span>
             </button>
             <button
-              onClick={() => quickLogin('staff@ncad.ie', 'staff123', 'Staff')}
+              onClick={() => quickLogin('staff.commdesign@ncad.ie', 'staff123', 'Staff')}
               className="btn btn-primary btn-large"
               disabled={loading}
             >
@@ -49,7 +49,7 @@ export default function Login() {
               <span className="role-desc">Equipment + room booking</span>
             </button>
             <button
-              onClick={() => quickLogin('admin@ncad.ie', 'admin123', 'Department Admin')}
+              onClick={() => quickLogin('admin.commdesign@ncad.ie', 'admin123', 'Department Admin')}
               className="btn btn-primary btn-large"
               disabled={loading}
             >

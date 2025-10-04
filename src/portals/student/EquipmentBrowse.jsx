@@ -273,7 +273,7 @@ export default function EquipmentBrowse() {
 
       <div className="filter-controls-compact" style={{
         display: 'grid',
-        gridTemplateColumns: subAreas.length > 0 ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
+        gridTemplateColumns: (subAreas.length > 0 && user?.role !== 'student') ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
         gap: '1rem',
         marginTop: '1rem',
         marginBottom: '1rem',
@@ -308,7 +308,7 @@ export default function EquipmentBrowse() {
           </select>
         </div>
 
-        {subAreas.length > 0 && (
+        {subAreas.length > 0 && user?.role !== 'student' && (
           <div>
             <label htmlFor="department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
               Department
