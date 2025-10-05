@@ -113,25 +113,21 @@
   }
 }
 
-/* Portal label that appears on hover - Dark 3D effect */
+/* Portal label that appears on hover - Professional 3D effect */
 .portal-label {
   font-size: 48px;
-  font-weight: bold;
-  fill: #1a1a1a;
-  /* 3D text effect - multiple shadows for depth */
+  font-weight: 700;
+  fill: #2c3e50;
+  /* Subtle 3D depth effect - professional and clean */
   text-shadow:
-    1px 1px 0 #0a0a0a,
-    2px 2px 0 #0a0a0a,
-    3px 3px 0 #0a0a0a,
-    4px 4px 0 #0a0a0a,
-    5px 5px 0 #0a0a0a,
-    6px 6px 8px rgba(0, 0, 0, 0.9),
-    8px 8px 12px rgba(0, 0, 0, 0.7),
-    10px 10px 16px rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
+    1px 1px 0 rgba(0, 0, 0, 0.3),
+    2px 2px 0 rgba(0, 0, 0, 0.25),
+    3px 3px 0 rgba(0, 0, 0, 0.2),
+    4px 4px 6px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
   animation: fadeIn 0.3s ease-in-out forwards;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.08em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: 0.02em;
   opacity: 0;
 }
 
