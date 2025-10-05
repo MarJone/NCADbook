@@ -11,9 +11,22 @@ export default function SystemSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState({});
   const { toasts, showToast, removeToast } = useToast();
+  const [departmentAccess, setDepartmentAccess] = useState({});
+  const [showAccessMatrix, setShowAccessMatrix] = useState(false);
+
+  // NCAD departments
+  const departments = [
+    'Communication Design',
+    'Moving Image Design',
+    'Illustration',
+    'Fashion Design',
+    'Fine Art',
+    'Visual Culture'
+  ];
 
   useEffect(() => {
     loadSettings();
+    loadDepartmentAccess();
   }, []);
 
   const loadSettings = async () => {
@@ -27,6 +40,44 @@ export default function SystemSettings() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadDepartmentAccess = () => {
+    // Load from localStorage for demo mode
+    const saved = localStorage.getItem('ncadbook_department_access');
+    if (saved) {
+      setDepartmentAccess(JSON.parse(saved));
+    } else {
+      // Initialize with no access by default
+      const initialAccess = {};
+      departments.forEach(dept => {
+        initialAccess[dept] = [];
+      });
+      setDepartmentAccess(initialAccess);
+    }
+  };
+
+  const saveDepartmentAccess = (newAccess) => {
+    localStorage.setItem('ncadbook_department_access', JSON.stringify(newAccess));
+    setDepartmentAccess(newAccess);
+  };
+
+  const toggleDepartmentAccess = (requestingDept, targetDept) => {
+    const currentAccess = departmentAccess[requestingDept] || [];
+    const hasAccess = currentAccess.includes(targetDept);
+
+    const newAccess = {
+      ...departmentAccess,
+      [requestingDept]: hasAccess
+        ? currentAccess.filter(d => d !== targetDept)
+        : [...currentAccess, targetDept]
+    };
+
+    saveDepartmentAccess(newAccess);
+    showToast(
+      `${requestingDept} ${hasAccess ? 'removed from' : 'granted access to'} ${targetDept} equipment`,
+      'success'
+    );
   };
 
   const handleToggle = async (settingKey, currentValue) => {
@@ -154,6 +205,8 @@ export default function SystemSettings() {
         {settings.map(setting => {
           const impact = getSettingImpact(setting.key);
           const isSaving = saving[setting.key];
+          const isCrossDeptBrowsing = setting.key === 'cross_department_browsing_enabled';
+          const isCrossDeptEnabled = setting.value === true || setting.value === 'true';
 
           return (
             <div key={setting.key} className="setting-card">
@@ -185,6 +238,83 @@ export default function SystemSettings() {
                   <div className={`impact-message ${setting.value ? 'active' : 'inactive'}`}>
                     <strong>{setting.value ? '✓ Active:' : '○ Inactive:'}</strong>
                     <span>{setting.value ? impact.enabled : impact.disabled}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Department Access Matrix - only for cross-department browsing when enabled */}
+              {isCrossDeptBrowsing && isCrossDeptEnabled && (
+                <div className="department-access-matrix">
+                  <div className="matrix-header">
+                    <h4>Department Equipment Access Control</h4>
+                    <p>Configure which departments can access equipment from other departments</p>
+                  </div>
+
+                  <div className="matrix-table-wrapper">
+                    <table className="access-matrix-table">
+                      <thead>
+                        <tr>
+                          <th className="department-column">Requesting Department</th>
+                          <th colSpan={departments.length} className="access-column-header">
+                            Can Access Equipment From
+                          </th>
+                        </tr>
+                        <tr>
+                          <th></th>
+                          {departments.map(dept => (
+                            <th key={dept} className="target-dept">
+                              {dept.split(' ')[0]}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {departments.map(requestingDept => (
+                          <tr key={requestingDept}>
+                            <td className="requesting-dept-name">{requestingDept}</td>
+                            {departments.map(targetDept => {
+                              const isOwnDept = requestingDept === targetDept;
+                              const hasAccess = departmentAccess[requestingDept]?.includes(targetDept);
+
+                              return (
+                                <td key={targetDept} className="access-cell">
+                                  {isOwnDept ? (
+                                    <span className="own-dept-indicator" title="Own department - always has access">
+                                      ✓
+                                    </span>
+                                  ) : (
+                                    <label className="access-checkbox">
+                                      <input
+                                        type="checkbox"
+                                        checked={hasAccess || false}
+                                        onChange={() => toggleDepartmentAccess(requestingDept, targetDept)}
+                                        title={`Allow ${requestingDept} to access ${targetDept} equipment`}
+                                      />
+                                      <span className="checkmark"></span>
+                                    </label>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="matrix-legend">
+                    <div className="legend-item">
+                      <span className="legend-icon own">✓</span>
+                      <span>Own department (always has access)</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-icon checked">☑</span>
+                      <span>Has access to equipment</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-icon unchecked">☐</span>
+                      <span>No access</span>
+                    </div>
                   </div>
                 </div>
               )}

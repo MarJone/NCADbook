@@ -8,6 +8,13 @@ export const phase8Users = [
   // Master Admin (1)
   { id: '1', email: 'master@ncad.ie', password: 'master123', first_name: 'Master', surname: 'Admin', full_name: 'Master Admin', role: 'master_admin', department: 'COMMUNICATION_DESIGN', created_at: '2024-01-01' },
 
+  // NEW ROLES (5) - Added for Role Management Demo
+  { id: '201', email: 'viewonly@ncad.ie', password: 'demo123', first_name: 'View', surname: 'Only', full_name: 'View Only Staff', role: 'view_only_staff', department: 'COMMUNICATION_DESIGN', created_at: '2024-03-01', view_permissions: { can_view_catalog: true, can_create_bookings: false, can_view_history: true, can_view_analytics: false } },
+  { id: '202', email: 'accounts@ncad.ie', password: 'demo123', first_name: 'Accounts', surname: 'Officer', full_name: 'Accounts Officer', role: 'accounts_officer', department: 'ADMINISTRATION', created_at: '2024-03-01', finance_permissions: { can_view_costs: true, can_export_finance: true, can_view_all_depts: true } },
+  { id: '203', email: 'payroll@ncad.ie', password: 'demo123', first_name: 'Payroll', surname: 'Coordinator', full_name: 'Payroll Coordinator', role: 'payroll_coordinator', department: 'ADMINISTRATION', created_at: '2024-03-01', payroll_permissions: { can_view_staff_allocations: true, can_export_payroll: true } },
+  { id: '204', email: 'it@ncad.ie', password: 'demo123', first_name: 'IT', surname: 'Support', full_name: 'IT Support Technician', role: 'it_support', department: 'ADMINISTRATION', created_at: '2024-03-01', it_permissions: { can_manage_equipment: true, can_view_logs: true, can_reset_passwords: false } },
+  { id: '205', email: 'budget@ncad.ie', password: 'demo123', first_name: 'Budget', surname: 'Manager', full_name: 'Budget Manager', role: 'budget_manager', department: 'ADMINISTRATION', created_at: '2024-03-01', budget_permissions: { can_view_budgets: true, can_forecast_costs: true, can_export_reports: true } },
+
   // Department Admins (13 total - Media has 3 admins)
   { id: '2', email: 'admin.commdesign@ncad.ie', password: 'admin123', first_name: 'Sarah', surname: 'Johnson', full_name: 'Sarah Johnson', role: 'department_admin', managed_department_id: 'sa_comm_design', department: 'COMMUNICATION_DESIGN', created_at: '2024-01-15' },
   { id: '3', email: 'admin.product@ncad.ie', password: 'admin123', first_name: 'Mark', surname: 'Williams', full_name: 'Mark Williams', role: 'department_admin', managed_department_id: 'sa_product', department: 'PRODUCT_DESIGN', created_at: '2024-01-15' },

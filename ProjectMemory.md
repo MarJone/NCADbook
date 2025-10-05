@@ -2608,3 +2608,194 @@ expect(box.height).toBeGreaterThanOrEqual(44); // WCAG minimum
 **End of Project Memory**
 
 *This document should be updated at the end of each major development phase or sprint. See CLAUDE.md for the update workflow.*
+
+---
+
+**Update Date:** 2025-10-05
+**Updated By:** Claude Code
+**Context:** GitHub Pages deployment fixes and login page cleanup for demo
+
+---
+
+### Phase 8b: GitHub Pages Deployment & Demo Preparation (October 5, 2025)
+
+**Objective:** Fix GitHub Pages deployment issues, eliminate Supabase dependency for demo mode, and clean up login page UI
+
+**Completed:**
+- ✅ Fixed login background image 404 error (added /NCADbook/ base path)
+- ✅ Removed "NCADbook Demo" header text from login page
+- ✅ Removed "Specialized Role Demos" section (now accessible only via Master Admin)
+- ✅ Created WORK_PC_SETUP.md for cross-machine setup instructions
+- ✅ Verified demo mode works completely offline with localStorage
+- ✅ Confirmed all 4 portal logins functional on GitHub Pages
+
+**Key Files Modified:**
+- `src/components/common/Login.jsx` - Removed header and specialized roles section, fixed image path
+- `WORK_PC_SETUP.md` - Created comprehensive setup guide for work PC
+
+**Design Decisions:**
+
+### 1. Image Path Resolution for GitHub Pages Subdirectory
+**Decision:** Use absolute path with base `/NCADbook/` prefix for all public assets
+**Rationale:**
+- GitHub Pages serves from subdirectory, not root
+- Vite config has `base: '/NCADbook/'` for asset bundling
+- React Router needs `basename="/NCADbook"` for routing
+- Public folder assets need manual path prefix in JSX
+
+**Implementation:**
+```jsx
+// Before (404 error on GitHub Pages)
+<img src="/login-map-frame2.jpg" />
+
+// After (works on GitHub Pages)
+<img src="/NCADbook/login-map-frame2.jpg" />
+```
+
+**Trade-offs:**
+- Pro: Works consistently on GitHub Pages
+- Con: Path differs from local development (Vite dev server handles this automatically)
+- Alternative considered: Use import for assets (but 9.5MB image too large for bundling)
+
+### 2. Simplified Login UI
+**Decision:** Remove demo header text and specialized role links from login page
+**Rationale:**
+- Cleaner, more professional appearance for demo
+- Reduces cognitive load - users focus on 4 main portals
+- Specialized roles (View-Only Staff, Accounts Officer, etc.) accessible via Master Admin
+- Eliminates redundant navigation options
+
+**Before:**
+```jsx
+<div className="demo-header">
+  <h1>NCADbook Demo</h1>
+  <p>Click any portal to explore the system</p>
+</div>
+{/* ... portal map ... */}
+<div className="specialized-roles-links">
+  {/* 5 additional role links */}
+</div>
+```
+
+**After:**
+```jsx
+<div className="portal-map-container">
+  {/* Just the portal map with hover instructions */}
+</div>
+```
+
+**User Feedback:** "great, thats working" - Confirmed simplified UI meets demo requirements
+
+---
+
+### Challenges & Solutions
+
+#### Challenge: Login Background Image 404 on GitHub Pages
+**Problem:** Background image `login-map-frame2.jpg` returned 404 on deployed site despite existing in public folder
+
+**Investigation:**
+1. Verified file exists: `public/login-map-frame2.jpg` (9.5 MB)
+2. Checked gh-pages branch: File deployed successfully
+3. Found path reference: `src="/login-map-frame2.jpg"` (missing base path)
+
+**Root Cause:** Public folder assets don't automatically inherit Vite base path when referenced in JSX `src` attributes
+
+**Solution:** Updated image path from `/login-map-frame2.jpg` to `/NCADbook/login-map-frame2.jpg`
+
+**Files Changed:**
+- `src/components/common/Login.jsx:67`
+
+**Lesson:** GitHub Pages subdirectory deployments require manual base path prefixes for public assets referenced in component JSX. Vite's `base` config only affects bundled assets and routing.
+
+---
+
+### Work PC Setup Documentation
+
+**Created:** `WORK_PC_SETUP.md` - Comprehensive guide for project transfer
+
+**Sections:**
+1. Quick Start Checklist (Node.js verification → npm install → dev server)
+2. Test credentials for all 4 portals
+3. Troubleshooting guide (port conflicts, git auth, image loading)
+4. Project commands reference
+5. Demo day checklist
+6. Claude Code prompt template for issues
+
+**Rationale:** User switching to work PC via USB drive transfer - needs self-contained setup instructions that work without internet/context
+
+**Key Features:**
+- No assumptions about existing setup
+- Step-by-step verification commands
+- Expected output examples for validation
+- Troubleshooting for common issues (port conflicts, missing dependencies)
+- Demo mode notes (no .env file required)
+
+---
+
+### Current Project Status
+
+**Deployment:**
+- Live URL: https://marjone.github.io/NCADbook/
+- Hosting: GitHub Pages (gh-pages branch)
+- Build: Vite production bundle (281KB gzipped JS)
+- Demo Mode: Fully functional with localStorage only
+
+**Demo Ready:**
+- ✅ 4 portal logins working (Student, Staff, Dept Admin, Master Admin)
+- ✅ 3-strike system functional (students ID 24, 25, 26 pre-loaded)
+- ✅ Specialized roles accessible via Master Admin portal
+- ✅ Clean login UI without clutter
+- ✅ Background image loading correctly
+- ✅ Works offline (no external services)
+
+**Technical State:**
+- No Supabase dependency (mock client in use)
+- All data in localStorage via `demo-data-phase8.js`
+- Auto-login on portal click (no manual credential entry)
+- Session persistence across page reloads
+
+**Files Ready for USB Transfer:**
+- Complete project folder (node_modules will be reinstalled on work PC)
+- WORK_PC_SETUP.md included for guidance
+- All public assets including 9.5MB login image
+- Git history preserved for version control
+
+---
+
+### Lessons Learned
+
+**1. GitHub Pages Asset Paths:**
+- Vite `base` config affects bundled assets automatically
+- Public folder assets need manual base path in JSX
+- Always test deployed site, not just dev server
+
+**2. Demo UI Simplification:**
+- Less is more for demo presentations
+- Remove explanatory text that users won't read
+- Focus on interactive elements (clickable map vs text links)
+
+**3. Cross-Machine Setup Documentation:**
+- Include expected output for validation steps
+- Provide troubleshooting before issues occur
+- Add Claude Code prompt template for self-service help
+
+---
+
+### Future Considerations
+
+**Short-Term (Demo Week):**
+- Test on work PC after USB transfer
+- Verify demo flow with all portals
+- Practice demo narrative with 3-strike examples
+
+**Mid-Term (Post-Demo):**
+- Consider optimizing 9.5MB login image (convert to WebP, serve multiple sizes)
+- Implement code splitting to reduce main bundle size (1MB uncompressed)
+- Add service worker for true offline functionality
+
+**Long-Term:**
+- Transition from mock Supabase to real database for production
+- Implement proper authentication flow (not auto-login)
+- Add error boundaries for production resilience
+
+---

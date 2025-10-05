@@ -141,7 +141,7 @@ BEGIN
   v_total_allocation := v_total_allocation + NEW.allocation_percentage;
 
   IF v_total_allocation > 100 THEN
-    RAISE EXCEPTION 'Total cost center allocation exceeds 100%% for admin. Current total: %%',
+    RAISE EXCEPTION 'Total cost center allocation exceeds 100 percent for admin. Current total: %',
       v_total_allocation;
   END IF;
 

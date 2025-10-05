@@ -1,81 +1,126 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../../config/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../hooks/useToast';
 import Toast from '../../components/common/Toast';
 import '../../styles/role-management.css';
 
+// Demo mode feature flags
+const demoFeatureFlags = [
+  {
+    id: 1,
+    feature_key: 'role_view_only_staff',
+    feature_name: 'View-Only Staff',
+    description: 'Read-only access to equipment catalog for teaching faculty',
+    is_enabled: true,
+    created_at: '2024-03-01'
+  },
+  {
+    id: 2,
+    feature_key: 'role_accounts_officer',
+    feature_name: 'Accounts Officer',
+    description: 'Financial reporting, cost analysis, and budget tracking',
+    is_enabled: true,
+    created_at: '2024-03-01'
+  },
+  {
+    id: 3,
+    feature_key: 'role_payroll_coordinator',
+    feature_name: 'Payroll Coordinator',
+    description: 'Staff cost center allocations and payroll data exports',
+    is_enabled: true,
+    created_at: '2024-03-01'
+  },
+  {
+    id: 4,
+    feature_key: 'role_it_support_technician',
+    feature_name: 'IT Support Technician',
+    description: 'Equipment management, system logs, and technical functions',
+    is_enabled: true,
+    created_at: '2024-03-01'
+  },
+  {
+    id: 5,
+    feature_key: 'role_budget_manager',
+    feature_name: 'Budget Manager',
+    description: 'Budget tracking, cost forecasting, and financial planning',
+    is_enabled: true,
+    created_at: '2024-03-01'
+  },
+  {
+    id: 6,
+    feature_key: 'feature_financial_management',
+    feature_name: 'Financial Management Module',
+    description: 'Equipment costs, depreciation tracking, and financial reports',
+    is_enabled: true,
+    created_at: '2024-03-01',
+    metadata: { components: ['Cost tracking', 'Depreciation', 'TCO calculations'] }
+  },
+  {
+    id: 7,
+    feature_key: 'feature_payroll_tracking',
+    feature_name: 'Payroll Tracking Module',
+    description: 'Staff allocations, cost centers, and payroll exports',
+    is_enabled: true,
+    created_at: '2024-03-01',
+    metadata: { components: ['Cost centers', 'Staff allocations', 'Payroll exports'] }
+  },
+  {
+    id: 8,
+    feature_key: 'feature_it_asset_lifecycle',
+    feature_name: 'IT Asset Lifecycle Module',
+    description: 'Equipment lifecycle management and system logging',
+    is_enabled: true,
+    created_at: '2024-03-01',
+    metadata: { components: ['Asset tracking', 'Maintenance logs', 'System diagnostics'] }
+  },
+  {
+    id: 9,
+    feature_key: 'feature_budget_analytics',
+    feature_name: 'Budget Analytics Module',
+    description: 'Budget forecasting, variance tracking, and spending analysis',
+    is_enabled: true,
+    created_at: '2024-03-01',
+    metadata: { components: ['Budget forecasting', 'Variance tracking', 'Trend analysis'] }
+  }
+];
+
 export default function RoleManagement() {
   const { user } = useAuth();
-  const [featureFlags, setFeatureFlags] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [userCounts, setUserCounts] = useState({});
+  const [featureFlags, setFeatureFlags] = useState(demoFeatureFlags);
+  const [loading, setLoading] = useState(false);
+  const [userCounts, setUserCounts] = useState({
+    view_only_staff: 1,
+    accounts_officer: 1,
+    payroll_coordinator: 1,
+    it_support_technician: 1,
+    budget_manager: 1
+  });
   const [activityLog, setActivityLog] = useState([]);
   const { toasts, showToast, removeToast } = useToast();
 
-  useEffect(() => {
-    loadFeatureFlags();
-    loadUserCounts();
-    loadActivityLog();
-  }, []);
-
-  const loadFeatureFlags = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('system_feature_flags')
-        .select('*')
-        .order('feature_key');
-
-      if (error) throw error;
-      setFeatureFlags(data || []);
-    } catch (error) {
-      console.error('Error loading feature flags:', error);
-      showToast('Failed to load feature flags', 'error');
-    } finally {
-      setLoading(false);
-    }
+  const loadFeatureFlags = () => {
+    // Using demo data - no async needed
+    setFeatureFlags(demoFeatureFlags);
   };
 
-  const loadUserCounts = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('role');
-
-      if (error) throw error;
-
-      const counts = (data || []).reduce((acc, user) => {
-        acc[user.role] = (acc[user.role] || 0) + 1;
-        return acc;
-      }, {});
-
-      setUserCounts(counts);
-    } catch (error) {
-      console.error('Error loading user counts:', error);
-    }
+  const loadUserCounts = () => {
+    // Demo user counts
+    setUserCounts({
+      view_only_staff: 1,
+      accounts_officer: 1,
+      payroll_coordinator: 1,
+      it_support_technician: 1,
+      budget_manager: 1
+    });
   };
 
-  const loadActivityLog = async () => {
-    try {
-      const { data, error} = await supabase
-        .from('admin_actions')
-        .select(`
-          *,
-          users:admin_id (full_name)
-        `)
-        .eq('action_type', 'feature_flag_update')
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      if (error) throw error;
-      setActivityLog(data || []);
-    } catch (error) {
-      console.error('Error loading activity log:', error);
-    }
+  const loadActivityLog = () => {
+    // Demo activity log
+    setActivityLog([]);
   };
 
-  const handleToggleFeature = async (featureKey, currentEnabled) => {
+  const handleToggleFeature = (featureKey, currentEnabled) => {
     const flag = featureFlags.find(f => f.feature_key === featureKey);
     const action = currentEnabled ? 'disable' : 'enable';
 
@@ -84,50 +129,18 @@ export default function RoleManagement() {
       if (!window.confirm(confirmMsg)) return;
     }
 
-    try {
-      // Update feature flag
-      const { error: updateError } = await supabase
-        .from('system_feature_flags')
-        .update({
-          is_enabled: !currentEnabled,
-          enabled_by: !currentEnabled ? user.id : null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('feature_key', featureKey);
+    // Demo mode: Update state locally
+    const updatedFlags = featureFlags.map(f =>
+      f.feature_key === featureKey
+        ? { ...f, is_enabled: !currentEnabled, updated_at: new Date().toISOString() }
+        : f
+    );
 
-      if (updateError) throw updateError;
-
-      // Log the action
-      const { error: logError } = await supabase
-        .from('admin_actions')
-        .insert({
-          admin_id: user.id,
-          action_type: 'feature_flag_update',
-          target_type: 'system_configuration',
-          target_id: flag.id,
-          details: {
-            feature_key: featureKey,
-            feature_name: flag.feature_name,
-            action: action,
-            new_status: !currentEnabled ? 'enabled' : 'disabled',
-            timestamp: new Date().toISOString()
-          }
-        });
-
-      if (logError) console.error('Failed to log action:', logError);
-
-      // Reload data
-      await loadFeatureFlags();
-      await loadActivityLog();
-
-      showToast(`${flag.feature_name} ${action}d successfully`, 'success');
-    } catch (error) {
-      console.error('Error toggling feature:', error);
-      showToast(`Failed to ${action} feature`, 'error');
-    }
+    setFeatureFlags(updatedFlags);
+    showToast(`${flag.feature_name} ${action}d successfully (Demo Mode)`, 'success');
   };
 
-  const handleDisableAllRoles = async () => {
+  const handleDisableAllRoles = () => {
     if (!window.confirm('Disable ALL advanced roles?\n\nThis will immediately disable View-Only Staff, Accounts Officer, Payroll Coordinator, IT Support, and Budget Manager roles.')) {
       return;
     }
@@ -136,14 +149,15 @@ export default function RoleManagement() {
       .filter(f => f.feature_key.startsWith('role_') && !['role_student', 'role_general_admin', 'role_master_admin'].includes(f.feature_key))
       .map(f => f.feature_key);
 
-    try {
-      for (const key of roleKeys) {
-        await handleToggleFeature(key, true);
-      }
-      showToast('All advanced roles disabled', 'success');
-    } catch (error) {
-      showToast('Failed to disable all roles', 'error');
-    }
+    // Demo mode: Update all at once
+    const updatedFlags = featureFlags.map(f =>
+      roleKeys.includes(f.feature_key)
+        ? { ...f, is_enabled: false, updated_at: new Date().toISOString() }
+        : f
+    );
+
+    setFeatureFlags(updatedFlags);
+    showToast('All advanced roles disabled (Demo Mode)', 'success');
   };
 
   const getRoleIcon = (key) => {
@@ -180,6 +194,27 @@ export default function RoleManagement() {
 
   if (loading) {
     return <div className="loading">Loading role management...</div>;
+  }
+
+  // Show error state if no feature flags loaded
+  if (featureFlags.length === 0) {
+    return (
+      <div className="role-management-error">
+        <h2>⚠️ Database Connection Error</h2>
+        <p>Unable to load feature flags from Supabase.</p>
+        <div className="error-instructions">
+          <h3>To fix this:</h3>
+          <ol>
+            <li>Open your Supabase project dashboard</li>
+            <li>Go to Project Settings → API</li>
+            <li>Copy your Project URL and anon key</li>
+            <li>Update <code>.env.local</code> with your credentials</li>
+            <li>Restart the dev server (<code>npm run dev</code>)</li>
+          </ol>
+          <p className="check-console">Check the browser console for detailed errors.</p>
+        </div>
+      </div>
+    );
   }
 
   const roleFlags = featureFlags.filter(f => f.feature_key.startsWith('role_'));

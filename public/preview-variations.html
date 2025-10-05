@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCAD Login Map Variations Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 3rem;
+      font-style: italic;
+    }
+
+    .variations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+      gap: 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .variation-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      border: 3px solid #2c3e50;
+    }
+
+    .variation-card h2 {
+      color: #9C27B0;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .variation-card .seed {
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .main-image-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .main-image {
+      width: 100%;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .main-image:hover {
+      transform: scale(1.02);
+    }
+
+    .hover-states {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .hover-preview {
+      position: relative;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
+
+    .hover-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .hover-preview:hover img {
+      transform: scale(1.1);
+    }
+
+    .hover-preview .label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(156, 39, 176, 0.9);
+      color: white;
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .hover-states-title {
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #666;
+      font-size: 0.9rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .loading-message {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      color: #856404;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: bold;
+    }
+
+    .error-img {
+      background: #f8d7da;
+      padding: 2rem;
+      text-align: center;
+      color: #721c24;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .variations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .variation-card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>NCAD Login Map Variations</h1>
+  <p class="subtitle">Preview all 4 variations with their hover states</p>
+
+  <div id="loading" class="loading-message">
+    🎨 Generating images... This page will auto-refresh every 30 seconds until all images are ready.
+  </div>
+
+  <div class="variations-grid">
+    <!-- Variation 1 -->
+    <div class="variation-card">
+      <h2>Variation 1</h2>
+      <p class="seed">Seed: 277961180</p>
+      <div class="main-image-container">
+        <img
+          src="/login-map-v1.png"
+          alt="Variation 1 Main Map"
+          class="main-image"
+          onerror="this.parentElement.innerHTML='<div class=\'error-img\'>Image not generated yet...</div>'"
+        >
+      </div>
+      <p class="hover-states-title">Hover States:</p>
+      <div class="hover-states">
+        <div class="hover-preview">
+          <img src="/login-map-v1-hover-student.png" alt="Student Hover">
+          <div class="label">Student Zone</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v1-hover-staff.png" alt="Staff Hover">
+          <div class="label">Staff Area</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v1-hover-admin.png" alt="Admin Hover">
+          <div class="label">Admin Office</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v1-hover-master.png" alt="Master Hover">
+          <div class="label">Master Control</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variation 2 -->
+    <div class="variation-card">
+      <h2>Variation 2</h2>
+      <p class="seed">Seed: 144467920</p>
+      <div class="main-image-container">
+        <img
+          src="/login-map-v2.png"
+          alt="Variation 2 Main Map"
+          class="main-image"
+          onerror="this.parentElement.innerHTML='<div class=\'error-img\'>Image not generated yet...</div>'"
+        >
+      </div>
+      <p class="hover-states-title">Hover States:</p>
+      <div class="hover-states">
+        <div class="hover-preview">
+          <img src="/login-map-v2-hover-student.png" alt="Student Hover">
+          <div class="label">Student Zone</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v2-hover-staff.png" alt="Staff Hover">
+          <div class="label">Staff Area</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v2-hover-admin.png" alt="Admin Hover">
+          <div class="label">Admin Office</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v2-hover-master.png" alt="Master Hover">
+          <div class="label">Master Control</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variation 3 -->
+    <div class="variation-card">
+      <h2>Variation 3</h2>
+      <p class="seed">Seed: 798644905</p>
+      <div class="main-image-container">
+        <img
+          src="/login-map-v3.png"
+          alt="Variation 3 Main Map"
+          class="main-image"
+          onerror="this.parentElement.innerHTML='<div class=\'error-img\'>Image not generated yet...</div>'"
+        >
+      </div>
+      <p class="hover-states-title">Hover States:</p>
+      <div class="hover-states">
+        <div class="hover-preview">
+          <img src="/login-map-v3-hover-student.png" alt="Student Hover">
+          <div class="label">Student Zone</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v3-hover-staff.png" alt="Staff Hover">
+          <div class="label">Staff Area</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v3-hover-admin.png" alt="Admin Hover">
+          <div class="label">Admin Office</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v3-hover-master.png" alt="Master Hover">
+          <div class="label">Master Control</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variation 4 -->
+    <div class="variation-card">
+      <h2>Variation 4</h2>
+      <p class="seed">Seed: 951689729</p>
+      <div class="main-image-container">
+        <img
+          src="/login-map-v4.png"
+          alt="Variation 4 Main Map"
+          class="main-image"
+          onerror="this.parentElement.innerHTML='<div class=\'error-img\'>Image not generated yet...</div>'"
+        >
+      </div>
+      <p class="hover-states-title">Hover States:</p>
+      <div class="hover-states">
+        <div class="hover-preview">
+          <img src="/login-map-v4-hover-student.png" alt="Student Hover">
+          <div class="label">Student Zone</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v4-hover-staff.png" alt="Staff Hover">
+          <div class="label">Staff Area</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v4-hover-admin.png" alt="Admin Hover">
+          <div class="label">Admin Office</div>
+        </div>
+        <div class="hover-preview">
+          <img src="/login-map-v4-hover-master.png" alt="Master Hover">
+          <div class="label">Master Control</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Auto-refresh every 30 seconds while images are loading
+    let allImagesLoaded = false;
+
+    function checkAllImages() {
+      const images = document.querySelectorAll('img');
+      let loadedCount = 0;
+
+      images.forEach(img => {
+        if (img.complete && img.naturalHeight !== 0) {
+          loadedCount++;
+        }
+      });
+
+      if (loadedCount === images.length) {
+        allImagesLoaded = true;
+        document.getElementById('loading').style.display = 'none';
+      }
+
+      return allImagesLoaded;
+    }
+
+    // Check every 30 seconds
+    setInterval(() => {
+      if (!checkAllImages()) {
+        console.log('Still generating images, will refresh in 30 seconds...');
+        setTimeout(() => location.reload(), 30000);
+      }
+    }, 30000);
+
+    // Initial check
+    setTimeout(() => checkAllImages(), 2000);
+  </script>
+</body>
+</html>

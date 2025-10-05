@@ -2,7 +2,7 @@
 
 .system-settings {
   padding: 2rem;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -319,5 +319,208 @@
 
   .settings-info-sections {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Department Access Matrix */
+.department-access-matrix {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+}
+
+.matrix-header h4 {
+  margin: 0 0 0.5rem 0;
+  color: #9C27B0;
+  font-size: 1.1rem;
+}
+
+.matrix-header p {
+  margin: 0 0 1.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.matrix-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.access-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.access-matrix-table thead {
+  background: #9C27B0;
+  color: white;
+}
+
+.access-matrix-table th {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.access-matrix-table .department-column {
+  text-align: left;
+  padding-left: 1rem;
+  min-width: 180px;
+}
+
+.access-matrix-table .access-column-header {
+  font-size: 0.9rem;
+  padding: 1rem;
+}
+
+.access-matrix-table .target-dept {
+  font-size: 0.75rem;
+  writing-mode: horizontal-tb;
+  max-width: 80px;
+  word-wrap: break-word;
+}
+
+.access-matrix-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.access-matrix-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.requesting-dept-name {
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: #333;
+  text-align: left;
+}
+
+.access-cell {
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.own-dept-indicator {
+  color: #28a745;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.access-checkbox {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.access-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.access-checkbox .checkmark {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.access-checkbox:hover .checkmark {
+  border-color: #9C27B0;
+}
+
+.access-checkbox input[type="checkbox"]:checked ~ .checkmark {
+  background: #9C27B0;
+  border-color: #9C27B0;
+}
+
+.access-checkbox input[type="checkbox"]:checked ~ .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.matrix-legend {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.legend-icon {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.legend-icon.own {
+  color: #28a745;
+}
+
+.legend-icon.checked {
+  color: #9C27B0;
+}
+
+.legend-icon.unchecked {
+  color: #ccc;
+}
+
+/* Responsive adjustments for matrix */
+@media (max-width: 1024px) {
+  .access-matrix-table .target-dept {
+    font-size: 0.7rem;
+    max-width: 60px;
+  }
+
+  .matrix-legend {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .department-access-matrix {
+    padding: 1rem;
+  }
+
+  .matrix-table-wrapper {
+    margin: 0 -1rem;
+  }
+
+  .access-matrix-table .department-column {
+    min-width: 140px;
+    font-size: 0.85rem;
+  }
+
+  .access-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
   }
 }
