@@ -113,16 +113,25 @@
   }
 }
 
-/* Portal label that appears on hover */
+/* Portal label that appears on hover - Dark 3D effect */
 .portal-label {
   font-size: 48px;
   font-weight: bold;
-  fill: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
+  fill: #1a1a1a;
+  /* 3D text effect - multiple shadows for depth */
+  text-shadow:
+    1px 1px 0 #0a0a0a,
+    2px 2px 0 #0a0a0a,
+    3px 3px 0 #0a0a0a,
+    4px 4px 0 #0a0a0a,
+    5px 5px 0 #0a0a0a,
+    6px 6px 8px rgba(0, 0, 0, 0.9),
+    8px 8px 12px rgba(0, 0, 0, 0.7),
+    10px 10px 16px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
   animation: fadeIn 0.3s ease-in-out forwards;
   font-family: 'Courier New', monospace;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   opacity: 0;
 }
 
