@@ -1,0 +1,221 @@
+/* Student Strike Status Banner Styles */
+
+.strike-status-banner {
+  margin: var(--spacing-md) 0;
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  border-left: 5px solid;
+}
+
+.strike-status-banner.warning {
+  background: #fff3e0;
+  border-color: #f57c00;
+}
+
+.strike-status-banner.error {
+  background: #ffebee;
+  border-color: #c62828;
+}
+
+.strike-status-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.strike-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.strike-info {
+  flex: 1;
+}
+
+.strike-info h4 {
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+}
+
+.strike-info p {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.view-history-btn {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 6px 16px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.view-history-btn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* Strike Counter Circles */
+.strike-counter {
+  display: flex;
+  align-items: center;
+}
+
+.strike-circles {
+  display: flex;
+  gap: 8px;
+}
+
+.strike-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: #e0e0e0;
+  color: #9e9e9e;
+  transition: all 0.3s;
+}
+
+.strike-circle.active {
+  background: #c62828;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Strike History Details */
+.strike-history-details {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.strike-history-details h5 {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+}
+
+.strike-detail-item {
+  background: white;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.strike-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.strike-number {
+  background: #c62828;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.strike-date {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.strike-reason {
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.strike-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* Help Text */
+.strike-help-text {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.strike-help-text strong {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.strike-help-text ul {
+  margin: var(--spacing-xs) 0 0 0;
+  padding-left: var(--spacing-lg);
+}
+
+.strike-help-text li {
+  margin: 4px 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .strike-status-content {
+    flex-direction: column;
+  }
+
+  .strike-icon {
+    font-size: 1.5rem;
+  }
+
+  .strike-counter {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .strike-circles {
+    gap: 12px;
+  }
+
+  .strike-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .strike-info h4 {
+    font-size: 1rem;
+  }
+
+  .strike-info p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Touch Targets for Mobile */
+@media (max-width: 480px) {
+  .view-history-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: var(--spacing-sm);
+  }
+
+  .strike-circle {
+    width: 44px;
+    height: 44px;
+  }
+}
