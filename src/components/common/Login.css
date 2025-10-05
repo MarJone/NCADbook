@@ -118,8 +118,11 @@
   font-size: 52px;
   font-weight: 400;
   fill: #1a1a1a;
-  /* Brush stroke effect with organic shadows */
+  /* White drop shadow underneath for legibility, then brush stroke shadows */
   text-shadow:
+    0 2px 8px rgba(255, 255, 255, 0.9),
+    0 3px 12px rgba(255, 255, 255, 0.8),
+    0 4px 16px rgba(255, 255, 255, 0.7),
     2px 2px 0 rgba(0, 0, 0, 0.2),
     -1px -1px 0 rgba(0, 0, 0, 0.1),
     3px 3px 4px rgba(0, 0, 0, 0.4),
