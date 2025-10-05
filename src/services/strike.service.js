@@ -1,27 +1,48 @@
-import { supabase } from '../config/supabase';
+import { demoMode } from '../mocks/demo-mode.js';
 
 /**
- * Strike Service - Manages student strike system
+ * Strike Service - Demo Mode Implementation
+ * Manages student strike system using local data
  */
+
+console.log('🎭 Strike Service - Running in Demo Mode');
 
 /**
  * Check if student can make a booking
- * @param {string} studentId - Student UUID
+ * @param {string} studentId - Student ID
  * @returns {Promise<Object>} { canBook: boolean, reason: string, strikeCount: number }
  */
 export async function canStudentBook(studentId) {
   try {
-    const { data, error } = await supabase.rpc('can_student_book', {
-      p_student_id: studentId
-    });
+    const user = await demoMode.findOne('users', { id: studentId });
 
-    if (error) throw error;
+    if (!user) {
+      return {
+        canBook: false,
+        reason: 'User not found',
+        strikeCount: 0,
+        blacklistUntil: null
+      };
+    }
+
+    const strikeCount = user.strike_count || 0;
+    const blacklistUntil = user.blacklist_until;
+
+    // Check if blacklisted
+    if (blacklistUntil && new Date(blacklistUntil) > new Date()) {
+      return {
+        canBook: false,
+        reason: `Blacklisted until ${new Date(blacklistUntil).toLocaleDateString()}`,
+        strikeCount,
+        blacklistUntil
+      };
+    }
 
     return {
-      canBook: data.can_book,
-      reason: data.reason,
-      strikeCount: data.strike_count,
-      blacklistUntil: data.blacklist_until
+      canBook: strikeCount < 3,
+      reason: strikeCount >= 3 ? 'Maximum strikes reached' : 'Eligible to book',
+      strikeCount,
+      blacklistUntil
     };
   } catch (error) {
     console.error('Error checking booking eligibility:', error);
@@ -31,33 +52,27 @@ export async function canStudentBook(studentId) {
 
 /**
  * Get student's current strike status
- * @param {string} studentId - Student UUID
+ * @param {string} studentId - Student ID
  * @returns {Promise<Object>} Strike status with count and history
  */
 export async function getStrikeStatus(studentId) {
   try {
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('strike_count, blacklist_until')
-      .eq('id', studentId)
-      .single();
+    const user = await demoMode.findOne('users', { id: studentId });
 
-    if (userError) throw userError;
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-    const { data: historyData, error: historyError } = await supabase
-      .from('strike_history')
-      .select('*')
-      .eq('student_id', studentId)
-      .is('revoked_at', null)
-      .order('created_at', { ascending: false });
-
-    if (historyError) throw historyError;
+    const history = await demoMode.query('strike_history', {
+      student_id: studentId,
+      revoked_at: null
+    });
 
     return {
-      strikeCount: userData.strike_count,
-      blacklistUntil: userData.blacklist_until,
-      history: historyData || [],
-      isRestricted: userData.blacklist_until && new Date(userData.blacklist_until) > new Date()
+      strikeCount: user.strike_count || 0,
+      blacklistUntil: user.blacklist_until || null,
+      history: history || [],
+      isRestricted: user.blacklist_until && new Date(user.blacklist_until) > new Date()
     };
   } catch (error) {
     console.error('Error getting strike status:', error);
@@ -67,24 +82,44 @@ export async function getStrikeStatus(studentId) {
 
 /**
  * Manually issue a strike (admin only)
- * @param {string} studentId - Student UUID
- * @param {string} bookingId - Booking UUID
+ * @param {string} studentId - Student ID
+ * @param {string} bookingId - Booking ID
  * @param {number} daysOverdue - Number of days overdue
- * @param {string} adminId - Admin UUID
+ * @param {string} adminId - Admin ID
  * @returns {Promise<Object>} Result of strike increment
  */
 export async function issueStrike(studentId, bookingId, daysOverdue, adminId) {
   try {
-    const { data, error } = await supabase.rpc('increment_student_strike', {
-      p_student_id: studentId,
-      p_booking_id: bookingId,
-      p_days_overdue: daysOverdue,
-      p_issued_by: adminId
+    const user = await demoMode.findOne('users', { id: studentId });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const newStrikeCount = (user.strike_count || 0) + 1;
+
+    // Update user's strike count
+    await demoMode.update('users', { id: studentId }, {
+      strike_count: newStrikeCount,
+      blacklist_until: newStrikeCount >= 3 ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() : null
     });
 
-    if (error) throw error;
+    // Add strike history record
+    await demoMode.insert('strike_history', {
+      id: `strike-${Date.now()}`,
+      student_id: studentId,
+      booking_id: bookingId,
+      days_overdue: daysOverdue,
+      issued_by: adminId,
+      created_at: new Date().toISOString(),
+      revoked_at: null
+    });
 
-    return data;
+    return {
+      success: true,
+      strikeCount: newStrikeCount,
+      blacklisted: newStrikeCount >= 3
+    };
   } catch (error) {
     console.error('Error issuing strike:', error);
     throw error;
@@ -93,22 +128,39 @@ export async function issueStrike(studentId, bookingId, daysOverdue, adminId) {
 
 /**
  * Revoke a strike (admin only)
- * @param {string} strikeId - Strike UUID
- * @param {string} adminId - Admin UUID
+ * @param {string} strikeId - Strike ID
+ * @param {string} adminId - Admin ID
  * @param {string} reason - Reason for revocation
  * @returns {Promise<Object>} Result of revocation
  */
 export async function revokeStrike(strikeId, adminId, reason) {
   try {
-    const { data, error } = await supabase.rpc('revoke_strike', {
-      p_strike_id: strikeId,
-      p_admin_id: adminId,
-      p_reason: reason
+    const strike = await demoMode.findOne('strike_history', { id: strikeId });
+
+    if (!strike) {
+      throw new Error('Strike not found');
+    }
+
+    // Update strike record
+    await demoMode.update('strike_history', { id: strikeId }, {
+      revoked_at: new Date().toISOString(),
+      revoked_by: adminId,
+      revocation_reason: reason
     });
 
-    if (error) throw error;
+    // Decrement user's strike count
+    const user = await demoMode.findOne('users', { id: strike.student_id });
+    const newStrikeCount = Math.max(0, (user.strike_count || 0) - 1);
 
-    return data;
+    await demoMode.update('users', { id: strike.student_id }, {
+      strike_count: newStrikeCount,
+      blacklist_until: newStrikeCount < 3 ? null : user.blacklist_until
+    });
+
+    return {
+      success: true,
+      strikeCount: newStrikeCount
+    };
   } catch (error) {
     console.error('Error revoking strike:', error);
     throw error;
@@ -117,20 +169,39 @@ export async function revokeStrike(strikeId, adminId, reason) {
 
 /**
  * Reset all strikes (admin only - typically at start of semester)
- * @param {string} adminId - Admin UUID
+ * @param {string} adminId - Admin ID
  * @param {string} reason - Reason for reset (e.g., "New semester")
  * @returns {Promise<Object>} Result with number of affected students
  */
 export async function resetAllStrikes(adminId, reason) {
   try {
-    const { data, error } = await supabase.rpc('reset_all_strikes', {
-      p_admin_id: adminId,
-      p_reason: reason
-    });
+    const allUsers = await demoMode.query('users');
+    let affectedCount = 0;
 
-    if (error) throw error;
+    for (const user of allUsers) {
+      if (user.strike_count > 0) {
+        await demoMode.update('users', { id: user.id }, {
+          strike_count: 0,
+          blacklist_until: null
+        });
+        affectedCount++;
+      }
+    }
 
-    return data;
+    // Mark all strike history as revoked
+    const allStrikes = await demoMode.query('strike_history', { revoked_at: null });
+    for (const strike of allStrikes) {
+      await demoMode.update('strike_history', { id: strike.id }, {
+        revoked_at: new Date().toISOString(),
+        revoked_by: adminId,
+        revocation_reason: reason
+      });
+    }
+
+    return {
+      success: true,
+      affected_students: affectedCount
+    };
   } catch (error) {
     console.error('Error resetting strikes:', error);
     throw error;
@@ -139,18 +210,21 @@ export async function resetAllStrikes(adminId, reason) {
 
 /**
  * Get notification data for email/notification
- * @param {string} studentId - Student UUID
+ * @param {string} studentId - Student ID
  * @returns {Promise<Object>} Formatted notification data
  */
 export async function getStrikeNotificationData(studentId) {
   try {
-    const { data, error } = await supabase.rpc('get_strike_notification_data', {
-      p_student_id: studentId
-    });
+    const status = await getStrikeStatus(studentId);
+    const user = await demoMode.findOne('users', { id: studentId });
 
-    if (error) throw error;
-
-    return data;
+    return {
+      student_name: user.full_name,
+      student_email: user.email,
+      strike_count: status.strikeCount,
+      blacklist_until: status.blacklistUntil,
+      is_blacklisted: status.isRestricted
+    };
   } catch (error) {
     console.error('Error getting notification data:', error);
     throw error;
@@ -163,14 +237,22 @@ export async function getStrikeNotificationData(studentId) {
  */
 export async function getStudentsWithStrikes() {
   try {
-    const { data, error } = await supabase
-      .from('student_strike_summary')
-      .select('*')
-      .order('strike_count', { ascending: false });
+    const allUsers = await demoMode.query('users');
 
-    if (error) throw error;
+    const studentsWithStrikes = allUsers
+      .filter(user => user.role === 'student' && (user.strike_count || 0) > 0)
+      .map(user => ({
+        id: user.id,
+        full_name: user.full_name,
+        email: user.email,
+        department: user.department,
+        strike_count: user.strike_count || 0,
+        blacklist_until: user.blacklist_until,
+        is_restricted: user.blacklist_until && new Date(user.blacklist_until) > new Date()
+      }))
+      .sort((a, b) => b.strike_count - a.strike_count);
 
-    return data || [];
+    return studentsWithStrikes;
   } catch (error) {
     console.error('Error getting students with strikes:', error);
     throw error;
@@ -179,32 +261,39 @@ export async function getStudentsWithStrikes() {
 
 /**
  * Get strike history for a student
- * @param {string} studentId - Student UUID
+ * @param {string} studentId - Student ID
  * @param {boolean} includeRevoked - Include revoked strikes
  * @returns {Promise<Array>} Array of strike records
  */
 export async function getStrikeHistory(studentId, includeRevoked = false) {
   try {
-    let query = supabase
-      .from('strike_history')
-      .select(`
-        *,
-        booking:bookings(id, equipment_ids, start_date, end_date),
-        issued_by_user:users!strike_history_issued_by_fkey(full_name),
-        revoked_by_user:users!strike_history_revoked_by_fkey(full_name)
-      `)
-      .eq('student_id', studentId)
-      .order('created_at', { ascending: false });
+    let history = await demoMode.query('strike_history', { student_id: studentId });
 
     if (!includeRevoked) {
-      query = query.is('revoked_at', null);
+      history = history.filter(strike => !strike.revoked_at);
     }
 
-    const { data, error } = await query;
+    // Enrich with booking and user data
+    const enrichedHistory = await Promise.all(
+      history.map(async (strike) => {
+        const booking = await demoMode.findOne('bookings', { id: strike.booking_id });
+        const issuedBy = await demoMode.findOne('users', { id: strike.issued_by });
+        const revokedBy = strike.revoked_by
+          ? await demoMode.findOne('users', { id: strike.revoked_by })
+          : null;
 
-    if (error) throw error;
+        return {
+          ...strike,
+          booking,
+          issued_by_user: issuedBy ? { full_name: issuedBy.full_name } : null,
+          revoked_by_user: revokedBy ? { full_name: revokedBy.full_name } : null
+        };
+      })
+    );
 
-    return data || [];
+    return enrichedHistory.sort((a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
   } catch (error) {
     console.error('Error getting strike history:', error);
     throw error;

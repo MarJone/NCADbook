@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../config/supabase';
+import { getStrikeStatus } from '../../services/strike.service';
 import '../../styles/strike-status.css';
 
 export default function StrikeStatus({ studentId }) {
@@ -16,30 +16,12 @@ export default function StrikeStatus({ studentId }) {
   const loadStrikeStatus = async () => {
     try {
       setLoading(true);
-
-      // Get current user strike info
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('strike_count, blacklist_until')
-        .eq('id', studentId)
-        .single();
-
-      if (userError) throw userError;
-
-      // Get strike history
-      const { data: historyData, error: historyError } = await supabase
-        .from('strike_history')
-        .select('*')
-        .eq('student_id', studentId)
-        .is('revoked_at', null)
-        .order('created_at', { ascending: false });
-
-      if (historyError) throw historyError;
+      const status = await getStrikeStatus(studentId);
 
       setStrikeData({
-        strikeCount: userData.strike_count,
-        blacklistUntil: userData.blacklist_until,
-        history: historyData || []
+        strikeCount: status.strikeCount,
+        blacklistUntil: status.blacklistUntil,
+        history: status.history || []
       });
     } catch (err) {
       console.error('Error loading strike status:', err);

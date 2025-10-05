@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../config/supabase';
+import { useAuth } from '../../contexts/AuthContext';
+import {
+  getStudentsWithStrikes,
+  getStrikeHistory,
+  revokeStrike,
+  resetAllStrikes
+} from '../../services/strike.service';
 import '../../styles/student-strikes.css';
 
 export default function StudentStrikes() {
+  const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,12 +28,7 @@ export default function StudentStrikes() {
   const loadStudents = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('student_strike_summary')
-        .select('*')
-        .order('strike_count', { ascending: false });
-
-      if (error) throw error;
+      const data = await getStudentsWithStrikes();
       setStudents(data || []);
     } catch (err) {
       setError(err.message);
@@ -36,20 +38,9 @@ export default function StudentStrikes() {
   };
 
   // Load strike history for selected student
-  const loadStrikeHistory = async (studentId) => {
+  const loadStrikeHistoryForStudent = async (studentId) => {
     try {
-      const { data, error } = await supabase
-        .from('strike_history')
-        .select(`
-          *,
-          booking:bookings(id, equipment_ids, start_date, end_date),
-          issued_by_user:users!strike_history_issued_by_fkey(full_name),
-          revoked_by_user:users!strike_history_revoked_by_fkey(full_name)
-        `)
-        .eq('student_id', studentId)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
+      const data = await getStrikeHistory(studentId, true); // include revoked
       setStrikeHistory(data || []);
     } catch (err) {
       console.error('Error loading strike history:', err);
@@ -64,27 +55,19 @@ export default function StudentStrikes() {
     }
 
     try {
-      const { data: userData } = await supabase.auth.getUser();
+      const result = await revokeStrike(revokeStrikeId, user.id, revokeReason);
 
-      const { data, error } = await supabase.rpc('revoke_strike', {
-        p_strike_id: revokeStrikeId,
-        p_admin_id: userData.user.id,
-        p_reason: revokeReason
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
+      if (result.success) {
         alert('Strike revoked successfully');
         setShowRevokeModal(false);
         setRevokeStrikeId(null);
         setRevokeReason('');
         loadStudents();
         if (selectedStudent) {
-          loadStrikeHistory(selectedStudent.id);
+          loadStrikeHistoryForStudent(selectedStudent.id);
         }
       } else {
-        alert(data.error || 'Failed to revoke strike');
+        alert('Failed to revoke strike');
       }
     } catch (err) {
       alert('Error revoking strike: ' + err.message);
@@ -104,17 +87,10 @@ export default function StudentStrikes() {
     if (!reason) return;
 
     try {
-      const { data: userData } = await supabase.auth.getUser();
+      const result = await resetAllStrikes(user.id, reason);
 
-      const { data, error } = await supabase.rpc('reset_all_strikes', {
-        p_admin_id: userData.user.id,
-        p_reason: reason
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
-        alert(data.message);
+      if (result.success) {
+        alert(`Successfully reset strikes for ${result.affected_students} students`);
         loadStudents();
         setSelectedStudent(null);
         setStrikeHistory([]);
@@ -124,10 +100,17 @@ export default function StudentStrikes() {
     }
   };
 
+  // Calculate account status based on strikes
+  const getAccountStatus = (student) => {
+    if (student.is_restricted) return 'RESTRICTED';
+    if (student.strike_count >= 2) return 'WARNING';
+    return 'GOOD_STANDING';
+  };
+
   // Filter students by status
   const filteredStudents = students.filter(student => {
     if (filterStatus === 'ALL') return true;
-    return student.account_status === filterStatus;
+    return getAccountStatus(student) === filterStatus;
   });
 
   // Get status badge color
@@ -163,19 +146,19 @@ export default function StudentStrikes() {
           className={filterStatus === 'RESTRICTED' ? 'active' : ''}
           onClick={() => setFilterStatus('RESTRICTED')}
         >
-          Restricted ({students.filter(s => s.account_status === 'RESTRICTED').length})
+          Restricted ({students.filter(s => getAccountStatus(s) === 'RESTRICTED').length})
         </button>
         <button
           className={filterStatus === 'WARNING' ? 'active' : ''}
           onClick={() => setFilterStatus('WARNING')}
         >
-          Warning ({students.filter(s => s.account_status === 'WARNING').length})
+          Warning ({students.filter(s => getAccountStatus(s) === 'WARNING').length})
         </button>
         <button
           className={filterStatus === 'GOOD_STANDING' ? 'active' : ''}
           onClick={() => setFilterStatus('GOOD_STANDING')}
         >
-          Good Standing ({students.filter(s => s.account_status === 'GOOD_STANDING').length})
+          Good Standing ({students.filter(s => getAccountStatus(s) === 'GOOD_STANDING').length})
         </button>
       </div>
 
@@ -190,7 +173,7 @@ export default function StudentStrikes() {
                 className={`student-row ${selectedStudent?.id === student.id ? 'selected' : ''}`}
                 onClick={() => {
                   setSelectedStudent(student);
-                  loadStrikeHistory(student.id);
+                  loadStrikeHistoryForStudent(student.id);
                 }}
               >
                 <div className="student-info">
@@ -199,8 +182,8 @@ export default function StudentStrikes() {
                   <span className="student-dept">{student.department}</span>
                 </div>
                 <div className="student-strikes">
-                  <span className={`status-badge ${getStatusColor(student.account_status)}`}>
-                    {student.account_status.replace('_', ' ')}
+                  <span className={`status-badge ${getStatusColor(getAccountStatus(student))}`}>
+                    {getAccountStatus(student).replace('_', ' ')}
                   </span>
                   <span className="strike-count">
                     {student.strike_count} {student.strike_count === 1 ? 'Strike' : 'Strikes'}
@@ -228,8 +211,8 @@ export default function StudentStrikes() {
                 </div>
                 <div className="summary-item">
                   <label>Account Status:</label>
-                  <span className={`status-badge ${getStatusColor(selectedStudent.account_status)}`}>
-                    {selectedStudent.account_status.replace('_', ' ')}
+                  <span className={`status-badge ${getStatusColor(getAccountStatus(selectedStudent))}`}>
+                    {getAccountStatus(selectedStudent).replace('_', ' ')}
                   </span>
                 </div>
                 {selectedStudent.blacklist_until && (
