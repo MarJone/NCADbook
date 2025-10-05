@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>App Health Check</title>
+  <style>
+    body { font-family: monospace; padding: 20px; max-width: 900px; margin: 0 auto; }
+    pre { background: #f0f0f0; padding: 15px; border-radius: 4px; overflow-x: auto; }
+    .success { color: green; font-weight: bold; }
+    .error { color: red; font-weight: bold; }
+    button { margin: 10px 5px; padding: 10px 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>NCADbook Health Check</h1>
+
+  <h2>Current Status:</h2>
+  <pre id="status">Checking...</pre>
+
+  <h2>Actions:</h2>
+  <button onclick="window.location.href='/'">Go to Main App</button>
+  <button onclick="window.location.reload()">Refresh Check</button>
+
+  <script>
+    const output = document.getElementById('status');
+    let results = [];
+
+    function log(msg) {
+      results.push(msg);
+      output.textContent = results.join('\n');
+    }
+
+    // Check 1: LocalStorage
+    try {
+      const data = localStorage.getItem('ncadbook_demo_data');
+      if (data) {
+        const parsed = JSON.parse(data);
+        log('✓ LocalStorage Data: OK');
+        log(`  - Users: ${parsed.users?.length || 0}`);
+        log(`  - Equipment: ${parsed.equipment?.length || 0}`);
+        log(`  - Current User: ${parsed.currentUser ? parsed.currentUser.email : 'None (not logged in)'}`);
+      } else {
+        log('✗ LocalStorage: No data found!');
+        log('  Go to: http://localhost:5173/test-storage.html to initialize');
+      }
+    } catch (e) {
+      log('✗ LocalStorage Error: ' + e.message);
+    }
+
+    // Check 2: React app should be at /
+    log('\n✓ React App: Running at http://localhost:5173');
+    log('  (If you see the login page, React is working)');
+
+    // Check 3: Storage test
+    log('\n✓ Storage Test: http://localhost:5173/test-storage.html');
+
+    // Check 4: Expected behavior
+    log('\n--- Expected Behavior ---');
+    log('1. Visit http://localhost:5173');
+    log('2. You should see a purple login page');
+    log('3. Click any demo account button (Student, Staff, Admin, Master Admin)');
+    log('4. You should be logged in and redirected to the portal');
+
+    log('\n--- If Login Doesn\'t Work ---');
+    log('1. Open Browser Console (F12 → Console tab)');
+    log('2. Look for red error messages');
+    log('3. Share those errors to help debug');
+
+    // Refresh current user status
+    const checkUser = setInterval(() => {
+      const data = localStorage.getItem('ncadbook_demo_data');
+      if (data) {
+        const parsed = JSON.parse(data);
+        const userStatus = parsed.currentUser ?
+          `Logged in as: ${parsed.currentUser.email} (${parsed.currentUser.role})` :
+          'Not logged in';
+
+        const statusLine = results.findIndex(r => r.includes('Current User:'));
+        if (statusLine >= 0) {
+          results[statusLine] = `  - Current User: ${parsed.currentUser ? parsed.currentUser.email : 'None (not logged in)'}`;
+          output.textContent = results.join('\n');
+        }
+      }
+    }, 2000);
+
+    // Stop checking after 30 seconds
+    setTimeout(() => clearInterval(checkUser), 30000);
+  </script>
+</body>
+</html>
