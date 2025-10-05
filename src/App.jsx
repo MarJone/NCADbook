@@ -69,32 +69,12 @@ function AppContent() {
         </ProtectedRoute>
       } />
 
-      {/* Demo Portal Routes - Master Admin Only */}
-      <Route path="/demo/view_only_staff" element={
-        <ProtectedRoute allowedRoles={['master_admin']}>
-          <ViewOnlyStaffDemo />
-        </ProtectedRoute>
-      } />
-      <Route path="/demo/accounts_officer" element={
-        <ProtectedRoute allowedRoles={['master_admin']}>
-          <AccountsOfficerDemo />
-        </ProtectedRoute>
-      } />
-      <Route path="/demo/payroll_coordinator" element={
-        <ProtectedRoute allowedRoles={['master_admin']}>
-          <PayrollCoordinatorDemo />
-        </ProtectedRoute>
-      } />
-      <Route path="/demo/it_support_technician" element={
-        <ProtectedRoute allowedRoles={['master_admin']}>
-          <ITSupportDemo />
-        </ProtectedRoute>
-      } />
-      <Route path="/demo/budget_manager" element={
-        <ProtectedRoute allowedRoles={['master_admin']}>
-          <BudgetManagerDemo />
-        </ProtectedRoute>
-      } />
+      {/* Demo Portal Routes - PUBLIC (no login required) */}
+      <Route path="/demo/view_only_staff" element={<ViewOnlyStaffDemo />} />
+      <Route path="/demo/accounts_officer" element={<AccountsOfficerDemo />} />
+      <Route path="/demo/payroll_coordinator" element={<PayrollCoordinatorDemo />} />
+      <Route path="/demo/it_support_technician" element={<ITSupportDemo />} />
+      <Route path="/demo/budget_manager" element={<BudgetManagerDemo />} />
     </Routes>
   );
 }
@@ -104,7 +84,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <AuthProvider>
-          <Router>
+          <Router basename="/NCADbook">
             <AppContent />
           </Router>
         </AuthProvider>
