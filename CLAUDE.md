@@ -483,3 +483,18 @@ npx playwright show-report            # View test report
 npm run lint         # (To be configured)
 npm run format       # (To be configured)
 ```
+
+---
+
+## Response Footer Guidelines
+
+**IMPORTANT:** At the end of every response to the user, always include the project access links:
+
+```
+---
+**Project Links:**
+- **Local Demo:** http://localhost:5175/NCADbook/
+- **GitHub Pages:** https://marjone.github.io/NCADbook/
+```
+
+This ensures the user always has quick access to test changes locally or view the deployed demo.
