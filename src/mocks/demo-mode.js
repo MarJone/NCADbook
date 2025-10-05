@@ -33,6 +33,10 @@ class DemoMode {
         user_sub_areas: demoUserSubAreas,
         interdisciplinary_access: demoInterdisciplinaryAccess,
         access_requests: demoAccessRequests,
+
+        // Strike system
+        strike_history: [],
+
         currentUser: null
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
