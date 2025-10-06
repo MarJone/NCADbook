@@ -1,37 +1,40 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authAPI } from '../../utils/api';
 import './Login.css';
 
 export default function Login() {
   const [hoveredPortal, setHoveredPortal] = useState(null);
-  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Direct login for demo mode - bypasses authentication
-  const directLogin = (userRole, redirectPath) => {
-    console.log('🎭 DEMO MODE: Direct login as', userRole);
+  // Handle demo login via backend API
+  const handleDemoLogin = async (userRole, redirectPath) => {
+    setIsLoading(true);
+    setError(null);
 
-    // Manually create demo user object based on role
-    const demoUsers = {
-      student: { id: '24', email: 'demo.student@ncad.ie', first_name: 'Demo', surname: 'Student', full_name: 'Demo Student', role: 'student', department: 'COMMUNICATION_DESIGN' },
-      staff: { id: '14', email: 'demo.staff@ncad.ie', first_name: 'Demo', surname: 'Staff', full_name: 'Demo Staff', role: 'staff', department: 'COMMUNICATION_DESIGN' },
-      department_admin: { id: '2', email: 'demo.admin@ncad.ie', first_name: 'Demo', surname: 'Admin', full_name: 'Demo Admin', role: 'department_admin', department: 'COMMUNICATION_DESIGN' },
-      master_admin: { id: '1', email: 'master@ncad.ie', first_name: 'Master', surname: 'Admin', full_name: 'Master Admin', role: 'master_admin', department: 'COMMUNICATION_DESIGN' }
-    };
+    try {
+      console.log('🔐 API Login: Authenticating as', userRole);
 
-    const user = demoUsers[userRole];
+      // Call backend demo login endpoint
+      const response = await authAPI.demoLogin(userRole);
 
-    // Set user in localStorage for demo mode
-    const demoData = JSON.parse(localStorage.getItem('ncadbook_demo_data') || '{}');
-    demoData.currentUser = user;
-    localStorage.setItem('ncadbook_demo_data', JSON.stringify(demoData));
+      console.log('✅ Login successful:', response.user.full_name);
+      console.log('📧 Email:', response.user.email);
+      console.log('🎭 Role:', response.user.role);
+      console.log('🏢 Department:', response.user.department);
 
-    console.log('✅ Direct login successful:', user.full_name);
+      // Store user data in localStorage (token is already stored by authAPI)
+      localStorage.setItem('ncadbook_user', JSON.stringify(response.user));
 
-    // Force page reload to update auth state
-    // Include base path for Vite deployment
-    window.location.href = '/NCADbook' + redirectPath;
+      // Navigate to the appropriate portal
+      window.location.href = '/NCADbook' + redirectPath;
+    } catch (err) {
+      console.error('❌ Login failed:', err);
+      setError(err.message || 'Login failed. Please try again.');
+      setIsLoading(false);
+    }
   };
 
   const portals = [
@@ -96,8 +99,8 @@ export default function Login() {
                     className={`portal-quadrant ${isHovered ? 'hovered' : ''}`}
                     onMouseEnter={() => setHoveredPortal(portal.id)}
                     onMouseLeave={() => setHoveredPortal(null)}
-                    onClick={() => directLogin(portal.role, portal.path)}
-                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleDemoLogin(portal.role, portal.path)}
+                    style={{ cursor: isLoading ? 'wait' : 'pointer', opacity: isLoading ? 0.6 : 1 }}
                   />
 
                   {/* Portal label - appears on hover */}
@@ -119,7 +122,11 @@ export default function Login() {
         </div>
 
         <p className="instruction-text">
-          {hoveredPortal
+          {isLoading
+            ? '🔐 Authenticating...'
+            : error
+            ? `❌ ${error}`
+            : hoveredPortal
             ? `Click to enter ${portals.find(p => p.id === hoveredPortal)?.name}`
             : 'Tap any quadrant to enter a portal'}
         </p>

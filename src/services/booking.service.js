@@ -1,53 +1,64 @@
-import { demoMode } from '../mocks/demo-mode.js';
+import { bookingsAPI } from '../utils/api.js';
 
 export const bookingService = {
   async createBooking(bookingData) {
-    const { equipment_id, start_date, end_date, user_id, purpose } = bookingData;
+    const { equipment_id, start_date, end_date, purpose } = bookingData;
 
-    const conflicts = await this.checkConflicts(equipment_id, start_date, end_date);
-    if (conflicts.length > 0) {
-      throw new Error('Equipment is already booked for selected dates');
+    // Backend will handle conflict checking and validation
+    try {
+      const response = await bookingsAPI.create({
+        equipment_id,
+        start_date,
+        end_date,
+        purpose,
+        booking_type: 'standard'
+      });
+
+      return response.booking;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to create booking');
     }
-
-    const equipment = await demoMode.findOne('equipment', { id: equipment_id });
-    if (equipment.requires_justification && (!purpose || purpose.trim().length < 10)) {
-      throw new Error('This equipment requires a detailed justification (minimum 10 characters)');
-    }
-
-    const newBooking = {
-      id: 'bk' + Date.now(),
-      user_id,
-      equipment_id,
-      start_date,
-      end_date,
-      purpose,
-      status: 'pending',
-      created_at: new Date().toISOString()
-    };
-
-    await demoMode.insert('bookings', newBooking);
-    return newBooking;
   },
 
   async getUserBookings(userId) {
-    return await demoMode.query('bookings', { user_id: userId });
+    try {
+      const response = await bookingsAPI.getAll({ user_id: userId });
+      return response.bookings || [];
+    } catch (error) {
+      console.error('Failed to get user bookings:', error);
+      return [];
+    }
   },
 
   async getBookingById(bookingId) {
-    return await demoMode.findOne('bookings', { id: bookingId });
+    try {
+      const response = await bookingsAPI.getById(bookingId);
+      return response.booking;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to get booking');
+    }
   },
 
   async cancelBooking(bookingId) {
-    await demoMode.update('bookings', { id: bookingId }, {
-      status: 'cancelled',
-      cancelled_at: new Date().toISOString()
-    });
+    try {
+      await bookingsAPI.delete(bookingId);
+    } catch (error) {
+      throw new Error(error.message || 'Failed to cancel booking');
+    }
   },
 
   async checkConflicts(equipmentId, startDate, endDate) {
-    const allBookings = await demoMode.query('bookings', { equipment_id: equipmentId });
-    
-    return allBookings.filter(booking => {
+    // Backend conflict detection is handled during booking creation
+    // This method can be used for frontend validation
+    try {
+      const response = await bookingsAPI.getAll({
+        equipment_id: equipmentId,
+        status: 'approved'
+      });
+
+      const bookings = response.bookings || [];
+
+      return bookings.filter(booking => {
       if (['cancelled', 'denied', 'completed'].includes(booking.status)) {
         return false;
       }
@@ -59,16 +70,20 @@ export const bookingService = {
 
       return (requestStart <= bookingEnd && requestEnd >= bookingStart);
     });
+    } catch (error) {
+      console.error('Failed to check conflicts:', error);
+      return [];
+    }
   },
 
   async getBookingsWithEquipment(userId) {
-    const bookings = await this.getUserBookings(userId);
-    const bookingsWithEquipment = await Promise.all(
-      bookings.map(async (booking) => {
-        const equipment = await demoMode.findOne('equipment', { id: booking.equipment_id });
-        return { ...booking, equipment };
-      })
-    );
-    return bookingsWithEquipment;
+    try {
+      // Backend already returns equipment info with bookings
+      const response = await bookingsAPI.getAll({ user_id: userId });
+      return response.bookings || [];
+    } catch (error) {
+      console.error('Failed to get bookings with equipment:', error);
+      return [];
+    }
   }
 };

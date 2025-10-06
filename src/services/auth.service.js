@@ -1,59 +1,78 @@
-import { demoMode } from '../mocks/demo-mode.js';
+import { authAPI, tokenManager } from '../utils/api';
 
-console.log('🎭 Auth Service - Running in Demo Mode (no database required)');
+console.log('🔐 Auth Service - Using Backend API');
 
 export const authService = {
   async login(email, password) {
-    console.log('🔐 Demo login attempt:', email);
+    console.log('🔐 API login attempt:', email);
 
-    const user = await demoMode.findOne('users', { email, password });
+    try {
+      const response = await authAPI.login(email, password);
 
-    console.log('👤 User search result:', user ? 'Found' : 'Not found');
+      // Store user in localStorage
+      localStorage.setItem('ncadbook_user', JSON.stringify(response.user));
 
-    if (!user) {
-      // Debug: Show all available users
-      const allUsers = await demoMode.query('users');
-      console.log('📋 Available demo users:', allUsers.map(u => ({ email: u.email, role: u.role })));
-      throw new Error('Invalid email or password');
+      console.log('✅ API login successful:', response.user.email, response.user.role);
+      return response.user;
+    } catch (error) {
+      console.error('❌ Login failed:', error);
+      throw error;
     }
-
-    const { password: _, ...userWithoutPassword } = user;
-    demoMode.setCurrentUser(userWithoutPassword);
-
-    console.log('✅ Demo login successful:', userWithoutPassword.email, userWithoutPassword.role);
-    return userWithoutPassword;
   },
 
   async logout() {
-    demoMode.clearCurrentUser();
+    authAPI.logout();
+    localStorage.removeItem('ncadbook_user');
   },
 
   async getCurrentUser() {
-    return demoMode.getCurrentUser();
+    // First check localStorage for cached user
+    const cachedUser = localStorage.getItem('ncadbook_user');
+
+    if (!cachedUser) {
+      return null;
+    }
+
+    // If we have a token, verify it's still valid by fetching from API
+    if (tokenManager.hasToken()) {
+      try {
+        const response = await authAPI.getCurrentUser();
+
+        // Update cached user
+        localStorage.setItem('ncadbook_user', JSON.stringify(response.user));
+
+        return response.user;
+      } catch (error) {
+        // Token is invalid, clear cache
+        console.warn('Token invalid, clearing auth cache');
+        localStorage.removeItem('ncadbook_user');
+        tokenManager.removeToken();
+        return null;
+      }
+    }
+
+    return JSON.parse(cachedUser);
   },
 
   async register(userData) {
-    const existing = await demoMode.findOne('users', { email: userData.email });
-    if (existing) {
-      throw new Error('User already exists');
+    try {
+      const response = await authAPI.register(userData);
+
+      // Store user in localStorage
+      localStorage.setItem('ncadbook_user', JSON.stringify(response.user));
+
+      return response.user;
+    } catch (error) {
+      console.error('❌ Registration failed:', error);
+      throw error;
     }
-
-    const newUser = {
-      id: Date.now().toString(),
-      ...userData,
-      created_at: new Date().toISOString()
-    };
-
-    await demoMode.insert('users', newUser);
-    const { password: _, ...userWithoutPassword } = newUser;
-    return userWithoutPassword;
   },
 
   hasPermission(user, requiredRole) {
     const roleHierarchy = {
       student: 1,
       staff: 2,
-      admin: 3,
+      department_admin: 3,
       master_admin: 4
     };
 

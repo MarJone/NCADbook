@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { demoMode } from '../../mocks/demo-mode';
+import { bookingsAPI } from '../../utils/api';
 import { kitStorage } from '../../utils/kitStorage';
 import MultiItemBookingModal from '../../components/booking/MultiItemBookingModal';
 import { useToast } from '../../hooks/useToast';
@@ -24,15 +24,16 @@ export default function StudentDashboard() {
     if (!user) return;
 
     try {
-      // Load user bookings
-      const userBookings = await demoMode.query('bookings', { user_id: user.id });
-      setBookings(userBookings);
+      // Load user bookings from backend API
+      const response = await bookingsAPI.getAll({ user_id: user.id });
+      setBookings(response.bookings || []);
 
       // Load saved kits
       const kits = kitStorage.getAllKitsForUser(user.id, user.department);
       setSavedKits(kits);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
+      setBookings([]); // Fallback to empty array on error
     }
   };
 

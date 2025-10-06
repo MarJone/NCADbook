@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { equipmentAPI, bookingsAPI } from '../../utils/api';
 import BookingModal from '../../components/booking/BookingModal';
 import MultiItemBookingModal from '../../components/booking/MultiItemBookingModal';
 import EquipmentDetails from '../../components/equipment/EquipmentDetails';
@@ -73,37 +73,33 @@ export default function EquipmentBrowse() {
   };
 
   useEffect(() => {
-    // Apply search and availability filters to equipment
-    let filtered = equipment;
+    const applyFilters = async () => {
+      let filtered = equipment;
 
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(item =>
-        item.product_name.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query)
-      );
-    }
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(item =>
+          item.product_name.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query)
+        );
+      }
 
-    // Apply availability filter
-    if (availabilityFilter.type === 'available') {
-      filtered = filtered.filter(item => item.status === 'available');
-    } else if (availabilityFilter.type === 'custom' && availabilityFilter.date) {
-      // Check if equipment is available on the custom date
-      filtered = filtered.filter(async item => {
-        const bookings = await demoMode.query('bookings', { equipment_id: item.id });
-        const isBooked = bookings.some(booking => {
-          const start = new Date(booking.start_date);
-          const end = new Date(booking.end_date);
-          const checkDate = new Date(availabilityFilter.date);
-          return checkDate >= start && checkDate <= end && booking.status === 'approved';
-        });
-        return !isBooked;
-      });
-    }
+      // Apply availability filter
+      if (availabilityFilter.type === 'available') {
+        filtered = filtered.filter(item => item.status === 'available');
+      } else if (availabilityFilter.type === 'custom' && availabilityFilter.date) {
+        // Check if equipment is available on the custom date
+        // TODO: Implement backend availability check endpoint
+        // For now, just filter by status
+        filtered = filtered.filter(item => item.status === 'available');
+      }
 
-    setFilteredEquipment(filtered);
-    setCurrentPage(1); // Reset to first page when search changes
+      setFilteredEquipment(filtered);
+      setCurrentPage(1); // Reset to first page when search changes
+    };
+
+    applyFilters();
   }, [equipment, searchQuery, availabilityFilter]);
 
   const loadSubAreas = async () => {
@@ -118,85 +114,39 @@ export default function EquipmentBrowse() {
   const loadEquipment = async () => {
     setLoading(true);
     try {
-      const currentUser = demoMode.getCurrentUser();
+      // Build API query parameters
+      const params = {};
 
-      // If user is student, show their department equipment + any cross-department granted equipment
-      if (currentUser && currentUser.role === 'student') {
-        const allEquipment = await demoMode.query('equipment');
-
-        let filtered;
-
-        // Check department filter selection
-        if (selectedDepartment === 'my_department' || !crossDeptBrowsingEnabled) {
-          // 1. Get equipment from student's own department ONLY
-          filtered = allEquipment.filter(item => item.department === currentUser.department);
-        } else if (selectedDepartment === 'all') {
-          // Show ALL departments (if cross-dept browsing is enabled)
-          filtered = [...allEquipment];
-        } else {
-          // Specific department selected
-          filtered = allEquipment.filter(item => item.department === selectedDepartment);
-        }
-
-        // 2. Check for active cross-department access grants for this student's department
-        const accessGrants = await demoMode.query('department_access_grants', {
-          requesting_department_id: currentUser.department,
-          status: 'active'
-        });
-
-        // 3. Add equipment from granted departments
-        const today = new Date();
-        for (const grant of accessGrants) {
-          const grantStart = new Date(grant.start_date);
-          const grantEnd = new Date(grant.end_date);
-
-          // Check if grant is currently valid (within date range)
-          if (today >= grantStart && today <= grantEnd) {
-            // Find matching equipment from the lending department
-            const grantedEquipment = allEquipment.filter(item =>
-              item.department === grant.lending_department_id &&
-              item.product_name === grant.equipment_type
-            );
-
-            // Limit to quantity_available and mark as cross-department
-            const limitedGrantedEquip = grantedEquipment.slice(0, grant.quantity_available).map(item => ({
-              ...item,
-              isCrossDepartment: true,
-              crossDeptGrantId: grant.id,
-              collectionInstructions: grant.collection_instructions,
-              crossDeptTerms: grant.terms,
-              lendingDepartment: grant.lending_department_id
-            }));
-
-            filtered = filtered.concat(limitedGrantedEquip);
-          }
-        }
-
-        // Apply category filter
-        if (filter !== 'all') {
-          filtered = filtered.filter(item => item.category === filter);
-        }
-
-        // Apply sub-area filter
-        if (subAreaFilter !== 'all') {
-          filtered = filtered.filter(item => item.sub_area_id === subAreaFilter);
-        }
-
-        setEquipment(filtered);
-      } else {
-        // Admin/staff see all equipment
-        const filters = filter === 'all' ? {} : { category: filter };
-        let data = await demoMode.query('equipment', filters);
-
-        // Apply sub-area filter for admins/staff too
-        if (subAreaFilter !== 'all') {
-          data = data.filter(item => item.sub_area_id === subAreaFilter);
-        }
-
-        setEquipment(data);
+      // Apply category filter
+      if (filter !== 'all') {
+        params.category = filter;
       }
+
+      // Apply department filter
+      if (user?.role === 'student') {
+        if (selectedDepartment === 'my_department' || !crossDeptBrowsingEnabled) {
+          params.department = user.department;
+        } else if (selectedDepartment !== 'all') {
+          params.department = selectedDepartment;
+        }
+      } else {
+        // Admin/staff department filter
+        if (subAreaFilter !== 'all') {
+          params.department = subAreaFilter;
+        }
+      }
+
+      // Fetch equipment from backend API
+      const response = await equipmentAPI.getAll(params);
+      const allEquipment = response.equipment || [];
+
+      // TODO: Implement cross-department access grants in backend
+      // For now, just use the equipment from the API
+
+      setEquipment(allEquipment);
     } catch (error) {
       console.error('Failed to load equipment:', error);
+      setEquipment([]);
     } finally {
       setLoading(false);
     }

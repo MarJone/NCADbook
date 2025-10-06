@@ -1,1 +1,56 @@
-import express from 'express'; const router = express.Router(); router.get('/', (req, res) => res.json({ message: 'Equipment routes - coming soon' })); export default router;
+import express from 'express';
+import {
+  getAllEquipment,
+  getEquipmentById,
+  createEquipment,
+  updateEquipment,
+  deleteEquipment,
+  getEquipmentAvailability
+} from '../controllers/equipmentController.js';
+import { authenticate, authorize } from '../middleware/auth.js';
+
+const router = express.Router();
+
+/**
+ * @route   GET /api/equipment
+ * @desc    Get all equipment with optional filters
+ * @access  Protected
+ */
+router.get('/', authenticate, getAllEquipment);
+
+/**
+ * @route   GET /api/equipment/:id
+ * @desc    Get single equipment by ID
+ * @access  Protected
+ */
+router.get('/:id', authenticate, getEquipmentById);
+
+/**
+ * @route   GET /api/equipment/:id/availability
+ * @desc    Check equipment availability for date range
+ * @access  Protected
+ */
+router.get('/:id/availability', authenticate, getEquipmentAvailability);
+
+/**
+ * @route   POST /api/equipment
+ * @desc    Create new equipment
+ * @access  Protected (Department Admin, Master Admin)
+ */
+router.post('/', authenticate, authorize(['department_admin', 'master_admin']), createEquipment);
+
+/**
+ * @route   PUT /api/equipment/:id
+ * @desc    Update equipment
+ * @access  Protected (Department Admin, Master Admin)
+ */
+router.put('/:id', authenticate, authorize(['department_admin', 'master_admin']), updateEquipment);
+
+/**
+ * @route   DELETE /api/equipment/:id
+ * @desc    Delete equipment
+ * @access  Protected (Master Admin only)
+ */
+router.delete('/:id', authenticate, authorize(['master_admin']), deleteEquipment);
+
+export default router;
