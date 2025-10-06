@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { equipmentAPI } from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { getDepartmentList } from '../../config/departments';
 import EquipmentNotes from '../../components/equipment/EquipmentNotes';
 import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
+import { useToast } from '../../hooks/useToast';
+import Toast from '../../components/common/Toast';
 
 export default function EquipmentManagement() {
   const { user } = useAuth();
@@ -18,6 +20,7 @@ export default function EquipmentManagement() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+  const { toasts, showToast, removeToast } = useToast();
 
   const departmentList = getDepartmentList();
   const isMasterAdmin = user?.role === 'master_admin';
@@ -47,11 +50,23 @@ export default function EquipmentManagement() {
   const loadEquipment = async () => {
     setLoading(true);
     try {
-      const filters = filter === 'all' ? {} : { status: filter };
-      const data = await demoMode.query('equipment', filters);
+      const params = {};
+      if (filter !== 'all') {
+        params.status = filter;
+      }
+
+      // Department admins see only their department equipment
+      if (user?.role === 'department_admin') {
+        params.department = user.department;
+      }
+
+      const response = await equipmentAPI.getAll(params);
+      const data = response.equipment || [];
       setEquipment(data);
     } catch (error) {
       console.error('Failed to load equipment:', error);
+      showToast('Failed to load equipment', 'error');
+      setEquipment([]);
     } finally {
       setLoading(false);
     }
@@ -59,26 +74,26 @@ export default function EquipmentManagement() {
 
   const handleStatusChange = async (equipmentId, newStatus) => {
     try {
-      await demoMode.update('equipment', { id: equipmentId }, { status: newStatus });
+      await equipmentAPI.update(equipmentId, { status: newStatus });
       await loadEquipment();
-      alert('Equipment status updated');
+      showToast('Equipment status updated', 'success');
     } catch (error) {
-      alert('Failed to update status: ' + error.message);
+      showToast('Failed to update status: ' + error.message, 'error');
     }
   };
 
   const handleDepartmentChange = async (equipmentId, newDepartment) => {
     if (!isMasterAdmin) {
-      alert('Only Master Admin can change equipment department');
+      showToast('Only Master Admin can change equipment department', 'error');
       return;
     }
 
     try {
-      await demoMode.update('equipment', { id: equipmentId }, { department: newDepartment });
+      await equipmentAPI.update(equipmentId, { department: newDepartment });
       await loadEquipment();
-      alert('Equipment department updated');
+      showToast('Equipment department updated', 'success');
     } catch (error) {
-      alert('Failed to update department: ' + error.message);
+      showToast('Failed to update department: ' + error.message, 'error');
     }
   };
 
@@ -274,6 +289,15 @@ export default function EquipmentManagement() {
           </div>
         </div>
       )}
+
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }

@@ -425,3 +425,137 @@ export const getEquipmentAvailability = async (req, res) => {
     res.status(500).json({ error: 'Failed to check availability' });
   }
 };
+
+/**
+ * Get equipment notes
+ * GET /api/equipment/:id/notes
+ */
+export const getEquipmentNotes = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Only admins can view notes
+    if (req.user.role === 'student') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const result = await query(`
+      SELECT en.id, en.note_type, en.note_content, en.created_at, en.updated_at,
+             u.full_name as created_by_name, en.created_by
+      FROM equipment_notes en
+      JOIN users u ON en.created_by = u.id
+      WHERE en.equipment_id = $1
+      ORDER BY en.created_at DESC
+    `, [id]);
+
+    res.json({ notes: result.rows });
+  } catch (error) {
+    console.error('Get equipment notes error:', error);
+    res.status(500).json({ error: 'Failed to fetch notes' });
+  }
+};
+
+/**
+ * Add equipment note
+ * POST /api/equipment/:id/notes
+ */
+export const addEquipmentNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { note_type, note_content } = req.body;
+
+    // Only admins can add notes
+    if (req.user.role === 'student') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Validate
+    if (!note_type || !note_content || !note_content.trim()) {
+      return res.status(400).json({ error: 'note_type and note_content required' });
+    }
+
+    // Valid note types
+    const validTypes = ['maintenance', 'damage', 'usage', 'general'];
+    if (!validTypes.includes(note_type)) {
+      return res.status(400).json({ error: 'Invalid note_type. Must be: maintenance, damage, usage, or general' });
+    }
+
+    // Add note
+    const result = await query(`
+      INSERT INTO equipment_notes (equipment_id, note_type, note_content, created_by)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, equipment_id, note_type, note_content, created_by, created_at
+    `, [id, note_type, note_content, req.user.id]);
+
+    // Get creator name
+    const noteWithCreator = {
+      ...result.rows[0],
+      created_by_name: req.user.full_name
+    };
+
+    // Log admin action
+    await query(`
+      INSERT INTO admin_actions (admin_id, action_type, target_type, target_id, details)
+      VALUES ($1, $2, $3, $4, $5)
+    `, [
+      req.user.id,
+      'create',
+      'equipment_note',
+      result.rows[0].id,
+      JSON.stringify({ equipment_id: id, note_type })
+    ]);
+
+    res.status(201).json({
+      message: 'Note added successfully',
+      note: noteWithCreator
+    });
+  } catch (error) {
+    console.error('Add equipment note error:', error);
+    res.status(500).json({ error: 'Failed to add note' });
+  }
+};
+
+/**
+ * Delete equipment note
+ * DELETE /api/equipment/:id/notes/:noteId
+ */
+export const deleteEquipmentNote = async (req, res) => {
+  try {
+    const { id, noteId } = req.params;
+
+    // Only admins can delete notes
+    if (req.user.role === 'student') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Get note to verify it exists and belongs to this equipment
+    const noteResult = await query(
+      'SELECT * FROM equipment_notes WHERE id = $1 AND equipment_id = $2',
+      [noteId, id]
+    );
+
+    if (noteResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Note not found' });
+    }
+
+    // Delete note
+    await query('DELETE FROM equipment_notes WHERE id = $1', [noteId]);
+
+    // Log admin action
+    await query(`
+      INSERT INTO admin_actions (admin_id, action_type, target_type, target_id, details)
+      VALUES ($1, $2, $3, $4, $5)
+    `, [
+      req.user.id,
+      'delete',
+      'equipment_note',
+      noteId,
+      JSON.stringify({ equipment_id: id })
+    ]);
+
+    res.json({ message: 'Note deleted successfully' });
+  } catch (error) {
+    console.error('Delete equipment note error:', error);
+    res.status(500).json({ error: 'Failed to delete note' });
+  }
+};

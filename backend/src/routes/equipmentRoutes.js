@@ -5,9 +5,12 @@ import {
   createEquipment,
   updateEquipment,
   deleteEquipment,
-  getEquipmentAvailability
+  getEquipmentAvailability,
+  getEquipmentNotes,
+  addEquipmentNote,
+  deleteEquipmentNote
 } from '../controllers/equipmentController.js';
-import { authenticate, authorize } from '../middleware/auth.js';
+import { authenticate, authorize, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -31,6 +34,27 @@ router.get('/:id', authenticate, getEquipmentById);
  * @access  Protected
  */
 router.get('/:id/availability', authenticate, getEquipmentAvailability);
+
+/**
+ * @route   GET /api/equipment/:id/notes
+ * @desc    Get equipment notes
+ * @access  Protected (Admin only)
+ */
+router.get('/:id/notes', authenticate, requireAdmin, getEquipmentNotes);
+
+/**
+ * @route   POST /api/equipment/:id/notes
+ * @desc    Add equipment note
+ * @access  Protected (Admin only)
+ */
+router.post('/:id/notes', authenticate, requireAdmin, addEquipmentNote);
+
+/**
+ * @route   DELETE /api/equipment/:id/notes/:noteId
+ * @desc    Delete equipment note
+ * @access  Protected (Admin only)
+ */
+router.delete('/:id/notes/:noteId', authenticate, requireAdmin, deleteEquipmentNote);
 
 /**
  * @route   POST /api/equipment
