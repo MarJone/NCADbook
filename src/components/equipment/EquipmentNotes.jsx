@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { equipmentAPI } from '../../utils/api';
 
 export default function EquipmentNotes({ equipmentId, equipmentName }) {
   const { user } = useAuth();
@@ -7,57 +8,59 @@ export default function EquipmentNotes({ equipmentId, equipmentName }) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [newNote, setNewNote] = useState({ type: 'general', content: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Load notes on mount
   useEffect(() => {
     loadNotes();
   }, [equipmentId]);
 
-  const loadNotes = () => {
-    const data = JSON.parse(localStorage.getItem('ncadbook_demo_data'));
-    const equipmentNotes = data.demoEquipmentNotes || [];
-    const filtered = equipmentNotes
-      .filter(note => note.equipment_id === equipmentId)
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const loadNotes = async () => {
+    try {
+      const response = await equipmentAPI.getNotes(equipmentId);
+      const notesData = response.notes || [];
 
-    // Add creator names
-    const notesWithCreators = filtered.map(note => {
-      const creator = data.users.find(u => u.id === note.created_by);
-      return {
-        ...note,
-        creator_name: creator ? creator.full_name : 'Unknown'
-      };
-    });
+      // Map backend response to expected format
+      const mappedNotes = notesData.map(note => ({
+        id: note.id,
+        equipment_id: note.equipment_id || equipmentId,
+        note_type: note.note_type,
+        note: note.note_content,
+        creator_name: note.created_by_name,
+        created_by: note.created_by,
+        created_at: note.created_at
+      }));
 
-    setNotes(notesWithCreators);
+      setNotes(mappedNotes);
+    } catch (err) {
+      console.error('Failed to load notes:', err);
+      setNotes([]);
+    }
   };
 
   const handleAddNote = async () => {
     if (!newNote.content.trim()) {
-      alert('Please enter a note');
+      setError('Please enter a note');
       return;
     }
 
     setLoading(true);
+    setError('');
 
-    const data = JSON.parse(localStorage.getItem('ncadbook_demo_data'));
-    const noteEntry = {
-      id: `en${Date.now()}`,
-      equipment_id: equipmentId,
-      note_type: newNote.type,
-      note: newNote.content,
-      created_by: user.id,
-      created_at: new Date().toISOString()
-    };
+    try {
+      await equipmentAPI.addNote(equipmentId, {
+        note_type: newNote.type,
+        note_content: newNote.content
+      });
 
-    data.demoEquipmentNotes = data.demoEquipmentNotes || [];
-    data.demoEquipmentNotes.push(noteEntry);
-    localStorage.setItem('ncadbook_demo_data', JSON.stringify(data));
-
-    setNewNote({ type: 'general', content: '' });
-    setShowAddModal(false);
-    setLoading(false);
-    loadNotes();
+      setNewNote({ type: 'general', content: '' });
+      setShowAddModal(false);
+      await loadNotes();
+    } catch (err) {
+      setError(err.message || 'Failed to add note');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getNoteTypeColor = (type) => {
@@ -81,7 +84,7 @@ export default function EquipmentNotes({ equipmentId, equipmentName }) {
   };
 
   // Only admins can see notes
-  if (user.role !== 'admin' && user.role !== 'master_admin') {
+  if (!user || (user.role !== 'staff' && user.role !== 'department_admin' && user.role !== 'master_admin')) {
     return null;
   }
 
@@ -149,6 +152,12 @@ export default function EquipmentNotes({ equipmentId, equipmentName }) {
             </div>
 
             <div className="modal-body">
+              {error && (
+                <div className="alert alert-error" style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#fee', color: '#c00', borderRadius: '4px' }}>
+                  {error}
+                </div>
+              )}
+
               <div className="form-group">
                 <label htmlFor="note-type">Note Type</label>
                 <select
@@ -178,7 +187,10 @@ export default function EquipmentNotes({ equipmentId, equipmentName }) {
 
               <div className="modal-actions">
                 <button
-                  onClick={() => setShowAddModal(false)}
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setError('');
+                  }}
                   className="btn btn-secondary"
                   disabled={loading}
                 >

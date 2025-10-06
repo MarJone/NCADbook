@@ -44,7 +44,9 @@
       "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -f \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\backend\\setup_postgres.sql\")",
       "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\createdb.exe\" -U postgres ncadbook_db)",
       "Bash(sc query:*)",
-      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U ncadbook_user -d ncadbook_db -c \"TRUNCATE TABLE users, sub_areas, equipment, equipment_notes, bookings, equipment_kits, system_settings, admin_actions, strike_history CASCADE;\")"
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U ncadbook_user -d ncadbook_db -c \"TRUNCATE TABLE users, sub_areas, equipment, equipment_notes, bookings, equipment_kits, system_settings, admin_actions, strike_history CASCADE;\")",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []
