@@ -61,9 +61,19 @@ export default function BookingApprovals() {
         })
       );
 
+      // Filter by department for department admins
+      let departmentFiltered = bookingsWithDetails;
+      if (user && user.role === 'department_admin') {
+        // Department admins see only bookings for their department's equipment
+        departmentFiltered = bookingsWithDetails.filter(booking =>
+          booking.equipment && booking.equipment.department === user.department
+        );
+      }
+      // Master admins see all bookings (no additional filtering)
+
       const filtered = filter === 'all'
-        ? bookingsWithDetails
-        : bookingsWithDetails.filter(b => b.status === filter);
+        ? departmentFiltered
+        : departmentFiltered.filter(b => b.status === filter);
 
       setBookings(filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
     } catch (error) {

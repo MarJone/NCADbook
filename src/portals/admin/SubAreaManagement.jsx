@@ -13,7 +13,7 @@ export default function DepartmentManagement() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    parent_department: ''
+    school: ''
   });
   const { toasts, showToast, removeToast } = useToast();
 
@@ -44,14 +44,14 @@ export default function DepartmentManagement() {
       setFormData({
         name: department.name,
         description: department.description || '',
-        parent_department: department.parent_department || ''
+        school: department.school || ''
       });
     } else {
       setEditingDepartment(null);
       setFormData({
         name: '',
         description: '',
-        parent_department: ''
+        school: ''
       });
     }
     setShowModal(true);
@@ -63,7 +63,7 @@ export default function DepartmentManagement() {
     setFormData({
       name: '',
       description: '',
-      parent_department: ''
+      school: ''
     });
   };
 
@@ -145,7 +145,7 @@ export default function DepartmentManagement() {
         </div>
         <div className="stat-card stat-secondary">
           <div className="stat-content">
-            <h3>{new Set(departments.map(sa => sa.parent_department).filter(Boolean)).size}</h3>
+            <h3>{new Set(departments.map(sa => sa.school).filter(Boolean)).size}</h3>
             <p>Parent Schools</p>
           </div>
         </div>
@@ -153,11 +153,24 @@ export default function DepartmentManagement() {
 
       {departments.length === 0 ? (
         <div className="empty-state">
-          <h2>No Departments Yet</h2>
-          <p>Create your first department to organize equipment and students.</p>
-          <button onClick={() => handleOpenModal()} className="btn btn-primary">
-            Create Department
-          </button>
+          <h2>No Departments Found</h2>
+          <p>The demo data may need to be refreshed to load the 10 NCAD departments.</p>
+          <div style={{ marginTop: 'var(--spacing-md)', display: 'flex', gap: 'var(--spacing-sm)', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => {
+                if (confirm('This will reset all demo data and reload the page. Continue?')) {
+                  localStorage.removeItem('ncadbook_demo_data');
+                  window.location.reload();
+                }
+              }}
+              className="btn btn-primary"
+            >
+              🔄 Reset Demo Data
+            </button>
+            <button onClick={() => handleOpenModal()} className="btn btn-secondary">
+              Or Create Department Manually
+            </button>
+          </div>
         </div>
       ) : (
         <div className="equipment-table">
@@ -176,7 +189,7 @@ export default function DepartmentManagement() {
                 <tr key={department.id} data-testid="department-row">
                   <td style={{ fontWeight: '600' }}>{department.name}</td>
                   <td>{department.description || '-'}</td>
-                  <td>{department.parent_department || '-'}</td>
+                  <td>{department.school || '-'}</td>
                   <td>{new Date(department.created_at).toLocaleDateString()}</td>
                   <td>
                     <div className="action-buttons">
@@ -240,12 +253,12 @@ export default function DepartmentManagement() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="parent_department">Parent School</label>
+                  <label htmlFor="school">Parent School</label>
                   <select
-                    id="parent_department"
+                    id="school"
                     className="form-select"
-                    value={formData.parent_department}
-                    onChange={(e) => setFormData({ ...formData, parent_department: e.target.value })}
+                    value={formData.school}
+                    onChange={(e) => setFormData({ ...formData, school: e.target.value })}
                     data-testid="department-parent-select"
                   >
                     <option value="">-- Select School --</option>
@@ -253,6 +266,7 @@ export default function DepartmentManagement() {
                     <option value="School of Fine Art">School of Fine Art</option>
                     <option value="School of Education">School of Education</option>
                     <option value="School of Visual Culture">School of Visual Culture</option>
+                    <option value="First Year Studies">First Year Studies</option>
                   </select>
                 </div>
 

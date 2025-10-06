@@ -930,6 +930,9 @@
   display: flex;
   flex-direction: column;
   max-height: 90vh;
+  background: var(--bg-card, var(--bg-primary, #ffffff));
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
 }
 
 .modal-header {

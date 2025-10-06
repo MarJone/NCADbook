@@ -124,8 +124,19 @@ export default function EquipmentBrowse() {
       if (currentUser && currentUser.role === 'student') {
         const allEquipment = await demoMode.query('equipment');
 
-        // 1. Get equipment from student's own department
-        let filtered = allEquipment.filter(item => item.department === currentUser.department);
+        let filtered;
+
+        // Check department filter selection
+        if (selectedDepartment === 'my_department' || !crossDeptBrowsingEnabled) {
+          // 1. Get equipment from student's own department ONLY
+          filtered = allEquipment.filter(item => item.department === currentUser.department);
+        } else if (selectedDepartment === 'all') {
+          // Show ALL departments (if cross-dept browsing is enabled)
+          filtered = [...allEquipment];
+        } else {
+          // Specific department selected
+          filtered = allEquipment.filter(item => item.department === selectedDepartment);
+        }
 
         // 2. Check for active cross-department access grants for this student's department
         const accessGrants = await demoMode.query('department_access_grants', {
@@ -309,7 +320,7 @@ export default function EquipmentBrowse() {
 
       <div className="filter-controls-compact" style={{
         display: 'grid',
-        gridTemplateColumns: (subAreas.length > 0 && user?.role !== 'student') ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
+        gridTemplateColumns: (subAreas.length > 0 && user?.role !== 'student') || (user?.role === 'student' && crossDeptBrowsingEnabled) ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
         gap: '1rem',
         marginTop: '1rem',
         marginBottom: '1rem',
@@ -344,6 +355,40 @@ export default function EquipmentBrowse() {
           </select>
         </div>
 
+        {/* Department filter for STUDENTS (when cross-dept browsing enabled) */}
+        {user?.role === 'student' && crossDeptBrowsingEnabled && subAreas.length > 0 && (
+          <div>
+            <label htmlFor="student-department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
+              Department
+            </label>
+            <select
+              id="student-department-filter"
+              value={selectedDepartment}
+              onChange={(e) => setSelectedDepartment(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                borderRadius: '4px',
+                border: '1px solid #ced4da',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                backgroundColor: 'white'
+              }}
+            >
+              <option value="my_department">My Department ({user.department})</option>
+              <option value="all">All Departments</option>
+              {subAreas
+                .filter(sa => sa.id !== user.department)
+                .map(subArea => (
+                  <option key={subArea.id} value={subArea.id}>
+                    {subArea.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
+
+        {/* Department filter for ADMINS/STAFF */}
         {subAreas.length > 0 && user?.role !== 'student' && (
           <div>
             <label htmlFor="department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>

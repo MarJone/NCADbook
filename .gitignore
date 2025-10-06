@@ -9,7 +9,14 @@ storybook-static/
 *.log
 .vite
 .cache
+nul
 
 # Local Netlify folder
 .netlify
 ImageExplain/
+
+# Backend uploads
+backend/uploads/csv/*
+backend/uploads/equipment/*
+!backend/uploads/csv/.gitkeep
+!backend/uploads/equipment/.gitkeep

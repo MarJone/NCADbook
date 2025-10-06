@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
+import { useAuth } from '../../contexts/AuthContext';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 export default function Analytics() {
+  const { user } = useAuth();
   const [analytics, setAnalytics] = useState({
     totalBookings: 0,
     approvalRate: 0,
@@ -63,11 +65,19 @@ export default function Analytics() {
       // Apply filters
       let filteredBookings = [...allBookings];
 
-      // Filter by department
+      // Department admin: auto-filter to only see bookings for their department's equipment
+      if (user && user.role === 'department_admin') {
+        filteredBookings = filteredBookings.filter(b => {
+          const equipmentItem = equipment.find(e => e.id === b.equipment_id);
+          return equipmentItem?.department === user.department;
+        });
+      }
+
+      // Filter by department (user selection)
       if (filterDepartment !== 'all') {
         filteredBookings = filteredBookings.filter(b => {
-          const user = users.find(u => u.id === b.user_id);
-          return user?.department === filterDepartment;
+          const bookingUser = users.find(u => u.id === b.user_id);
+          return bookingUser?.department === filterDepartment;
         });
       }
 

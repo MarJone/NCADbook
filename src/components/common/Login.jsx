@@ -8,45 +8,57 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // Auto-login function for demo mode
-  const autoLogin = async (email, password, redirectPath) => {
-    try {
-      await login(email, password);
-      navigate(redirectPath);
-    } catch (err) {
-      console.error('Auto-login failed:', err);
-    }
+  // Direct login for demo mode - bypasses authentication
+  const directLogin = (userRole, redirectPath) => {
+    console.log('🎭 DEMO MODE: Direct login as', userRole);
+
+    // Manually create demo user object based on role
+    const demoUsers = {
+      student: { id: '24', email: 'demo.student@ncad.ie', first_name: 'Demo', surname: 'Student', full_name: 'Demo Student', role: 'student', department: 'COMMUNICATION_DESIGN' },
+      staff: { id: '14', email: 'demo.staff@ncad.ie', first_name: 'Demo', surname: 'Staff', full_name: 'Demo Staff', role: 'staff', department: 'COMMUNICATION_DESIGN' },
+      department_admin: { id: '2', email: 'demo.admin@ncad.ie', first_name: 'Demo', surname: 'Admin', full_name: 'Demo Admin', role: 'department_admin', department: 'COMMUNICATION_DESIGN' },
+      master_admin: { id: '1', email: 'master@ncad.ie', first_name: 'Master', surname: 'Admin', full_name: 'Master Admin', role: 'master_admin', department: 'COMMUNICATION_DESIGN' }
+    };
+
+    const user = demoUsers[userRole];
+
+    // Set user in localStorage for demo mode
+    const demoData = JSON.parse(localStorage.getItem('ncadbook_demo_data') || '{}');
+    demoData.currentUser = user;
+    localStorage.setItem('ncadbook_demo_data', JSON.stringify(demoData));
+
+    console.log('✅ Direct login successful:', user.full_name);
+
+    // Force page reload to update auth state
+    // Include base path for Vite deployment
+    window.location.href = '/NCADbook' + redirectPath;
   };
 
   const portals = [
     {
       id: 'student',
-      email: 'commdesign.student1@student.ncad.ie',
-      password: 'student123',
+      role: 'student',
       name: 'Student Portal',
       path: '/student',
       coords: '60,60,580,580' // top-left quadrant
     },
     {
       id: 'staff',
-      email: 'staff.commdesign@ncad.ie',
-      password: 'staff123',
+      role: 'staff',
       name: 'Staff Portal',
       path: '/staff',
       coords: '620,60,1140,580' // top-right quadrant
     },
     {
       id: 'admin',
-      email: 'admin.commdesign@ncad.ie',
-      password: 'admin123',
+      role: 'department_admin',
       name: 'Department Admin',
       path: '/admin',
       coords: '60,620,580,1140' // bottom-left quadrant
     },
     {
       id: 'master',
-      email: 'master@ncad.ie',
-      password: 'master123',
+      role: 'master_admin',
       name: 'Master Admin',
       path: '/admin',
       coords: '620,620,1140,1140' // bottom-right quadrant
@@ -84,7 +96,7 @@ export default function Login() {
                     className={`portal-quadrant ${isHovered ? 'hovered' : ''}`}
                     onMouseEnter={() => setHoveredPortal(portal.id)}
                     onMouseLeave={() => setHoveredPortal(null)}
-                    onClick={() => autoLogin(portal.email, portal.password, portal.path)}
+                    onClick={() => directLogin(portal.role, portal.path)}
                     style={{ cursor: 'pointer' }}
                   />
 

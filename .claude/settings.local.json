@@ -33,7 +33,16 @@
       "Bash(gh:*)",
       "Bash(git fetch:*)",
       "Bash(git checkout:*)",
-      "Bash(git ls-tree:*)"
+      "Bash(git ls-tree:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(git --version)",
+      "Bash(git remote get-url:*)",
+      "Bash(where psql)",
+      "Bash(psql:*)",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" --version)",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -f \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\backend\\setup_postgres.sql\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\createdb.exe\" -U postgres ncadbook_db)"
     ],
     "deny": [],
     "ask": []

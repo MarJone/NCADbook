@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { demoMode } from '../../mocks/demo-mode';
+import { useAuth } from '../../contexts/AuthContext';
+import { getDepartmentList } from '../../config/departments';
 import EquipmentNotes from '../../components/equipment/EquipmentNotes';
 import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 
 export default function EquipmentManagement() {
+  const { user } = useAuth();
   const [equipment, setEquipment] = useState([]);
   const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +18,9 @@ export default function EquipmentManagement() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+
+  const departmentList = getDepartmentList();
+  const isMasterAdmin = user?.role === 'master_admin';
 
   useEffect(() => {
     loadEquipment();
@@ -58,6 +64,21 @@ export default function EquipmentManagement() {
       alert('Equipment status updated');
     } catch (error) {
       alert('Failed to update status: ' + error.message);
+    }
+  };
+
+  const handleDepartmentChange = async (equipmentId, newDepartment) => {
+    if (!isMasterAdmin) {
+      alert('Only Master Admin can change equipment department');
+      return;
+    }
+
+    try {
+      await demoMode.update('equipment', { id: equipmentId }, { department: newDepartment });
+      await loadEquipment();
+      alert('Equipment department updated');
+    } catch (error) {
+      alert('Failed to update department: ' + error.message);
     }
   };
 
@@ -146,7 +167,23 @@ export default function EquipmentManagement() {
                 </td>
                 <td>{item.category}</td>
                 <td className="tracking-number">{item.tracking_number}</td>
-                <td>{item.department}</td>
+                <td>
+                  {isMasterAdmin ? (
+                    <select
+                      value={item.department}
+                      onChange={(e) => handleDepartmentChange(item.id, e.target.value)}
+                      className="department-select"
+                    >
+                      {departmentList.map(dept => (
+                        <option key={dept.id} value={dept.id}>
+                          {dept.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span>{item.department}</span>
+                  )}
+                </td>
                 <td>
                   <select
                     value={item.status}
