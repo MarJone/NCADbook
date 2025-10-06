@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { demoMode } from '../../mocks/demo-mode';
+import { bookingsAPI, equipmentAPI } from '../../utils/api';
 
 export default function StaffDashboard() {
   const { user } = useAuth();
   const [stats, setStats] = useState({
     myBookings: 0,
-    mySpaceBookings: 0,
-    availableSpaces: 0
+    pendingApprovals: 0,
+    departmentEquipment: 0,
+    availableEquipment: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -18,17 +19,36 @@ export default function StaffDashboard() {
 
   const loadStats = async () => {
     try {
-      const bookings = await demoMode.query('bookings', { user_id: user.id });
-      const spaceBookings = await demoMode.query('spaceBookings', { user_id: user.id });
-      const spaces = await demoMode.query('spaces');
+      // Get user's own bookings
+      const myBookingsRes = await bookingsAPI.getAll({ user_id: user.id });
+      const myBookings = myBookingsRes.bookings || [];
+
+      // Get pending bookings for approval (department_admin/master_admin)
+      let pendingCount = 0;
+      if (user.role === 'staff' || user.role === 'department_admin' || user.role === 'master_admin') {
+        const pendingRes = await bookingsAPI.getAll({ status: 'pending' });
+        pendingCount = (pendingRes.bookings || []).length;
+      }
+
+      // Get equipment stats
+      const equipmentRes = await equipmentAPI.getAll({ department: user.department });
+      const equipment = equipmentRes.equipment || [];
+      const available = equipment.filter(e => e.status === 'available');
 
       setStats({
-        myBookings: bookings.filter(b => b.status !== 'cancelled').length,
-        mySpaceBookings: spaceBookings.filter(b => b.status !== 'cancelled').length,
-        availableSpaces: spaces.filter(s => s.status === 'available').length
+        myBookings: myBookings.filter(b => b.status !== 'cancelled' && b.status !== 'denied').length,
+        pendingApprovals: pendingCount,
+        departmentEquipment: equipment.length,
+        availableEquipment: available.length
       });
     } catch (error) {
       console.error('Failed to load stats:', error);
+      setStats({
+        myBookings: 0,
+        pendingApprovals: 0,
+        departmentEquipment: 0,
+        availableEquipment: 0
+      });
     } finally {
       setLoading(false);
     }
@@ -56,19 +76,29 @@ export default function StaffDashboard() {
         <div className="staff-stat-card">
           <div className="staff-stat-icon">📦</div>
           <div className="staff-stat-number">{stats.myBookings}</div>
-          <div className="staff-stat-label">Equipment Bookings</div>
+          <div className="staff-stat-label">My Bookings</div>
         </div>
 
+        {(user.role === 'staff' || user.role === 'department_admin' || user.role === 'master_admin') && (
+          <Link to="/admin/booking-approvals" className="staff-stat-card" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+            <div className="staff-stat-icon">⏳</div>
+            <div className="staff-stat-number" style={{ color: stats.pendingApprovals > 0 ? '#ff9800' : 'inherit' }}>
+              {stats.pendingApprovals}
+            </div>
+            <div className="staff-stat-label">Pending Approvals</div>
+          </Link>
+        )}
+
         <div className="staff-stat-card">
-          <div className="staff-stat-icon">🚪</div>
-          <div className="staff-stat-number">{stats.mySpaceBookings}</div>
-          <div className="staff-stat-label">Room Bookings</div>
+          <div className="staff-stat-icon">🏢</div>
+          <div className="staff-stat-number">{stats.departmentEquipment}</div>
+          <div className="staff-stat-label">Department Equipment</div>
         </div>
 
         <div className="staff-stat-card">
           <div className="staff-stat-icon">✨</div>
-          <div className="staff-stat-number">{stats.availableSpaces}</div>
-          <div className="staff-stat-label">Spaces Available</div>
+          <div className="staff-stat-number">{stats.availableEquipment}</div>
+          <div className="staff-stat-label">Available Now</div>
         </div>
       </div>
 

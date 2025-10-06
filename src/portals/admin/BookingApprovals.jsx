@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { bookingsAPI } from '../../utils/api';
 import { useAuth } from '../../hooks/useAuth';
 import { emailService } from '../../services/email.service';
 import Toast from '../../components/common/Toast';
@@ -52,32 +52,37 @@ export default function BookingApprovals() {
   const loadBookings = async () => {
     setLoading(true);
     try {
-      const allBookings = await demoMode.query('bookings');
-      const bookingsWithDetails = await Promise.all(
-        allBookings.map(async (booking) => {
-          const equipment = await demoMode.findOne('equipment', { id: booking.equipment_id });
-          const student = await demoMode.findOne('users', { id: booking.user_id });
-          return { ...booking, equipment, student };
-        })
-      );
-
-      // Filter by department for department admins
-      let departmentFiltered = bookingsWithDetails;
-      if (user && user.role === 'department_admin') {
-        // Department admins see only bookings for their department's equipment
-        departmentFiltered = bookingsWithDetails.filter(booking =>
-          booking.equipment && booking.equipment.department === user.department
-        );
+      // Backend handles department filtering based on role
+      const params = {};
+      if (filter !== 'all') {
+        params.status = filter;
       }
-      // Master admins see all bookings (no additional filtering)
 
-      const filtered = filter === 'all'
-        ? departmentFiltered
-        : departmentFiltered.filter(b => b.status === filter);
+      const response = await bookingsAPI.getAll(params);
+      const allBookings = response.bookings || [];
 
-      setBookings(filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
+      // Map backend response to expected format
+      const bookingsWithDetails = allBookings.map(booking => ({
+        ...booking,
+        equipment: {
+          id: booking.equipment_id,
+          product_name: booking.equipment_name,
+          category: booking.equipment_category,
+          department: booking.equipment_department
+        },
+        student: {
+          id: booking.user_id,
+          full_name: booking.user_name,
+          email: booking.user_email,
+          department: booking.user_department
+        }
+      }));
+
+      setBookings(bookingsWithDetails.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
     } catch (error) {
       console.error('Failed to load bookings:', error);
+      showToast('Failed to load bookings', 'error');
+      setBookings([]);
     } finally {
       setLoading(false);
     }
@@ -87,11 +92,7 @@ export default function BookingApprovals() {
     try {
       const booking = bookings.find(b => b.id === bookingId);
 
-      await demoMode.update('bookings', { id: bookingId }, {
-        status: 'approved',
-        approved_by: user.id,
-        approved_at: new Date().toISOString()
-      });
+      await bookingsAPI.approve(bookingId);
 
       // Send approval notification email
       try {
@@ -123,12 +124,7 @@ export default function BookingApprovals() {
     }
 
     try {
-      await demoMode.update('bookings', { id: selectedBooking.id }, {
-        status: 'denied',
-        denied_by: user.id,
-        denied_at: new Date().toISOString(),
-        denial_reason: denyReason
-      });
+      await bookingsAPI.deny(selectedBooking.id, denyReason);
 
       // Send denial notification email
       try {
@@ -210,11 +206,7 @@ export default function BookingApprovals() {
       const promises = selectedBookings.map(async (bookingId) => {
         const booking = bookings.find(b => b.id === bookingId);
 
-        await demoMode.update('bookings', { id: bookingId }, {
-          status: 'approved',
-          approved_by: user.id,
-          approved_at: new Date().toISOString()
-        });
+        await bookingsAPI.approve(bookingId);
 
         // Send approval notification email
         try {
@@ -253,12 +245,7 @@ export default function BookingApprovals() {
       const promises = selectedBookings.map(async (bookingId) => {
         const booking = bookings.find(b => b.id === bookingId);
 
-        await demoMode.update('bookings', { id: bookingId }, {
-          status: 'denied',
-          denied_by: user.id,
-          denied_at: new Date().toISOString(),
-          denial_reason: denyReason
-        });
+        await bookingsAPI.deny(bookingId, denyReason);
 
         // Send denial notification email
         try {
