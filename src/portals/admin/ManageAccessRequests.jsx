@@ -4,8 +4,8 @@ import {
   getAccessRequests,
   approveAccessRequest,
   denyAccessRequest,
-  getAllSubAreas
-} from '../../services/subArea.service';
+  getAllDepartments
+} from '../../services/department.service';
 import { demoMode } from '../../mocks/demo-mode';
 
 /**
@@ -36,14 +36,14 @@ export default function ManageAccessRequests() {
   async function loadData() {
     try {
       setLoading(true);
-      const [requestsData, subAreasData, adminsData] = await Promise.all([
+      const [requestsData, departmentsData, adminsData] = await Promise.all([
         getAccessRequests(),
-        getAllSubAreas(),
-        demoMode.query('users', { role: 'sub_area_admin' })
+        getAllDepartments(),
+        demoMode.query('users', { role: 'department_admin' })
       ]);
 
       setAllRequests(requestsData);
-      setSubAreas(subAreasData);
+      setSubAreas(departmentsData);
       setAdmins(adminsData);
       setError(null);
     } catch (err) {

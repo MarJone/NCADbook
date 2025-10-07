@@ -12,7 +12,7 @@ import AvailabilityFilter from '../../components/equipment/AvailabilityFilter';
 import PullToRefresh from '../../components/common/PullToRefresh';
 import KitBrowser from '../../components/equipment/KitBrowser';
 import { useToast } from '../../hooks/useToast';
-import { getAccessibleEquipment, getAllSubAreas } from '../../services/subArea.service';
+import { getAccessibleEquipment, getAllDepartments } from '../../services/department.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { isCrossDepartmentBrowsingEnabled, areEquipmentKitsEnabled } from '../../services/systemSettings.service';
 import { getDepartmentsBySchool, SCHOOLS } from '../../config/departments';
@@ -28,8 +28,8 @@ export default function EquipmentBrowse() {
   const [showModal, setShowModal] = useState(false);
   const [showMultiModal, setShowMultiModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [subAreas, setSubAreas] = useState([]);
-  const [subAreaFilter, setSubAreaFilter] = useState('all');
+  const [departments, setDepartments] = useState([]);
+  const [departmentFilter, setDepartmentFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -57,8 +57,8 @@ export default function EquipmentBrowse() {
 
   useEffect(() => {
     loadEquipment();
-    loadSubAreas();
-  }, [filter, subAreaFilter, selectedDepartment]);
+    loadDepartments();
+  }, [filter, departmentFilter, selectedDepartment]);
 
   const checkCrossDeptBrowsing = async () => {
     try {
@@ -102,12 +102,12 @@ export default function EquipmentBrowse() {
     applyFilters();
   }, [equipment, searchQuery, availabilityFilter]);
 
-  const loadSubAreas = async () => {
+  const loadDepartments = async () => {
     try {
-      const areas = await getAllSubAreas();
-      setSubAreas(areas);
+      const areas = await getAllDepartments();
+      setDepartments(areas);
     } catch (error) {
-      console.error('Failed to load sub-areas:', error);
+      console.error('Failed to load departments:', error);
     }
   };
 
@@ -138,8 +138,8 @@ export default function EquipmentBrowse() {
         }
       } else {
         // Admin/staff department filter
-        if (subAreaFilter !== 'all') {
-          params.department = subAreaFilter;
+        if (departmentFilter !== 'all') {
+          params.department = departmentFilter;
         }
       }
 
@@ -159,9 +159,9 @@ export default function EquipmentBrowse() {
     }
   };
 
-  const getSubAreaName = (subAreaId) => {
-    const subArea = subAreas.find(sa => sa.id === subAreaId);
-    return subArea ? subArea.name : '';
+  const getDepartmentName = (departmentId) => {
+    const department = departments.find(d => d.id === departmentId);
+    return department ? department.name : '';
   };
 
   const categories = ['all', 'Camera', 'Computer', 'Lighting', 'Support'];
@@ -277,7 +277,7 @@ export default function EquipmentBrowse() {
 
       <div className="filter-controls-compact" style={{
         display: 'grid',
-        gridTemplateColumns: (subAreas.length > 0 && user?.role !== 'student') || (user?.role === 'student' && crossDeptBrowsingEnabled) ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
+        gridTemplateColumns: (departments.length > 0 && user?.role !== 'student') || (user?.role === 'student' && crossDeptBrowsingEnabled) ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
         gap: '1rem',
         marginTop: '1rem',
         marginBottom: '1rem',
@@ -313,7 +313,7 @@ export default function EquipmentBrowse() {
         </div>
 
         {/* Department filter for STUDENTS (when cross-dept browsing enabled) */}
-        {user?.role === 'student' && crossDeptBrowsingEnabled && subAreas.length > 0 && (
+        {user?.role === 'student' && crossDeptBrowsingEnabled && departments.length > 0 && (
           <div>
             <label htmlFor="student-department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
               Department
@@ -334,11 +334,11 @@ export default function EquipmentBrowse() {
             >
               <option value="my_department">My Department ({user.department})</option>
               <option value="all">All Departments</option>
-              {subAreas
-                .filter(sa => sa.id !== user.department)
-                .map(subArea => (
-                  <option key={subArea.id} value={subArea.id}>
-                    {subArea.name}
+              {departments
+                .filter(d => d.id !== user.department)
+                .map(department => (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
                   </option>
                 ))}
             </select>
@@ -346,15 +346,15 @@ export default function EquipmentBrowse() {
         )}
 
         {/* Department filter for ADMINS/STAFF */}
-        {subAreas.length > 0 && user?.role !== 'student' && (
+        {departments.length > 0 && user?.role !== 'student' && (
           <div>
             <label htmlFor="department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
               Department
             </label>
             <select
               id="department-filter"
-              value={subAreaFilter}
-              onChange={(e) => setSubAreaFilter(e.target.value)}
+              value={departmentFilter}
+              onChange={(e) => setDepartmentFilter(e.target.value)}
               style={{
                 width: '100%',
                 padding: '0.5rem',
@@ -366,9 +366,9 @@ export default function EquipmentBrowse() {
               }}
             >
               <option value="all">All Departments</option>
-              {subAreas.map(subArea => (
-                <option key={subArea.id} value={subArea.id}>
-                  {subArea.name}
+              {departments.map(department => (
+                <option key={department.id} value={department.id}>
+                  {department.name}
                 </option>
               ))}
             </select>

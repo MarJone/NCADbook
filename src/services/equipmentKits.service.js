@@ -3,7 +3,7 @@
  * Manages equipment kit bundles (department admin only)
  */
 
-import { demoMode } from '../mocks/demo-mode';
+import { equipmentKitsAPI, bookingsAPI } from '../utils/api.js';
 
 /**
  * Get all equipment kits for a department
@@ -13,8 +13,12 @@ import { demoMode } from '../mocks/demo-mode';
  */
 export async function getKitsByDepartment(departmentId, activeOnly = true) {
   try {
-    const kits = await demoMode.query('equipment_kits', { department_id: departmentId });
-    return activeOnly ? kits.filter(kit => kit.is_active) : kits;
+    const params = { department_id: departmentId };
+    if (activeOnly) {
+      params.is_active = true;
+    }
+    const response = await equipmentKitsAPI.getAll(params);
+    return response.kits || [];
   } catch (error) {
     console.error('Error fetching equipment kits:', error);
     throw error;
@@ -28,20 +32,8 @@ export async function getKitsByDepartment(departmentId, activeOnly = true) {
  */
 export async function getKitById(kitId) {
   try {
-    const kits = await demoMode.query('equipment_kits', { id: kitId });
-    if (kits.length === 0) {
-      throw new Error('Kit not found');
-    }
-
-    const kit = kits[0];
-
-    // Populate equipment details
-    const allEquipment = await demoMode.query('equipment');
-    kit.equipment = kit.equipment_ids.map(eqId => {
-      return allEquipment.find(eq => eq.id === eqId);
-    }).filter(Boolean);
-
-    return kit;
+    const response = await equipmentKitsAPI.getById(kitId);
+    return response.kit;
   } catch (error) {
     console.error('Error fetching kit:', error);
     throw error;
@@ -55,19 +47,8 @@ export async function getKitById(kitId) {
  */
 export async function createKit(kitData) {
   try {
-    const newKit = {
-      id: `kit${Date.now()}`,
-      ...kitData,
-      created_at: new Date().toISOString(),
-      is_active: true
-    };
-
-    const data = demoMode.getData();
-    data.equipment_kits = data.equipment_kits || [];
-    data.equipment_kits.push(newKit);
-    demoMode.saveData(data);
-
-    return newKit;
+    const response = await equipmentKitsAPI.create(kitData);
+    return response.kit;
   } catch (error) {
     console.error('Error creating kit:', error);
     throw error;
@@ -82,24 +63,8 @@ export async function createKit(kitData) {
  */
 export async function updateKit(kitId, updates) {
   try {
-    const data = demoMode.getData();
-    const kits = data.equipment_kits || [];
-    const kitIndex = kits.findIndex(k => k.id === kitId);
-
-    if (kitIndex === -1) {
-      throw new Error('Kit not found');
-    }
-
-    kits[kitIndex] = {
-      ...kits[kitIndex],
-      ...updates,
-      updated_at: new Date().toISOString()
-    };
-
-    data.equipment_kits = kits;
-    demoMode.saveData(data);
-
-    return kits[kitIndex];
+    const response = await equipmentKitsAPI.update(kitId, updates);
+    return response.kit;
   } catch (error) {
     console.error('Error updating kit:', error);
     throw error;
@@ -113,7 +78,7 @@ export async function updateKit(kitId, updates) {
  */
 export async function deleteKit(kitId) {
   try {
-    await updateKit(kitId, { is_active: false });
+    await equipmentKitsAPI.delete(kitId);
   } catch (error) {
     console.error('Error deleting kit:', error);
     throw error;
@@ -130,15 +95,20 @@ export async function deleteKit(kitId) {
 export async function checkKitAvailability(kitId, startDate, endDate) {
   try {
     const kit = await getKitById(kitId);
-    const bookings = await demoMode.query('bookings');
+    const bookingsResponse = await bookingsAPI.getAll({
+      status: 'approved',
+      start_date: startDate,
+      end_date: endDate
+    });
+    const bookings = bookingsResponse.bookings || [];
 
     const unavailableItems = [];
+    const equipment_ids = kit.equipment_ids || [];
 
-    for (const equipmentId of kit.equipment_ids) {
+    for (const equipmentId of equipment_ids) {
       // Check if equipment is booked during the requested period
       const conflictingBookings = bookings.filter(booking => {
         if (booking.equipment_id !== equipmentId) return false;
-        if (booking.status !== 'approved') return false;
 
         const bookingStart = new Date(booking.start_date);
         const bookingEnd = new Date(booking.end_date);
@@ -186,47 +156,30 @@ export async function bookKit(kitBookingData) {
 
     const kit = await getKitById(kitId);
     const bookingIds = [];
+    const equipment_ids = kit.equipment_ids || [];
 
     // Create individual booking for each equipment item
-    for (const equipmentId of kit.equipment_ids) {
-      const booking = {
-        id: `book${Date.now()}_${equipmentId}`,
+    for (const equipmentId of equipment_ids) {
+      const response = await bookingsAPI.create({
         equipment_id: equipmentId,
         user_id: userId,
         start_date: startDate,
         end_date: endDate,
-        status: 'pending',
         justification: justification || `Part of kit booking: ${kit.name}`,
-        kit_booking_id: `kitbook${Date.now()}`, // Link to kit booking
-        created_at: new Date().toISOString()
-      };
+        kit_id: kitId
+      });
 
-      const data = demoMode.getData();
-      data.bookings = data.bookings || [];
-      data.bookings.push(booking);
-      demoMode.saveData(data);
-
-      bookingIds.push(booking.id);
+      if (response.booking) {
+        bookingIds.push(response.booking.id);
+      }
     }
 
-    // Create kit booking record
-    const kitBooking = {
-      id: `kitbook${Date.now()}`,
+    return {
       kit_id: kitId,
       booking_ids: bookingIds,
-      user_id: userId,
-      start_date: startDate,
-      end_date: endDate,
       status: 'pending',
-      created_at: new Date().toISOString()
+      message: `Created ${bookingIds.length} bookings for kit ${kit.name}`
     };
-
-    const data = demoMode.getData();
-    data.kit_bookings = data.kit_bookings || [];
-    data.kit_bookings.push(kitBooking);
-    demoMode.saveData(data);
-
-    return kitBooking;
   } catch (error) {
     console.error('Error booking kit:', error);
     throw error;

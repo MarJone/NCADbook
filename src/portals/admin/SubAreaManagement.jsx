@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { departmentsAPI } from '../../utils/api';
 import { useAuth } from '../../hooks/useAuth';
 import Toast from '../../components/common/Toast';
 import { useToast } from '../../hooks/useToast';
@@ -27,9 +27,8 @@ export default function DepartmentManagement() {
   const loadDepartments = async () => {
     setLoading(true);
     try {
-      // In production, this would query the sub_areas table
-      const data = await demoMode.query('sub_areas') || [];
-      setDepartments(data);
+      const response = await departmentsAPI.getAll();
+      setDepartments(response.departments || []);
     } catch (error) {
       console.error('Failed to load departments:', error);
       showToast('Failed to load departments', 'error');
@@ -78,11 +77,11 @@ export default function DepartmentManagement() {
     try {
       if (editingDepartment) {
         // Update existing department
-        await demoMode.update('sub_areas', editingDepartment.id, formData);
+        await departmentsAPI.update(editingDepartment.id, formData);
         showToast('Department updated successfully', 'success');
       } else {
         // Create new department
-        await demoMode.insert('sub_areas', formData);
+        await departmentsAPI.create(formData);
         showToast('Department created successfully', 'success');
       }
 
@@ -99,7 +98,7 @@ export default function DepartmentManagement() {
     }
 
     try {
-      await demoMode.delete('sub_areas', departmentId);
+      await departmentsAPI.delete(departmentId);
       showToast('Department deleted successfully', 'success');
       await loadDepartments();
     } catch (error) {

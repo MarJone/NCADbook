@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import {
-  getAllSubAreas,
+  getAllDepartments,
   createAccessRequest,
-  getSubAreaAdminRequests
-} from '../../services/subArea.service';
+  getDepartmentAdminRequests
+} from '../../services/department.service';
 
 /**
  * AccessRequests Component
@@ -15,9 +15,9 @@ import {
  */
 export default function AccessRequests() {
   const { user } = useAuth();
-  const [subAreas, setSubAreas] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
-  const [selectedSubArea, setSelectedSubArea] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [reason, setReason] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -31,12 +31,12 @@ export default function AccessRequests() {
   async function loadData() {
     try {
       setLoading(true);
-      const [subAreasData, requestsData] = await Promise.all([
-        getAllSubAreas(),
-        getSubAreaAdminRequests(user.id)
+      const [departmentsData, requestsData] = await Promise.all([
+        getAllDepartments(),
+        getDepartmentAdminRequests(user.id)
       ]);
 
-      setSubAreas(subAreasData);
+      setDepartments(departmentsData);
       setMyRequests(requestsData);
       setError(null);
     } catch (err) {
@@ -50,8 +50,8 @@ export default function AccessRequests() {
   async function handleSubmitRequest(e) {
     e.preventDefault();
 
-    if (!selectedSubArea) {
-      setError('Please select a sub-area to request access to');
+    if (!selectedDepartment) {
+      setError('Please select a department to request access to');
       return;
     }
 
@@ -60,18 +60,18 @@ export default function AccessRequests() {
       return;
     }
 
-    if (selectedSubArea === user.managed_sub_area_id) {
-      setError('You already have access to your own sub-area');
+    if (selectedDepartment === user.managed_department_id) {
+      setError('You already have access to your own department');
       return;
     }
 
-    // Check if there's already a pending request for this sub-area
+    // Check if there's already a pending request for this department
     const existingPendingRequest = myRequests.find(
-      r => r.to_sub_area_id === selectedSubArea && r.status === 'pending'
+      r => r.to_department_id === selectedDepartment && r.status === 'pending'
     );
 
     if (existingPendingRequest) {
-      setError('You already have a pending request for this sub-area');
+      setError('You already have a pending request for this department');
       return;
     }
 
@@ -81,13 +81,13 @@ export default function AccessRequests() {
 
       await createAccessRequest(
         user.id,
-        user.managed_sub_area_id,
-        selectedSubArea,
+        user.managed_department_id,
+        selectedDepartment,
         reason
       );
 
       setSuccess('Access request submitted successfully!');
-      setSelectedSubArea(null);
+      setSelectedDepartment(null);
       setReason('');
 
       // Reload requests
@@ -131,15 +131,15 @@ export default function AccessRequests() {
     return <div className="loading">Loading access requests...</div>;
   }
 
-  const myManagedSubArea = subAreas.find(sa => sa.id === user.managed_sub_area_id);
-  const otherSubAreas = subAreas.filter(sa => sa.id !== user.managed_sub_area_id);
+  const myManagedDepartment = departments.find(d => d.id === user.managed_department_id);
+  const otherDepartments = departments.filter(d => d.id !== user.managed_department_id);
 
   return (
     <div className="access-requests-page">
       <div className="page-header">
         <h1>Request Equipment Access</h1>
         <p className="page-description">
-          You manage <strong>{myManagedSubArea?.name || 'your department'}</strong>.
+          You manage <strong>{myManagedDepartment?.name || 'your department'}</strong>.
           Request access to equipment from other departments for your students.
         </p>
       </div>
@@ -161,18 +161,18 @@ export default function AccessRequests() {
         <h2>Submit New Access Request</h2>
         <form onSubmit={handleSubmitRequest} className="access-request-form">
           <div className="form-group">
-            <label htmlFor="subArea">Select Department to Access:</label>
+            <label htmlFor="department">Select Department to Access:</label>
             <select
-              id="subArea"
-              value={selectedSubArea || ''}
-              onChange={(e) => setSelectedSubArea(e.target.value)}
+              id="department"
+              value={selectedDepartment || ''}
+              onChange={(e) => setSelectedDepartment(e.target.value)}
               required
               className="form-select"
             >
               <option value="">-- Select a department --</option>
-              {otherSubAreas.map(sa => (
-                <option key={sa.id} value={sa.id}>
-                  {sa.name} ({sa.parent_department})
+              {otherDepartments.map(d => (
+                <option key={d.id} value={d.id}>
+                  {d.name} ({d.school || d.parent_department})
                 </option>
               ))}
             </select>
@@ -216,12 +216,12 @@ export default function AccessRequests() {
         ) : (
           <div className="requests-list">
             {myRequests.map(request => {
-              const targetSubArea = subAreas.find(sa => sa.id === request.to_sub_area_id);
+              const targetDepartment = departments.find(d => d.id === request.to_department_id || d.id === request.to_sub_area_id);
 
               return (
                 <div key={request.id} className="request-item">
                   <div className="request-header">
-                    <h3>{targetSubArea?.name || 'Unknown Department'}</h3>
+                    <h3>{targetDepartment?.name || 'Unknown Department'}</h3>
                     <span className={`badge ${getStatusBadgeClass(request.status)}`}>
                       {request.status.toUpperCase()}
                     </span>

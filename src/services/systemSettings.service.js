@@ -3,7 +3,7 @@
  * Manages global system configuration (master admin only)
  */
 
-import { demoMode } from '../mocks/demo-mode';
+import { systemSettingsAPI } from '../utils/api.js';
 
 /**
  * Get a system setting by key
@@ -12,9 +12,8 @@ import { demoMode } from '../mocks/demo-mode';
  */
 export async function getSystemSetting(key) {
   try {
-    const settings = await demoMode.query('system_settings');
-    const setting = settings.find(s => s.key === key);
-    return setting ? setting.value : null;
+    const response = await systemSettingsAPI.getByKey(key);
+    return response.setting ? response.setting.value : null;
   } catch (error) {
     console.error('Error fetching system setting:', error);
     throw error;
@@ -27,7 +26,8 @@ export async function getSystemSetting(key) {
  */
 export async function getAllSystemSettings() {
   try {
-    return await demoMode.query('system_settings');
+    const response = await systemSettingsAPI.getAll();
+    return response.settings || [];
   } catch (error) {
     console.error('Error fetching system settings:', error);
     throw error;
@@ -38,35 +38,13 @@ export async function getAllSystemSettings() {
  * Update a system setting (master admin only)
  * @param {string} key - Setting key
  * @param {any} value - New value
- * @param {string} userId - ID of user making the change
+ * @param {string} description - Description of the setting
  * @returns {Promise<Object>} Updated setting
  */
-export async function updateSystemSetting(key, value, userId) {
+export async function updateSystemSetting(key, value, description = '') {
   try {
-    const settings = await demoMode.query('system_settings');
-    const settingIndex = settings.findIndex(s => s.key === key);
-
-    if (settingIndex === -1) {
-      throw new Error(`Setting with key '${key}' not found`);
-    }
-
-    const updatedSetting = {
-      ...settings[settingIndex],
-      value,
-      modified_by: userId,
-      modified_at: new Date().toISOString()
-    };
-
-    // Update in demo mode storage
-    const allSettings = await demoMode.query('system_settings');
-    allSettings[settingIndex] = updatedSetting;
-
-    // Save back to localStorage
-    const data = demoMode.getData();
-    data.system_settings = allSettings;
-    demoMode.saveData(data);
-
-    return updatedSetting;
+    const response = await systemSettingsAPI.update(key, value, description);
+    return response.setting;
   } catch (error) {
     console.error('Error updating system setting:', error);
     throw error;

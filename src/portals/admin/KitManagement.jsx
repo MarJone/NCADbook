@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
-import { kitStorage } from '../../utils/kitStorage';
+import { equipmentAPI, equipmentKitsAPI } from '../../utils/api';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import Toast from '../../components/common/Toast';
@@ -19,11 +18,13 @@ export default function KitManagement() {
 
   const loadData = async () => {
     try {
-      const allEquipment = await demoMode.query('equipment');
-      setEquipment(allEquipment);
+      const [equipmentRes, kitsRes] = await Promise.all([
+        equipmentAPI.getAll(),
+        equipmentKitsAPI.getAll({ department_id: user?.department || 'all' })
+      ]);
 
-      const adminKits = kitStorage.getAdminKits();
-      setKits(adminKits);
+      setEquipment(equipmentRes.equipment || []);
+      setKits(kitsRes.kits || []);
     } catch (error) {
       console.error('Failed to load data:', error);
       showToast('Failed to load data', 'error');
@@ -34,40 +35,40 @@ export default function KitManagement() {
     setEditingKit({
       name: '',
       description: '',
-      department: 'all',
+      department_id: user?.department || 'all',
       equipment_ids: []
     });
     setShowCreateModal(true);
   };
 
-  const handleSaveKit = (kitData) => {
+  const handleSaveKit = async (kitData) => {
     try {
       if (kitData.id) {
         // Update existing kit
-        kitStorage.updateAdminKit(kitData.id, kitData);
+        await equipmentKitsAPI.update(kitData.id, kitData);
         showToast('Kit updated successfully', 'success');
       } else {
         // Create new kit
-        kitStorage.saveAdminKit(kitData);
+        await equipmentKitsAPI.create(kitData);
         showToast('Kit created successfully', 'success');
       }
       loadData();
       setShowCreateModal(false);
       setEditingKit(null);
     } catch (error) {
-      showToast('Failed to save kit', 'error');
+      showToast('Failed to save kit: ' + error.message, 'error');
     }
   };
 
-  const handleDeleteKit = (kitId) => {
+  const handleDeleteKit = async (kitId) => {
     if (!confirm('Are you sure you want to delete this kit?')) return;
 
     try {
-      kitStorage.deleteAdminKit(kitId);
+      await equipmentKitsAPI.delete(kitId);
       showToast('Kit deleted successfully', 'success');
       loadData();
     } catch (error) {
-      showToast('Failed to delete kit', 'error');
+      showToast('Failed to delete kit: ' + error.message, 'error');
     }
   };
 

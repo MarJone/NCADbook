@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { systemSettingsAPI } from '../../utils/api';
 import { useAuth } from '../../hooks/useAuth';
 import { emailService } from '../../services/email.service';
 
@@ -26,8 +26,17 @@ export default function FeatureFlagManager() {
 
   const loadFlags = async () => {
     try {
-      const data = await demoMode.query('featureFlags');
-      setFlags(data);
+      const response = await systemSettingsAPI.getAll();
+      const settings = response.settings || [];
+      // Convert settings to flag format for the UI
+      const flagsData = settings.map(setting => ({
+        id: setting.key,
+        name: setting.key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+        key: setting.key,
+        enabled: setting.value === true || setting.value === 'true',
+        description: setting.description || ''
+      }));
+      setFlags(flagsData);
     } catch (error) {
       console.error('Failed to load feature flags:', error);
     } finally {
@@ -122,14 +131,16 @@ export default function FeatureFlagManager() {
 
     try {
       const flag = flags.find(f => f.id === flagId);
-      await demoMode.update('featureFlags', { id: flagId }, {
-        enabled: !flag.enabled,
-        updated_by: user.id,
-        updated_at: new Date().toISOString()
-      });
+      const newValue = !flag.enabled;
+
+      await systemSettingsAPI.update(
+        flag.key,
+        newValue,
+        flag.description || `${flag.name} setting`
+      );
 
       await loadFlags();
-      alert(`Feature flag ${!flag.enabled ? 'enabled' : 'disabled'} successfully`);
+      alert(`Feature flag ${newValue ? 'enabled' : 'disabled'} successfully`);
     } catch (error) {
       alert('Failed to toggle feature flag: ' + error.message);
     }

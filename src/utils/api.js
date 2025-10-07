@@ -325,6 +325,33 @@ export const usersAPI = {
       method: 'DELETE',
     });
   },
+
+  /**
+   * Add strike to user (Admin only)
+   */
+  addStrike: async (userId, strikeData) => {
+    return await request(`/users/${userId}/strikes`, {
+      method: 'POST',
+      body: JSON.stringify(strikeData),
+    });
+  },
+
+  /**
+   * Get user strikes
+   */
+  getStrikes: async (userId) => {
+    return await request(`/users/${userId}/strikes`);
+  },
+
+  /**
+   * Revoke a strike (Admin only)
+   */
+  revokeStrike: async (userId, strikeId, reason) => {
+    return await request(`/users/${userId}/strikes/${strikeId}/revoke`, {
+      method: 'PUT',
+      body: JSON.stringify({ reason }),
+    });
+  },
 };
 
 // ============================================

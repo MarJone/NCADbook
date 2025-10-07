@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { bookingsAPI, equipmentAPI, usersAPI } from '../../utils/api';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function Dashboard() {
@@ -20,9 +20,15 @@ export default function Dashboard() {
 
   const loadStats = async () => {
     try {
-      const bookings = await demoMode.query('bookings');
-      const equipment = await demoMode.query('equipment');
-      const users = await demoMode.query('users');
+      const [bookingsRes, equipmentRes, usersRes] = await Promise.all([
+        bookingsAPI.getAll(),
+        equipmentAPI.getAll(),
+        usersAPI.getAll()
+      ]);
+
+      const bookings = bookingsRes.bookings || [];
+      const equipment = equipmentRes.equipment || [];
+      const users = usersRes.users || [];
 
       setStats({
         totalBookings: bookings.length,

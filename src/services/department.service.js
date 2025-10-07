@@ -1,3 +1,4 @@
+import { departmentsAPI, equipmentAPI, usersAPI } from '../utils/api.js';
 import { demoMode } from '../mocks/demo-mode.js';
 
 /**
@@ -5,6 +6,8 @@ import { demoMode } from '../mocks/demo-mode.js';
  *
  * Provides functions for managing departments, department admins, student assignments,
  * and interdisciplinary access grants.
+ * Note: Advanced features (dept admins, student assignments, interdisciplinary access)
+ * still use demoMode pending backend endpoints.
  */
 
 // ===== DEPARTMENTS =====
@@ -15,8 +18,8 @@ import { demoMode } from '../mocks/demo-mode.js';
  */
 export async function getAllDepartments() {
   try {
-    const departments = await demoMode.query('sub_areas');
-    return departments || [];
+    const response = await departmentsAPI.getAll();
+    return response.departments || [];
   } catch (error) {
     console.error('Failed to get departments:', error);
     throw error;
@@ -30,7 +33,8 @@ export async function getAllDepartments() {
  */
 export async function getDepartmentById(id) {
   try {
-    return await demoMode.findOne('sub_areas', { id });
+    const response = await departmentsAPI.getById(id);
+    return response.department || null;
   } catch (error) {
     console.error('Failed to get department:', error);
     throw error;
@@ -46,18 +50,12 @@ export async function getDepartmentById(id) {
  */
 export async function createDepartment(name, description, parentDepartment) {
   try {
-    const newDepartment = {
-      id: `sa${Date.now()}`,
+    const response = await departmentsAPI.create({
       name,
       description: description || '',
-      parent_department: parentDepartment || '',
-      is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-
-    await demoMode.insert('sub_areas', newDepartment);
-    return newDepartment;
+      school: parentDepartment || '',
+    });
+    return response.department;
   } catch (error) {
     console.error('Failed to create department:', error);
     throw error;
@@ -68,16 +66,12 @@ export async function createDepartment(name, description, parentDepartment) {
  * Update a department
  * @param {string} id - Department ID
  * @param {Object} updates - Fields to update
- * @returns {Promise<number>} Number of records updated
+ * @returns {Promise<Object>} Updated department object
  */
 export async function updateDepartment(id, updates) {
   try {
-    const updateData = {
-      ...updates,
-      updated_at: new Date().toISOString()
-    };
-
-    return await demoMode.update('sub_areas', { id }, updateData);
+    const response = await departmentsAPI.update(id, updates);
+    return response.department;
   } catch (error) {
     console.error('Failed to update department:', error);
     throw error;
@@ -87,14 +81,12 @@ export async function updateDepartment(id, updates) {
 /**
  * Deactivate a department
  * @param {string} id - Department ID
- * @returns {Promise<number>} Number of records updated
+ * @returns {Promise<Object>} Updated department object
  */
 export async function deactivateDepartment(id) {
   try {
-    return await demoMode.update('sub_areas', { id }, {
-      is_active: false,
-      updated_at: new Date().toISOString()
-    });
+    const response = await departmentsAPI.update(id, { is_active: false });
+    return response.department;
   } catch (error) {
     console.error('Failed to deactivate department:', error);
     throw error;
@@ -107,12 +99,14 @@ export async function deactivateDepartment(id) {
  */
 export async function getEquipmentCountByDepartment() {
   try {
-    const equipment = await demoMode.query('equipment');
+    const response = await equipmentAPI.getAll();
+    const equipment = response.equipment || [];
     const counts = {};
 
     equipment.forEach(item => {
-      if (item.sub_area_id) {
-        counts[item.sub_area_id] = (counts[item.sub_area_id] || 0) + 1;
+      if (item.department || item.sub_area_id) {
+        const deptId = item.department || item.sub_area_id;
+        counts[deptId] = (counts[deptId] || 0) + 1;
       }
     });
 

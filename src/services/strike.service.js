@@ -1,11 +1,12 @@
+import { usersAPI } from '../utils/api.js';
 import { demoMode } from '../mocks/demo-mode.js';
 
 /**
- * Strike Service - Demo Mode Implementation
- * Manages student strike system using local data
+ * Strike Service
+ * Manages student strike system using backend API
+ * Note: Some functions (resetAllStrikes, getStrikeNotificationData, getStudentsWithStrikes,
+ * getStrikeHistory) still use local storage where backend endpoints don't exist yet
  */
-
-console.log('🎭 Strike Service - Running in Demo Mode');
 
 /**
  * Check if student can make a booking
@@ -14,7 +15,8 @@ console.log('🎭 Strike Service - Running in Demo Mode');
  */
 export async function canStudentBook(studentId) {
   try {
-    const user = await demoMode.findOne('users', { id: studentId });
+    const response = await usersAPI.getById(studentId);
+    const user = response.user;
 
     if (!user) {
       return {
@@ -57,21 +59,20 @@ export async function canStudentBook(studentId) {
  */
 export async function getStrikeStatus(studentId) {
   try {
-    const user = await demoMode.findOne('users', { id: studentId });
+    const userResponse = await usersAPI.getById(studentId);
+    const user = userResponse.user;
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    const history = await demoMode.query('strike_history', {
-      student_id: studentId,
-      revoked_at: null
-    });
+    const strikesResponse = await usersAPI.getStrikes(studentId);
+    const history = strikesResponse.strikes || [];
 
     return {
       strikeCount: user.strike_count || 0,
       blacklistUntil: user.blacklist_until || null,
-      history: history || [],
+      history: history.filter(s => !s.revoked_at),
       isRestricted: user.blacklist_until && new Date(user.blacklist_until) > new Date()
     };
   } catch (error) {
@@ -85,40 +86,20 @@ export async function getStrikeStatus(studentId) {
  * @param {string} studentId - Student ID
  * @param {string} bookingId - Booking ID
  * @param {number} daysOverdue - Number of days overdue
- * @param {string} adminId - Admin ID
+ * @param {string} reason - Reason for strike
  * @returns {Promise<Object>} Result of strike increment
  */
-export async function issueStrike(studentId, bookingId, daysOverdue, adminId) {
+export async function issueStrike(studentId, bookingId, daysOverdue, reason) {
   try {
-    const user = await demoMode.findOne('users', { id: studentId });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    const newStrikeCount = (user.strike_count || 0) + 1;
-
-    // Update user's strike count
-    await demoMode.update('users', { id: studentId }, {
-      strike_count: newStrikeCount,
-      blacklist_until: newStrikeCount >= 3 ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() : null
-    });
-
-    // Add strike history record
-    await demoMode.insert('strike_history', {
-      id: `strike-${Date.now()}`,
-      student_id: studentId,
+    const response = await usersAPI.addStrike(studentId, {
       booking_id: bookingId,
-      days_overdue: daysOverdue,
-      issued_by: adminId,
-      created_at: new Date().toISOString(),
-      revoked_at: null
+      reason: reason || `Equipment overdue by ${daysOverdue} days`
     });
 
     return {
       success: true,
-      strikeCount: newStrikeCount,
-      blacklisted: newStrikeCount >= 3
+      strikeCount: response.user?.strike_count || 0,
+      blacklisted: response.user?.blacklist_until != null
     };
   } catch (error) {
     console.error('Error issuing strike:', error);
@@ -129,37 +110,17 @@ export async function issueStrike(studentId, bookingId, daysOverdue, adminId) {
 /**
  * Revoke a strike (admin only)
  * @param {string} strikeId - Strike ID
- * @param {string} adminId - Admin ID
+ * @param {string} userId - User ID who has the strike
  * @param {string} reason - Reason for revocation
  * @returns {Promise<Object>} Result of revocation
  */
-export async function revokeStrike(strikeId, adminId, reason) {
+export async function revokeStrike(strikeId, userId, reason) {
   try {
-    const strike = await demoMode.findOne('strike_history', { id: strikeId });
-
-    if (!strike) {
-      throw new Error('Strike not found');
-    }
-
-    // Update strike record
-    await demoMode.update('strike_history', { id: strikeId }, {
-      revoked_at: new Date().toISOString(),
-      revoked_by: adminId,
-      revocation_reason: reason
-    });
-
-    // Decrement user's strike count
-    const user = await demoMode.findOne('users', { id: strike.student_id });
-    const newStrikeCount = Math.max(0, (user.strike_count || 0) - 1);
-
-    await demoMode.update('users', { id: strike.student_id }, {
-      strike_count: newStrikeCount,
-      blacklist_until: newStrikeCount < 3 ? null : user.blacklist_until
-    });
+    const response = await usersAPI.revokeStrike(userId, strikeId, reason);
 
     return {
       success: true,
-      strikeCount: newStrikeCount
+      strikeCount: response.user?.strike_count || 0
     };
   } catch (error) {
     console.error('Error revoking strike:', error);
