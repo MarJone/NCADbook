@@ -1,18 +1,44 @@
+# Dependencies
 node_modules/
+
+# Build outputs
 dist/
+.vite
+storybook-static/
+
+# Environment files
+.env
 .env.local
+.env.production
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
 .DS_Store
+Thumbs.db
+nul
+
+# Test outputs
 coverage/
 test-results/
 playwright-report/
-storybook-static/
+.nyc_output/
+
+# Logs
 *.log
-.vite
+logs/
+
+# Cache
 .cache
-nul
 
 # Local Netlify folder
 .netlify
+
+# AI-generated images (large files)
 ImageExplain/
 
 # Backend uploads
@@ -20,3 +46,10 @@ backend/uploads/csv/*
 backend/uploads/equipment/*
 !backend/uploads/csv/.gitkeep
 !backend/uploads/equipment/.gitkeep
+
+# Backend temporary files
+backenduploadscsv/
+
+# Temporary files
+*.tmp
+*.temp
