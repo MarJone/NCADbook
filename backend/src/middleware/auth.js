@@ -135,3 +135,18 @@ export const requireAdmin = (req, res, next) => {
 
   next();
 };
+
+/**
+ * Require master admin role
+ */
+export const requireMasterAdmin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  if (req.user.role !== 'master_admin') {
+    return res.status(403).json({ error: 'Master admin access required' });
+  }
+
+  next();
+};
