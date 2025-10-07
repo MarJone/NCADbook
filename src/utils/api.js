@@ -445,20 +445,74 @@ export const csvAPI = {
 };
 
 // ============================================
-// ANALYTICS API (Placeholder - to be implemented)
+// ANALYTICS API
 // ============================================
 
 export const analyticsAPI = {
+  /**
+   * Get comprehensive dashboard analytics
+   * @param {Object} params - Optional filters (start_date, end_date, department)
+   */
   getDashboard: async (params = {}) => {
     const queryString = new URLSearchParams(params).toString();
     const endpoint = queryString ? `/analytics/dashboard?${queryString}` : '/analytics/dashboard';
     return await request(endpoint);
   },
 
-  exportReport: async (format, params = {}) => {
+  /**
+   * Get equipment utilization report
+   * @param {Object} params - Optional filters (start_date, end_date, department)
+   */
+  getUtilization: async (params = {}) => {
     const queryString = new URLSearchParams(params).toString();
-    const endpoint = `/analytics/export/${format}?${queryString}`;
+    const endpoint = queryString ? `/analytics/utilization?${queryString}` : '/analytics/utilization';
     return await request(endpoint);
+  },
+
+  /**
+   * Export analytics to CSV
+   * @param {Object} params - Filters and type (start_date, end_date, department, type: 'bookings'|'equipment')
+   */
+  exportCSV: async (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    const endpoint = queryString ? `/analytics/export/csv?${queryString}` : '/analytics/export/csv';
+
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to export CSV');
+    }
+
+    // Trigger download
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `analytics_export_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
+    return { success: true };
+  },
+
+  /**
+   * Export analytics to PDF (Frontend implementation using jsPDF)
+   * Note: PDF generation is done client-side using jsPDF library
+   * @param {Object} analyticsData - Dashboard data to export
+   * @param {Object} options - Export options (title, filters, etc.)
+   */
+  exportPDF: async (analyticsData, options = {}) => {
+    // This is a placeholder - actual PDF generation should be done in the frontend
+    // using jsPDF library which is already in package.json
+    console.warn('PDF export should be implemented in the frontend using jsPDF');
+    return { success: false, message: 'Use frontend jsPDF implementation' };
   },
 };
 
