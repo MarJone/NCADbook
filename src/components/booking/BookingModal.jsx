@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { bookingService } from '../../services/booking.service';
 import { useAuth } from '../../hooks/useAuth';
 import { emailService } from '../../services/email.service';
-import { demoMode } from '../../mocks/demo-mode';
 import BookingConflictCalendar from './BookingConflictCalendar';
 import MobileCalendar from './MobileCalendar';
 

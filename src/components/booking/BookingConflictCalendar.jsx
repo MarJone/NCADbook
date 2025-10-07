@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { bookingsAPI } from '../../utils/api';
 
 export default function BookingConflictCalendar({ equipmentId, selectedStartDate, selectedEndDate }) {
   const [bookings, setBookings] = useState([]);
@@ -13,12 +13,13 @@ export default function BookingConflictCalendar({ equipmentId, selectedStartDate
 
   const loadBookingsForEquipment = async () => {
     try {
-      const allBookings = await demoMode.query('bookings', { equipment_id: equipmentId });
+      const response = await bookingsAPI.getAll({ equipment_id: equipmentId, status: 'approved' });
       // Only show approved bookings for conflict visualization
-      const approvedBookings = allBookings.filter(b => b.status === 'approved');
+      const approvedBookings = response.bookings || [];
       setBookings(approvedBookings);
     } catch (error) {
       console.error('Failed to load bookings:', error);
+      setBookings([]);
     }
   };
 

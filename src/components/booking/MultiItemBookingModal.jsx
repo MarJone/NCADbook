@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { demoMode } from '../../mocks/demo-mode';
+import { equipmentAPI, bookingsAPI } from '../../utils/api';
 import { kitStorage } from '../../utils/kitStorage';
 
 export default function MultiItemBookingModal({ onClose, onSuccess }) {
@@ -25,14 +25,13 @@ export default function MultiItemBookingModal({ onClose, onSuccess }) {
   const loadAvailableEquipment = async () => {
     setLoading(true);
     try {
-      // In demo mode, we'll just filter for available equipment
-      // In production, this would check availability for the selected date range
-      const allEquipment = await demoMode.query('equipment', {});
-      const available = allEquipment.filter(item => item.status === 'available');
-      setAvailableEquipment(available);
+      // Fetch available equipment from API
+      const response = await equipmentAPI.getAll({ status: 'available' });
+      setAvailableEquipment(response.equipment || []);
     } catch (err) {
       setError('Failed to load available equipment');
       console.error(err);
+      setAvailableEquipment([]);
     } finally {
       setLoading(false);
     }
@@ -103,18 +102,12 @@ export default function MultiItemBookingModal({ onClose, onSuccess }) {
 
       // Create a booking for each selected item
       for (const item of selectedItems) {
-        await demoMode.insert('bookings', {
-          user_id: user.id,
+        await bookingsAPI.create({
           equipment_id: item.id,
           start_date: startDate,
           end_date: endDate,
-          status: 'pending',
           purpose: purpose,
-          student_name: user.full_name,
-          student_email: user.email,
-          equipment_name: item.product_name,
-          category: item.category,
-          created_at: new Date().toISOString()
+          booking_type: 'standard'
         });
       }
 
