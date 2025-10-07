@@ -206,6 +206,32 @@ export const equipmentAPI = {
       method: 'DELETE',
     });
   },
+
+  /**
+   * Get equipment notes (Admin only)
+   */
+  getNotes: async (id) => {
+    return await request(`/equipment/${id}/notes`);
+  },
+
+  /**
+   * Add equipment note (Admin only)
+   */
+  addNote: async (id, noteData) => {
+    return await request(`/equipment/${id}/notes`, {
+      method: 'POST',
+      body: JSON.stringify(noteData),
+    });
+  },
+
+  /**
+   * Delete equipment note (Admin only)
+   */
+  deleteNote: async (id, noteId) => {
+    return await request(`/equipment/${id}/notes/${noteId}`, {
+      method: 'DELETE',
+    });
+  },
 };
 
 // ============================================
@@ -255,16 +281,35 @@ export const bookingsAPI = {
 // ============================================
 
 export const usersAPI = {
+  /**
+   * Get all users with optional filters
+   */
   getAll: async (params = {}) => {
     const queryString = new URLSearchParams(params).toString();
     const endpoint = queryString ? `/users?${queryString}` : '/users';
     return await request(endpoint);
   },
 
+  /**
+   * Get user by ID
+   */
   getById: async (id) => {
     return await request(`/users/${id}`);
   },
 
+  /**
+   * Create new user (Master Admin only)
+   */
+  create: async (userData) => {
+    return await request('/users', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  },
+
+  /**
+   * Update user (Master Admin only)
+   */
   update: async (id, userData) => {
     return await request(`/users/${id}`, {
       method: 'PUT',
@@ -272,6 +317,9 @@ export const usersAPI = {
     });
   },
 
+  /**
+   * Delete user (Master Admin only)
+   */
   delete: async (id) => {
     return await request(`/users/${id}`, {
       method: 'DELETE',

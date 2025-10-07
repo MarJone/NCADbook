@@ -16,8 +16,17 @@ export default function CSVImport() {
   });
   const [importResults, setImportResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Master admin only guard
+  if (!user) {
+    return (
+      <div className="loading">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   if (user.role !== 'master_admin') {
     return (
       <div className="access-denied">
@@ -70,14 +79,16 @@ export default function CSVImport() {
         return;
       }
 
-      // Detect duplicates
-      const duplicateResult = importType === 'users'
-        ? await csvImportService.detectUserDuplicates(data)
-        : await csvImportService.detectEquipmentDuplicates(data);
+      // Skip duplicate detection for equipment (backend handles it)
+      // Set dummy duplicates data to show preview
+      const dummyDuplicates = {
+        unique: data,
+        duplicates: []
+      };
 
       setCsvData(data);
       setValidation(validationResult);
-      setDuplicates(duplicateResult);
+      setDuplicates(dummyDuplicates);
       setStep(2);
     } catch (error) {
       alert('Failed to parse CSV file: ' + error.message);
@@ -87,15 +98,16 @@ export default function CSVImport() {
   };
 
   const handleImport = async () => {
-    if (!csvData) return;
+    if (!file) return;
 
     setLoading(true);
     setStep(3);
+    setUploadProgress(0);
 
     try {
       const results = importType === 'users'
-        ? await csvImportService.importUsers(csvData, importOptions)
-        : await csvImportService.importEquipment(csvData, importOptions);
+        ? await csvImportService.importUsers(file, importOptions, (progress) => setUploadProgress(progress))
+        : await csvImportService.importEquipment(file, importOptions, (progress) => setUploadProgress(progress));
 
       setImportResults(results);
       setStep(4);
@@ -104,6 +116,7 @@ export default function CSVImport() {
       setStep(2);
     } finally {
       setLoading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -205,8 +218,8 @@ export default function CSVImport() {
               </ul>
             ) : (
               <ul>
-                <li><strong>Required columns:</strong> product_name, tracking_number, description, link_to_image</li>
-                <li><strong>Optional columns:</strong> category, department, status, requires_justification</li>
+                <li><strong>Required columns:</strong> product_name, tracking_number, description</li>
+                <li><strong>Optional columns:</strong> link_to_image, category, department, status, requires_justification</li>
                 <li><strong>Tracking numbers:</strong> Must be unique (duplicates will be detected)</li>
                 <li><strong>Status options:</strong> available, booked, maintenance, out_of_service</li>
               </ul>
@@ -350,9 +363,17 @@ export default function CSVImport() {
       {/* Step 3: Importing */}
       {step === 3 && (
         <div className="import-step">
-          <div className="loading-spinner">
-            <h3>⏳ Importing {importType}...</h3>
-            <p>Please wait while we import your data.</p>
+          <div className="import-progress">
+            <h3>📤 Uploading {importType}...</h3>
+            <div className="progress-bar-container">
+              <div
+                className="progress-bar"
+                style={{ width: `${uploadProgress}%` }}
+              >
+                <span className="progress-text">{Math.round(uploadProgress)}%</span>
+              </div>
+            </div>
+            <p className="help-text">Please wait while we upload and process your data.</p>
           </div>
         </div>
       )}

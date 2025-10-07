@@ -46,7 +46,10 @@
       "Bash(sc query:*)",
       "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U ncadbook_user -d ncadbook_db -c \"TRUNCATE TABLE users, sub_areas, equipment, equipment_notes, bookings, equipment_kits, system_settings, admin_actions, strike_history CASCADE;\")",
       "Bash(netstat:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT COUNT(*) FROM equipment;\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT id, full_name, email, role, department FROM users WHERE role = ''student'' LIMIT 5;\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"UPDATE equipment SET department = ''Communication Design'' WHERE department = ''Moving Image Design'';\")"
     ],
     "deny": [],
     "ask": []

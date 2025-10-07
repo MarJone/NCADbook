@@ -18,6 +18,8 @@ export default function StaffDashboard() {
   }, [user]);
 
   const loadStats = async () => {
+    if (!user) return;
+
     try {
       // Get user's own bookings
       const myBookingsRes = await bookingsAPI.getAll({ user_id: user.id });

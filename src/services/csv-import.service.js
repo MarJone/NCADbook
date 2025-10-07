@@ -147,10 +147,13 @@ class CSVImportService {
   validateEquipment(data) {
     const errors = [];
     const warnings = [];
-    const requiredFields = ['product_name', 'tracking_number', 'description', 'link_to_image'];
+    const requiredFields = ['product_name', 'tracking_number', 'description'];
+    const optionalFields = ['link_to_image', 'category', 'department', 'status', 'requires_justification'];
     const validCategories = [
-      'Camera', 'Lens', 'Lighting', 'Audio', 'Tripod & Support',
-      'Computer', 'Printer', 'Scanner', 'Projector', 'Other'
+      'Camera', 'Lens', 'Lighting', 'Audio', 'Tripod & Support', 'Tripod',
+      'Computer', 'Printer', 'Scanner', 'Projector', 'Other', 'Microphone',
+      'Audio Recorder', 'Headphones', 'Gimbal', 'Media Player', '3D Printer',
+      'Storage', 'Equipment', 'Monitor', 'Audio Equipment'
     ];
     const validDepartments = ['Moving Image Design', 'Graphic Design', 'Illustration', 'Shared'];
 
@@ -316,62 +319,66 @@ class CSVImportService {
   }
 
   /**
-   * Import equipment into database
-   * @param {Array} equipment - Array of equipment objects
+   * Import equipment into database via backend API
+   * @param {File} file - CSV file object
    * @param {Object} options - Import options
-   * @returns {Object} { imported: number, skipped: number, updated: number }
+   * @param {Function} onProgress - Progress callback (percentage)
+   * @returns {Object} { imported: number, skipped: number, updated: number, errors: Array }
    */
-  async importEquipment(equipment, options = { skipDuplicates: true, updateDuplicates: false }) {
-    let imported = 0;
-    let skipped = 0;
-    let updated = 0;
+  async importEquipment(file, options = { skipDuplicates: true, updateDuplicates: false }, onProgress = null) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
 
-    for (const item of equipment) {
-      try {
-        // Check for duplicate
-        const existingEquipment = await demoMode.query('equipment');
-        const existing = existingEquipment.find(e =>
-          e.tracking_number.toLowerCase() === item.tracking_number.toLowerCase()
-        );
+      const xhr = new XMLHttpRequest();
 
-        if (existing) {
-          if (options.updateDuplicates) {
-            await demoMode.update('equipment', { id: existing.id }, {
-              product_name: item.product_name,
-              description: item.description,
-              category: item.category || existing.category,
-              department: item.department || existing.department,
-              link_to_image: item.link_to_image,
-              requires_justification: item.requires_justification === 'true' || item.requires_justification === true
-            });
-            updated++;
-          } else {
-            skipped++;
-          }
-        } else {
-          // Create new equipment
-          const newEquipment = {
-            id: `eq${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            product_name: item.product_name,
-            tracking_number: item.tracking_number,
-            description: item.description,
-            category: item.category || 'Other',
-            department: item.department || 'Shared',
-            status: item.status || 'available',
-            link_to_image: item.link_to_image,
-            requires_justification: item.requires_justification === 'true' || item.requires_justification === true || false
-          };
-
-          await demoMode.insert('equipment', newEquipment);
-          imported++;
+      return new Promise((resolve, reject) => {
+        // Track upload progress
+        if (onProgress) {
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              const percentComplete = (e.loaded / e.total) * 100;
+              onProgress(percentComplete);
+            }
+          });
         }
-      } catch (error) {
-        console.error(`Failed to import equipment ${item.tracking_number}:`, error);
-        skipped++;
-      }
-    }
 
-    return { imported, skipped, updated };
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            resolve({
+              imported: response.summary.successCount,
+              skipped: response.summary.skipCount,
+              updated: 0,
+              errors: response.summary.errors || []
+            });
+          } else {
+            reject(new Error(`Upload failed: ${xhr.statusText}`));
+          }
+        });
+
+        xhr.addEventListener('error', () => {
+          reject(new Error('Network error during upload'));
+        });
+
+        xhr.addEventListener('abort', () => {
+          reject(new Error('Upload cancelled'));
+        });
+
+        xhr.open('POST', 'http://localhost:3001/api/csv/import/equipment');
+
+        // Add auth token if available
+        const token = localStorage.getItem('token');
+        if (token) {
+          xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        }
+
+        xhr.send(formData);
+      });
+    } catch (error) {
+      console.error('Failed to import equipment:', error);
+      throw error;
+    }
   }
 
   /**

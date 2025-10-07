@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enable Cross-Department Browsing</title>
+</head>
+<body>
+    <h1>System Settings Update</h1>
+    <button onclick="enableCrossDeptBrowsing()">Enable Cross-Department Browsing</button>
+    <div id="result"></div>
+
+    <script>
+        function enableCrossDeptBrowsing() {
+            try {
+                // Get current demoMode data
+                const demoDataStr = localStorage.getItem('ncadbook_demo_data');
+                if (!demoDataStr) {
+                    document.getElementById('result').innerHTML = '<p style="color: red;">Error: No demo data found in localStorage</p>';
+                    return;
+                }
+
+                const demoData = JSON.parse(demoDataStr);
+
+                // Ensure system_settings array exists
+                if (!demoData.system_settings) {
+                    demoData.system_settings = [];
+                }
+
+                // Find or create the cross_department_browsing_enabled setting
+                const settingIndex = demoData.system_settings.findIndex(
+                    s => s.key === 'cross_department_browsing_enabled'
+                );
+
+                if (settingIndex >= 0) {
+                    // Update existing setting
+                    demoData.system_settings[settingIndex].value = true;
+                    demoData.system_settings[settingIndex].modified_at = new Date().toISOString();
+                } else {
+                    // Create new setting
+                    demoData.system_settings.push({
+                        id: demoData.system_settings.length + 1,
+                        key: 'cross_department_browsing_enabled',
+                        value: true,
+                        description: 'Allow students to browse equipment from other departments',
+                        category: 'equipment',
+                        modified_by: 1, // Master admin
+                        modified_at: new Date().toISOString()
+                    });
+                }
+
+                // Save back to localStorage
+                localStorage.setItem('ncadbook_demo_data', JSON.stringify(demoData));
+
+                document.getElementById('result').innerHTML = '<p style="color: green;">✅ Cross-department browsing enabled! Please refresh the main application.</p>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -7,6 +7,9 @@
 /* Import Phase 2-5 Enhancements */
 @import './phases-enhancements.css';
 
+/* Import Modal System Fixes */
+@import './modal-fixes.css';
+
 /* Import Proxima Nova Font from Adobe Fonts (Typekit) */
 @import url('https://use.typekit.net/qpk8hon.css');
 

@@ -11,8 +11,7 @@ export const getAllBookings = async (req, res) => {
     let queryText = `
       SELECT
         b.id, b.user_id, b.equipment_id, b.start_date, b.end_date,
-        b.status, b.purpose, b.booking_type, b.collection_instructions,
-        b.created_at, b.updated_at, b.approved_by, b.approved_at,
+        b.status, b.purpose, b.created_at,
         u.full_name as user_name, u.email as user_email, u.department as user_department,
         e.product_name as equipment_name, e.category as equipment_category,
         e.department as equipment_department, e.tracking_number
@@ -143,8 +142,7 @@ export const getBookingById = async (req, res) => {
     const result = await query(`
       SELECT
         b.id, b.user_id, b.equipment_id, b.start_date, b.end_date,
-        b.status, b.purpose, b.booking_type, b.collection_instructions,
-        b.created_at, b.updated_at, b.approved_by, b.approved_at,
+        b.status, b.purpose, b.created_at,
         u.full_name as user_name, u.email as user_email, u.department as user_department,
         e.product_name as equipment_name, e.category as equipment_category,
         e.department as equipment_department, e.tracking_number
@@ -188,7 +186,7 @@ export const getBookingById = async (req, res) => {
  */
 export const createBooking = async (req, res) => {
   try {
-    const { equipment_id, start_date, end_date, purpose, booking_type = 'standard' } = req.body;
+    const { equipment_id, start_date, end_date, purpose } = req.body;
 
     // Validate required fields
     if (!equipment_id || !start_date || !end_date) {
@@ -244,18 +242,17 @@ export const createBooking = async (req, res) => {
     const result = await query(`
       INSERT INTO bookings (
         user_id, equipment_id, start_date, end_date,
-        status, purpose, booking_type
+        status, purpose
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id, user_id, equipment_id, start_date, end_date, status, purpose, booking_type, created_at
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING id, user_id, equipment_id, start_date, end_date, status, purpose, created_at
     `, [
       req.user.id,
       equipment_id,
       start_date,
       end_date,
       'pending',
-      purpose || null,
-      booking_type
+      purpose || null
     ]);
 
     const booking = result.rows[0];
@@ -326,10 +323,10 @@ export const approveBooking = async (req, res) => {
     // Approve booking
     const result = await query(`
       UPDATE bookings
-      SET status = 'approved', approved_by = $1, approved_at = CURRENT_TIMESTAMP
-      WHERE id = $2
+      SET status = 'approved'
+      WHERE id = $1
       RETURNING *
-    `, [req.user.id, id]);
+    `, [id]);
 
     // Log admin action
     await query(`

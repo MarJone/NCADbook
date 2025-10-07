@@ -157,12 +157,12 @@ export const importEquipment = async (req, res) => {
           const rowNum = i + 2;
 
           try {
-            // Validate required fields
-            if (!row.product_name || !row.tracking_number || !row.category || !row.department) {
+            // Validate required fields (only product_name, tracking_number, description are required)
+            if (!row.product_name || !row.tracking_number) {
               errors.push({
                 row: rowNum,
                 data: row,
-                error: 'Missing required fields: product_name, tracking_number, category, department'
+                error: 'Missing required fields: product_name, tracking_number'
               });
               skipCount++;
               continue;
@@ -186,6 +186,9 @@ export const importEquipment = async (req, res) => {
 
             // Prepare equipment data
             const status = row.status ? row.status.toLowerCase().trim() : 'available';
+            const category = row.category ? row.category.trim() : 'Other';
+            const department = row.department ? row.department.trim() : 'Moving Image Design';
+            const linkToImage = row.link_to_image || row.image_url || null;
 
             // Insert equipment
             await query(`
@@ -196,10 +199,10 @@ export const importEquipment = async (req, res) => {
             `, [
               row.product_name.trim(),
               row.tracking_number.trim(),
-              row.description ? row.description.trim() : null,
-              row.image_url ? row.image_url.trim() : null,
-              row.category.trim(),
-              row.department.trim(),
+              row.description ? row.description.trim() : '',
+              linkToImage ? linkToImage.trim() : null,
+              category,
+              department,
               status
             ]);
 

@@ -3,6 +3,7 @@ import { equipmentAPI } from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { getDepartmentList } from '../../config/departments';
 import EquipmentNotes from '../../components/equipment/EquipmentNotes';
+import EquipmentForm from '../../components/admin/EquipmentForm';
 import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
@@ -19,6 +20,10 @@ export default function EquipmentManagement() {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [formMode, setFormMode] = useState('add');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [equipmentToDelete, setEquipmentToDelete] = useState(null);
   const itemsPerPage = 20;
   const { toasts, showToast, removeToast } = useToast();
 
@@ -106,6 +111,43 @@ export default function EquipmentManagement() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleAddEquipment = () => {
+    setSelectedEquipment(null);
+    setFormMode('add');
+    setShowFormModal(true);
+  };
+
+  const handleEditEquipment = (item) => {
+    setSelectedEquipment(item);
+    setFormMode('edit');
+    setShowFormModal(true);
+  };
+
+  const handleDeleteClick = (item) => {
+    setEquipmentToDelete(item);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!equipmentToDelete) return;
+
+    try {
+      await equipmentAPI.delete(equipmentToDelete.id);
+      setShowDeleteConfirm(false);
+      setEquipmentToDelete(null);
+      await loadEquipment();
+      showToast('Equipment deleted successfully', 'success');
+    } catch (error) {
+      showToast('Failed to delete equipment: ' + error.message, 'error');
+    }
+  };
+
+  const handleFormSuccess = async () => {
+    setShowFormModal(false);
+    await loadEquipment();
+    showToast(formMode === 'add' ? 'Equipment added successfully' : 'Equipment updated successfully', 'success');
+  };
+
   // Paginate filtered equipment
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -134,6 +176,12 @@ export default function EquipmentManagement() {
             </button>
           ))}
         </div>
+        <button
+          onClick={handleAddEquipment}
+          className="btn btn-primary"
+        >
+          + Add Equipment
+        </button>
       </div>
 
       {loading ? (
@@ -212,15 +260,31 @@ export default function EquipmentManagement() {
                   </select>
                 </td>
                 <td>
-                  <button
-                    onClick={() => {
-                      setSelectedEquipment(item);
-                      setShowDetailModal(true);
-                    }}
-                    className="btn btn-secondary btn-sm"
-                  >
-                    View Details
-                  </button>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
+                      onClick={() => {
+                        setSelectedEquipment(item);
+                        setShowDetailModal(true);
+                      }}
+                      className="btn btn-secondary btn-sm"
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={() => handleEditEquipment(item)}
+                      className="btn btn-primary btn-sm"
+                    >
+                      Edit
+                    </button>
+                    {isMasterAdmin && (
+                      <button
+                        onClick={() => handleDeleteClick(item)}
+                        className="btn btn-danger btn-sm"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -285,6 +349,44 @@ export default function EquipmentManagement() {
                 equipmentId={selectedEquipment.id}
                 equipmentName={selectedEquipment.product_name}
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showFormModal && (
+        <EquipmentForm
+          equipment={selectedEquipment}
+          onClose={() => setShowFormModal(false)}
+          onSuccess={handleFormSuccess}
+          mode={formMode}
+        />
+      )}
+
+      {showDeleteConfirm && equipmentToDelete && (
+        <div className="modal-overlay" onClick={() => setShowDeleteConfirm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
+            <div className="modal-header">
+              <h2>Confirm Delete</h2>
+              <button className="modal-close" onClick={() => setShowDeleteConfirm(false)}>&times;</button>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to delete <strong>{equipmentToDelete.product_name}</strong>?</p>
+              <p style={{ color: '#c00', marginTop: '1rem' }}>⚠️ This action cannot be undone.</p>
+            </div>
+            <div className="modal-actions">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="btn btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                className="btn btn-danger"
+              >
+                Delete Equipment
+              </button>
             </div>
           </div>
         </div>

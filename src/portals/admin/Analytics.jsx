@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { demoMode } from '../../mocks/demo-mode';
+import { bookingsAPI, equipmentAPI, usersAPI } from '../../utils/api';
+import { getDepartmentList } from '../../config/departments';
 import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../hooks/useToast';
+import Toast from '../../components/common/Toast';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -26,6 +29,10 @@ export default function Analytics() {
   const [departments, setDepartments] = useState([]);
   const [users, setUsers] = useState([]);
   const [allBookings, setAllBookings] = useState([]);
+  const [equipment, setEquipment] = useState([]);
+  const { toasts, showToast, removeToast } = useToast();
+
+  const departmentList = getDepartmentList();
 
   useEffect(() => {
     loadInitialData();
@@ -40,28 +47,31 @@ export default function Analytics() {
 
   const loadInitialData = async () => {
     try {
-      const bookings = await demoMode.query('bookings');
-      const equipment = await demoMode.query('equipment');
-      const usersData = await demoMode.query('users');
+      const [bookingsRes, equipmentRes, usersRes] = await Promise.all([
+        bookingsAPI.getAll(),
+        equipmentAPI.getAll(),
+        usersAPI.getAll()
+      ]);
 
-      setAllBookings(bookings);
+      const bookingsData = bookingsRes.bookings || [];
+      const equipmentData = equipmentRes.equipment || [];
+      const usersData = usersRes.users || [];
+
+      setAllBookings(bookingsData);
+      setEquipment(equipmentData);
       setUsers(usersData);
-
-      // Extract unique departments
-      const uniqueDepts = [...new Set(usersData.map(u => u.department))].filter(Boolean);
-      setDepartments(uniqueDepts);
+      setDepartments(departmentList.map(d => d.id));
 
     } catch (error) {
       console.error('Failed to load data:', error);
+      showToast('Failed to load analytics data', 'error');
     } finally {
       setLoading(false);
     }
   };
 
-  const calculateAnalytics = async () => {
+  const calculateAnalytics = () => {
     try {
-      const equipment = await demoMode.query('equipment');
-
       // Apply filters
       let filteredBookings = [...allBookings];
 
@@ -147,10 +157,11 @@ export default function Analytics() {
       });
     } catch (error) {
       console.error('Failed to calculate analytics:', error);
+      showToast('Failed to calculate analytics', 'error');
     }
   };
 
-  const exportToPDF = async () => {
+  const exportToPDF = () => {
     try {
       // Create new PDF document
       const doc = new jsPDF();
@@ -398,26 +409,25 @@ export default function Analytics() {
       // Save PDF
       doc.save(filename);
 
-      alert('PDF report generated successfully!');
+      showToast('PDF report generated successfully!', 'success');
     } catch (error) {
       console.error('Failed to generate PDF:', error);
-      alert('Failed to generate PDF report. Please try again.');
+      showToast('Failed to generate PDF report. Please try again.', 'error');
     }
   };
 
   const exportToCSV = () => {
     try {
-      const equipment = {};
-
       // Create CSV header
       let csv = 'Booking ID,User,Department,Equipment,Start Date,End Date,Status,Created\n';
 
       // Add data rows
       analytics.filteredBookings.forEach(booking => {
-        const user = users.find(u => u.id === booking.user_id);
-        const equipName = equipment[booking.equipment_id] || 'Unknown';
+        const bookingUser = users.find(u => u.id === booking.user_id);
+        const equipItem = equipment.find(e => e.id === booking.equipment_id);
+        const equipName = equipItem?.product_name || 'Unknown';
 
-        csv += `${booking.id},"${user?.full_name || 'Unknown'}","${user?.department || 'Unknown'}","${equipName}",${booking.start_date},${booking.end_date},${booking.status},${booking.created_at}\n`;
+        csv += `${booking.id},"${bookingUser?.full_name || 'Unknown'}","${bookingUser?.department || 'Unknown'}","${equipName}",${booking.start_date},${booking.end_date},${booking.status},${booking.created_at}\n`;
       });
 
       // Create download link
@@ -428,9 +438,11 @@ export default function Analytics() {
       a.download = `analytics_${new Date().toISOString().split('T')[0]}.csv`;
       a.click();
       window.URL.revokeObjectURL(url);
+
+      showToast('CSV exported successfully!', 'success');
     } catch (error) {
       console.error('Failed to export CSV:', error);
-      alert('Failed to export CSV. Please try again.');
+      showToast('Failed to export CSV. Please try again.', 'error');
     }
   };
 
@@ -475,8 +487,8 @@ export default function Analytics() {
               className="select-input"
             >
               <option value="all">All Departments</option>
-              {departments.map(dept => (
-                <option key={dept} value={dept}>{dept}</option>
+              {departmentList.map(dept => (
+                <option key={dept.id} value={dept.id}>{dept.name}</option>
               ))}
             </select>
           </div>
@@ -623,6 +635,15 @@ export default function Analytics() {
           </div>
         </div>
       </div>
+
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }

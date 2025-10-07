@@ -124,7 +124,14 @@ export default function EquipmentBrowse() {
 
       // Apply department filter
       if (user?.role === 'student') {
-        if (selectedDepartment === 'my_department' || !crossDeptBrowsingEnabled) {
+        // Communication Design students (Moving Image, Graphic Design, Illustration) share equipment
+        const commDesignDepts = ['Moving Image Design', 'Graphic Design', 'Illustration'];
+        const isCommDesignStudent = commDesignDepts.includes(user.department);
+
+        if (isCommDesignStudent && (selectedDepartment === 'my_department' || commDesignDepts.includes(selectedDepartment))) {
+          // Don't filter by department - show all equipment for Communication Design students
+          // when viewing their own department or other Communication Design departments
+        } else if (selectedDepartment === 'my_department' || !crossDeptBrowsingEnabled) {
           params.department = user.department;
         } else if (selectedDepartment !== 'all') {
           params.department = selectedDepartment;

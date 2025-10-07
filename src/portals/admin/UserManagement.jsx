@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { demoMode } from '../../mocks/demo-mode';
+import { usersAPI } from '../../utils/api';
+import { getDepartmentList } from '../../config/departments';
 import SearchBar from '../../components/common/SearchBar';
 import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
+import { useToast } from '../../hooks/useToast';
+import Toast from '../../components/common/Toast';
 
 export default function UserManagement() {
   const { user } = useAuth();
@@ -24,8 +27,11 @@ export default function UserManagement() {
     first_name: '',
     surname: '',
     role: 'student',
-    department: 'Moving Image'
+    department: 'Moving Image Design'
   });
+  const { toasts, showToast, removeToast } = useToast();
+
+  const departmentList = getDepartmentList();
 
   // Only master admin can access
   if (user.role !== 'master_admin') {
@@ -60,14 +66,17 @@ export default function UserManagement() {
   const loadUsers = async () => {
     setLoading(true);
     try {
-      let filters = {};
-      if (filterRole !== 'all') filters.role = filterRole;
-      if (filterDepartment !== 'all') filters.department = filterDepartment;
+      const params = {};
+      if (filterRole !== 'all') params.role = filterRole;
+      if (filterDepartment !== 'all') params.department = filterDepartment;
 
-      let data = await demoMode.query('users', filters);
-      setUsers(data);
+      const response = await usersAPI.getAll(params);
+      const userData = response.users || [];
+      setUsers(userData);
     } catch (error) {
       console.error('Failed to load users:', error);
+      showToast('Failed to load users', 'error');
+      setUsers([]);
     } finally {
       setLoading(false);
     }
@@ -75,19 +84,22 @@ export default function UserManagement() {
 
   const handleAddUser = async () => {
     if (!formData.email || !formData.password || !formData.first_name || !formData.surname) {
-      alert('Please fill in all required fields');
+      showToast('Please fill in all required fields', 'error');
       return;
     }
 
     try {
-      const newUser = {
-        id: Date.now().toString(),
-        ...formData,
+      const userData = {
+        email: formData.email,
+        password: formData.password,
+        first_name: formData.first_name,
+        surname: formData.surname,
         full_name: `${formData.first_name} ${formData.surname}`,
-        created_at: new Date().toISOString().split('T')[0]
+        role: formData.role,
+        department: formData.department
       };
 
-      await demoMode.insert('users', newUser);
+      await usersAPI.create(userData);
       setShowAddModal(false);
       setFormData({
         email: '',
@@ -95,54 +107,56 @@ export default function UserManagement() {
         first_name: '',
         surname: '',
         role: 'student',
-        department: 'Moving Image'
+        department: 'Moving Image Design'
       });
-      loadUsers();
-      alert('User created successfully');
+      await loadUsers();
+      showToast('User created successfully', 'success');
     } catch (error) {
-      alert('Failed to create user: ' + error.message);
+      showToast('Failed to create user: ' + error.message, 'error');
     }
   };
 
   const handleEditUser = async () => {
     if (!formData.first_name || !formData.surname) {
-      alert('Please fill in all required fields');
+      showToast('Please fill in all required fields', 'error');
       return;
     }
 
     try {
       const updatedData = {
-        ...formData,
-        full_name: `${formData.first_name} ${formData.surname}`
+        first_name: formData.first_name,
+        surname: formData.surname,
+        full_name: `${formData.first_name} ${formData.surname}`,
+        role: formData.role,
+        department: formData.department
       };
 
-      await demoMode.update('users', { id: selectedUser.id }, updatedData);
+      // Include password only if changed
+      if (formData.password) {
+        updatedData.password = formData.password;
+      }
+
+      await usersAPI.update(selectedUser.id, updatedData);
       setShowEditModal(false);
       setSelectedUser(null);
-      loadUsers();
-      alert('User updated successfully');
+      await loadUsers();
+      showToast('User updated successfully', 'success');
     } catch (error) {
-      alert('Failed to update user: ' + error.message);
+      showToast('Failed to update user: ' + error.message, 'error');
     }
   };
 
   const handleDeleteUser = async (userId, userName) => {
-    // Prevent deleting test accounts
-    if (['1', '2', '3', '4'].includes(userId)) {
-      alert('Cannot delete demo test accounts');
-      return;
-    }
-
     if (!confirm(`Are you sure you want to delete ${userName}? This action cannot be undone.`)) {
       return;
     }
 
     try {
-      await demoMode.delete('users', { id: userId });
-      loadUsers();
-      alert('User deleted successfully');
+      await usersAPI.delete(userId);
+      await loadUsers();
+      showToast('User deleted successfully', 'success');
     } catch (error) {
-      alert('Failed to delete user: ' + error.message);
+      showToast('Failed to delete user: ' + error.message, 'error');
     }
   };
 
@@ -150,7 +164,7 @@ export default function UserManagement() {
     setSelectedUser(userToEdit);
     setFormData({
       email: userToEdit.email,
-      password: userToEdit.password,
+      password: '', // Don't pre-fill password
       first_name: userToEdit.first_name,
       surname: userToEdit.surname,
       role: userToEdit.role,
@@ -159,11 +173,10 @@ export default function UserManagement() {
     setShowEditModal(true);
   };
 
-  const departments = ['Moving Image', 'Graphic Design', 'Illustration', 'Administration'];
   const roles = [
     { value: 'student', label: 'Student' },
     { value: 'staff', label: 'Staff' },
-    { value: 'admin', label: 'Admin' },
+    { value: 'department_admin', label: 'Department Admin' },
     { value: 'master_admin', label: 'Master Admin' }
   ];
 
@@ -212,8 +225,8 @@ export default function UserManagement() {
             className="select-input"
           >
             <option value="all">All Departments</option>
-            {departments.map(dept => (
-              <option key={dept} value={dept}>{dept}</option>
+            {departmentList.map(dept => (
+              <option key={dept.id} value={dept.id}>{dept.name}</option>
             ))}
           </select>
 
@@ -287,7 +300,6 @@ export default function UserManagement() {
                     <button
                       onClick={() => handleDeleteUser(u.id, u.full_name)}
                       className="btn btn-danger btn-sm"
-                      disabled={['1', '2', '3', '4'].includes(u.id)}
                     >
                       Delete
                     </button>
@@ -389,8 +401,8 @@ export default function UserManagement() {
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                     className="select-input"
                   >
-                    {departments.map(dept => (
-                      <option key={dept} value={dept}>{dept}</option>
+                    {departmentList.map(dept => (
+                      <option key={dept.id} value={dept.id}>{dept.name}</option>
                     ))}
                   </select>
                 </div>
@@ -496,8 +508,8 @@ export default function UserManagement() {
                     onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                     className="select-input"
                   >
-                    {departments.map(dept => (
-                      <option key={dept} value={dept}>{dept}</option>
+                    {departmentList.map(dept => (
+                      <option key={dept.id} value={dept.id}>{dept.name}</option>
                     ))}
                   </select>
                 </div>
@@ -521,6 +533,15 @@ export default function UserManagement() {
           </div>
         </div>
       )}
+
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
     </div>
   );
 }
