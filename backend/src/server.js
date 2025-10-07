@@ -13,6 +13,9 @@ import authRoutes from './routes/authRoutes.js';
 import equipmentRoutes from './routes/equipmentRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import departmentRoutes from './routes/departmentRoutes.js';
+import systemSettingsRoutes from './routes/systemSettingsRoutes.js';
+import equipmentKitsRoutes from './routes/equipmentKitsRoutes.js';
 
 // Get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -65,6 +68,9 @@ app.use('/api/csv', csvRoutes);
 app.use('/api/equipment', equipmentRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/departments', departmentRoutes);
+app.use('/api/settings', systemSettingsRoutes);
+app.use('/api/kits', equipmentKitsRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -328,16 +328,53 @@ export const usersAPI = {
 };
 
 // ============================================
-// DEPARTMENTS API (Placeholder - to be implemented)
+// DEPARTMENTS API
 // ============================================
 
 export const departmentsAPI = {
-  getAll: async () => {
-    return await request('/departments');
+  /**
+   * Get all departments/sub-areas
+   */
+  getAll: async (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    const endpoint = queryString ? `/departments?${queryString}` : '/departments';
+    return await request(endpoint);
   },
 
+  /**
+   * Get department by ID
+   */
   getById: async (id) => {
     return await request(`/departments/${id}`);
+  },
+
+  /**
+   * Create new department (Master Admin only)
+   */
+  create: async (departmentData) => {
+    return await request('/departments', {
+      method: 'POST',
+      body: JSON.stringify(departmentData),
+    });
+  },
+
+  /**
+   * Update department (Master Admin only)
+   */
+  update: async (id, departmentData) => {
+    return await request(`/departments/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(departmentData),
+    });
+  },
+
+  /**
+   * Delete department (Master Admin only)
+   */
+  delete: async (id) => {
+    return await request(`/departments/${id}`, {
+      method: 'DELETE',
+    });
   },
 };
 
@@ -425,6 +462,96 @@ export const analyticsAPI = {
   },
 };
 
+// ============================================
+// SYSTEM SETTINGS API
+// ============================================
+
+export const systemSettingsAPI = {
+  /**
+   * Get all system settings
+   */
+  getAll: async () => {
+    return await request('/settings');
+  },
+
+  /**
+   * Get single setting by key
+   */
+  getByKey: async (key) => {
+    return await request(`/settings/${key}`);
+  },
+
+  /**
+   * Update or create system setting (Master Admin only)
+   */
+  update: async (key, value, description) => {
+    return await request(`/settings/${key}`, {
+      method: 'PUT',
+      body: JSON.stringify({ value, description }),
+    });
+  },
+
+  /**
+   * Delete system setting (Master Admin only)
+   */
+  delete: async (key) => {
+    return await request(`/settings/${key}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+// ============================================
+// EQUIPMENT KITS API
+// ============================================
+
+export const equipmentKitsAPI = {
+  /**
+   * Get all equipment kits
+   */
+  getAll: async (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    const endpoint = queryString ? `/kits?${queryString}` : '/kits';
+    return await request(endpoint);
+  },
+
+  /**
+   * Get kit by ID with equipment details
+   */
+  getById: async (id) => {
+    return await request(`/kits/${id}`);
+  },
+
+  /**
+   * Create new equipment kit (Admin only)
+   */
+  create: async (kitData) => {
+    return await request('/kits', {
+      method: 'POST',
+      body: JSON.stringify(kitData),
+    });
+  },
+
+  /**
+   * Update equipment kit (Admin only)
+   */
+  update: async (id, kitData) => {
+    return await request(`/kits/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(kitData),
+    });
+  },
+
+  /**
+   * Delete equipment kit (Admin only)
+   */
+  delete: async (id) => {
+    return await request(`/kits/${id}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
 // Export token management functions
 export const tokenManager = {
   getToken,
@@ -441,5 +568,7 @@ export default {
   departmentsAPI,
   csvAPI,
   analyticsAPI,
+  systemSettingsAPI,
+  equipmentKitsAPI,
   tokenManager,
 };
