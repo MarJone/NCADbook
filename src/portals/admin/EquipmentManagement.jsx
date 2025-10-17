@@ -248,16 +248,31 @@ export default function EquipmentManagement() {
                   )}
                 </td>
                 <td>
-                  <select
-                    value={item.status}
-                    onChange={(e) => handleStatusChange(item.id, e.target.value)}
-                    className="status-select"
-                  >
-                    <option value="available">Available</option>
-                    <option value="booked">Booked</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="out_of_service">Out of Service</option>
-                  </select>
+                  <div className="status-cell">
+                    <span className={`availability-badge availability-${item.status}`}>
+                      {item.status === 'available' && <span className="badge-icon">✓</span>}
+                      {item.status === 'booked' && <span className="badge-icon">●</span>}
+                      {item.status === 'maintenance' && <span className="badge-icon">🔧</span>}
+                      {item.status === 'out_of_service' && <span className="badge-icon">✕</span>}
+                      <span className="badge-text">
+                        {item.status === 'available' ? 'Available' :
+                         item.status === 'booked' ? 'Booked' :
+                         item.status === 'maintenance' ? 'Maintenance' :
+                         'Out of Service'}
+                      </span>
+                    </span>
+                    <select
+                      value={item.status}
+                      onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                      className="status-select-compact"
+                      title="Change status"
+                    >
+                      <option value="available">Available</option>
+                      <option value="booked">Booked</option>
+                      <option value="maintenance">Maintenance</option>
+                      <option value="out_of_service">Out of Service</option>
+                    </select>
+                  </div>
                 </td>
                 <td>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>

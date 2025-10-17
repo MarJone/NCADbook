@@ -1,0 +1,214 @@
+/* ============================================
+   FILTER CHIPS COMPONENT
+   Active filter display with removal
+   ============================================ */
+
+.filter-chips-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  padding: var(--spacing-lg) 0;
+  animation: filterChipsFadeIn var(--duration-fast) var(--ease-out-quad);
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  flex: 1;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--role-accent-light);
+  border: 1px solid var(--role-accent);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  color: var(--role-accent);
+  animation: filterChipSlideIn var(--duration-fast) var(--ease-out-back);
+  transition: all var(--duration-fast) var(--ease-out-quad);
+}
+
+.filter-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-chip-label {
+  font-weight: var(--font-weight-medium);
+  opacity: 0.8;
+}
+
+.filter-chip-value {
+  font-weight: var(--font-weight-semibold);
+}
+
+.filter-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: var(--spacing-xs);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--role-accent);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out-quad);
+}
+
+.filter-chip-remove:hover {
+  background: var(--role-accent);
+  color: white;
+  transform: rotate(90deg);
+}
+
+.filter-chip-remove:focus {
+  outline: 2px solid var(--role-accent);
+  outline-offset: 2px;
+}
+
+.filter-clear-all {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  color: var(--role-accent);
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+.filter-clear-all:hover {
+  text-decoration: underline;
+}
+
+/* Portal-specific styling */
+.student-portal .filter-chip {
+  background: var(--student-bg-subtle);
+  border-color: var(--student-accent);
+  color: var(--student-accent);
+}
+
+.student-portal .filter-chip-remove {
+  color: var(--student-accent);
+}
+
+.student-portal .filter-chip-remove:hover {
+  background: var(--student-accent);
+}
+
+.student-portal .filter-clear-all {
+  color: var(--student-accent);
+}
+
+.staff-portal .filter-chip {
+  background: var(--staff-bg-subtle);
+  border-color: var(--staff-accent);
+  color: var(--staff-accent);
+}
+
+.staff-portal .filter-chip-remove {
+  color: var(--staff-accent);
+}
+
+.staff-portal .filter-chip-remove:hover {
+  background: var(--staff-accent);
+}
+
+.staff-portal .filter-clear-all {
+  color: var(--staff-accent);
+}
+
+.admin-portal .filter-chip {
+  background: var(--admin-bg-subtle);
+  border-color: var(--admin-accent);
+  color: var(--admin-accent);
+}
+
+.admin-portal .filter-chip-remove {
+  color: var(--admin-accent);
+}
+
+.admin-portal .filter-chip-remove:hover {
+  background: var(--admin-accent);
+}
+
+.admin-portal .filter-clear-all {
+  color: var(--admin-accent);
+}
+
+.master-admin-portal .filter-chip {
+  background: var(--master-bg-subtle);
+  border-color: var(--master-accent);
+  color: var(--master-accent);
+}
+
+.master-admin-portal .filter-chip-remove {
+  color: var(--master-accent);
+}
+
+.master-admin-portal .filter-chip-remove:hover {
+  background: var(--master-accent);
+}
+
+.master-admin-portal .filter-clear-all {
+  color: var(--master-accent);
+}
+
+/* Animations */
+@keyframes filterChipsFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes filterChipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .filter-chips-container,
+  .filter-chip,
+  .filter-chip-remove {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .filter-chip:hover,
+  .filter-chip-remove:hover {
+    transform: none !important;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .filter-chips-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .filter-chips {
+    width: 100%;
+  }
+
+  .filter-clear-all {
+    align-self: flex-start;
+  }
+}

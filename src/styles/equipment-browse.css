@@ -1,0 +1,867 @@
+/**
+ * ============================================
+ * EQUIPMENT BROWSE - Phase II UX Enhancement
+ * "Bold and Curious" equipment discovery
+ * ============================================
+ */
+
+/* ========================================
+   BROWSE HEADER
+   ======================================== */
+
+.browse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.browse-header h2 {
+  margin: 0;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-text-primary);
+}
+
+.browse-header .btn-primary {
+  white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease-out-quad);
+}
+
+.browse-header .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ========================================
+   FILTER CONTROLS - Enhanced
+   ======================================== */
+
+.filter-controls-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--role-bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--role-border-light);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+/* Single column when only category filter */
+.filter-controls-compact.single-filter {
+  grid-template-columns: 1fr;
+  max-width: 400px;
+}
+
+.filter-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-primary);
+}
+
+.filter-select {
+  width: 100%;
+  padding: var(--space-sm-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  background-color: var(--color-white);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.filter-select:hover {
+  border-color: var(--role-accent);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--role-accent);
+  box-shadow: 0 0 0 3px var(--role-accent-light);
+}
+
+/* ========================================
+   RESULTS COUNT
+   ======================================== */
+
+.results-count {
+  margin: var(--spacing-md) 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  animation: fadeIn var(--duration-fast) var(--ease-out-quad);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   EQUIPMENT GRID - Enhanced Cards
+   ======================================== */
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+/* Portal-specific grid gaps */
+.student-portal .equipment-grid {
+  gap: var(--student-card-gap);
+}
+
+.staff-portal .equipment-grid {
+  gap: var(--staff-card-gap);
+}
+
+.admin-portal .equipment-grid {
+  gap: var(--dept-card-gap);
+}
+
+.master-admin-portal .equipment-grid {
+  gap: var(--master-card-gap);
+}
+
+/* ========================================
+   EQUIPMENT CARD - Award-Winning Design
+   ======================================== */
+
+.equipment-card {
+  background: var(--role-bg-primary);
+  border: 1px solid var(--role-border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out-quad);
+  position: relative;
+}
+
+.equipment-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--role-accent-light);
+}
+
+.equipment-card:active {
+  transform: translateY(-2px) scale(1.005);
+}
+
+/* Student Portal - Generous hover */
+.student-portal .equipment-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--student-shadow-lg);
+}
+
+/* Admin portals - Subtle hover */
+.admin-portal .equipment-card:hover,
+.master-admin-portal .equipment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.equipment-info {
+  padding: var(--space-lg);
+}
+
+.equipment-info h3 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-in-out);
+}
+
+.equipment-info h3:hover {
+  color: var(--role-accent);
+}
+
+.equipment-info .category {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--role-accent);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.equipment-info .description {
+  margin: 0 0 var(--space-md) 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--theme-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========================================
+   EQUIPMENT META (Status + Department)
+   ======================================== */
+
+.equipment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.equipment-meta .status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: capitalize;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+/* Status badge icons (using Unicode) */
+.equipment-meta .status-available::before {
+  content: "●";
+  font-size: 0.75em;
+  color: var(--color-success);
+}
+
+.equipment-meta .status-booked::before {
+  content: "●";
+  font-size: 0.75em;
+  color: var(--color-warning);
+}
+
+.equipment-meta .status-maintenance::before {
+  content: "●";
+  font-size: 0.75em;
+  color: var(--color-error);
+}
+
+.equipment-meta .status-out_of_service::before {
+  content: "●";
+  font-size: 0.75em;
+  color: var(--color-error);
+}
+
+/* Status colors */
+.status-available {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-dark);
+  border: 1px solid var(--color-success-light);
+}
+
+.status-booked {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-dark);
+  border: 1px solid var(--color-warning-light);
+}
+
+.status-maintenance {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-dark);
+  border: 1px solid var(--color-error-light);
+}
+
+.status-out_of_service {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-dark);
+  border: 1px solid var(--color-error-light);
+}
+
+.equipment-meta .department {
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   CROSS-DEPARTMENT BADGE - Polished
+   ======================================== */
+
+.cross-department-badge {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm-md);
+  background-color: var(--color-info-bg);
+  border: 1px solid var(--color-info);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.cross-department-badge:hover {
+  background-color: var(--color-info-light);
+  border-color: var(--color-info-dark);
+}
+
+.cross-department-badge strong {
+  display: block;
+  color: var(--color-info-dark);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-xs);
+}
+
+.cross-department-badge p {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-secondary);
+}
+
+/* ========================================
+   COMPACT TABLE VIEW
+   ======================================== */
+
+.equipment-table-compact {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--role-bg-primary);
+  border: 1px solid var(--role-border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-2xl);
+}
+
+.equipment-table-compact thead {
+  background: var(--role-bg-secondary);
+  border-bottom: 2px solid var(--role-border);
+}
+
+.equipment-table-compact th {
+  padding: var(--space-md);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.equipment-table-compact td {
+  padding: var(--space-md);
+  border-top: 1px solid var(--role-border-light);
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-primary);
+  transition: background-color var(--duration-fast) var(--ease-in-out);
+}
+
+.equipment-table-compact tbody tr:hover {
+  background-color: var(--role-bg-tertiary);
+}
+
+.equipment-table-compact tbody tr:hover td {
+  cursor: pointer;
+}
+
+.equipment-name-cell {
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+}
+
+.cross-dept-compact {
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-info-dark);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ========================================
+   VIEW TOGGLE - Tab-like Design
+   ======================================== */
+
+.view-toggle {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-xs);
+  background: var(--role-bg-secondary);
+  border-radius: var(--radius-md);
+  width: fit-content;
+}
+
+.btn-view {
+  padding: var(--space-sm) var(--space-lg);
+  border: 1px solid var(--role-border-light);
+  background: var(--role-bg-primary);
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.btn-view:hover {
+  background: var(--role-bg-tertiary);
+  color: var(--theme-text-primary);
+  border-color: var(--role-accent-light);
+}
+
+.btn-view.active {
+  background: var(--role-accent) !important;
+  color: white !important;
+  border-color: var(--role-accent) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-view:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--role-accent-light);
+}
+
+/* ========================================
+   EMPTY STATE - Supportive Messaging
+   ======================================== */
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl);
+  background: var(--role-bg-secondary);
+  border: 2px dashed var(--role-border);
+  border-radius: var(--radius-lg);
+  margin: var(--space-2xl) 0;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--theme-text-secondary);
+}
+
+/* ========================================
+   ACCESS RESTRICTED - Warning State
+   ======================================== */
+
+.access-restricted {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: var(--space-2xl);
+}
+
+.restriction-message {
+  text-align: center;
+  max-width: 500px;
+  padding: var(--space-2xl);
+  background: var(--color-warning-bg);
+  border: 2px solid var(--color-warning);
+  border-radius: var(--radius-md);
+}
+
+.restriction-message h2 {
+  color: var(--color-warning-dark);
+  margin-bottom: var(--space-md);
+}
+
+.restriction-message p {
+  color: var(--color-warning-dark);
+  margin-bottom: var(--space-sm);
+}
+
+.restriction-message p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   RESPONSIVE - Mobile Optimization
+   ======================================== */
+
+@media (max-width: 768px) {
+  .equipment-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .browse-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .browse-header .btn-primary {
+    width: 100%;
+  }
+
+  .filter-controls-compact {
+    grid-template-columns: 1fr;
+  }
+
+  .view-toggle {
+    width: 100%;
+  }
+
+  .btn-view {
+    flex: 1;
+    text-align: center;
+  }
+
+  .equipment-table-compact {
+    font-size: var(--font-size-xs);
+  }
+
+  .equipment-table-compact th,
+  .equipment-table-compact td {
+    padding: var(--space-sm);
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .equipment-card,
+  .browse-header .btn-primary,
+  .filter-select,
+  .btn-view {
+    transition: none !important;
+  }
+
+  .equipment-card:hover {
+    transform: none !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .equipment-card {
+    border-width: 2px;
+  }
+
+  .status-available,
+  .status-booked,
+  .status-maintenance,
+  .status-out_of_service {
+    border-width: 2px;
+  }
+}
+
+/* Focus visible (keyboard navigation) */
+.equipment-card:focus-visible {
+  outline: 3px solid var(--role-accent);
+  outline-offset: 2px;
+}
+
+.filter-select:focus-visible {
+  outline: 3px solid var(--role-accent);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   ADVANCED FILTERS TOGGLE - Progressive Disclosure
+   ======================================== */
+
+.advanced-filters-toggle {
+  margin: var(--space-md) 0;
+}
+
+.btn-advanced-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--role-bg-secondary);
+  border: 1px solid var(--role-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.btn-advanced-toggle:hover {
+  background: var(--role-bg-tertiary);
+  border-color: var(--role-accent-light);
+}
+
+.btn-advanced-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--role-accent-light);
+}
+
+.btn-advanced-toggle .toggle-icon {
+  font-size: 0.75em;
+  color: var(--role-accent);
+  transition: transform var(--duration-fast) var(--ease-in-out);
+}
+
+.btn-advanced-toggle[aria-expanded="true"] .toggle-icon {
+  transform: rotate(0deg);
+}
+
+.btn-advanced-toggle .filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-xs);
+  background: var(--role-accent);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  margin-left: var(--space-xs);
+}
+
+/* Smooth slide animation for collapsible section */
+#advanced-filters-section {
+  animation: slideDown var(--duration-normal) var(--ease-out-quad);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   REAL-TIME AVAILABILITY BADGES - Phase II Enhancement
+   ======================================== */
+
+.equipment-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.equipment-header-row h3 {
+  flex: 1;
+  margin: 0;
+}
+
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-fast) var(--ease-in-out);
+  animation: fadeInBadge var(--duration-normal) var(--ease-out-quad);
+}
+
+@keyframes fadeInBadge {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.availability-badge .badge-icon {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.availability-badge .badge-text {
+  font-size: 11px;
+}
+
+/* Available - Green with pulse */
+.availability-available {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  animation: pulseAvailable 2s ease-in-out infinite;
+}
+
+@keyframes pulseAvailable {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+
+/* Booked - Red */
+.availability-booked {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+/* Maintenance - Amber */
+.availability-maintenance {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+/* Out of Service - Gray */
+.availability-out_of_service {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+}
+
+/* Hover effects for interactive badges */
+.equipment-card:hover .availability-badge {
+  transform: scale(1.05);
+}
+
+/* ========================================
+   AVAILABILITY FILTER - Date Range Enhancement
+   ======================================== */
+
+.availability-filter {
+  margin: var(--space-md) 0;
+  padding: var(--space-md);
+  background: var(--role-bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--role-border-light);
+}
+
+.availability-filter .filter-label {
+  margin-bottom: var(--space-sm);
+}
+
+.filter-options {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+
+.custom-date-picker {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--role-bg-primary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--role-border-light);
+}
+
+.date-range-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.date-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.date-input-group label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-primary);
+}
+
+.optional-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-normal);
+  color: var(--theme-text-secondary);
+  font-style: italic;
+}
+
+.date-input {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--role-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  color: var(--theme-text-primary);
+  background: var(--role-bg-primary);
+  transition: all var(--duration-fast) var(--ease-in-out);
+}
+
+.date-input:hover {
+  border-color: var(--role-accent-light);
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: var(--role-accent);
+  box-shadow: 0 0 0 3px var(--role-accent-light);
+}
+
+.date-range-hint {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-info-bg);
+  border-left: 3px solid var(--color-info);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-primary);
+  animation: fadeIn var(--duration-normal) var(--ease-out-quad);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .filter-options {
+    flex-direction: column;
+  }
+
+  .filter-options .btn {
+    width: 100%;
+  }
+
+  .date-range-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   ADMIN PORTAL - Status Cell Enhancement
+   ======================================== */
+
+.status-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  align-items: flex-start;
+}
+
+.status-select-compact {
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--role-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  background: var(--role-bg-primary);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-in-out);
+  width: 100%;
+  max-width: 150px;
+}
+
+.status-select-compact:hover {
+  border-color: var(--role-accent-light);
+  background: var(--role-bg-secondary);
+}
+
+.status-select-compact:focus {
+  outline: none;
+  border-color: var(--role-accent);
+  box-shadow: 0 0 0 3px var(--role-accent-light);
+}

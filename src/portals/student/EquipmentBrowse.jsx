@@ -11,11 +11,15 @@ import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 import AvailabilityFilter from '../../components/equipment/AvailabilityFilter';
 import PullToRefresh from '../../components/common/PullToRefresh';
 import KitBrowser from '../../components/equipment/KitBrowser';
+import EquipmentQuickView from '../../components/equipment/EquipmentQuickView';
 import { useToast } from '../../hooks/useToast';
 import { getAccessibleEquipment, getAllDepartments } from '../../services/department.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { isCrossDepartmentBrowsingEnabled, areEquipmentKitsEnabled } from '../../services/systemSettings.service';
 import { getDepartmentsBySchool, SCHOOLS } from '../../config/departments';
+import EmptyState from '../../components/common/EmptyState';
+import FilterChips from '../../components/common/FilterChips';
+import '../../styles/equipment-browse.css';
 
 export default function EquipmentBrowse() {
   const { user } = useAuth();
@@ -28,6 +32,7 @@ export default function EquipmentBrowse() {
   const [showModal, setShowModal] = useState(false);
   const [showMultiModal, setShowMultiModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showQuickView, setShowQuickView] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [departmentFilter, setDepartmentFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,6 +43,7 @@ export default function EquipmentBrowse() {
   const [crossDeptBrowsingEnabled, setCrossDeptBrowsingEnabled] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState('my_department'); // 'my_department' or department ID
   const [kitsEnabled, setKitsEnabled] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   // Check if user has permission to view catalog (for staff only)
   const canViewCatalog = () => {
@@ -75,6 +81,11 @@ export default function EquipmentBrowse() {
   useEffect(() => {
     const applyFilters = async () => {
       let filtered = equipment;
+
+      // NOTE: Department filtering for students is handled by the dropdown selection
+      // and does NOT filter the equipment array - students see all equipment from the API
+      // The department dropdown is only for cross-department browsing when enabled
+      // Backend returns all equipment for students, filtering by department causes 401 errors
 
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
@@ -123,20 +134,9 @@ export default function EquipmentBrowse() {
       }
 
       // Apply department filter
-      if (user?.role === 'student') {
-        // Communication Design students (Moving Image, Graphic Design, Illustration) share equipment
-        const commDesignDepts = ['Moving Image Design', 'Graphic Design', 'Illustration'];
-        const isCommDesignStudent = commDesignDepts.includes(user.department);
-
-        if (isCommDesignStudent && (selectedDepartment === 'my_department' || commDesignDepts.includes(selectedDepartment))) {
-          // Don't filter by department - show all equipment for Communication Design students
-          // when viewing their own department or other Communication Design departments
-        } else if (selectedDepartment === 'my_department' || !crossDeptBrowsingEnabled) {
-          params.department = user.department;
-        } else if (selectedDepartment !== 'all') {
-          params.department = selectedDepartment;
-        }
-      } else {
+      // NOTE: Students don't filter by department in the API call
+      // to avoid 401 errors - filtering is done client-side instead
+      if (user?.role !== 'student') {
         // Admin/staff department filter
         if (departmentFilter !== 'all') {
           params.department = departmentFilter;
@@ -168,6 +168,11 @@ export default function EquipmentBrowse() {
 
   const handleCardClick = (item) => {
     setSelectedEquipment(item);
+    setShowQuickView(true);
+  };
+
+  const handleViewFullDetails = () => {
+    setShowQuickView(false);
     setShowDetails(true);
   };
 
@@ -202,7 +207,83 @@ export default function EquipmentBrowse() {
 
   const handleRefresh = async () => {
     await loadEquipment();
-    await loadSubAreas();
+  };
+
+  // Get active filters for filter chips
+  const getActiveFilters = () => {
+    const activeFilters = [];
+
+    if (filter !== 'all') {
+      activeFilters.push({
+        id: 'category',
+        label: 'Category',
+        value: filter
+      });
+    }
+
+    if (searchQuery.trim()) {
+      activeFilters.push({
+        id: 'search',
+        label: 'Search',
+        value: searchQuery.length > 20 ? searchQuery.substring(0, 20) + '...' : searchQuery
+      });
+    }
+
+    if (departmentFilter !== 'all') {
+      const deptName = departments.find(d => d.id === departmentFilter)?.name || departmentFilter;
+      activeFilters.push({
+        id: 'department',
+        label: 'Department',
+        value: deptName
+      });
+    }
+
+    if (selectedDepartment !== 'my_department' && user?.role === 'student') {
+      const deptName = selectedDepartment === 'all' ? 'All Departments' : (departments.find(d => d.id === selectedDepartment)?.name || selectedDepartment);
+      activeFilters.push({
+        id: 'selected_department',
+        label: 'Viewing',
+        value: deptName
+      });
+    }
+
+    if (availabilityFilter.type === 'available') {
+      activeFilters.push({
+        id: 'availability',
+        label: 'Availability',
+        value: 'Available Only'
+      });
+    }
+
+    return activeFilters;
+  };
+
+  const handleRemoveFilter = (filterId) => {
+    switch (filterId) {
+      case 'category':
+        setFilter('all');
+        break;
+      case 'search':
+        setSearchQuery('');
+        break;
+      case 'department':
+        setDepartmentFilter('all');
+        break;
+      case 'selected_department':
+        setSelectedDepartment('my_department');
+        break;
+      case 'availability':
+        setAvailabilityFilter({ type: 'all' });
+        break;
+    }
+  };
+
+  const handleClearAllFilters = () => {
+    setFilter('all');
+    setSearchQuery('');
+    setDepartmentFilter('all');
+    setSelectedDepartment('my_department');
+    setAvailabilityFilter({ type: 'all' });
   };
 
   // Paginate filtered equipment
@@ -219,31 +300,6 @@ export default function EquipmentBrowse() {
           <p>You do not have permission to view the equipment catalog.</p>
           <p>Please contact your department admin to request access.</p>
         </div>
-        <style jsx>{`
-          .access-restricted {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 60vh;
-            padding: 2rem;
-          }
-          .restriction-message {
-            text-align: center;
-            max-width: 500px;
-            padding: 2rem;
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 8px;
-          }
-          .restriction-message h2 {
-            color: #856404;
-            margin-bottom: 1rem;
-          }
-          .restriction-message p {
-            color: #856404;
-            margin-bottom: 0.5rem;
-          }
-        `}</style>
       </div>
     );
   }
@@ -251,13 +307,13 @@ export default function EquipmentBrowse() {
   return (
     <div className="equipment-browse">
       <PullToRefresh onRefresh={handleRefresh}>
-        <div className="browse-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <div className="browse-header">
           <h2>Browse Equipment</h2>
           <button
             onClick={() => setShowMultiModal(true)}
-            className="btn btn-primary"
+            className={`btn btn-primary ${loading ? 'loading' : ''}`}
             data-testid="book-multiple-items-btn"
-            style={{ whiteSpace: 'nowrap' }}
+            disabled={loading}
           >
             Book Multiple Items
           </button>
@@ -271,38 +327,58 @@ export default function EquipmentBrowse() {
 
       <AvailabilityFilter onFilterChange={setAvailabilityFilter} />
 
+      {/* Advanced Filters Toggle */}
+      <div className="advanced-filters-toggle">
+        <button
+          className="btn-advanced-toggle"
+          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+          aria-expanded={showAdvancedFilters}
+          aria-controls="advanced-filters-section"
+        >
+          <span className="toggle-icon">{showAdvancedFilters ? '▼' : '▶'}</span>
+          Advanced Filters
+          {(filter !== 'all' || (user?.role !== 'student' && departmentFilter !== 'all') || (user?.role === 'student' && selectedDepartment !== 'my_department')) && (
+            <span className="filter-badge">
+              {[
+                filter !== 'all' ? 1 : 0,
+                (user?.role !== 'student' && departmentFilter !== 'all') ? 1 : 0,
+                (user?.role === 'student' && selectedDepartment !== 'my_department') ? 1 : 0
+              ].reduce((a, b) => a + b, 0)}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Active Filter Chips */}
+      <FilterChips
+        filters={getActiveFilters()}
+        onRemove={handleRemoveFilter}
+        onClearAll={handleClearAllFilters}
+      />
+
+      {/* Result Count */}
+      {!loading && (
+        <div className="results-count">
+          Showing {filteredEquipment.length} {filteredEquipment.length === 1 ? 'item' : 'items'}
+        </div>
+      )}
+
       {user && user.role === 'student' && kitsEnabled && (
         <KitBrowser onBookingSuccess={loadEquipment} />
       )}
 
-      <div className="filter-controls-compact" style={{
-        display: 'grid',
-        gridTemplateColumns: (departments.length > 0 && user?.role !== 'student') || (user?.role === 'student' && crossDeptBrowsingEnabled) ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
-        gap: '1rem',
-        marginTop: '1rem',
-        marginBottom: '1rem',
-        padding: '1rem',
-        backgroundColor: '#f8f9fa',
-        borderRadius: '8px',
-        border: '1px solid #dee2e6'
-      }}>
+      {/* Advanced Filters Section - Collapsible */}
+      {showAdvancedFilters && (
+        <div id="advanced-filters-section" className={`filter-controls-compact ${!(departments.length > 0 && user?.role !== 'student') && !(user?.role === 'student' && crossDeptBrowsingEnabled) ? 'single-filter' : ''}`}>
         <div>
-          <label htmlFor="category-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
+          <label htmlFor="category-filter" className="filter-label">
             Category
           </label>
           <select
             id="category-filter"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.5rem',
-              borderRadius: '4px',
-              border: '1px solid #ced4da',
-              fontSize: '0.95rem',
-              cursor: 'pointer',
-              backgroundColor: 'white'
-            }}
+            className="filter-select"
           >
             {categories.map(cat => (
               <option key={cat} value={cat}>
@@ -315,22 +391,14 @@ export default function EquipmentBrowse() {
         {/* Department filter for STUDENTS (when cross-dept browsing enabled) */}
         {user?.role === 'student' && crossDeptBrowsingEnabled && departments.length > 0 && (
           <div>
-            <label htmlFor="student-department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
+            <label htmlFor="student-department-filter" className="filter-label">
               Department
             </label>
             <select
               id="student-department-filter"
               value={selectedDepartment}
               onChange={(e) => setSelectedDepartment(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                borderRadius: '4px',
-                border: '1px solid #ced4da',
-                fontSize: '0.95rem',
-                cursor: 'pointer',
-                backgroundColor: 'white'
-              }}
+              className="filter-select"
             >
               <option value="my_department">My Department ({user.department})</option>
               <option value="all">All Departments</option>
@@ -348,22 +416,14 @@ export default function EquipmentBrowse() {
         {/* Department filter for ADMINS/STAFF */}
         {departments.length > 0 && user?.role !== 'student' && (
           <div>
-            <label htmlFor="department-filter" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.875rem' }}>
+            <label htmlFor="department-filter" className="filter-label">
               Department
             </label>
             <select
               id="department-filter"
               value={departmentFilter}
               onChange={(e) => setDepartmentFilter(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                borderRadius: '4px',
-                border: '1px solid #ced4da',
-                fontSize: '0.95rem',
-                cursor: 'pointer',
-                backgroundColor: 'white'
-              }}
+              className="filter-select"
             >
               <option value="all">All Departments</option>
               {departments.map(department => (
@@ -375,6 +435,7 @@ export default function EquipmentBrowse() {
           </div>
         )}
       </div>
+      )}
 
       <div className="view-toggle">
         <button
@@ -415,43 +476,62 @@ export default function EquipmentBrowse() {
           </table>
         )
       ) : filteredEquipment.length === 0 ? (
-        <div className="empty-state">
-          <p>No equipment found matching your search criteria.</p>
-        </div>
+        <EmptyState
+          icon="🔍"
+          title="No equipment found"
+          message="Try adjusting your filters, search terms, or browse a different category."
+          action={
+            searchQuery || filter !== 'all' || departmentFilter !== 'all' ? (
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilter('all');
+                  setDepartmentFilter('all');
+                  setAvailabilityFilter({ type: 'all' });
+                }}
+              >
+                Clear All Filters
+              </button>
+            ) : null
+          }
+        />
       ) : viewMode === 'large' ? (
         <>
           <div className="equipment-grid">
             {paginatedEquipment.map(item => (
             <div key={item.id} className="equipment-card" data-testid="equipment-card">
-              <div onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>
+              <div onClick={() => handleCardClick(item)}>
                 <EquipmentImage
                   equipment={item}
                   size="medium"
                 />
               </div>
               <div className="equipment-info">
-                <h3 onClick={() => handleCardClick(item)} style={{ cursor: 'pointer' }}>{item.product_name}</h3>
+                <div className="equipment-header-row">
+                  <h3 onClick={() => handleCardClick(item)}>{item.product_name}</h3>
+                  <span className={`availability-badge availability-${item.status}`}>
+                    {item.status === 'available' && <span className="badge-icon">✓</span>}
+                    {item.status === 'booked' && <span className="badge-icon">●</span>}
+                    {item.status === 'maintenance' && <span className="badge-icon">🔧</span>}
+                    {item.status === 'out_of_service' && <span className="badge-icon">✕</span>}
+                    <span className="badge-text">
+                      {item.status === 'available' ? 'Available' :
+                       item.status === 'booked' ? 'Booked' :
+                       item.status === 'maintenance' ? 'Maintenance' :
+                       'Out of Service'}
+                    </span>
+                  </span>
+                </div>
                 <p className="category">{item.category}</p>
                 <p className="description">{item.description}</p>
                 <div className="equipment-meta">
-                  <span className={`status status-${item.status}`}>
-                    {item.status}
-                  </span>
                   <span className="department">{item.department}</span>
                 </div>
                 {item.isCrossDepartment && (
-                  <div className="cross-department-badge" style={{
-                    marginTop: '0.5rem',
-                    padding: '0.5rem',
-                    backgroundColor: '#e3f2fd',
-                    border: '1px solid #2196f3',
-                    borderRadius: '4px',
-                    fontSize: '0.875rem'
-                  }}>
-                    <strong style={{ color: '#1976d2' }}>🔄 Cross-Department Access</strong>
-                    <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.8rem', color: '#666' }}>
-                      From {item.lendingDepartment}
-                    </p>
+                  <div className="cross-department-badge">
+                    <strong>🔄 Cross-Department Access</strong>
+                    <p>From {item.lendingDepartment}</p>
                   </div>
                 )}
                 {item.isInterdisciplinary && (
@@ -497,19 +577,19 @@ export default function EquipmentBrowse() {
             <tbody>
               {paginatedEquipment.map(item => (
               <tr key={item.id} data-testid="equipment-row-compact">
-                <td onClick={() => handleCardClick(item)} style={{ cursor: 'pointer', fontWeight: '600' }}>
+                <td onClick={() => handleCardClick(item)} className="equipment-name-cell">
                   {item.product_name}
                 </td>
                 <td>{item.category}</td>
                 <td>
                   {item.department}
                   {item.isCrossDepartment && (
-                    <div style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#1976d2', fontWeight: '600' }}>
+                    <div className="cross-dept-compact">
                       🔄 From {item.lendingDepartment}
                     </div>
                   )}
                   {item.isInterdisciplinary && (
-                    <div className="interdisciplinary-badge" style={{ marginTop: '0.25rem' }}>
+                    <div className="interdisciplinary-badge">
                       Via {getSubAreaName(item.fromSubAreaId)}
                     </div>
                   )}
@@ -543,6 +623,15 @@ export default function EquipmentBrowse() {
         </>
       )}
       </PullToRefresh>
+
+      {showQuickView && selectedEquipment && (
+        <EquipmentQuickView
+          equipment={selectedEquipment}
+          onClose={() => setShowQuickView(false)}
+          onBookClick={handleBookClick}
+          onViewFullDetails={handleViewFullDetails}
+        />
+      )}
 
       {showDetails && selectedEquipment && (
         <EquipmentDetails

@@ -23,7 +23,8 @@
 /* Base Modal Content */
 .modal-content {
   position: relative;
-  background: var(--role-bg-primary, #ffffff);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   border-radius: var(--radius-lg, 12px);
   max-width: 600px;
   width: 100%;
@@ -51,7 +52,8 @@
 .modal-header {
   position: sticky;
   top: 0;
-  background: var(--role-bg-primary, #ffffff);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   padding: var(--space-5, 24px) var(--space-5, 24px) var(--space-4, 16px);
   border-bottom: 1px solid var(--theme-border-light, #e5e7eb);
   display: flex;
@@ -100,6 +102,8 @@
   padding: var(--space-5, 24px);
   overflow-y: auto;
   flex: 1;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 /* Modal Actions/Footer */
@@ -523,4 +527,134 @@ select#qr_code {
   .detail-row {
     background: #111827;
   }
+}
+
+/* ========================================
+   BOOKING MODAL UTILITY CLASSES
+   Replaces inline styles from BookingModal.jsx
+   ======================================== */
+
+/* Restriction Message (Access Denied) */
+.restriction-message {
+  text-align: center;
+  padding: var(--space-2xl);
+  background: var(--color-warning-bg);
+  border: 2px solid var(--color-warning);
+  border-radius: var(--radius-md);
+}
+
+.restriction-message h3 {
+  color: var(--color-warning-dark);
+  margin-bottom: var(--space-md);
+}
+
+.restriction-message p {
+  color: var(--color-warning-dark);
+  margin-bottom: var(--space-sm);
+}
+
+.restriction-message p:last-of-type {
+  margin-bottom: 0;
+}
+
+.restriction-message + .modal-actions {
+  margin-top: var(--space-lg);
+  display: flex;
+  justify-content: center;
+}
+
+/* Cross-Department Notice */
+.cross-department-notice {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background-color: var(--color-info-bg);
+  border: 2px solid var(--color-info);
+  border-radius: var(--radius-md);
+}
+
+.cross-department-notice-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-sm-md);
+}
+
+.cross-department-notice-header .icon {
+  font-size: var(--font-size-xl);
+  margin-right: var(--space-sm);
+}
+
+.cross-department-notice-header h4 {
+  margin: 0;
+  color: var(--color-info-dark);
+  font-size: var(--font-size-lg);
+}
+
+.cross-department-notice p {
+  margin: var(--space-sm) 0;
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.cross-department-notice p strong {
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Collection Instructions Box */
+.collection-instructions {
+  margin-top: var(--space-md);
+  padding: var(--space-sm-md);
+  background-color: var(--color-white);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-info-light);
+}
+
+.collection-instructions h5 {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-info-dark);
+  font-size: var(--font-size-sm);
+}
+
+.collection-instructions p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--theme-text-primary);
+  white-space: pre-wrap;
+}
+
+/* Terms & Conditions Box */
+.terms-conditions {
+  margin-top: var(--space-sm-md);
+  padding: var(--space-sm-md);
+  background-color: var(--color-warning-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-warning-light);
+}
+
+.terms-conditions h5 {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-warning-dark);
+  font-size: var(--font-size-sm);
+}
+
+.terms-conditions p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--theme-text-primary);
+  white-space: pre-wrap;
+}
+
+/* Equipment Summary (in booking modal) */
+.equipment-summary h3 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--font-size-lg);
+  color: var(--theme-text-primary);
+}
+
+.equipment-summary p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
 }
