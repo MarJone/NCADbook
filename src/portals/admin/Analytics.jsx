@@ -6,6 +6,7 @@ import { useToast } from '../../hooks/useToast';
 import Toast from '../../components/common/Toast';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { haptics } from '../../utils/haptics';
 
 export default function Analytics() {
   const { user } = useAuth();
@@ -465,10 +466,16 @@ export default function Analytics() {
           <p className="subtitle">Filter and export booking statistics</p>
         </div>
         <div className="analytics-actions">
-          <button onClick={exportToCSV} className="btn btn-secondary">
+          <button onClick={() => {
+            haptics.medium();
+            exportToCSV();
+          }} className="btn btn-secondary">
             📊 Export CSV
           </button>
-          <button onClick={exportToPDF} className="btn btn-primary">
+          <button onClick={() => {
+            haptics.medium();
+            exportToPDF();
+          }} className="btn btn-primary">
             📄 Generate PDF Report
           </button>
         </div>
@@ -534,7 +541,10 @@ export default function Analytics() {
 
           <div className="filter-group">
             <label>&nbsp;</label>
-            <button onClick={resetFilters} className="btn btn-secondary btn-reset">
+            <button onClick={() => {
+              haptics.light();
+              resetFilters();
+            }} className="btn btn-secondary btn-reset">
               Reset Filters
             </button>
           </div>

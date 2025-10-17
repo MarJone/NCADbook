@@ -9,6 +9,7 @@ import Pagination from '../../components/common/Pagination';
 import LoadingSkeleton from '../../components/common/LoadingSkeleton';
 import { useToast } from '../../hooks/useToast';
 import Toast from '../../components/common/Toast';
+import { haptics } from '../../utils/haptics';
 
 export default function EquipmentManagement() {
   const { user } = useAuth();
@@ -169,7 +170,10 @@ export default function EquipmentManagement() {
           {['all', 'available', 'booked', 'maintenance'].map(status => (
             <button
               key={status}
-              onClick={() => setFilter(status)}
+              onClick={() => {
+                haptics.light();
+                setFilter(status);
+              }}
               className={filter === status ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm'}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -177,7 +181,10 @@ export default function EquipmentManagement() {
           ))}
         </div>
         <button
-          onClick={handleAddEquipment}
+          onClick={() => {
+            haptics.medium();
+            handleAddEquipment();
+          }}
           className="btn btn-primary"
         >
           + Add Equipment
@@ -278,6 +285,7 @@ export default function EquipmentManagement() {
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <button
                       onClick={() => {
+                        haptics.light();
                         setSelectedEquipment(item);
                         setShowDetailModal(true);
                       }}
@@ -286,14 +294,20 @@ export default function EquipmentManagement() {
                       View
                     </button>
                     <button
-                      onClick={() => handleEditEquipment(item)}
+                      onClick={() => {
+                        haptics.light();
+                        handleEditEquipment(item);
+                      }}
                       className="btn btn-primary btn-sm"
                     >
                       Edit
                     </button>
                     {isMasterAdmin && (
                       <button
-                        onClick={() => handleDeleteClick(item)}
+                        onClick={() => {
+                          haptics.warning();
+                          handleDeleteClick(item);
+                        }}
                         className="btn btn-danger btn-sm"
                       >
                         Delete

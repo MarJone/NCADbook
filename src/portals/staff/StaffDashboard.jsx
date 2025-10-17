@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { bookingsAPI, equipmentAPI } from '../../utils/api';
+import { haptics } from '../../utils/haptics';
 
 export default function StaffDashboard() {
   const { user } = useAuth();
@@ -110,16 +111,16 @@ export default function StaffDashboard() {
         <div className="staff-card">
           <h3><span className="staff-card-icon">⚡</span> Quick Actions</h3>
           <div className="staff-quick-actions">
-            <Link to="/staff/rooms" className="staff-action-btn" data-testid="book-room-link">
+            <Link to="/staff/rooms" className="staff-action-btn" data-testid="book-room-link" onClick={() => haptics.medium()}>
               🚪 Book a Room
             </Link>
-            <Link to="/staff/equipment" className="staff-action-btn secondary" data-testid="browse-equipment-link">
+            <Link to="/staff/equipment" className="staff-action-btn secondary" data-testid="browse-equipment-link" onClick={() => haptics.light()}>
               📦 Browse Equipment
             </Link>
-            <Link to="/staff/bookings" className="staff-action-btn secondary" data-testid="view-bookings-link">
+            <Link to="/staff/bookings" className="staff-action-btn secondary" data-testid="view-bookings-link" onClick={() => haptics.light()}>
               📅 My Bookings
             </Link>
-            <Link to="/staff/cross-department-requests" className="staff-action-btn secondary">
+            <Link to="/staff/cross-department-requests" className="staff-action-btn secondary" onClick={() => haptics.light()}>
               🔄 Request Equipment
             </Link>
           </div>
