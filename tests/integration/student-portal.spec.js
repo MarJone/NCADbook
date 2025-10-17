@@ -2,27 +2,30 @@ import { test, expect, users } from '../fixtures/auth.fixtures.js';
 import { waitForLoadingComplete, login, logout, waitForToast, fillForm } from '../utils/test-helpers.js';
 
 test.describe('Student Portal - Authentication', () => {
-  test('should display login page with quick login buttons', async ({ page }) => {
+  test('should display login page with artistic portal map', async ({ page }) => {
     await page.goto('/');
 
-    // Should show NCADbook branding
-    await expect(page.locator('h1:has-text("NCADbook")')).toBeVisible();
+    // Should show artistic login container
+    await expect(page.locator('.artistic-login-container')).toBeVisible();
 
-    // Should show role selection buttons (check for role-name class to be specific)
-    await expect(page.locator('.role-name:has-text("Student")')).toBeVisible();
-    await expect(page.locator('.role-name:has-text("Staff")')).toBeVisible();
-    await expect(page.locator('.role-name:has-text("Department Admin")')).toBeVisible();
-    await expect(page.locator('.role-name:has-text("Master Admin")')).toBeVisible();
+    // Should show portal map image
+    await expect(page.locator('.base-map-image')).toBeVisible();
+
+    // Should show all four portal quadrants
+    await expect(page.locator('[data-portal="student"]')).toBeVisible();
+    await expect(page.locator('[data-portal="staff"]')).toBeVisible();
+    await expect(page.locator('[data-portal="admin"]')).toBeVisible();
+    await expect(page.locator('[data-portal="master"]')).toBeVisible();
   });
 
   test('should login successfully as student', async ({ page }) => {
     await page.goto('/');
 
-    // Click Student button
-    await page.click('button:has-text("Student")');
+    // Click Student portal quadrant
+    await page.click('[data-portal="student"]');
 
     // Should redirect to student portal
-    await expect(page).toHaveURL(/\/student/, { timeout: 5000 });
+    await expect(page).toHaveURL(/\/student/, { timeout: 10000 });
   });
 
   test('should logout successfully', async ({ authenticatedStudentPage: page }) => {

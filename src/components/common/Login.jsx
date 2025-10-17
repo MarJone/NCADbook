@@ -115,6 +115,8 @@ export default function Login() {
                     y={y1}
                     width={x2 - x1}
                     height={y2 - y1}
+                    data-portal={portal.id}
+                    data-testid={`portal-${portal.id}`}
                     className={`portal-quadrant ${isHovered ? 'hovered' : ''}`}
                     onMouseEnter={() => setHoveredPortal(portal.id)}
                     onMouseLeave={() => setHoveredPortal(null)}

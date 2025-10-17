@@ -44,21 +44,29 @@ export async function navigateAndWait(page, url) {
 }
 
 /**
- * Login helper - works with quick login buttons
+ * Login helper - works with artistic map-based portal selector
  */
 export async function login(page, email, password) {
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
 
-  // Determine which button to click based on email
+  // Wait for the portal map to be visible
+  await page.waitForSelector('.artistic-login-container', { timeout: 10000 });
+
+  // Determine which portal area to click based on email
+  // The new login uses SVG/image map with clickable areas
   if (email.includes('demo@')) {
-    await page.locator('.role-name:has-text("Student")').click();
+    // Student portal - top-left quadrant or data-portal="student"
+    await page.locator('[data-portal="student"]').click();
   } else if (email.includes('staff@')) {
-    await page.locator('.role-name:has-text("Staff")').click();
+    // Staff portal - top-right quadrant
+    await page.locator('[data-portal="staff"]').click();
   } else if (email.includes('master@')) {
-    await page.locator('.role-name:has-text("Master Admin")').click();
+    // Master Admin portal - bottom-right quadrant
+    await page.locator('[data-portal="master"]').click();
   } else if (email.includes('admin@')) {
-    await page.locator('.role-name:has-text("Department Admin")').click();
+    // Department Admin portal - bottom-left quadrant
+    await page.locator('[data-portal="admin"]').click();
   }
 
   await page.waitForLoadState('networkidle');
