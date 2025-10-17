@@ -34,10 +34,10 @@ export const test = base.extend({
   authenticatedStudentPage: async ({ page }, use) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('load', { timeout: 15000 });
-    // Click on Student quick login button
-    const studentButton = page.locator('button:has-text("Student")');
-    await studentButton.waitFor({ state: 'visible', timeout: 10000 });
-    await studentButton.click();
+    // Click on Student portal quadrant
+    const studentPortal = page.locator('[data-portal="student"]');
+    await studentPortal.waitFor({ state: 'visible', timeout: 10000 });
+    await studentPortal.click();
     await page.waitForURL(/\/student/, { timeout: 15000 });
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     await use(page);
@@ -47,10 +47,10 @@ export const test = base.extend({
   authenticatedStaffPage: async ({ page }, use) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('load', { timeout: 15000 });
-    // Click on Staff quick login button
-    const staffButton = page.locator('button:has-text("Staff")');
-    await staffButton.waitFor({ state: 'visible', timeout: 10000 });
-    await staffButton.click();
+    // Click on Staff portal quadrant
+    const staffPortal = page.locator('[data-portal="staff"]');
+    await staffPortal.waitFor({ state: 'visible', timeout: 10000 });
+    await staffPortal.click();
     await page.waitForURL(/\/staff/, { timeout: 15000 });
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     await use(page);
@@ -60,10 +60,10 @@ export const test = base.extend({
   authenticatedAdminPage: async ({ page }, use) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('load', { timeout: 15000 });
-    // Click on Department Admin quick login button (use role-name to be specific)
-    const adminButton = page.locator('.role-name:has-text("Department Admin")');
-    await adminButton.waitFor({ state: 'visible', timeout: 10000 });
-    await adminButton.click();
+    // Click on Department Admin portal quadrant
+    const adminPortal = page.locator('[data-portal="admin"]');
+    await adminPortal.waitFor({ state: 'visible', timeout: 10000 });
+    await adminPortal.click();
     await page.waitForURL(/\/admin/, { timeout: 15000 });
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     await use(page);
@@ -73,10 +73,10 @@ export const test = base.extend({
   authenticatedMasterAdminPage: async ({ page }, use) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('load', { timeout: 15000 });
-    // Click on Master Admin quick login button
-    const masterAdminButton = page.locator('.role-name:has-text("Master Admin")');
-    await masterAdminButton.waitFor({ state: 'visible', timeout: 10000 });
-    await masterAdminButton.click();
+    // Click on Master Admin portal quadrant
+    const masterAdminPortal = page.locator('[data-portal="master"]');
+    await masterAdminPortal.waitFor({ state: 'visible', timeout: 10000 });
+    await masterAdminPortal.click();
     await page.waitForURL(/\/admin/, { timeout: 15000 });
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     await use(page);
