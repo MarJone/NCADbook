@@ -1,0 +1,407 @@
+/* Fine Tracker - Fintech-Inspired Design
+   Visual financial management for late fees */
+
+.fine-tracker {
+  background: var(--theme-bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--theme-shadow-md);
+}
+
+/* No Fines State */
+.fine-tracker.no-fines {
+  text-align: center;
+  padding: var(--space-6);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.fine-tracker.no-fines .success-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-3);
+  animation: successPulse 2s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+.fine-tracker.no-fines h3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.fine-tracker.no-fines p {
+  font-size: var(--text-base);
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Summary Card */
+.fine-summary-card {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+}
+
+.fine-summary-card.account-hold {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+.fine-summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.fine-icon {
+  font-size: 3rem;
+  line-height: 1;
+  animation: warningPulse 2s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.fine-summary-amount {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fine-summary-amount .label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.fine-summary-amount .amount {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  line-height: 1;
+}
+
+/* Account Hold Warning */
+.account-hold-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.account-hold-warning .warning-icon {
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.account-hold-warning strong {
+  display: block;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
+}
+
+.account-hold-warning p {
+  margin: 0;
+  font-size: var(--text-sm);
+  opacity: 0.9;
+}
+
+/* Summary Stats */
+.fine-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.fine-summary-stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.fine-summary-stats .stat-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.fine-summary-stats .stat-label {
+  font-size: var(--text-xs);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Fine List */
+.fine-list h4 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--theme-text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.fine-item {
+  background: var(--theme-bg-secondary);
+  border-left: 4px solid #d1d5db;
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  transition: all var(--transition-base);
+}
+
+.fine-item.ok {
+  border-left-color: #10b981;
+}
+
+.fine-item.caution {
+  border-left-color: #f59e0b;
+}
+
+.fine-item.warning {
+  border-left-color: #f97316;
+  background: linear-gradient(to right, rgba(249, 115, 22, 0.05), var(--theme-bg-secondary));
+}
+
+.fine-item.urgent {
+  border-left-color: #ef4444;
+  background: linear-gradient(to right, rgba(239, 68, 68, 0.1), var(--theme-bg-secondary));
+}
+
+.fine-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--theme-shadow-md);
+}
+
+.fine-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-2);
+}
+
+.fine-equipment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fine-equipment .equipment-name {
+  font-weight: var(--font-semibold);
+  color: var(--theme-text-primary);
+  font-size: var(--text-base);
+}
+
+.fine-type-badge {
+  display: inline-block;
+  background: var(--theme-bg-tertiary);
+  color: var(--theme-text-secondary);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  text-transform: capitalize;
+}
+
+.fine-amount-large {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--theme-accent-primary);
+  line-height: 1;
+}
+
+.fine-item-details {
+  margin-bottom: var(--space-2);
+}
+
+.fine-description {
+  font-size: var(--text-sm);
+  color: var(--theme-text-secondary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.fine-timeline {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timeline-label {
+  font-size: var(--text-xs);
+  color: var(--theme-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-weight: var(--font-medium);
+}
+
+.timeline-value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--theme-text-primary);
+}
+
+.timeline-value.warning {
+  color: #f97316;
+}
+
+.timeline-value.urgent {
+  color: #ef4444;
+}
+
+.days-until-due {
+  font-size: var(--text-xs);
+  font-weight: var(--font-normal);
+  color: var(--theme-text-secondary);
+  margin-left: var(--space-1);
+}
+
+.overdue-badge {
+  display: inline-block;
+  background: #ef4444;
+  color: white;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+  margin-left: var(--space-1);
+  animation: overdueFlash 2s ease-in-out infinite;
+}
+
+@keyframes overdueFlash {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Urgency Progress Bar */
+.fine-urgency-bar {
+  height: 6px;
+  background: var(--theme-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.urgency-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.urgency-fill.ok {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.urgency-fill.caution {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.urgency-fill.warning {
+  background: linear-gradient(90deg, #f97316, #ea580c);
+}
+
+.urgency-fill.urgent {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* CTA */
+.fine-cta {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
+.fine-cta-message {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  line-height: 1.6;
+}
+
+/* Loading State */
+.fine-tracker.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--theme-border-light);
+  border-top-color: var(--theme-accent-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--space-2);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .fine-summary-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .fine-summary-stats .stat {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: var(--space-2);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-sm);
+  }
+
+  .fine-summary-amount .amount {
+    font-size: var(--text-3xl);
+  }
+
+  .fine-amount-large {
+    font-size: var(--text-2xl);
+  }
+
+  .fine-timeline {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}
