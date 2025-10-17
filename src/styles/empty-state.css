@@ -1,0 +1,152 @@
+/* ============================================
+   EMPTY STATE COMPONENT
+   Clean, supportive empty states
+   ============================================ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  min-height: 300px;
+  animation: emptyStateFadeIn var(--duration-normal) var(--ease-out-quad);
+}
+
+.empty-state-small {
+  min-height: 200px;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+}
+
+.empty-state-large {
+  min-height: 400px;
+  padding: var(--spacing-6xl) var(--spacing-3xl);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-xl);
+  opacity: 0.6;
+  animation: emptyStateIconBounce 1s var(--ease-out-back);
+}
+
+.empty-state-small .empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-state-large .empty-state-icon {
+  font-size: 5rem;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.empty-state-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  animation: emptyStateTextSlide 0.6s var(--ease-out-quad) 0.1s both;
+}
+
+.empty-state-small .empty-state-title {
+  font-size: var(--font-size-lg);
+}
+
+.empty-state-large .empty-state-title {
+  font-size: var(--font-size-2xl);
+}
+
+.empty-state-message {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  max-width: 400px;
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-xl);
+  animation: emptyStateTextSlide 0.6s var(--ease-out-quad) 0.2s both;
+}
+
+.empty-state-small .empty-state-message {
+  font-size: var(--font-size-sm);
+  max-width: 300px;
+}
+
+.empty-state-large .empty-state-message {
+  font-size: var(--font-size-lg);
+  max-width: 500px;
+}
+
+.empty-state-action {
+  animation: emptyStateTextSlide 0.6s var(--ease-out-quad) 0.3s both;
+}
+
+/* Animations */
+@keyframes emptyStateFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes emptyStateIconBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8);
+  }
+  60% {
+    transform: translateY(5px) scale(1.05);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes emptyStateTextSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .empty-state,
+  .empty-state-icon,
+  .empty-state-title,
+  .empty-state-message,
+  .empty-state-action {
+    animation: none !important;
+  }
+
+  .empty-state-icon {
+    opacity: 0.6;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .empty-state {
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    min-height: 250px;
+  }
+
+  .empty-state-icon {
+    font-size: 3rem;
+  }
+
+  .empty-state-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .empty-state-message {
+    font-size: var(--font-size-sm);
+    max-width: 300px;
+  }
+}

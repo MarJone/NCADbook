@@ -19,7 +19,7 @@
   /* Primary Colors */
   --student-base-dark: #455A64;
   --student-base-light: #F5F7FA;
-  --student-accent-primary: #E85D75;         /* Vibrant Coral */
+  --student-accent-primary: #C2185B;         /* Darker Coral (WCAG AA compliant - 4.5:1) */
   --student-accent-secondary: #FF8FA3;       /* Soft Pink */
   --student-success: #FFAB91;                /* Warm Peach */
   --student-unavailable: #B0BEC5;            /* Muted Gray */

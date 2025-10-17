@@ -116,7 +116,7 @@
 
 .master-admin-portal .mobile-bottom-nav .nav-item.active {
   color: var(--master-accent-primary);
-  background: linear-gradient(to top, rgba(123, 31, 162, 0.15), transparent);
+  background: linear-gradient(to top, rgba(123, 31, 162, 0.15), transparent); /* Master admin purple #7B1FA2 */
   border-top: 3px solid var(--master-accent-primary);
 }
 

@@ -1,0 +1,465 @@
+/**
+ * ============================================
+ * MICRO-INTERACTIONS
+ * Phase II-D: Button states, success animations, transitions
+ * ============================================
+ */
+
+/* ========================================
+   BUTTON LOADING STATES
+   ======================================== */
+
+.btn.loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: var(--radius-full);
+  animation: buttonSpinner var(--duration-slow) linear infinite;
+  color: white;
+}
+
+.btn-secondary.loading::after {
+  color: var(--role-accent);
+}
+
+@keyframes buttonSpinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced button hover states */
+.btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:not(:disabled):hover {
+  filter: brightness(1.1);
+}
+
+.btn-secondary:not(:disabled):hover {
+  background-color: var(--role-bg-quaternary);
+}
+
+/* Button ripple effect */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-normal) var(--ease-out-quad),
+              height var(--duration-normal) var(--ease-out-quad);
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
+  transition: width 0s, height 0s;
+}
+
+/* ========================================
+   SUCCESS ANIMATIONS
+   ======================================== */
+
+.success-checkmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: var(--color-success);
+  color: white;
+  font-size: var(--font-size-2xl);
+  animation: successPop var(--duration-slow) var(--ease-out-back);
+  box-shadow: var(--shadow-xl);
+}
+
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-checkmark::before {
+  content: '✓';
+  animation: checkmarkDraw 0.3s var(--duration-normal) var(--ease-out-quad);
+}
+
+@keyframes checkmarkDraw {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Success message container */
+.success-message {
+  text-align: center;
+  padding: var(--space-2xl);
+  animation: fadeInUp var(--duration-normal) var(--ease-out-quad);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-message h3 {
+  margin: var(--space-lg) 0 var(--space-sm) 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--theme-text-primary);
+}
+
+.success-message p {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--theme-text-secondary);
+}
+
+/* ========================================
+   ENHANCED TOAST TRANSITIONS
+   ======================================== */
+
+.toast {
+  animation: toastSlideIn var(--duration-normal) var(--ease-out-back);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(400px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.toast.toast-exit {
+  animation: toastSlideOut var(--duration-fast) var(--ease-in-quad) forwards;
+}
+
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(400px) scale(0.9);
+  }
+}
+
+/* Toast icon animations */
+.toast-icon {
+  animation: iconBounce var(--duration-normal) var(--ease-out-back);
+}
+
+@keyframes iconBounce {
+  0% {
+    transform: scale(0) rotate(-180deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ========================================
+   PAGE TRANSITIONS
+   ======================================== */
+
+.page-fade-enter {
+  opacity: 0;
+}
+
+.page-fade-enter-active {
+  opacity: 1;
+  transition: opacity var(--duration-fast) var(--ease-in-out);
+}
+
+.page-fade-exit {
+  opacity: 1;
+}
+
+.page-fade-exit-active {
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-in-out);
+}
+
+/* ========================================
+   FORM INPUT FOCUS ANIMATIONS
+   ======================================== */
+
+input:focus,
+select:focus,
+textarea:focus {
+  animation: inputFocusPulse var(--duration-fast) var(--ease-out-quad);
+}
+
+@keyframes inputFocusPulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--role-accent-light);
+  }
+  100% {
+    box-shadow: 0 0 0 3px var(--role-accent-light);
+  }
+}
+
+/* ========================================
+   SKELETON LOADING SHIMMER
+   ======================================== */
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--role-bg-tertiary) 0%,
+    var(--role-bg-secondary) 50%,
+    var(--role-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ========================================
+   BADGE PULSE ANIMATION
+   ======================================== */
+
+.badge-pulse {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* ========================================
+   DROPDOWN MENU ANIMATIONS
+   ======================================== */
+
+.dropdown-menu {
+  animation: dropdownSlide var(--duration-fast) var(--ease-out-quad);
+  transform-origin: top;
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scaleY(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+/* ========================================
+   MODAL TRANSITIONS
+   ======================================== */
+
+.modal-backdrop-enter {
+  opacity: 0;
+}
+
+.modal-backdrop-enter-active {
+  opacity: 1;
+  transition: opacity var(--duration-normal) var(--ease-in-out);
+}
+
+.modal-content-enter {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+}
+
+.modal-content-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all var(--duration-normal) var(--ease-out-quad);
+}
+
+/* ========================================
+   ICON SPIN (for refresh, loading, etc.)
+   ======================================== */
+
+.icon-spin {
+  animation: iconSpin 1s linear infinite;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   SHAKE ANIMATION (for errors)
+   ======================================== */
+
+.shake {
+  animation: shake var(--duration-normal) var(--ease-out-quad);
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* ========================================
+   BOUNCE ANIMATION (for notifications)
+   ======================================== */
+
+.bounce {
+  animation: bounce var(--duration-slow) var(--ease-out-quad);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ========================================
+   GLOW EFFECT (for CTAs, important elements)
+   ======================================== */
+
+.glow {
+  position: relative;
+}
+
+.glow::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: inherit;
+  border-radius: inherit;
+  opacity: 0;
+  filter: blur(10px);
+  z-index: -1;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY - REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .btn:not(:disabled):hover,
+  .btn:not(:disabled):active {
+    transform: none !important;
+  }
+
+  .toast {
+    animation: none !important;
+  }
+
+  .skeleton-shimmer {
+    animation: none !important;
+    background: var(--role-bg-tertiary);
+  }
+}

@@ -158,7 +158,7 @@ export default function SwipeActionCard({
       {/* Card content */}
       <div className="approval-item" data-testid="booking-card">
         <div className="approval-header">
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+          <div className="approval-header-content">
             {booking.status === 'pending' && onSelectToggle && (
               <input
                 type="checkbox"
@@ -166,7 +166,7 @@ export default function SwipeActionCard({
                 onChange={() => onSelectToggle(booking.id)}
                 data-testid={`select-booking-${booking.id}`}
                 aria-label={`Select booking for ${booking.equipment?.product_name}`}
-                style={{ marginTop: '0.25rem' }}
+                className="approval-checkbox"
                 onClick={(e) => e.stopPropagation()}
               />
             )}

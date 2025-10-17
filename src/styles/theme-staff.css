@@ -19,7 +19,7 @@
   /* Primary Colors */
   --staff-base-dark: #34495E;
   --staff-base-light: #E8EEF2;
-  --staff-accent-primary: #26A69A;           /* Teal */
+  --staff-accent-primary: #00796B;           /* Darker Teal (WCAG AA compliant - 4.5:1) */
   --staff-accent-secondary: #4DD0E1;         /* Cyan */
   --staff-success: #42A5F5;                  /* Ocean Blue */
   --staff-alert: #FF9800;                    /* Warm Orange */

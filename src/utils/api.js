@@ -62,10 +62,11 @@ const request = async (endpoint, options = {}) => {
 
     if (!response.ok) {
       // Handle authentication errors
-      if (response.status === 401) {
-        removeToken();
-        window.location.href = '/NCADbook/';
-      }
+      // TEMPORARILY DISABLED: No login in this version
+      // if (response.status === 401) {
+      //   removeToken();
+      //   window.location.href = '/NCADbook/';
+      // }
       throw new Error(data.error || `HTTP ${response.status}`);
     }
 

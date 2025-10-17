@@ -19,6 +19,7 @@ import { isCrossDepartmentBrowsingEnabled, areEquipmentKitsEnabled } from '../..
 import { getDepartmentsBySchool, SCHOOLS } from '../../config/departments';
 import EmptyState from '../../components/common/EmptyState';
 import FilterChips from '../../components/common/FilterChips';
+import { haptics } from '../../utils/haptics';
 import '../../styles/equipment-browse.css';
 
 export default function EquipmentBrowse() {
@@ -310,7 +311,10 @@ export default function EquipmentBrowse() {
         <div className="browse-header">
           <h2>Browse Equipment</h2>
           <button
-            onClick={() => setShowMultiModal(true)}
+            onClick={() => {
+              haptics.medium();
+              setShowMultiModal(true);
+            }}
             className={`btn btn-primary ${loading ? 'loading' : ''}`}
             data-testid="book-multiple-items-btn"
             disabled={loading}
@@ -331,7 +335,10 @@ export default function EquipmentBrowse() {
       <div className="advanced-filters-toggle">
         <button
           className="btn-advanced-toggle"
-          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+          onClick={() => {
+            haptics.light();
+            setShowAdvancedFilters(!showAdvancedFilters);
+          }}
           aria-expanded={showAdvancedFilters}
           aria-controls="advanced-filters-section"
         >
@@ -377,7 +384,10 @@ export default function EquipmentBrowse() {
           <select
             id="category-filter"
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            onChange={(e) => {
+              haptics.light();
+              setFilter(e.target.value);
+            }}
             className="filter-select"
           >
             {categories.map(cat => (
@@ -440,14 +450,20 @@ export default function EquipmentBrowse() {
       <div className="view-toggle">
         <button
           className={`btn-view ${viewMode === 'large' ? 'active' : ''}`}
-          onClick={() => setViewMode('large')}
+          onClick={() => {
+            haptics.light();
+            setViewMode('large');
+          }}
           data-testid="view-large-btn"
         >
           Large Details
         </button>
         <button
           className={`btn-view ${viewMode === 'compact' ? 'active' : ''}`}
-          onClick={() => setViewMode('compact')}
+          onClick={() => {
+            haptics.light();
+            setViewMode('compact');
+          }}
           data-testid="view-compact-btn"
         >
           Compact List
@@ -501,7 +517,10 @@ export default function EquipmentBrowse() {
           <div className="equipment-grid">
             {paginatedEquipment.map(item => (
             <div key={item.id} className="equipment-card" data-testid="equipment-card">
-              <div onClick={() => handleCardClick(item)}>
+              <div onClick={() => {
+                haptics.light();
+                handleCardClick(item);
+              }}>
                 <EquipmentImage
                   equipment={item}
                   size="medium"
@@ -509,7 +528,10 @@ export default function EquipmentBrowse() {
               </div>
               <div className="equipment-info">
                 <div className="equipment-header-row">
-                  <h3 onClick={() => handleCardClick(item)}>{item.product_name}</h3>
+                  <h3 onClick={() => {
+                    haptics.light();
+                    handleCardClick(item);
+                  }}>{item.product_name}</h3>
                   <span className={`availability-badge availability-${item.status}`}>
                     {item.status === 'available' && <span className="badge-icon">✓</span>}
                     {item.status === 'booked' && <span className="badge-icon">●</span>}
@@ -543,6 +565,7 @@ export default function EquipmentBrowse() {
                   className="btn btn-primary btn-block"
                   onClick={(e) => {
                     e.stopPropagation();
+                    haptics.medium();
                     handleBookClick(item);
                   }}
                   disabled={item.status !== 'available'}
@@ -577,7 +600,10 @@ export default function EquipmentBrowse() {
             <tbody>
               {paginatedEquipment.map(item => (
               <tr key={item.id} data-testid="equipment-row-compact">
-                <td onClick={() => handleCardClick(item)} className="equipment-name-cell">
+                <td onClick={() => {
+                  haptics.light();
+                  handleCardClick(item);
+                }} className="equipment-name-cell">
                   {item.product_name}
                 </td>
                 <td>{item.category}</td>
@@ -602,7 +628,10 @@ export default function EquipmentBrowse() {
                 <td>
                   <button
                     className="btn btn-primary btn-sm"
-                    onClick={() => handleBookClick(item)}
+                    onClick={() => {
+                      haptics.medium();
+                      handleBookClick(item);
+                    }}
                     disabled={item.status !== 'available'}
                     data-testid="book-equipment-btn-compact"
                   >

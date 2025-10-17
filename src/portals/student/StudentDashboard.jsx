@@ -6,6 +6,7 @@ import { kitStorage } from '../../utils/kitStorage';
 import MultiItemBookingModal from '../../components/booking/MultiItemBookingModal';
 import { useToast } from '../../hooks/useToast';
 import Toast from '../../components/common/Toast';
+import { haptics } from '../../utils/haptics';
 
 export default function StudentDashboard() {
   const { user } = useAuth();
@@ -60,7 +61,10 @@ export default function StudentDashboard() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
             <h3><span className="student-card-icon">📊</span> Your Stats</h3>
             <button
-              onClick={() => setShowDetailedStats(!showDetailedStats)}
+              onClick={() => {
+                haptics.light();
+                setShowDetailedStats(!showDetailedStats);
+              }}
               className="btn btn-secondary btn-sm"
               style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem' }}
             >
@@ -142,6 +146,7 @@ export default function StudentDashboard() {
                   key={kit.id}
                   className={`student-kit-item ${kit.type === 'admin' ? 'admin-kit' : ''}`}
                   onClick={() => {
+                    haptics.medium();
                     showToast(`Booking kit: ${kit.name}`, 'info');
                     setShowMultiModal(true);
                   }}
@@ -149,6 +154,7 @@ export default function StudentDashboard() {
                   tabIndex={0}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
+                      haptics.medium();
                       showToast(`Booking kit: ${kit.name}`, 'info');
                       setShowMultiModal(true);
                     }
@@ -172,14 +178,20 @@ export default function StudentDashboard() {
           <h3><span className="student-card-icon">⚡</span> Quick Actions</h3>
           <div className="student-quick-actions">
             <button
-              onClick={() => setShowMultiModal(true)}
+              onClick={() => {
+                haptics.medium();
+                setShowMultiModal(true);
+              }}
               className="student-action-btn"
               data-testid="quick-book-multiple"
             >
               📦 Book Multiple Items
             </button>
             <button
-              onClick={() => navigate('/student/equipment')}
+              onClick={() => {
+                haptics.light();
+                navigate('/student/equipment');
+              }}
               className="student-action-btn secondary"
             >
               🔍 Browse Equipment

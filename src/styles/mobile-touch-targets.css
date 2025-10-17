@@ -1,0 +1,247 @@
+/**
+ * Mobile Touch Targets Optimization
+ * Ensures all interactive elements meet WCAG 2.1 AA (44x44px minimum)
+ * Applied globally for mobile and tablet viewports
+ */
+
+/* ========== BUTTONS ========== */
+
+/* All buttons minimum touch target */
+.btn,
+button,
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-sm {
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--space-2) var(--space-3);
+}
+
+/* Small buttons need extra padding on mobile */
+@media (max-width: 768px) {
+  .btn-sm {
+    min-height: 44px;
+    min-width: 44px;
+    padding: var(--space-2) var(--space-2);
+  }
+}
+
+/* Icon-only buttons */
+.btn-icon,
+.modal-close,
+.toast-close {
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== VIEW TOGGLE BUTTONS ========== */
+
+.btn-view {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ========== FILTER CONTROLS ========== */
+
+/* Filter buttons */
+.filter-controls button,
+.filter-options button,
+.btn-advanced-toggle {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+}
+
+/* Filter select dropdowns */
+.filter-select,
+select.filter-select,
+.department-select,
+.status-select-compact {
+  min-height: 44px;
+  padding: var(--space-2);
+}
+
+/* ========== EQUIPMENT CARDS ========== */
+
+/* Equipment card clickable areas */
+.equipment-card {
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.equipment-card .equipment-info h3,
+.equipment-name-cell {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: var(--space-1) 0;
+}
+
+/* Book equipment buttons */
+.btn-block,
+.btn-primary.btn-block {
+  min-height: 48px;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ========== NAVIGATION LINKS ========== */
+
+/* Bottom nav items (mobile) */
+.bottom-nav-item {
+  min-height: 60px; /* Extra tall for thumb reach */
+  min-width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* Desktop nav links */
+.student-nav-link,
+.admin-nav-link {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ========== FORM INPUTS ========== */
+
+/* Text inputs and date pickers */
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+.date-input {
+  min-height: 44px;
+  padding: var(--space-2);
+}
+
+/* Search bars */
+.search-input,
+input.search-input {
+  min-height: 48px; /* Slightly larger for common use */
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ========== PAGINATION ========== */
+
+.pagination button,
+.pagination-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--space-2);
+}
+
+/* ========== MODAL CLOSE BUTTONS ========== */
+
+.modal-close {
+  min-height: 44px;
+  min-width: 44px;
+  font-size: var(--text-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== FILTER CHIPS ========== */
+
+.filter-chip,
+.chip {
+  min-height: 36px; /* Slightly smaller but still tappable */
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.filter-chip-remove,
+.chip-remove {
+  min-height: 28px;
+  min-width: 28px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== AVAILABILITY BADGES (visual only, not interactive) ========== */
+
+.availability-badge {
+  /* Not interactive - no touch target requirement */
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ========== TOUCH AREA EXPANSION ========== */
+
+/* Expand touch area without visual changes */
+@media (max-width: 768px) {
+  .equipment-card .equipment-info h3::before,
+  .equipment-name-cell::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    z-index: 1;
+  }
+}
+
+/* ========== ACCESSIBILITY ========== */
+
+/* Focus indicators for touch targets */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.equipment-card:focus-visible,
+.student-kit-item:focus-visible {
+  outline: 3px solid var(--theme-accent-primary);
+  outline-offset: 2px;
+}
+
+/* Active/pressed states for tactile feedback */
+button:active,
+.btn:active,
+.equipment-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* ========== TABLET OPTIMIZATIONS ========== */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Tablet still benefits from larger touch targets */
+  .btn-sm {
+    min-height: 40px; /* Slightly smaller than mobile */
+    min-width: 40px;
+  }
+}
+
+/* ========== DESKTOP (No Touch Required) ========== */
+
+@media (min-width: 1024px) {
+  /* Desktop can use smaller targets if needed */
+  .btn-sm {
+    min-height: 36px;
+    min-width: auto;
+    padding: 6px 12px;
+  }
+
+  /* But keep comfortable click areas */
+  .btn-icon {
+    min-height: 40px;
+    min-width: 40px;
+  }
+}

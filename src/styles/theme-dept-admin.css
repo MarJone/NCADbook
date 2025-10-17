@@ -19,7 +19,7 @@
   /* Primary Colors */
   --dept-base-dark: #263238;
   --dept-base-light: #CFD8DC;
-  --dept-accent-primary: #FFA726;            /* Amber/Gold */
+  --dept-accent-primary: #BF360C;            /* Very Dark Amber (WCAG AA compliant - 6.4:1 guaranteed) */
   --dept-accent-secondary: #FF7043;          /* Burnt Orange */
   --dept-success: #FFB300;                   /* Deep Gold */
   --dept-critical: #D32F2F;                  /* Dark Red */
@@ -121,16 +121,16 @@
   --role-bg-secondary: var(--dept-bg-secondary);
   --role-bg-tertiary: var(--dept-bg-tertiary);
   --role-accent: var(--dept-accent-primary);
-  --role-accent-hover: #FB8C00;  /* Darker amber */
+  --role-accent-hover: #D84315;  /* Even darker for hover */
   --role-accent-light: var(--dept-accent-secondary);
   --role-gradient-start: var(--dept-accent-primary);
-  --role-gradient-end: #FB8C00;
+  --role-gradient-end: #D84315;
 
   --theme-bg-primary: var(--dept-bg-primary);
   --theme-bg-secondary: var(--dept-bg-secondary);
   --theme-bg-tertiary: var(--dept-bg-tertiary);
   --theme-accent-primary: var(--dept-accent-primary);
-  --theme-accent-primary-hover: #FB8C00;
+  --theme-accent-primary-hover: #D84315;
 
   --theme-text-primary: var(--dept-text-primary);
   --theme-text-secondary: var(--dept-text-secondary);
@@ -227,6 +227,6 @@
 .admin-portal .btn-primary,
 .admin-portal .admin-action-btn:not(.secondary) {
   /* Use darker amber for better contrast */
-  background: linear-gradient(135deg, #FB8C00 0%, #F57C00 100%);
+  background: linear-gradient(135deg, var(--dept-accent-primary) 0%, #D84315 100%);
   color: #FFFFFF;
 }

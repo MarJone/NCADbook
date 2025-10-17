@@ -1,4 +1,10 @@
-/* Swipe Action Card Component */
+/**
+ * ============================================
+ * SWIPE ACTION CARD - Design System v2
+ * Mobile-optimized swipe gestures for booking approval
+ * ============================================
+ */
+
 .swipe-action-card {
   position: relative;
   cursor: grab;
@@ -13,7 +19,10 @@
   cursor: grabbing;
 }
 
-/* Swipe action backgrounds */
+/* ========================================
+   SWIPE ACTION BACKGROUNDS
+   ======================================== */
+
 .swipe-action-bg {
   position: absolute;
   top: 0;
@@ -23,59 +32,65 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: bold;
+  color: var(--color-white);
+  font-weight: var(--font-weight-bold);
   z-index: 0;
-  transition: opacity 0.2s ease;
-  border-radius: 8px;
+  transition: opacity var(--duration-fast) var(--ease-out-quad);
+  border-radius: var(--radius-md);
 }
 
 .swipe-approve {
   left: 0;
-  background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
+  background: linear-gradient(90deg, var(--color-success) 0%, var(--color-success-light) 100%);
 }
 
 .swipe-deny {
   right: 0;
-  background: linear-gradient(90deg, #ef5350 0%, #f44336 100%);
+  background: linear-gradient(90deg, var(--color-error-light) 0%, var(--color-error) 100%);
 }
 
 .swipe-action-bg .action-icon {
-  font-size: 2rem;
+  font-size: var(--font-size-2xl);
   line-height: 1;
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--space-xs);
 }
 
 .swipe-action-bg .action-text {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: var(--tracking-wide);
 }
 
-/* Card content wrapper */
+/* ========================================
+   CARD CONTENT WRAPPER
+   ======================================== */
+
 .swipe-action-card .approval-item {
   position: relative;
   z-index: 1;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-fast) var(--ease-out-quad);
 }
 
 .swipe-action-card.dragging .approval-item {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 /* Visual feedback for action hints */
 .swipe-action-card.hint-approve .approval-item {
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid var(--color-success);
 }
 
 .swipe-action-card.hint-deny .approval-item {
-  border-right: 4px solid #f44336;
+  border-right: 4px solid var(--color-error);
 }
 
-/* Mobile-specific adjustments */
+/* ========================================
+   MOBILE-SPECIFIC ADJUSTMENTS
+   ======================================== */
+
 @media (max-width: 768px) {
   .swipe-action-card {
     touch-action: pan-y;
@@ -86,11 +101,11 @@
   }
 
   .swipe-action-bg .action-icon {
-    font-size: 1.75rem;
+    font-size: var(--font-size-xl);
   }
 
   .swipe-action-bg .action-text {
-    font-size: 0.75rem;
+    font-size: var(--font-size-xs);
   }
 
   /* Add swipe hint for first-time users */
@@ -100,15 +115,16 @@
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    background: var(--color-overlay-dark);
+    color: var(--color-white);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-xs);
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    animation: swipeHintFadeIn 0.5s ease 1s forwards, swipeHintFadeOut 0.5s ease 5s forwards;
+    animation: swipeHintFadeIn var(--duration-normal) var(--ease-out-quad) 1s forwards,
+               swipeHintFadeOut var(--duration-normal) var(--ease-in-quad) 5s forwards;
   }
 }
 
@@ -124,7 +140,10 @@
   }
 }
 
-/* Desktop - hide swipe backgrounds, rely on buttons */
+/* ========================================
+   DESKTOP ADJUSTMENTS
+   ======================================== */
+
 @media (min-width: 769px) {
   .swipe-action-card {
     cursor: default;
@@ -136,18 +155,38 @@
 
   /* Disable swipe on desktop */
   .swipe-action-card.dragging .approval-item {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
   }
 }
 
-/* Accessibility - ensure keyboard navigation works */
-.swipe-action-card:focus-within {
-  outline: 2px solid #1976d2;
-  outline-offset: 2px;
-  border-radius: 8px;
+/* ========================================
+   CARD HEADER CONTENT
+   ======================================== */
+
+.approval-header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
 }
 
-/* Reduce motion for users who prefer it */
+.approval-checkbox {
+  margin-top: var(--space-xs);
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+.swipe-action-card:focus-within {
+  outline: 2px solid var(--role-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   .swipe-action-card {
     transition: none;

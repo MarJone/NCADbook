@@ -1,55 +1,60 @@
-/* Kit Browser Styles */
+/**
+ * ============================================
+ * KIT BROWSER - Design System v2
+ * Token-based equipment kit browsing
+ * ============================================
+ */
 
 .kit-browser {
-  padding: 1.5rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  margin-bottom: 2rem;
+  padding: var(--space-lg);
+  background-color: var(--role-bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2xl);
 }
 
 .kit-browser h3 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--theme-text-primary);
 }
 
 .kit-browser-subtitle {
-  margin: 0 0 1.5rem 0;
-  color: #666;
-  font-size: 0.9rem;
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 .kits-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .kit-item {
-  background: #fff;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--duration-fast) var(--ease-in-out);
   display: flex;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .kit-item:hover {
-  border-color: #1976d2;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+  border-color: var(--role-accent);
+  box-shadow: var(--shadow-sm);
 }
 
 .kit-item.selected {
-  border-color: #1976d2;
-  background-color: #e3f2fd;
+  border-color: var(--role-accent);
+  background-color: var(--role-bg-tertiary);
 }
 
 .kit-item-image {
   width: 60px;
   height: 60px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -65,87 +70,87 @@
 }
 
 .kit-item-info h4 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1rem;
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-base);
 }
 
 .kit-item-info p {
-  margin: 0 0 0.5rem 0;
-  color: #666;
-  font-size: 0.875rem;
-  line-height: 1.4;
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-normal);
 }
 
 .kit-item-info small {
-  color: #1976d2;
-  font-weight: 600;
+  color: var(--role-accent);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Kit Details Panel */
 .kit-details-panel {
-  background: #fff;
-  border: 2px solid #1976d2;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
+  background: var(--color-white);
+  border: 2px solid var(--role-accent);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-top: var(--space-lg);
 }
 
 .kit-details-panel h4 {
-  margin: 0 0 1rem 0;
-  color: #1976d2;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--role-accent);
 }
 
 .kit-equipment {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background-color: var(--role-bg-secondary);
+  border-radius: var(--radius-sm);
 }
 
 .kit-equipment strong {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #333;
+  margin-bottom: var(--space-sm);
+  color: var(--theme-text-primary);
 }
 
 .kit-equipment ul {
   margin: 0;
-  padding-left: 1.5rem;
+  padding-left: var(--space-lg);
 }
 
 .kit-equipment li {
-  margin-bottom: 0.25rem;
-  color: #666;
-  font-size: 0.9rem;
+  margin-bottom: var(--space-xs);
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 .kit-equipment .status-available {
-  color: #4caf50;
-  font-weight: 600;
+  color: var(--color-success);
+  font-weight: var(--font-weight-semibold);
 }
 
 .kit-equipment .status-booked {
-  color: #ff9800;
-  font-weight: 600;
+  color: var(--color-warning);
+  font-weight: var(--font-weight-semibold);
 }
 
 .kit-equipment .status-maintenance {
-  color: #f44336;
-  font-weight: 600;
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Booking Form */
 .booking-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .form-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .form-group {
@@ -154,121 +159,123 @@
 }
 
 .form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #333;
-  font-size: 0.9rem;
+  margin-bottom: var(--space-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-sm);
 }
 
 .form-group input[type="date"] {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: var(--space-sm-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
 }
 
 /* Availability Result */
 .availability-result {
-  padding: 1rem;
-  border-radius: 4px;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
   border-left: 4px solid;
 }
 
 .availability-result.available {
-  background-color: #e8f5e9;
-  border-left-color: #4caf50;
+  background-color: var(--color-success-bg);
+  border-left-color: var(--color-success);
 }
 
 .availability-result.available strong {
-  color: #2e7d32;
+  color: var(--color-success-dark);
 }
 
 .availability-result.unavailable {
-  background-color: #ffebee;
-  border-left-color: #f44336;
+  background-color: var(--color-error-bg);
+  border-left-color: var(--color-error);
 }
 
 .availability-result.unavailable strong {
-  color: #c62828;
+  color: var(--color-error-dark);
 }
 
 .availability-result p {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--space-sm) 0;
 }
 
 .availability-result ul {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
+  margin: var(--space-sm) 0;
+  padding-left: var(--space-lg);
 }
 
 .availability-result li {
-  margin-bottom: 0.25rem;
-  color: #555;
+  margin-bottom: var(--space-xs);
+  color: var(--theme-text-secondary);
 }
 
 .availability-result .suggestion {
-  margin-top: 0.5rem;
+  margin-top: var(--space-sm);
   font-style: italic;
-  color: #666;
+  color: var(--theme-text-secondary);
 }
 
 /* Justification Section */
 .justification-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-sm);
 }
 
 .justification-section label {
-  font-weight: 600;
-  color: #333;
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
 }
 
 .justification-section textarea {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: var(--space-sm-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
   font-family: inherit;
   resize: vertical;
 }
 
 .justification-section small {
-  font-size: 0.85rem;
+  font-size: var(--font-size-xs);
 }
 
 .justification-section small.text-error {
-  color: #d32f2f;
+  color: var(--color-error);
 }
 
 .justification-section small.text-success {
-  color: #4caf50;
+  color: var(--color-success);
 }
 
 /* Booking Actions */
 .booking-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border-light);
 }
 
 /* Empty State */
 .empty-state-small {
   text-align: center;
-  padding: 2rem;
-  color: #666;
-  background-color: #fff;
-  border: 1px dashed #ccc;
-  border-radius: 4px;
+  padding: var(--space-2xl);
+  color: var(--theme-text-secondary);
+  background-color: var(--color-white);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
 }
 
-/* Mobile Responsive */
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
 @media (max-width: 768px) {
   .kit-browser {
-    padding: 1rem;
+    padding: var(--space-md);
   }
 
   .kits-list {

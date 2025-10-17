@@ -20,6 +20,23 @@ export const authService = {
     }
   },
 
+  async demoLogin(role) {
+    console.log('🔐 Demo login attempt:', role);
+
+    try {
+      const response = await authAPI.demoLogin(role);
+
+      // Store user in localStorage
+      localStorage.setItem('ncadbook_user', JSON.stringify(response.user));
+
+      console.log('✅ Demo login successful:', response.user.email, response.user.role);
+      return response.user;
+    } catch (error) {
+      console.error('❌ Demo login failed:', error);
+      throw error;
+    }
+  },
+
   async logout() {
     authAPI.logout();
     localStorage.removeItem('ncadbook_user');

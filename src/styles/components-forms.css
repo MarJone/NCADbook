@@ -78,7 +78,7 @@
 .student-portal textarea:focus {
   outline: none;
   border: 2px solid var(--student-accent-primary);
-  box-shadow: 0 0 0 4px rgba(232, 93, 117, 0.1);
+  box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.1); /* Updated to match new coral #C2185B */
   padding-left: calc(var(--space-md) - 1px); /* Compensate for border */
 }
 
@@ -138,7 +138,7 @@
 .staff-portal textarea:focus {
   outline: none;
   border: 2px solid var(--staff-accent-primary);
-  box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.1); /* Updated to match new teal #00796B */
   padding-left: calc(14px - 1px);
 }
 
@@ -198,7 +198,7 @@
 .admin-portal textarea:focus {
   outline: none;
   border: 2px solid var(--dept-accent-primary);
-  box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.1);
+  box-shadow: 0 0 0 3px rgba(191, 54, 12, 0.1); /* Updated to match new amber #BF360C */
   padding-left: calc(12px - 1px);
 }
 
@@ -289,7 +289,7 @@
 input.error,
 select.error,
 textarea.error {
-  border-color: #D32F2F !important;
+  border-color: var(--color-error) !important;
 }
 
 .student-portal .form-group.has-error input:focus,
@@ -316,7 +316,7 @@ textarea.error {
 input.success,
 select.success,
 textarea.success {
-  border-color: #43A047 !important;
+  border-color: var(--color-success) !important;
 }
 
 /* ========================================
@@ -466,7 +466,7 @@ textarea:disabled {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--color-border);
   transition: 0.3s;
   border-radius: 24px;
 }

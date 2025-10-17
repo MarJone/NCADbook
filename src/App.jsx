@@ -12,6 +12,8 @@ import PayrollCoordinatorDemo from './portals/demo/PayrollCoordinatorDemo';
 import ITSupportDemo from './portals/demo/ITSupportDemo';
 import BudgetManagerDemo from './portals/demo/BudgetManagerDemo';
 import './styles/theme.css';
+import './styles/mobile-touch-targets.css';
+import './styles/smooth-animations.css';
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user } = useAuth();

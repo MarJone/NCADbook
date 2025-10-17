@@ -10,6 +10,9 @@
 /* Import Modal System Fixes */
 @import './modal-fixes.css';
 
+/* Import Micro-Interactions (Phase II-D) */
+@import './micro-interactions.css';
+
 /* Import Proxima Nova Font from Adobe Fonts (Typekit) */
 @import url('https://use.typekit.net/qpk8hon.css');
 
@@ -2274,11 +2277,13 @@ input:disabled + .slider {
   }
 }
 
-/* Toast Notifications */
+/* ============================================
+   TOAST NOTIFICATIONS - Design System v2
+   ============================================ */
 .toast {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: var(--space-md);
+  right: var(--space-md);
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
@@ -2288,7 +2293,7 @@ input:disabled + .slider {
   justify-content: space-between;
   min-width: 300px;
   max-width: 500px;
-  animation: slideIn 0.3s var(--easing-decelerate);
+  animation: slideIn var(--duration-normal) var(--easing-decelerate);
   z-index: var(--z-tooltip);
 }
 
@@ -2322,14 +2327,14 @@ input:disabled + .slider {
 }
 
 .toast-icon {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .toast-success .toast-icon {
@@ -2355,7 +2360,7 @@ input:disabled + .slider {
 .toast-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: var(--font-size-xl);
   color: var(--text-secondary);
   cursor: pointer;
   padding: 0;
@@ -3026,6 +3031,9 @@ input:disabled + .slider {
   }
 }
 
+/* ============================================
+   LOADING SKELETON - Design System v2
+   ============================================ */
 .skeleton-card {
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
@@ -3049,14 +3057,14 @@ input:disabled + .slider {
 }
 
 .skeleton-title {
-  height: 24px;
+  height: var(--space-lg);
   background: var(--bg-secondary);
   border-radius: var(--radius-sm);
   width: 70%;
 }
 
 .skeleton-text {
-  height: 16px;
+  height: var(--space-md);
   background: var(--bg-secondary);
   border-radius: var(--radius-sm);
   width: 100%;
@@ -3082,7 +3090,9 @@ input:disabled + .slider {
   padding: var(--spacing-lg);
 }
 
-/* Error Boundary Component */
+/* ============================================
+   ERROR BOUNDARY - Design System v2
+   ============================================ */
 .error-boundary {
   min-height: 400px;
   display: flex;

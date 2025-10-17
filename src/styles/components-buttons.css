@@ -188,7 +188,7 @@ button:disabled {
   height: var(--dept-button-height); /* 36px */
   padding: var(--dept-button-padding); /* 0 16px */
   border-radius: var(--dept-radius-md); /* 8px */
-  background: linear-gradient(135deg, #FB8C00 0%, #F57C00 100%);
+  background: linear-gradient(135deg, var(--dept-accent-primary) 0%, #D84315 100%);
   color: white;
   font-size: 14px;
   transition: all var(--dept-transition-duration) var(--dept-transition-timing);
@@ -213,8 +213,8 @@ button:disabled {
 .admin-portal .btn-secondary:hover,
 .admin-portal .admin-action-btn.secondary:hover {
   background: var(--dept-bg-tertiary);
-  border-color: #FB8C00;
-  color: #FB8C00;
+  border-color: var(--dept-accent-primary);
+  color: var(--dept-accent-primary);
 }
 
 .admin-portal .btn-text {

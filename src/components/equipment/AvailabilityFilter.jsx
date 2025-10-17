@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { haptics } from '../../utils/haptics';
 
 export default function AvailabilityFilter({ onFilterChange }) {
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -6,6 +7,7 @@ export default function AvailabilityFilter({ onFilterChange }) {
   const [endDate, setEndDate] = useState('');
 
   const handleFilterChange = (filter) => {
+    haptics.light();
     setSelectedFilter(filter);
 
     if (filter === 'custom' && startDate) {

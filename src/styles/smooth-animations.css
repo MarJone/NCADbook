@@ -1,0 +1,397 @@
+/**
+ * Smooth Scroll and Page Transition Animations
+ * GPU-accelerated animations for 60fps performance
+ * Uses transform and opacity only to avoid layout recalculations
+ */
+
+/* ========== SMOOTH SCROLLING ========== */
+
+/* Global smooth scrolling (with reduced motion support) */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========== PAGE TRANSITIONS ========== */
+
+/* Fade and slide up animation for page loads */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply to main content areas */
+.student-dashboard,
+.equipment-browse,
+.admin-main,
+.staff-main {
+  animation: fadeSlideUp 0.4s ease-out;
+  will-change: transform, opacity;
+}
+
+/* ========== SCROLL-TRIGGERED ANIMATIONS ========== */
+
+/* Fade in elements as they scroll into view */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Equipment cards fade in on scroll */
+.equipment-card,
+.student-card,
+.admin-card {
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+/* Stagger animation delays for grid items */
+.equipment-grid .equipment-card:nth-child(1) { animation-delay: 0s; }
+.equipment-grid .equipment-card:nth-child(2) { animation-delay: 0.05s; }
+.equipment-grid .equipment-card:nth-child(3) { animation-delay: 0.1s; }
+.equipment-grid .equipment-card:nth-child(4) { animation-delay: 0.15s; }
+.equipment-grid .equipment-card:nth-child(5) { animation-delay: 0.2s; }
+.equipment-grid .equipment-card:nth-child(6) { animation-delay: 0.25s; }
+
+/* Dashboard grid stagger */
+.student-dashboard-grid .student-card:nth-child(1) { animation-delay: 0s; }
+.student-dashboard-grid .student-card:nth-child(2) { animation-delay: 0.1s; }
+.student-dashboard-grid .student-card:nth-child(3) { animation-delay: 0.2s; }
+.student-dashboard-grid .student-card:nth-child(4) { animation-delay: 0.3s; }
+
+/* ========== SCROLL-TO-TOP ANIMATION ========== */
+
+/* Smooth scroll to top with momentum feel */
+@keyframes scrollMomentum {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Scroll indicator for pagination */
+.pagination-scroll-indicator {
+  animation: scrollMomentum 2s ease-in-out infinite;
+}
+
+/* ========== MODAL TRANSITIONS ========== */
+
+/* Modal overlay fade in */
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content slide up */
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-overlay {
+  animation: overlayFadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bounce effect */
+}
+
+/* ========== TOAST NOTIFICATIONS ========== */
+
+/* Toast slide in from right */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Toast slide out to right */
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+}
+
+.toast {
+  animation: toastSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toast.closing {
+  animation: toastSlideOut 0.2s ease-in forwards;
+}
+
+/* ========== LOADING ANIMATIONS ========== */
+
+/* Skeleton shimmer effect */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton,
+.loading-skeleton,
+.student-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--theme-bg-tertiary) 0%,
+    var(--theme-bg-secondary) 50%,
+    var(--theme-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+  will-change: background-position;
+}
+
+/* Spinner rotation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner,
+.spinner {
+  animation: spin 1s linear infinite;
+  will-change: transform;
+}
+
+/* ========== BUTTON PRESS ANIMATIONS ========== */
+
+/* Satisfying button press animation */
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+button:active,
+.btn:active {
+  animation: buttonPress 0.2s ease-out;
+}
+
+/* ========== CARD HOVER ANIMATIONS ========== */
+
+/* Smooth lift on hover */
+.equipment-card,
+.student-card,
+.student-kit-item {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease-out;
+}
+
+.equipment-card:hover,
+.student-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  will-change: transform;
+}
+
+.student-kit-item:hover {
+  transform: translateX(6px);
+  will-change: transform;
+}
+
+/* ========== PULL-TO-REFRESH ANIMATIONS ========== */
+
+/* Pull-to-refresh spinner rotation */
+@keyframes refreshSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pull-to-refresh-spinner {
+  animation: refreshSpin 1s linear infinite;
+}
+
+/* Pull-to-refresh bounce */
+@keyframes pullBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.pull-to-refresh-icon {
+  animation: pullBounce 1s ease-in-out infinite;
+}
+
+/* ========== FILTER CHIPS ANIMATIONS ========== */
+
+/* Chip pop-in animation */
+@keyframes chipPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.filter-chip,
+.chip {
+  animation: chipPopIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ========== AVAILABILITY BADGE ANIMATIONS ========== */
+
+/* Availability badge pulse */
+@keyframes badgePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.availability-badge.availability-available {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* ========== PAGE SCROLL PROGRESS INDICATOR ========== */
+
+/* Optional scroll progress bar at top of page */
+@keyframes scrollProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--theme-accent-primary), var(--theme-accent-primary-hover));
+  transform-origin: left;
+  z-index: var(--z-sticky);
+  will-change: transform;
+}
+
+/* ========== REDUCED MOTION SUPPORT ========== */
+
+/* Disable all animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .equipment-card,
+  .student-card,
+  .student-kit-item {
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========== PERFORMANCE OPTIMIZATIONS ========== */
+
+/* Use GPU acceleration for frequently animated elements */
+.equipment-card,
+.student-card,
+.modal-content,
+.toast,
+.loading-spinner,
+.skeleton,
+.pull-to-refresh-spinner {
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Force GPU layer */
+}
+
+/* Remove will-change after animation completes to free memory */
+.animation-complete {
+  will-change: auto;
+}
+
+/* ========== SCROLL SNAP (OPTIONAL) ========== */
+
+/* Smooth snapping for mobile carousel-like experiences */
+.scroll-snap-container {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar */
+}
+
+.scroll-snap-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+.scroll-snap-item {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}

@@ -53,7 +53,12 @@
       "Bash(git mv:*)",
       "Bash(git rm:*)",
       "Bash(where node)",
-      "Bash(where npm)"
+      "Bash(where npm)",
+      "Bash(git branch:*)",
+      "Bash(git tag:*)",
+      "Bash(timeout /t 5)",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT DISTINCT department FROM equipment LIMIT 10;\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT id, email, department FROM users WHERE role = ''student'' LIMIT 5;\")"
     ],
     "deny": [],
     "ask": []

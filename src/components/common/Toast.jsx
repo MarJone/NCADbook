@@ -1,13 +1,23 @@
 import { useEffect } from 'react';
+import { haptics } from '../../utils/haptics';
 
 export default function Toast({ message, type = 'success', onClose, duration = 3000 }) {
   useEffect(() => {
+    // Trigger haptic feedback based on toast type
+    if (type === 'success') {
+      haptics.success();
+    } else if (type === 'error') {
+      haptics.error();
+    } else if (type === 'warning') {
+      haptics.warning();
+    }
+
     const timer = setTimeout(() => {
       onClose();
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [duration, onClose]);
+  }, [duration, onClose, type]);
 
   return (
     <div
@@ -25,7 +35,10 @@ export default function Toast({ message, type = 'success', onClose, duration = 3
       </div>
       <button
         className="toast-close"
-        onClick={onClose}
+        onClick={() => {
+          haptics.light();
+          onClose();
+        }}
         aria-label="Close notification"
       >
         ×

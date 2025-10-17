@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { equipmentAPI, bookingsAPI } from '../../utils/api';
 import { kitStorage } from '../../utils/kitStorage';
+import BookingProgress from './BookingProgress';
 
 export default function MultiItemBookingModal({ onClose, onSuccess }) {
   const { user } = useAuth();
@@ -120,6 +121,24 @@ export default function MultiItemBookingModal({ onClose, onSuccess }) {
 
   const categories = [...new Set(availableEquipment.map(item => item.category))];
 
+  const progressSteps = [
+    { id: 'dates', label: 'Select Dates' },
+    { id: 'equipment', label: 'Select Equipment' },
+    { id: 'confirm', label: 'Confirm' }
+  ];
+
+  const getCurrentStepId = () => {
+    if (step === 1) return 'dates';
+    if (step === 2) return 'equipment';
+    return 'confirm';
+  };
+
+  const handleStepClick = (stepId) => {
+    // Allow backward navigation
+    if (stepId === 'dates') setStep(1);
+    else if (stepId === 'equipment' && step >= 2) setStep(2);
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '800px' }}>
@@ -128,70 +147,13 @@ export default function MultiItemBookingModal({ onClose, onSuccess }) {
           <button onClick={onClose} className="modal-close" aria-label="Close">×</button>
         </div>
 
+        <BookingProgress
+          currentStep={getCurrentStepId()}
+          steps={progressSteps}
+          onStepClick={handleStepClick}
+        />
+
         <div className="modal-body">
-          {/* Progress Indicator */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', position: 'relative' }}>
-            <div style={{ flex: 1, textAlign: 'center', zIndex: 1 }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                background: step >= 1 ? 'var(--primary-color)' : 'var(--border-color)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto',
-                fontWeight: 'bold'
-              }}>1</div>
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: step >= 1 ? 'var(--primary-color)' : 'var(--text-secondary)' }}>
-                Select Dates
-              </div>
-            </div>
-            <div style={{ flex: 1, textAlign: 'center', zIndex: 1 }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                background: step >= 2 ? 'var(--primary-color)' : 'var(--border-color)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto',
-                fontWeight: 'bold'
-              }}>2</div>
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: step >= 2 ? 'var(--primary-color)' : 'var(--text-secondary)' }}>
-                Select Equipment
-              </div>
-            </div>
-            <div style={{ flex: 1, textAlign: 'center', zIndex: 1 }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                background: step >= 3 ? 'var(--primary-color)' : 'var(--border-color)',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto',
-                fontWeight: 'bold'
-              }}>3</div>
-              <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: step >= 3 ? 'var(--primary-color)' : 'var(--text-secondary)' }}>
-                Confirm
-              </div>
-            </div>
-            <div style={{
-              position: 'absolute',
-              top: '20px',
-              left: '20%',
-              right: '20%',
-              height: '2px',
-              background: 'var(--border-color)',
-              zIndex: 0
-            }}></div>
-          </div>
 
           {error && (
             <div className="error-message" style={{ marginBottom: '1rem' }}>{error}</div>

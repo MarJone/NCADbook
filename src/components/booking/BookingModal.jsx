@@ -125,12 +125,12 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
             <button className="modal-close" onClick={onClose} aria-label="Close">&times;</button>
           </div>
           <div className="modal-body">
-            <div className="restriction-message" style={{ textAlign: 'center', padding: '2rem', background: '#fff3cd', border: '2px solid #ffc107', borderRadius: '8px' }}>
-              <h3 style={{ color: '#856404', marginBottom: '1rem' }}>Cannot Create Booking</h3>
-              <p style={{ color: '#856404', marginBottom: '0.5rem' }}>You do not have permission to create equipment bookings.</p>
-              <p style={{ color: '#856404' }}>Please contact your department admin to request access.</p>
+            <div className="restriction-message">
+              <h3>Cannot Create Booking</h3>
+              <p>You do not have permission to create equipment bookings.</p>
+              <p>Please contact your department admin to request access.</p>
             </div>
-            <div className="modal-actions" style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+            <div className="modal-actions">
               <button onClick={onClose} className="btn btn-secondary">Close</button>
             </div>
           </div>
@@ -155,48 +155,25 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
 
           {/* Cross-Department Access Notice */}
           {equipment.isCrossDepartment && (
-            <div className="cross-department-notice" style={{
-              marginTop: '1rem',
-              marginBottom: '1.5rem',
-              padding: '1rem',
-              backgroundColor: '#e3f2fd',
-              border: '2px solid #2196f3',
-              borderRadius: '8px'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}>🔄</span>
-                <h4 style={{ margin: 0, color: '#1976d2', fontSize: '1.1rem' }}>Cross-Department Equipment</h4>
+            <div className="cross-department-notice">
+              <div className="cross-department-notice-header">
+                <span className="icon">🔄</span>
+                <h4>Cross-Department Equipment</h4>
               </div>
 
-              <p style={{ margin: '0.5rem 0', color: '#333', fontSize: '0.95rem' }}>
+              <p>
                 <strong>From:</strong> {equipment.lendingDepartment}
               </p>
 
-              <div style={{
-                marginTop: '1rem',
-                padding: '0.75rem',
-                backgroundColor: '#fff',
-                borderRadius: '4px',
-                border: '1px solid #bbdefb'
-              }}>
-                <h5 style={{ margin: '0 0 0.5rem 0', color: '#1976d2', fontSize: '0.9rem' }}>📍 Collection Instructions</h5>
-                <p style={{ margin: 0, fontSize: '0.875rem', lineHeight: '1.5', color: '#333', whiteSpace: 'pre-wrap' }}>
-                  {equipment.collectionInstructions}
-                </p>
+              <div className="collection-instructions">
+                <h5>📍 Collection Instructions</h5>
+                <p>{equipment.collectionInstructions}</p>
               </div>
 
               {equipment.crossDeptTerms && (
-                <div style={{
-                  marginTop: '0.75rem',
-                  padding: '0.75rem',
-                  backgroundColor: '#fff8e1',
-                  borderRadius: '4px',
-                  border: '1px solid #ffe082'
-                }}>
-                  <h5 style={{ margin: '0 0 0.5rem 0', color: '#f57c00', fontSize: '0.9rem' }}>⚠️ Terms & Conditions</h5>
-                  <p style={{ margin: 0, fontSize: '0.875rem', lineHeight: '1.5', color: '#333', whiteSpace: 'pre-wrap' }}>
-                    {equipment.crossDeptTerms}
-                  </p>
+                <div className="terms-conditions">
+                  <h5>⚠️ Terms & Conditions</h5>
+                  <p>{equipment.crossDeptTerms}</p>
                 </div>
               )}
             </div>
