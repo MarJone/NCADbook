@@ -4,36 +4,76 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-NCAD Equipment Booking System - A mobile-first web application for managing equipment bookings at NCAD College. Serves 1,600 students across Moving Image Design, Graphic Design, and Illustration departments, managing 200+ pieces of equipment with future expansion to room/space bookings.
+NCAD Equipment Booking System - A "bold and curious" academic equipment booking platform that bridges high-end commercial UX with institutional rigor. Serves 1,600 students across Moving Image Design, Graphic Design, and Illustration departments, managing 200+ pieces of equipment with future expansion to room/space bookings.
+
+**Core Philosophy:**
+- **Bold**: Award-winning aesthetics (Awwwards/CSS Winner standards), high-impact visuals, polished branding
+- **Curious**: Encourage exploration, simplify discoverability, leverage real-time data for informed decisions
+- **Balance**: Frictionless UX + institutional compliance = trust and conversion
 
 **Tech Stack:**
-- Frontend: HTML/CSS/JavaScript (mobile-first responsive design)
-- Backend: Supabase (PostgreSQL with Row Level Security)
-- Testing: Playwright (configured for mobile/tablet/desktop)
-- Email: EmailJS for notifications
-- Deployment: On-campus hosting (Netlify/Vercel for development)
+- Frontend: React 18 with hooks (functional components only)
+- Styling: CSS custom properties (design tokens) - NO Tailwind compilation
+- Backend: PostgreSQL with Node.js API (demo mode fallback for GitHub Pages)
+- Build Tool: Vite
+- Testing: Playwright (@playwright/test) + Vitest (unit tests) + @axe-core (accessibility)
+- Email: EmailJS (@emailjs/browser) for notifications
+- PDF Export: jsPDF + jspdf-autotable for analytics
+- Deployment: GitHub Pages (demo mode) + on-campus hosting (full backend)
 
 ## Development Commands
 
-Currently in early setup phase. No build/test commands configured yet in package.json.
+**Core Development:**
+```bash
+npm run dev          # Start dev server (http://localhost:5175/NCADbook/)
+npm run build        # Production build
+npm run preview      # Preview production build
+```
 
-**Playwright Testing** (when configured):
+**Backend (separate terminal):**
+```bash
+cd backend
+node server.js       # Start API server (http://localhost:3000)
+```
+
+**Playwright Testing:**
 ```bash
 npm test                           # Run all tests
+npx playwright test --ui           # Interactive test mode
 npx playwright test --project=mobile-chrome    # Mobile-specific tests
 npx playwright test --project=chromium-desktop # Desktop tests
-npx playwright test --ui           # Interactive test mode
 npx playwright show-report         # View test results
+npm run playwright                 # Open Playwright inspector (for visual dev)
+```
+
+**Code Quality:**
+```bash
+npm run test:a11y    # Run accessibility audits (to be configured)
+npm run lint         # (To be configured)
+npm run format       # (To be configured)
 ```
 
 ## Project Architecture
 
 ### Core Design Principles
-- **Mobile-First**: Design for 320px viewport first, enhance for tablet (768px) and desktop (1024px+)
+
+**From "Bold & Curious" Philosophy** (see [context/design-principles.md](context/design-principles.md)):
+1. **Aesthetic as Trust Signal** - Premium visual design communicates operational reliability
+2. **Frictionless Compliance** - Speed and rigor are design partners, not opposites
+3. **Intelligent Discoverability** - Help users find the *right* resource, not just any resource
+4. **Real-Time Transparency** - Live data empowers informed decisions and shapes behavior
+5. **Supportive Accountability** - Frame obligations positively, never punitively
+6. **Progressive Disclosure** - Reveal complexity gradually, only when needed
+7. **Action-Specific CTAs** - Every button communicates exact intent—no ambiguity
+8. **Accessibility as Foundation** - Universal access is structural, not optional
+
+**Technical Requirements:**
+- **Desktop-First Conversion**: Primary design target is 1440px desktop viewport (complex filtering favors larger screens)
+- **Mobile Functional**: Ensure mobile (320px-768px) remains clean and fully usable
 - **Touch-Optimized**: Minimum 44px touch targets for all interactive elements
-- **Performance**: <3 second load on 3G networks, lazy loading for images, virtual scrolling for lists
+- **Performance**: <2 second page load, <200ms transitions, lazy loading for images
 - **Security**: Row Level Security (RLS) policies for all database access, GDPR-compliant data handling
-- **Accessibility**: WCAG 2.2 AA compliance, ARIA labels, keyboard navigation
+- **Accessibility**: WCAG 2.1 AA compliance (non-negotiable), full keyboard navigation, ARIA labels
 
 ### Directory Structure
 ```
@@ -183,29 +223,127 @@ Complex features are documented as specialized sub-agents in [docs/agents/](docs
 
 ## Workflow Guidelines
 
+### Standard Development Workflow
+
 When implementing features:
-1. **Start mobile-first** - Design for 320px viewport, enhance upward
-2. **Reference sub-agent docs** - Each major feature has detailed specifications
-3. **Test across devices** - Use Playwright profiles for mobile/tablet/desktop
-4. **Validate RLS** - Ensure database policies enforce permissions
-5. **Check PRD success metrics** - Target: 75% admin time reduction, 70%+ mobile bookings
+1. **Read Design Context** - Always reference relevant files from [/context](context/) folder before UI work
+2. **Desktop-First Design** - Primary target: 1440px viewport, then adapt down to mobile (320px)
+3. **Reference Documentation** - Check [/context/ux-patterns.md](context/ux-patterns.md) for booking flow specifications
+4. **Test Across Devices** - Use Playwright profiles for mobile/tablet/desktop
+5. **Validate Security** - Ensure database policies enforce permissions (RLS)
+6. **Check Success Metrics** - Target: 75% admin time reduction, 80%+ booking completion rate
+
+### Visual Development Protocol (Playwright MCP)
+
+**Required Context Files** - Always reference before starting UI work:
+- [/context/design-principles.md](context/design-principles.md) - Core design standards and aesthetic guidelines
+- [/context/style-guide.md](context/style-guide.md) - Typography, colors, spacing, component patterns
+- [/context/ux-patterns.md](context/ux-patterns.md) - Booking flow architecture and conversion best practices
+
+**Standard Playwright Workflow for Front-End Changes:**
+
+1. **Navigate & Verify**
+   - Open the affected page(s) in Playwright browser
+   - Test at desktop viewport (1440x900) as primary, then mobile (375x667)
+   - Check console for errors/warnings
+
+2. **Reference Validation**
+   - Compare against style guide specifications
+   - Verify booking flow matches documented UX patterns
+   - Ensure accessibility standards (keyboard navigation, ARIA, contrast)
+
+3. **Screenshot Comparison**
+   - Take before/after screenshots
+   - Compare against design mocks or reference inspiration
+   - Iterate until visual output matches spec
+
+4. **Cross-Device Testing**
+   - Test responsive breakpoints (mobile 375px, tablet 768px, desktop 1440px)
+   - Verify touch targets are 44x44px minimum
+   - Check that CTAs remain prominent across viewports
+
+**Quality Gates** - Before considering work complete:
+- [ ] No console errors or warnings
+- [ ] Passes keyboard-only navigation test
+- [ ] Matches style guide specifications (colors, typography, spacing)
+- [ ] CTAs are action-specific and high-contrast
+- [ ] Real-time data displays correctly with proper loading states
+- [ ] Progressive disclosure working for complex filters
+- [ ] Mobile viewport is clean and usable
+
+### Git Workflow
+
+**Commits:**
+- Conventional commits format: `feat:`, `fix:`, `style:`, `refactor:`
+- Reference ticket/issue numbers where applicable
+- Include before/after screenshots for UI changes in commit description
+
+**Pull Requests:**
+- Include Playwright screenshots showing changes at multiple viewports
+- Document accessibility testing results (keyboard nav, screen reader)
+- Link to design specs or inspiration sources
+- Consider comprehensive design review for major UX work
 
 ## Current Project Status
 
-Early setup phase. Key next steps:
-- Scaffold source code structure (`/src`)
-- Configure Supabase client and connection
-- Implement database schema from [docs/agents/01-database-schema-architect.md](docs/agents/01-database-schema-architect.md)
-- Build core UI components from [docs/agents/02-mobile-ui-component-builder.md](docs/agents/02-mobile-ui-component-builder.md)
-- Set up authentication system from [docs/agents/03-authentication-permission-manager.md](docs/agents/03-authentication-permission-manager.md)
+**Working System** - Functional booking platform with demo mode:
+- ✅ 4 portals: Student, Staff Admin, Dept Admin, Master Admin
+- ✅ Equipment browsing and booking system
+- ✅ PostgreSQL backend with demo mode fallback
+- ✅ Analytics dashboard with PDF export (jsPDF)
+- ✅ Design system foundation (94KB CSS with portal themes)
+- ✅ GitHub Pages deployment: https://marjone.github.io/NCADbook/
+- ✅ Local development: http://localhost:5175/NCADbook/
+
+**UI/UX Overhaul Phase** - Implementing "bold and curious" design:
+- 📋 Review Phase I Foundation requirements from [context/implementation-roadmap.md](context/implementation-roadmap.md)
+- 📋 Set up Playwright MCP for visual development (see [context/playwright-setup.md](context/playwright-setup.md))
+- 📋 Align existing components with [context/style-guide.md](context/style-guide.md) specifications
+- 📋 Implement booking flow UX patterns from [context/ux-patterns.md](context/ux-patterns.md)
+- 📋 Establish quality gates and design review workflow
+
+**Critical Files:**
+- [src/api/client.js](src/api/client.js) - API client with demo mode fallback
+- [src/services/DemoModeService.js](src/services/DemoModeService.js) - Mock data service for GitHub Pages
+- [src/styles/design-system.css](src/styles/design-system.css) - Design tokens foundation
+- [OVERHAUL_BRIEFING.md](OVERHAUL_BRIEFING.md) - Comprehensive overhaul plan and backup status
 
 ## Code Style Preferences
 
-- **CSS**: Mobile-first media queries, use CSS custom properties for theming
-- **JavaScript**: ES6+ modules, async/await for async operations
-- **Components**: Self-contained with co-located styles
-- **Naming**: BEM methodology for CSS classes (`.component__element--modifier`)
-- **Accessibility**: Always include ARIA labels, ensure keyboard navigation
+**Frontend Stack:**
+- **React 18**: Functional components only, hooks for state management
+- **CSS**: CSS custom properties from [src/styles/design-tokens.css](src/styles/design-tokens.css) - NO Tailwind compilation
+- **Components**: Small, focused React components (<150 lines) with co-located CSS files
+- **CSS Naming**: BEM methodology for classes (`.component__element--modifier`)
+- **Type Safety**: Consider TypeScript adoption for future phases (currently vanilla JS)
+
+**CSS Guidelines:**
+- Use design tokens exclusively: `var(--spacing-md)`, `var(--color-primary-600)`, etc.
+- Desktop-first media queries: Design for 1440px, then adapt down
+- GPU-accelerated animations only: `transform` and `opacity` (avoid layout changes)
+- Transitions: 200-300ms duration standard, `ease-in-out` easing
+
+**JavaScript Guidelines:**
+- ES6+ modules, async/await for async operations
+- Small focused functions (< 150 lines)
+- Separate business logic from presentation
+- Progressive enhancement (core functionality works without JS)
+
+**Component Architecture:**
+- Small, focused React components (< 150 lines per file)
+- Custom hooks for shared state/behavior (see [src/hooks](src/hooks/) folder)
+- Context providers for global state ([src/contexts](src/contexts/): AuthContext, ThemeContext)
+- Progressive disclosure for complex forms
+- Loading states with skeleton screens ([LoadingSkeleton.jsx](src/components/common/LoadingSkeleton.jsx))
+
+**Accessibility Requirements (Non-Negotiable):**
+- Full keyboard navigation support (Tab, Enter, Escape, Arrow keys)
+- ARIA labels for all dynamic content and interactive elements
+- Live regions for status updates (`role="status"`, `aria-live="polite"`)
+- Minimum 4.5:1 color contrast (body text), 3:1 for UI components
+- Never use color alone to convey information (always pair with icons/text)
+- Focus indicators on all interactive elements (3px ring, high contrast)
+- Semantic HTML (`<button>`, `<nav>`, `<main>`, `<article>`, etc.)
 
 ## Project Memory & Workflow Optimization
 
