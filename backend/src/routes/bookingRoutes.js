@@ -9,6 +9,11 @@ import {
   deleteBooking
 } from '../controllers/bookingController.js';
 import { authenticate, requireAdmin } from '../middleware/auth.js';
+import {
+  validateBookingPolicies,
+  checkFineStatus,
+  allowAdminOverride
+} from '../middleware/policyValidation.js';
 
 const router = express.Router();
 
@@ -33,8 +38,14 @@ router.get('/:id', getBookingById);
  * @route   POST /api/bookings
  * @desc    Create new booking
  * @access  Private
+ * @middleware Policy validation checks (weekly limit, concurrent limit, training, fines)
  */
-router.post('/', createBooking);
+router.post('/',
+  allowAdminOverride,        // Allow admins to bypass policies if needed
+  checkFineStatus,           // Block if user has account hold from fines
+  validateBookingPolicies,   // Validate weekly/concurrent limits and training
+  createBooking
+);
 
 /**
  * @route   PUT /api/bookings/:id/approve

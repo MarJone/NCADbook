@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import pool from '../db/index.js';
+
 const router = express.Router();
-const pool = require('../db');
 
 // Get all fines for a user
 router.get('/user/:userId', async (req, res) => {
@@ -225,4 +226,4 @@ router.post('/mark-overdue', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

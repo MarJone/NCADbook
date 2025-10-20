@@ -17,6 +17,8 @@ import departmentRoutes from './routes/departmentRoutes.js';
 import systemSettingsRoutes from './routes/systemSettingsRoutes.js';
 import equipmentKitsRoutes from './routes/equipmentKitsRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import finesRoutes from './routes/fines.js';
+import policiesRoutes from './routes/policies.js';
 
 // Get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -73,6 +75,8 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/settings', systemSettingsRoutes);
 app.use('/api/kits', equipmentKitsRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/fines', finesRoutes);
+app.use('/api/policies', policiesRoutes);
 
 // 404 handler
 app.use((req, res) => {
