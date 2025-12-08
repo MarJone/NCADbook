@@ -12,7 +12,7 @@ import './PortalHeader.css';
  * - Scroll-aware styling
  * - Integrated mega menu navigation
  * - Notification indicator
- * - User menu
+ * - User menu with logout
  * - Mobile hamburger
  *
  * @param {Object} props
@@ -22,6 +22,7 @@ import './PortalHeader.css';
  * @param {Function} props.onMobileMenuToggle - Mobile menu toggle callback
  * @param {Function} props.onSearchOpen - Search open callback
  * @param {Function} props.onCommandPaletteOpen - Command palette callback
+ * @param {Function} props.onLogout - Logout callback
  * @param {number} props.notificationCount - Number of notifications
  */
 export function PortalHeader({
@@ -31,6 +32,7 @@ export function PortalHeader({
   onMobileMenuToggle,
   onSearchOpen,
   onCommandPaletteOpen,
+  onLogout,
   notificationCount = 0,
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -191,7 +193,15 @@ export function PortalHeader({
                   <li><Link to="/settings">Settings</Link></li>
                 </ul>
                 <div className="header-user-dropdown-divider" />
-                <button className="header-user-dropdown-logout">Sign Out</button>
+                <button
+                  className="header-user-dropdown-logout"
+                  onClick={() => {
+                    setIsUserMenuOpen(false);
+                    onLogout?.();
+                  }}
+                >
+                  Sign Out
+                </button>
               </div>
             )}
           </div>

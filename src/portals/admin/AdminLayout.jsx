@@ -87,6 +87,7 @@ export default function AdminLayout() {
         onSearchOpen={() => setIsSearchOpen(true)}
         onCommandPaletteOpen={isMasterAdmin ? openCommandPalette : undefined}
         onMobileMenuToggle={(open) => console.log('Mobile menu:', open)}
+        onLogout={logout}
         notificationCount={5}
       />
 

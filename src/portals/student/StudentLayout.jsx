@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useTheme, usePortalTheme } from '../../contexts/ThemeContext';
+import { usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
 import { PortalHeader } from '../../components/layout/PortalHeader';
@@ -15,7 +15,6 @@ import '../../styles/role-colors.css';
 
 export default function StudentLayout() {
   const { user, logout } = useAuth();
-  const { theme } = useTheme();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Register portal theme
@@ -41,7 +40,7 @@ export default function StudentLayout() {
   ];
 
   return (
-    <div className="student-portal" data-theme={theme}>
+    <div className="student-portal" data-theme="light">
       {/* Enhanced Header with scroll-awareness */}
       <PortalHeader
         portalType="student"
@@ -49,6 +48,7 @@ export default function StudentLayout() {
         logoSrc="/images/ncad-logo.svg"
         onSearchOpen={() => setIsSearchOpen(true)}
         onMobileMenuToggle={(open) => console.log('Mobile menu:', open)}
+        onLogout={logout}
         notificationCount={3}
       />
 
