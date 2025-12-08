@@ -30,9 +30,9 @@ export default function MobileBottomNav() {
       case 'department_admin':
         return [
           { path: '/admin', icon: '📊', label: 'Dashboard', testId: 'nav-dashboard' },
-          { path: '/admin/bookings', icon: '✅', label: 'Approvals', testId: 'nav-approvals' },
+          { path: '/admin/approvals', icon: '✅', label: 'Approvals', testId: 'nav-approvals' },
           { path: '/admin/equipment', icon: '🎥', label: 'Equipment', testId: 'nav-equipment' },
-          { path: '/admin/staff', icon: '👥', label: 'Staff', testId: 'nav-staff' }
+          { path: '/admin/users', icon: '👥', label: 'Users', testId: 'nav-users' }
         ];
 
       case 'master_admin':
@@ -40,7 +40,7 @@ export default function MobileBottomNav() {
           { path: '/admin', icon: '📊', label: 'Dashboard', testId: 'nav-dashboard' },
           { path: '/admin/users', icon: '👥', label: 'Users', testId: 'nav-users' },
           { path: '/admin/analytics', icon: '📈', label: 'Analytics', testId: 'nav-analytics' },
-          { path: '/admin/settings', icon: '⚙️', label: 'Settings', testId: 'nav-settings' }
+          { path: '/admin/system-settings', icon: '⚙️', label: 'Settings', testId: 'nav-settings' }
         ];
 
       default:

@@ -47,8 +47,18 @@ export function MegaMenuNav({
   const navRef = useRef(null);
 
   // Menu configurations per portal
+  // Routes must match actual routes defined in App.jsx and Layout components:
+  // - Student: /student/*
+  // - Staff: /staff/*
+  // - Admin (both dept-admin and master-admin): /admin/*
   const menuConfigs = {
     student: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        icon: Home,
+        href: '/student',
+      },
       {
         id: 'browse',
         label: 'Browse Equipment',
@@ -58,45 +68,28 @@ export function MegaMenuNav({
             {
               title: 'Categories',
               items: [
-                { label: 'Cameras', icon: Camera, href: '/equipment?category=cameras', description: 'DSLR, Mirrorless, Cinema' },
-                { label: 'Audio', icon: Headphones, href: '/equipment?category=audio', description: 'Mics, Recorders, Mixers' },
-                { label: 'Computers', icon: Laptop, href: '/equipment?category=computers', description: 'Laptops, Workstations' },
-                { label: 'Monitors', icon: Monitor, href: '/equipment?category=monitors', description: 'Field & Studio Monitors' },
+                { label: 'Cameras', icon: Camera, href: '/student/equipment?category=cameras', description: 'DSLR, Mirrorless, Cinema' },
+                { label: 'Audio', icon: Headphones, href: '/student/equipment?category=audio', description: 'Mics, Recorders, Mixers' },
+                { label: 'Computers', icon: Laptop, href: '/student/equipment?category=computers', description: 'Laptops, Workstations' },
+                { label: 'Monitors', icon: Monitor, href: '/student/equipment?category=monitors', description: 'Field & Studio Monitors' },
               ],
             },
             {
               title: 'Quick Access',
               items: [
-                { label: 'Available Now', icon: Zap, href: '/equipment?available=true', highlight: true },
-                { label: 'New Arrivals', icon: Star, href: '/equipment?sort=newest' },
-                { label: 'Popular Items', icon: BarChart3, href: '/equipment?sort=popular' },
+                { label: 'Available Now', icon: Zap, href: '/student/equipment?available=true', highlight: true },
+                { label: 'New Arrivals', icon: Star, href: '/student/equipment?sort=newest' },
+                { label: 'Popular Items', icon: BarChart3, href: '/student/equipment?sort=popular' },
               ],
             },
           ],
-          featured: {
-            title: 'Featured Equipment',
-            description: 'Check out our newly added Sony FX6 cinema camera kit!',
-            href: '/equipment/sony-fx6',
-            image: '/images/equipment/featured-camera.jpg',
-          },
         },
       },
       {
         id: 'bookings',
         label: 'My Bookings',
         icon: Calendar,
-        megaMenu: {
-          sections: [
-            {
-              title: 'Manage Bookings',
-              items: [
-                { label: 'Active Bookings', icon: Clock, href: '/bookings/active' },
-                { label: 'Booking History', icon: BookOpen, href: '/bookings/history' },
-                { label: 'Pending Approval', icon: AlertTriangle, href: '/bookings/pending' },
-              ],
-            },
-          ],
-        },
+        href: '/student/bookings',
       },
     ],
 
@@ -105,41 +98,25 @@ export function MegaMenuNav({
         id: 'dashboard',
         label: 'Dashboard',
         icon: Home,
-        href: '/staff/dashboard',
+        href: '/staff',
       },
       {
         id: 'equipment',
         label: 'Equipment',
         icon: Package,
-        megaMenu: {
-          sections: [
-            {
-              title: 'Management',
-              items: [
-                { label: 'All Equipment', icon: Package, href: '/staff/equipment' },
-                { label: 'Add New', icon: Zap, href: '/staff/equipment/new' },
-                { label: 'Maintenance', icon: Settings, href: '/staff/equipment/maintenance' },
-              ],
-            },
-          ],
-        },
+        href: '/staff/equipment',
       },
       {
         id: 'bookings',
         label: 'Bookings',
         icon: Calendar,
-        megaMenu: {
-          sections: [
-            {
-              title: 'Booking Management',
-              items: [
-                { label: 'All Bookings', icon: Calendar, href: '/staff/bookings' },
-                { label: 'Pending Approval', icon: AlertTriangle, href: '/staff/bookings/pending', badge: true },
-                { label: 'Schedule View', icon: Clock, href: '/staff/bookings/schedule' },
-              ],
-            },
-          ],
-        },
+        href: '/staff/bookings',
+      },
+      {
+        id: 'rooms',
+        label: 'Room Booking',
+        icon: Calendar,
+        href: '/staff/rooms',
       },
     ],
 
@@ -148,36 +125,31 @@ export function MegaMenuNav({
         id: 'dashboard',
         label: 'Dashboard',
         icon: Home,
-        href: '/dept-admin/dashboard',
+        href: '/admin',
+      },
+      {
+        id: 'approvals',
+        label: 'Approvals',
+        icon: AlertTriangle,
+        href: '/admin/approvals',
       },
       {
         id: 'equipment',
         label: 'Equipment',
         icon: Package,
-        href: '/dept-admin/equipment',
-      },
-      {
-        id: 'bookings',
-        label: 'Bookings',
-        icon: Calendar,
-        megaMenu: {
-          sections: [
-            {
-              title: 'Booking Management',
-              items: [
-                { label: 'All Bookings', icon: Calendar, href: '/dept-admin/bookings' },
-                { label: 'Pending Approval', icon: AlertTriangle, href: '/dept-admin/bookings/pending', badge: true },
-                { label: 'Department Stats', icon: BarChart3, href: '/dept-admin/analytics' },
-              ],
-            },
-          ],
-        },
+        href: '/admin/equipment',
       },
       {
         id: 'users',
         label: 'Users',
         icon: Users,
-        href: '/dept-admin/users',
+        href: '/admin/users',
+      },
+      {
+        id: 'analytics',
+        label: 'Analytics',
+        icon: BarChart3,
+        href: '/admin/analytics',
       },
     ],
 
@@ -186,7 +158,13 @@ export function MegaMenuNav({
         id: 'dashboard',
         label: 'Dashboard',
         icon: Home,
-        href: '/master-admin/dashboard',
+        href: '/admin',
+      },
+      {
+        id: 'approvals',
+        label: 'Approvals',
+        icon: AlertTriangle,
+        href: '/admin/approvals',
       },
       {
         id: 'equipment',
@@ -197,27 +175,9 @@ export function MegaMenuNav({
             {
               title: 'Equipment Management',
               items: [
-                { label: 'All Equipment', icon: Package, href: '/master-admin/equipment' },
-                { label: 'Add New', icon: Zap, href: '/master-admin/equipment/new' },
-                { label: 'Categories', icon: FileText, href: '/master-admin/equipment/categories' },
-                { label: 'Maintenance', icon: Settings, href: '/master-admin/equipment/maintenance' },
-              ],
-            },
-          ],
-        },
-      },
-      {
-        id: 'bookings',
-        label: 'Bookings',
-        icon: Calendar,
-        megaMenu: {
-          sections: [
-            {
-              title: 'Booking Management',
-              items: [
-                { label: 'All Bookings', icon: Calendar, href: '/master-admin/bookings' },
-                { label: 'Pending Approval', icon: AlertTriangle, href: '/master-admin/bookings/pending', badge: true },
-                { label: 'Schedule View', icon: Clock, href: '/master-admin/bookings/schedule' },
+                { label: 'All Equipment', icon: Package, href: '/admin/equipment' },
+                { label: 'Equipment Kits', icon: Package, href: '/admin/equipment-kits' },
+                { label: 'Kit Management', icon: Settings, href: '/admin/kits' },
               ],
             },
           ],
@@ -232,9 +192,10 @@ export function MegaMenuNav({
             {
               title: 'User Management',
               items: [
-                { label: 'All Users', icon: Users, href: '/master-admin/users' },
-                { label: 'Import CSV', icon: FileText, href: '/master-admin/users/import' },
-                { label: 'Permissions', icon: Shield, href: '/master-admin/users/permissions' },
+                { label: 'All Users', icon: Users, href: '/admin/users' },
+                { label: 'Import CSV', icon: FileText, href: '/admin/csv-import' },
+                { label: 'Permissions', icon: Shield, href: '/admin/permissions' },
+                { label: 'Role Management', icon: Shield, href: '/admin/role-management' },
               ],
             },
           ],
@@ -244,7 +205,7 @@ export function MegaMenuNav({
         id: 'analytics',
         label: 'Analytics',
         icon: BarChart3,
-        href: '/master-admin/analytics',
+        href: '/admin/analytics',
       },
       {
         id: 'settings',
@@ -255,10 +216,9 @@ export function MegaMenuNav({
             {
               title: 'System Settings',
               items: [
-                { label: 'Policies', icon: Shield, href: '/master-admin/settings/policies' },
-                { label: 'Fines', icon: AlertTriangle, href: '/master-admin/settings/fines' },
-                { label: 'Departments', icon: FileText, href: '/master-admin/settings/departments' },
-                { label: 'System Config', icon: Settings, href: '/master-admin/settings/system' },
+                { label: 'System Settings', icon: Settings, href: '/admin/system-settings' },
+                { label: 'Departments', icon: FileText, href: '/admin/departments' },
+                { label: 'Feature Flags', icon: Zap, href: '/admin/features' },
               ],
             },
           ],
