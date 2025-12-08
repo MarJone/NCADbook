@@ -1,0 +1,447 @@
+/**
+ * ============================================
+ * SCROLL-TRIGGERED ANIMATIONS
+ * IntersectionObserver-based reveal effects
+ * ============================================
+ *
+ * Inspired by: Robin (robinpowered.com), Smartway2
+ * Works with useScrollReveal hook
+ */
+
+/* ========================================
+   BASE REVEAL STYLES
+   Elements start hidden, reveal when visible
+   ======================================== */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance-md));
+  transition:
+    opacity var(--duration-reveal) var(--ease-smooth),
+    transform var(--duration-reveal) var(--ease-smooth);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   REVEAL VARIANTS
+   Different animation directions
+   ======================================== */
+
+/* Fade Up (default) */
+.scroll-reveal-up {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance-md));
+}
+
+.scroll-reveal-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade Down */
+.scroll-reveal-down {
+  opacity: 0;
+  transform: translateY(calc(var(--reveal-distance-md) * -1));
+}
+
+.scroll-reveal-down.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade Left */
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(var(--reveal-distance-md));
+}
+
+.scroll-reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Fade Right */
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(calc(var(--reveal-distance-md) * -1));
+}
+
+.scroll-reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale In */
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.scroll-reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Scale Up (from small) */
+.scroll-reveal-scale-up {
+  opacity: 0;
+  transform: scale(0.8) translateY(var(--reveal-distance-sm));
+}
+
+.scroll-reveal-scale-up.revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Rotate In */
+.scroll-reveal-rotate {
+  opacity: 0;
+  transform: rotate(-5deg) translateY(var(--reveal-distance-sm));
+}
+
+.scroll-reveal-rotate.revealed {
+  opacity: 1;
+  transform: rotate(0) translateY(0);
+}
+
+/* Blur In */
+.scroll-reveal-blur {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(var(--reveal-distance-sm));
+}
+
+.scroll-reveal-blur.revealed {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* ========================================
+   STAGGERED GRID REVEALS
+   Children animate with delay cascade
+   ======================================== */
+
+.stagger-reveal > * {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance-sm));
+  transition:
+    opacity var(--duration-reveal) var(--ease-smooth),
+    transform var(--duration-reveal) var(--ease-smooth);
+}
+
+/* Standard stagger */
+.stagger-reveal.revealed > *:nth-child(1) { transition-delay: var(--stagger-1); }
+.stagger-reveal.revealed > *:nth-child(2) { transition-delay: var(--stagger-2); }
+.stagger-reveal.revealed > *:nth-child(3) { transition-delay: var(--stagger-3); }
+.stagger-reveal.revealed > *:nth-child(4) { transition-delay: var(--stagger-4); }
+.stagger-reveal.revealed > *:nth-child(5) { transition-delay: var(--stagger-5); }
+.stagger-reveal.revealed > *:nth-child(6) { transition-delay: var(--stagger-6); }
+.stagger-reveal.revealed > *:nth-child(7) { transition-delay: var(--stagger-7); }
+.stagger-reveal.revealed > *:nth-child(8) { transition-delay: var(--stagger-8); }
+.stagger-reveal.revealed > *:nth-child(9) { transition-delay: var(--stagger-9); }
+.stagger-reveal.revealed > *:nth-child(10) { transition-delay: var(--stagger-10); }
+.stagger-reveal.revealed > *:nth-child(n+11) { transition-delay: 500ms; }
+
+.stagger-reveal.revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fast stagger for many items */
+.stagger-reveal-fast > * {
+  transition-duration: var(--duration-medium);
+}
+
+.stagger-reveal-fast.revealed > *:nth-child(1) { transition-delay: var(--stagger-fast-1); }
+.stagger-reveal-fast.revealed > *:nth-child(2) { transition-delay: var(--stagger-fast-2); }
+.stagger-reveal-fast.revealed > *:nth-child(3) { transition-delay: var(--stagger-fast-3); }
+.stagger-reveal-fast.revealed > *:nth-child(4) { transition-delay: var(--stagger-fast-4); }
+.stagger-reveal-fast.revealed > *:nth-child(5) { transition-delay: var(--stagger-fast-5); }
+.stagger-reveal-fast.revealed > *:nth-child(n+6) { transition-delay: 150ms; }
+
+/* ========================================
+   PARALLAX SCROLLING
+   Elements move at different speeds
+   ======================================== */
+
+.parallax-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.parallax-layer {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+.parallax-slow {
+  --parallax-speed: var(--scroll-parallax-slow);
+}
+
+.parallax-medium {
+  --parallax-speed: var(--scroll-parallax-medium);
+}
+
+.parallax-fast {
+  --parallax-speed: var(--scroll-parallax-fast);
+}
+
+/* ========================================
+   SCROLL PROGRESS INDICATOR
+   Robin-style top progress bar
+   ======================================== */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--role-accent) 0%,
+    var(--role-accent-hover, var(--role-accent)) 100%
+  );
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: calc(var(--z-sticky) + 10);
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+.scroll-progress.visible {
+  transition: none;
+}
+
+/* ========================================
+   SCROLL-LINKED HEADER
+   Dark-to-light transition on scroll
+   ======================================== */
+
+.scroll-header {
+  transition: all var(--duration-medium) var(--ease-smooth);
+}
+
+/* Initial state - transparent/dark */
+.scroll-header:not([data-scrolled="true"]) {
+  background: transparent;
+  color: white;
+  border-color: transparent;
+}
+
+/* Scrolled state - solid/light */
+.scroll-header[data-scrolled="true"] {
+  background: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+  border-color: var(--theme-border-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* Dark mode variants */
+[data-theme="dark"] .scroll-header[data-scrolled="true"] {
+  background: var(--theme-bg-secondary);
+}
+
+/* ========================================
+   SECTION DIVIDER ANIMATIONS
+   ======================================== */
+
+.section-divider {
+  width: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--role-accent) 50%,
+    transparent 100%
+  );
+  transition: width var(--duration-slow) var(--ease-smooth);
+  margin: var(--space-xl) auto;
+}
+
+.section-divider.revealed {
+  width: 100%;
+}
+
+/* ========================================
+   COUNT UP ANIMATION
+   Numbers that count up on reveal
+   ======================================== */
+
+.count-up {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all var(--duration-medium) var(--ease-smooth);
+}
+
+.count-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   TEXT REVEAL ANIMATIONS
+   Character-by-character or word-by-word
+   ======================================== */
+
+.text-reveal {
+  overflow: hidden;
+}
+
+.text-reveal-line {
+  display: block;
+  transform: translateY(100%);
+  transition: transform var(--duration-reveal) var(--ease-smooth);
+}
+
+.text-reveal.revealed .text-reveal-line {
+  transform: translateY(0);
+}
+
+/* Staggered text lines */
+.text-reveal.revealed .text-reveal-line:nth-child(1) { transition-delay: 0ms; }
+.text-reveal.revealed .text-reveal-line:nth-child(2) { transition-delay: 100ms; }
+.text-reveal.revealed .text-reveal-line:nth-child(3) { transition-delay: 200ms; }
+
+/* ========================================
+   IMAGE REVEAL EFFECTS
+   ======================================== */
+
+.image-reveal-container {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Curtain reveal */
+.image-reveal-curtain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--role-accent);
+  transform-origin: left;
+  transition: transform var(--duration-reveal) var(--ease-smooth);
+}
+
+.image-reveal-curtain.revealed::after {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+/* Zoom reveal */
+.image-reveal-zoom {
+  transform: scale(1.2);
+  transition: transform var(--duration-page) var(--ease-smooth);
+}
+
+.image-reveal-container.revealed .image-reveal-zoom {
+  transform: scale(1);
+}
+
+/* ========================================
+   SCROLL SNAP SECTIONS
+   ======================================== */
+
+.scroll-snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.scroll-snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+}
+
+/* ========================================
+   INFINITE SCROLL INDICATORS
+   ======================================== */
+
+.infinite-scroll-trigger {
+  height: 1px;
+  width: 100%;
+  visibility: hidden;
+}
+
+.infinite-scroll-loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+/* ========================================
+   ANCHOR LINK SMOOTH SCROLL
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Scroll offset for fixed headers */
+:target {
+  scroll-margin-top: 80px;
+}
+
+/* ========================================
+   FLOATING ELEMENTS ON SCROLL
+   ======================================== */
+
+.float-on-scroll {
+  animation: floatOnScroll 3s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.float-on-scroll.in-view {
+  animation-play-state: running;
+}
+
+@keyframes floatOnScroll {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal-up,
+  .scroll-reveal-down,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-scale-up,
+  .scroll-reveal-rotate,
+  .scroll-reveal-blur,
+  .stagger-reveal > *,
+  .parallax-layer,
+  .scroll-progress,
+  .scroll-header,
+  .section-divider,
+  .count-up,
+  .text-reveal-line,
+  .image-reveal-curtain::after,
+  .image-reveal-zoom,
+  .float-on-scroll {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .image-reveal-curtain::after {
+    display: none;
+  }
+}

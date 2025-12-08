@@ -61,7 +61,11 @@
       "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT id, email, department FROM users WHERE role = ''student'' LIMIT 5;\")",
       "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -f \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\backend\\migrations\\007_add_policy_enforcement.sql\")",
       "Bash(timeout /t 3)",
-      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT tablename FROM pg_tables WHERE schemaname = ''public'' AND tablename LIKE ''policy%'';\")"
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT tablename FROM pg_tables WHERE schemaname = ''public'' AND tablename LIKE ''policy%'';\")",
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\styles\\experimental\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\styles\\experimental\")",
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\experimental\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\experimental\")",
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\ai\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\ai\")",
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\")"
     ],
     "deny": [],
     "ask": []

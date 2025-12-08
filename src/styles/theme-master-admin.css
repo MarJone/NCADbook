@@ -1,137 +1,177 @@
 /**
  * ============================================
- * MASTER ADMIN - "PURPLE AUTHORITY" THEME
- * Design Philosophy: Authoritative, Strategic, Data-Rich
+ * MASTER ADMIN - "COMMAND CENTER" DARK THEME
+ * Inspired by: Robin (robinpowered.com)
+ * Design Philosophy: Sophisticated, Data-Rich, Always Dark
  * ============================================
  *
- * Characteristics:
- * - Information-dense layouts with multi-panel sections
- * - Subtle shadows and corners (8-12px)
- * - Compact components
- * - Minimal, purposeful animation
- * - Same style as Department Admin, purple color scheme
+ * Key Characteristics:
+ * - Permanent dark mode (#0A0006 deep black with magenta undertone)
+ * - Magenta accent (#E91E63) with glow effects
+ * - 4K-optimized data density (2560px+ primary target)
+ * - Glassmorphism panels and cards
+ * - Subtle animations with AI-ready visual language
+ * - Desktop-only (minimum 1280px viewport)
  */
 
 .master-admin-portal {
   /* ========================================
-     COLOR PALETTE - Purple Authority
+     COLOR PALETTE - Robin-Inspired Dark
+     Deep black with magenta energy
      ======================================== */
 
-  /* Primary Colors */
-  --master-base-dark: #263238;
-  --master-base-light: #CFD8DC;
-  --master-accent-primary: #7B1FA2;            /* Darker Purple (WCAG AA compliant - 4.5:1) */
-  --master-accent-secondary: #7B1FA2;          /* Deep Purple */
-  --master-success: #8E24AA;                   /* Deep Purple */
-  --master-critical: #D32F2F;                  /* Dark Red */
+  /* Base Backgrounds - Deep black spectrum */
+  --master-bg-primary: #0A0006;           /* Deepest - main background */
+  --master-bg-secondary: #120A0F;         /* Elevated surface */
+  --master-bg-tertiary: #1A121A;          /* Card backgrounds */
+  --master-bg-elevated: #221A22;          /* Hover states, raised elements */
+  --master-bg-overlay: rgba(10, 0, 6, 0.95); /* Modal overlays */
 
-  /* Backgrounds */
-  --master-bg-primary: #FAFAFA;
-  --master-bg-secondary: #CFD8DC;
-  --master-bg-tertiary: #F3E5F5;               /* Soft purple tint */
+  /* Magenta Accent System - Primary energy color */
+  --master-accent-primary: #E91E63;       /* Primary magenta */
+  --master-accent-secondary: #FF4081;     /* Lighter - hover states */
+  --master-accent-tertiary: #F50057;      /* Vibrant - active states */
+  --master-accent-muted: #AD1457;         /* Darker - subtle accents */
+  --master-accent-glow: rgba(233, 30, 99, 0.4);  /* Glow effect */
+  --master-accent-subtle: rgba(233, 30, 99, 0.1); /* Very subtle tint */
 
-  /* Text */
-  --master-text-primary: #1A1A1A;
-  --master-text-secondary: #263238;
-  --master-text-tertiary: #546E7A;
-  --master-text-inverse: #FFFFFF;
+  /* Text Colors - High contrast on dark */
+  --master-text-primary: #FAFAFA;         /* Primary text - near white */
+  --master-text-secondary: #B8A8B8;       /* Secondary - muted lavender */
+  --master-text-tertiary: #7A6A7A;        /* Tertiary - subtle hints */
+  --master-text-disabled: #4A3A4A;        /* Disabled state */
+  --master-text-inverse: #0A0006;         /* Text on light/accent backgrounds */
 
-  /* Borders */
-  --master-border-light: rgba(156, 39, 176, 0.1);
-  --master-border-medium: rgba(156, 39, 176, 0.2);
-  --master-border-strong: rgba(156, 39, 176, 0.3);
+  /* Border Colors - Subtle definition */
+  --master-border-subtle: rgba(233, 30, 99, 0.1);
+  --master-border-light: rgba(233, 30, 99, 0.15);
+  --master-border-medium: rgba(233, 30, 99, 0.25);
+  --master-border-strong: rgba(233, 30, 99, 0.4);
+  --master-border-glow: rgba(233, 30, 99, 0.5);
 
-  /* Status Colors */
-  --master-success-bg: #F3E5F5;
-  --master-success-text: #7B1FA2;
-  --master-warning-bg: #FFF3E0;
-  --master-warning-text: #E65100;
-  --master-error-bg: #FFEBEE;
-  --master-error-text: #C62828;
-  --master-info-bg: #E3F2FD;
-  --master-info-text: #1565C0;
+  /* Status Colors - Adapted for dark mode */
+  --master-success: #4CAF50;
+  --master-success-bg: rgba(76, 175, 80, 0.15);
+  --master-success-border: rgba(76, 175, 80, 0.3);
+
+  --master-warning: #FF9800;
+  --master-warning-bg: rgba(255, 152, 0, 0.15);
+  --master-warning-border: rgba(255, 152, 0, 0.3);
+
+  --master-error: #F44336;
+  --master-error-bg: rgba(244, 67, 54, 0.15);
+  --master-error-border: rgba(244, 67, 54, 0.3);
+
+  --master-info: #2196F3;
+  --master-info-bg: rgba(33, 150, 243, 0.15);
+  --master-info-border: rgba(33, 150, 243, 0.3);
 
   /* ========================================
-     TYPOGRAPHY - Compact Sizing
+     GLASSMORPHISM TOKENS
      ======================================== */
 
-  --master-text-hero: 40px;             /* 2.5rem */
-  --master-text-h1: 32px;               /* 2rem */
-  --master-text-h2: 24px;               /* 1.5rem */
-  --master-text-h3: 20px;               /* 1.25rem */
-  --master-text-h4: 17px;               /* 1.0625rem */
-  --master-text-body-lg: 16px;          /* 1rem */
-  --master-text-body: 15px;             /* 0.9375rem */
-  --master-text-body-sm: 13px;          /* 0.8125rem */
-  --master-text-caption: 11px;          /* 0.6875rem */
+  --master-glass-bg: rgba(18, 10, 15, 0.8);
+  --master-glass-blur: blur(20px);
+  --master-glass-border: rgba(233, 30, 99, 0.15);
+  --master-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
-  /* Line Heights */
+  /* ========================================
+     TYPOGRAPHY - Optimized for 4K
+     ======================================== */
+
+  --master-text-hero: 48px;               /* 3rem */
+  --master-text-h1: 36px;                 /* 2.25rem */
+  --master-text-h2: 28px;                 /* 1.75rem */
+  --master-text-h3: 22px;                 /* 1.375rem */
+  --master-text-h4: 18px;                 /* 1.125rem */
+  --master-text-body-lg: 16px;            /* 1rem */
+  --master-text-body: 15px;               /* 0.9375rem */
+  --master-text-body-sm: 13px;            /* 0.8125rem */
+  --master-text-caption: 11px;            /* 0.6875rem */
+
   --master-line-height-tight: 1.2;
   --master-line-height-heading: 1.3;
-  --master-line-height-body: 1.5;
+  --master-line-height-body: 1.6;
 
   /* ========================================
-     SPACING - Compact
+     SPACING - Optimized for data density
      ======================================== */
 
-  --master-card-padding: var(--space-md);      /* 16px */
-  --master-card-gap: 20px;                     /* Custom */
-  --master-section-gap: var(--space-xl);       /* 32px */
-  --master-component-gap: 12px;                /* Custom */
+  --master-card-padding: 20px;
+  --master-card-gap: 24px;
+  --master-section-gap: 32px;
+  --master-component-gap: 12px;
 
   /* ========================================
-     BORDER RADIUS - Sharper
+     BORDER RADIUS - Modern but not rounded
      ======================================== */
 
   --master-radius-sm: 6px;
   --master-radius-md: 8px;
-  --master-radius-lg: 10px;
-  --master-radius-xl: 12px;
-  --master-radius-2xl: 16px;
+  --master-radius-lg: 12px;
+  --master-radius-xl: 16px;
+  --master-radius-2xl: 20px;
   --master-radius-full: 9999px;
 
   /* ========================================
-     SHADOWS - Subtle Elevation
+     SHADOWS - Dramatic depth
      ======================================== */
 
-  --master-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --master-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --master-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+  --master-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --master-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --master-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --master-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --master-shadow-glow: 0 0 20px var(--master-accent-glow);
+  --master-shadow-glow-lg: 0 0 40px var(--master-accent-glow);
 
   /* ========================================
-     COMPONENT SIZING - Compact
+     COMPONENT SIZING - Compact for density
      ======================================== */
 
-  --master-button-height: 36px;
-  --master-button-padding: 0 16px;
-  --master-input-height: 38px;
-  --master-input-padding: 0 12px;
+  --master-button-height: 40px;
+  --master-button-padding: 0 20px;
+  --master-input-height: 42px;
+  --master-input-padding: 0 16px;
 
   /* ========================================
-     ANIMATIONS - Minimal
+     ANIMATIONS - Smooth and purposeful
      ======================================== */
 
-  --master-transition-duration: var(--duration-fast);
-  --master-transition-timing: var(--ease-in-out);
+  --master-transition-fast: 150ms;
+  --master-transition-normal: 250ms;
+  --master-transition-slow: 400ms;
+  --master-ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --master-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ========================================
+     THEME TOGGLE - Hidden for Master Admin
+     ======================================== */
+
+  --theme-toggle-display: none;
 
   /* ========================================
      THEME VARIABLE MAPPINGS
+     Map to global theme system
      ======================================== */
 
+  /* Background mappings */
   --role-bg-primary: var(--master-bg-primary);
   --role-bg-secondary: var(--master-bg-secondary);
   --role-bg-tertiary: var(--master-bg-tertiary);
-  --role-accent: var(--master-accent-primary);
-  --role-accent-hover: #AB47BC;  /* Lighter purple */
-  --role-accent-light: var(--master-accent-secondary);
-  --role-gradient-start: var(--master-accent-primary);
-  --role-gradient-end: #AB47BC;
 
+  /* Accent mappings */
+  --role-accent: var(--master-accent-primary);
+  --role-accent-hover: var(--master-accent-secondary);
+  --role-accent-light: var(--master-accent-subtle);
+  --role-gradient-start: var(--master-accent-primary);
+  --role-gradient-end: #9C27B0;
+
+  /* Theme system overrides */
   --theme-bg-primary: var(--master-bg-primary);
   --theme-bg-secondary: var(--master-bg-secondary);
   --theme-bg-tertiary: var(--master-bg-tertiary);
   --theme-accent-primary: var(--master-accent-primary);
-  --theme-accent-primary-hover: #AB47BC;
+  --theme-accent-primary-hover: var(--master-accent-secondary);
 
   --theme-text-primary: var(--master-text-primary);
   --theme-text-secondary: var(--master-text-secondary);
@@ -146,15 +186,15 @@
   --theme-shadow-lg: var(--master-shadow-lg);
 
   --theme-success-bg: var(--master-success-bg);
-  --theme-success-text: var(--master-success-text);
+  --theme-success-text: var(--master-success);
   --theme-warning-bg: var(--master-warning-bg);
-  --theme-warning-text: var(--master-warning-text);
+  --theme-warning-text: var(--master-warning);
   --theme-error-bg: var(--master-error-bg);
-  --theme-error-text: var(--master-error-text);
+  --theme-error-text: var(--master-error);
   --theme-info-bg: var(--master-info-bg);
-  --theme-info-text: var(--master-info-text);
+  --theme-info-text: var(--master-info);
 
-  /* Legacy text size mappings */
+  /* Legacy mappings */
   --text-xs: var(--master-text-caption);
   --text-sm: var(--master-text-body-sm);
   --text-base: var(--master-text-body);
@@ -163,47 +203,107 @@
   --text-2xl: var(--master-text-h2);
   --text-3xl: var(--master-text-h1);
   --text-4xl: var(--master-text-hero);
-
-  /* Spacing for components */
-  --space-1: var(--space-xs);
-  --space-2: var(--space-sm);
-  --space-3: var(--master-component-gap);
-  --space-4: var(--space-md);
-  --space-5: var(--master-card-gap);
-  --space-6: var(--space-xl);
 }
 
 /* ========================================
-   COMPONENT-SPECIFIC OVERRIDES
+   BASE STYLES
+   ======================================== */
+
+.master-admin-portal {
+  background: var(--master-bg-primary);
+  color: var(--master-text-primary);
+  min-height: 100vh;
+}
+
+/* ========================================
+   BUTTONS
    ======================================== */
 
 .master-admin-portal .btn-primary {
   height: var(--master-button-height);
   padding: var(--master-button-padding);
   border-radius: var(--master-radius-md);
-  background: var(--master-accent-primary);
-  color: var(--master-text-inverse);
+  background: linear-gradient(135deg, var(--master-accent-primary) 0%, var(--master-accent-muted) 100%);
+  color: var(--master-text-primary);
   font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  transition: background var(--duration-fast) var(--ease-in-out);
+  font-weight: var(--font-weight-semibold);
+  border: none;
+  cursor: pointer;
+  transition: all var(--master-transition-normal) var(--master-ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.master-admin-portal .btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--master-accent-secondary) 0%, var(--master-accent-primary) 100%);
+  opacity: 0;
+  transition: opacity var(--master-transition-normal) var(--master-ease-out);
+}
+
+.master-admin-portal .btn-primary:hover::before {
+  opacity: 1;
 }
 
 .master-admin-portal .btn-primary:hover {
-  filter: brightness(1.1);
+  box-shadow: var(--master-shadow-glow);
+  transform: translateY(-2px);
 }
 
+.master-admin-portal .btn-primary:active {
+  transform: translateY(0);
+}
+
+.master-admin-portal .btn-primary span {
+  position: relative;
+  z-index: 1;
+}
+
+.master-admin-portal .btn-secondary {
+  height: var(--master-button-height);
+  padding: var(--master-button-padding);
+  border-radius: var(--master-radius-md);
+  background: var(--master-bg-tertiary);
+  color: var(--master-text-primary);
+  border: 1px solid var(--master-border-medium);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--master-transition-normal) var(--master-ease-out);
+}
+
+.master-admin-portal .btn-secondary:hover {
+  background: var(--master-bg-elevated);
+  border-color: var(--master-accent-primary);
+  color: var(--master-accent-secondary);
+}
+
+/* ========================================
+   CARDS - Glassmorphism
+   ======================================== */
+
 .master-admin-portal .card {
-  background: var(--master-bg-primary);
+  background: var(--master-glass-bg);
+  backdrop-filter: var(--master-glass-blur);
+  -webkit-backdrop-filter: var(--master-glass-blur);
   border-radius: var(--master-radius-lg);
   padding: var(--master-card-padding);
-  box-shadow: var(--master-shadow-sm);
-  border: 1px solid var(--master-border-light);
-  transition: all var(--duration-fast) var(--ease-in-out);
+  border: 1px solid var(--master-glass-border);
+  box-shadow: var(--master-glass-shadow);
+  transition: all var(--master-transition-normal) var(--master-ease-out);
 }
 
 .master-admin-portal .card:hover {
-  background: rgba(156, 39, 176, 0.02);
+  border-color: var(--master-border-medium);
+  transform: translateY(-4px);
+  box-shadow: var(--master-shadow-lg), var(--master-shadow-glow);
 }
+
+/* ========================================
+   INPUTS & FORMS
+   ======================================== */
 
 .master-admin-portal input,
 .master-admin-portal select,
@@ -211,87 +311,336 @@
   height: var(--master-input-height);
   padding: var(--master-input-padding);
   border-radius: var(--master-radius-md);
-  border: 1px solid var(--master-border-medium);
+  background: var(--master-bg-tertiary);
+  color: var(--master-text-primary);
+  border: 1px solid var(--master-border-light);
   font-size: 14px;
-  transition: all var(--duration-fast) var(--ease-in-out);
+  transition: all var(--master-transition-fast) var(--master-ease-out);
+}
+
+.master-admin-portal input::placeholder,
+.master-admin-portal textarea::placeholder {
+  color: var(--master-text-tertiary);
 }
 
 .master-admin-portal input:focus,
 .master-admin-portal select:focus,
 .master-admin-portal textarea:focus {
   outline: none;
-  border: 2px solid var(--master-accent-primary);
-  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
-}
-
-/* Fix contrast for text on purple background */
-.master-admin-portal .btn-primary,
-.master-admin-portal .admin-action-btn:not(.secondary) {
-  /* Use gradient purple for better visual appeal */
-  background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%);
-  color: #FFFFFF;
+  border-color: var(--master-accent-primary);
+  box-shadow: 0 0 0 3px var(--master-accent-subtle), var(--master-shadow-glow);
+  background: var(--master-bg-elevated);
 }
 
 /* ========================================
-   ACCESSIBILITY - FOCUS STATES
+   TABLES - Data-dense styling
+   ======================================== */
+
+.master-admin-portal table {
+  width: 100%;
+  background: var(--master-bg-secondary);
+  border-radius: var(--master-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--master-border-subtle);
+}
+
+.master-admin-portal th {
+  background: var(--master-bg-tertiary);
+  color: var(--master-text-secondary);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--master-border-light);
+}
+
+.master-admin-portal td {
+  padding: 14px 16px;
+  color: var(--master-text-primary);
+  border-bottom: 1px solid var(--master-border-subtle);
+  font-size: 14px;
+}
+
+.master-admin-portal tbody tr {
+  transition: background var(--master-transition-fast) var(--master-ease-out);
+}
+
+.master-admin-portal tbody tr:hover {
+  background: var(--master-accent-subtle);
+  cursor: pointer;
+}
+
+.master-admin-portal tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ========================================
+   NAVIGATION - Command center style
+   ======================================== */
+
+.master-admin-portal .admin-header {
+  background: var(--master-bg-secondary);
+  border-bottom: 1px solid var(--master-border-light);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  backdrop-filter: blur(10px);
+}
+
+.master-admin-portal .admin-nav {
+  background: transparent;
+  border-bottom: 1px solid var(--master-border-subtle);
+}
+
+.master-admin-portal .admin-nav-link {
+  color: var(--master-text-secondary);
+  padding: 16px 20px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--master-transition-fast) var(--master-ease-out);
+  position: relative;
+}
+
+.master-admin-portal .admin-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--master-accent-primary);
+  transition: all var(--master-transition-normal) var(--master-ease-out);
+  transform: translateX(-50%);
+}
+
+.master-admin-portal .admin-nav-link:hover {
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .admin-nav-link:hover::after {
+  width: 100%;
+}
+
+.master-admin-portal .admin-nav-link.active {
+  color: var(--master-accent-secondary);
+}
+
+.master-admin-portal .admin-nav-link.active::after {
+  width: 100%;
+  box-shadow: var(--master-shadow-glow);
+}
+
+/* ========================================
+   STAT CARDS - Dashboard metrics
+   ======================================== */
+
+.master-admin-portal .admin-stat-card {
+  background: var(--master-glass-bg);
+  backdrop-filter: var(--master-glass-blur);
+  border: 1px solid var(--master-glass-border);
+  border-radius: var(--master-radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--master-transition-normal) var(--master-ease-out);
+}
+
+.master-admin-portal .admin-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--master-accent-primary) 0%, var(--master-accent-muted) 100%);
+}
+
+.master-admin-portal .admin-stat-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--master-border-medium);
+  box-shadow: var(--master-shadow-lg), var(--master-shadow-glow);
+}
+
+.master-admin-portal .admin-stat-number {
+  font-size: 42px;
+  font-weight: var(--font-weight-bold);
+  color: var(--master-accent-secondary);
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 0 30px var(--master-accent-glow);
+}
+
+.master-admin-portal .admin-stat-label {
+  font-size: 13px;
+  color: var(--master-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   MODALS - Glassmorphism overlays
+   ======================================== */
+
+.master-admin-portal .modal-overlay {
+  background: var(--master-bg-overlay);
+  backdrop-filter: blur(8px);
+}
+
+.master-admin-portal .modal-content {
+  background: var(--master-glass-bg);
+  backdrop-filter: var(--master-glass-blur);
+  border: 1px solid var(--master-glass-border);
+  border-radius: var(--master-radius-xl);
+  box-shadow: var(--master-shadow-xl), var(--master-shadow-glow-lg);
+  color: var(--master-text-primary);
+}
+
+.master-admin-portal .modal-header {
+  border-bottom: 1px solid var(--master-border-light);
+  padding: 20px 24px;
+}
+
+.master-admin-portal .modal-footer {
+  border-top: 1px solid var(--master-border-light);
+  background: var(--master-bg-tertiary);
+  padding: 16px 24px;
+  border-radius: 0 0 var(--master-radius-xl) var(--master-radius-xl);
+}
+
+/* ========================================
+   BADGES & STATUS INDICATORS
+   ======================================== */
+
+.master-admin-portal .status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--master-radius-full);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+}
+
+.master-admin-portal .status-badge.available {
+  background: var(--master-success-bg);
+  color: var(--master-success);
+  border: 1px solid var(--master-success-border);
+}
+
+.master-admin-portal .status-badge.booked {
+  background: var(--master-warning-bg);
+  color: var(--master-warning);
+  border: 1px solid var(--master-warning-border);
+}
+
+.master-admin-portal .status-badge.maintenance {
+  background: var(--master-error-bg);
+  color: var(--master-error);
+  border: 1px solid var(--master-error-border);
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+.master-admin-portal .loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--master-bg-tertiary) 0%,
+    var(--master-bg-elevated) 50%,
+    var(--master-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: var(--master-radius-md);
+}
+
+@keyframes skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   AI/COMMAND INTERFACE ELEMENTS
+   ======================================== */
+
+.master-admin-portal .ai-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--master-accent-subtle);
+  border: 1px solid var(--master-accent-primary);
+  border-radius: var(--master-radius-full);
+  color: var(--master-accent-secondary);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+}
+
+.master-admin-portal .ai-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--master-accent-primary);
+  animation: ai-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ai-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+
+.master-admin-portal ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.master-admin-portal ::-webkit-scrollbar-track {
+  background: var(--master-bg-secondary);
+  border-radius: var(--master-radius-full);
+}
+
+.master-admin-portal ::-webkit-scrollbar-thumb {
+  background: var(--master-border-medium);
+  border-radius: var(--master-radius-full);
+  transition: background 0.2s;
+}
+
+.master-admin-portal ::-webkit-scrollbar-thumb:hover {
+  background: var(--master-accent-primary);
+}
+
+/* ========================================
+   FOCUS STATES - Accessible
    ======================================== */
 
 .master-admin-portal *:focus-visible {
-  outline: 3px solid var(--master-accent-primary);
+  outline: 2px solid var(--master-accent-primary);
   outline-offset: 2px;
+  box-shadow: var(--master-shadow-glow);
 }
 
 /* ========================================
-   RESPONSIVE DENSITY SYSTEM
-   Progressive data density across screen sizes
+   RESPONSIVE - 4K OPTIMIZATION
    ======================================== */
 
-/* Mobile (320px - 768px): COMPACT LAYOUT */
-@media (max-width: 767px) {
+/* Desktop minimum (1280px-1919px) */
+@media (min-width: 1280px) and (max-width: 1919px) {
   .master-admin-portal {
-    --master-input-height: 40px;  /* Larger for touch */
-    --master-button-height: 40px;
-    --master-card-padding: 16px;  /* More breathing room */
-    --master-card-gap: 16px;
-    --master-text-body: 15px;     /* Slightly larger */
-  }
-
-  .master-admin-portal .admin-stats-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px;
-  }
-
-  .master-admin-portal .admin-stat-number {
-    font-size: 32px !important;
-  }
-}
-
-/* Tablet (768px - 1023px): BALANCED LAYOUT */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .master-admin-portal {
-    --master-input-height: 36px;
-    --master-button-height: 36px;
-    --master-card-padding: 14px;
-    --master-card-gap: 16px;
-  }
-
-  .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 16px;
-  }
-}
-
-/* Desktop (1024px - 2559px): STANDARD DENSE LAYOUT */
-@media (min-width: 1024px) and (max-width: 2559px) {
-  .master-admin-portal {
-    --master-input-height: 38px;
-    --master-button-height: 36px;
-    --master-card-padding: 16px;
+    --master-card-padding: 20px;
     --master-card-gap: 20px;
   }
 
   .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 
@@ -300,51 +649,70 @@
   }
 }
 
-/* 4K (2560px+): DATA-HEAVY LAYOUT */
-@media (min-width: 2560px) {
+/* Full HD (1920px-2559px) */
+@media (min-width: 1920px) and (max-width: 2559px) {
   .master-admin-portal {
-    --master-input-height: 38px;     /* Slightly larger for 4K */
-    --master-button-height: 36px;
-    --master-card-padding: 16px;     /* More space on huge screens */
+    --master-card-padding: 24px;
     --master-card-gap: 24px;
-    --master-text-body: 15px;        /* Larger text for 4K */
-    --master-text-h4: 18px;
-    --master-text-h3: 20px;
-    --master-text-h2: 24px;
   }
 
-  /* 6-column stats grid for maximum data density */
   .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-columns: repeat(5, 1fr);
     gap: 24px;
   }
 
-  /* Larger stat numbers for 4K visibility */
   .master-admin-portal .admin-stat-number {
-    font-size: 48px !important;
+    font-size: 48px;
   }
 
-  /* Wider content on 4K */
+  .master-admin-portal .admin-main {
+    max-width: 1800px;
+  }
+}
+
+/* 4K Optimized (2560px-3439px) */
+@media (min-width: 2560px) and (max-width: 3439px) {
+  .master-admin-portal {
+    --master-card-padding: 28px;
+    --master-card-gap: 28px;
+    --master-text-body: 16px;
+    --master-text-body-sm: 14px;
+    --master-text-h4: 20px;
+    --master-text-h3: 24px;
+  }
+
+  .master-admin-portal .admin-stats-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 28px;
+  }
+
+  .master-admin-portal .admin-stat-number {
+    font-size: 56px;
+  }
+
   .master-admin-portal .admin-main {
     max-width: 2400px;
   }
 
-  /* 4-column dashboard for data density */
   .master-admin-portal .admin-dashboard-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-  }
-
-  /* 4-column card grids */
-  .master-admin-portal .card-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* Ultra-Wide 4K (3440px+): MAXIMUM DATA DENSITY */
+/* Ultra-Wide 4K (3440px+) */
 @media (min-width: 3440px) {
+  .master-admin-portal {
+    --master-card-padding: 32px;
+    --master-card-gap: 32px;
+  }
+
   .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(8, 1fr) !important;
-    gap: 28px;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 32px;
+  }
+
+  .master-admin-portal .admin-stat-number {
+    font-size: 64px;
   }
 
   .master-admin-portal .admin-main {
@@ -352,360 +720,26 @@
   }
 
   .master-admin-portal .card-grid {
-    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 
 /* ========================================
-   COMPONENT-SPECIFIC FIXES
-   Search bars, tables, dropdowns, filters
+   REDUCED MOTION
    ======================================== */
 
-/* SEARCH BAR */
-.master-admin-portal .search-bar {
-  margin-bottom: var(--space-lg);
+@media (prefers-reduced-motion: reduce) {
+  .master-admin-portal * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-.master-admin-portal .search-input {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-primary) !important;
-  border: 1px solid var(--master-border-medium) !important;
-  padding: 12px 16px;
-  font-size: 14px;
-}
+/* ========================================
+   HIDE THEME TOGGLE IN MASTER ADMIN
+   ======================================== */
 
-.master-admin-portal .search-input:focus {
-  background: var(--master-bg-primary) !important;
-  border-color: var(--master-accent-primary) !important;
-  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1) !important;
-}
-
-.master-admin-portal .search-input::placeholder {
-  color: var(--master-text-tertiary) !important;
-}
-
-.master-admin-portal .btn-clear-search {
-  color: var(--master-text-secondary);
-}
-
-.master-admin-portal .btn-clear-search:hover {
-  color: var(--master-accent-primary);
-}
-
-/* SELECT DROPDOWNS */
-.master-admin-portal select {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-primary) !important;
-  border: 1px solid var(--master-border-medium) !important;
-  padding: 10px 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.master-admin-portal select:focus {
-  background: var(--master-bg-primary) !important;
-  border-color: var(--master-accent-primary) !important;
-  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1) !important;
-}
-
-/* FILTER CONTROLS */
-.master-admin-portal .filter-controls {
-  margin-bottom: var(--space-lg);
-  gap: var(--space-sm);
-}
-
-.master-admin-portal .filter-controls .btn-secondary {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-secondary) !important;
-  border: 1px solid var(--master-border-medium) !important;
-}
-
-.master-admin-portal .filter-controls .btn-secondary:hover {
-  background: rgba(156, 39, 176, 0.05) !important;
-  color: var(--master-accent-primary) !important;
-  border-color: var(--master-accent-primary) !important;
-}
-
-.master-admin-portal .filter-controls .btn-primary {
-  background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%) !important;
-  color: var(--master-text-inverse) !important;
-  border: none !important;
-  box-shadow: var(--master-shadow-sm) !important;
-}
-
-/* TABLES */
-.master-admin-portal .equipment-table,
-.master-admin-portal .users-table,
-.master-admin-portal .equipment-table-compact,
-.master-admin-portal .duplicate-table,
-.master-admin-portal .access-table {
-  background: var(--master-bg-primary) !important;
-  border: 1px solid var(--master-border-light) !important;
-  box-shadow: var(--master-shadow-sm) !important;
-}
-
-.master-admin-portal .equipment-table table,
-.master-admin-portal .users-table table,
-.master-admin-portal .equipment-table-compact {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-primary) !important;
-}
-
-.master-admin-portal .equipment-table th,
-.master-admin-portal .users-table th,
-.master-admin-portal .equipment-table-compact th,
-.master-admin-portal .duplicate-table th {
-  background: var(--master-bg-tertiary) !important;
-  color: var(--master-text-primary) !important;
-  border-bottom: 2px solid var(--master-border-medium) !important;
-}
-
-.master-admin-portal .equipment-table td,
-.master-admin-portal .users-table td,
-.master-admin-portal .equipment-table-compact td,
-.master-admin-portal .duplicate-table td {
-  color: var(--master-text-primary) !important;
-  border-bottom: 1px solid var(--master-border-light) !important;
-}
-
-/* Hover state - purple tint */
-.master-admin-portal .equipment-table tbody tr:hover,
-.master-admin-portal .users-table tbody tr:hover,
-.master-admin-portal .equipment-table-compact tbody tr:hover,
-.master-admin-portal tbody tr:hover {
-  background: rgba(156, 39, 176, 0.05) !important;
-  cursor: pointer;
-}
-
-/* Ensure text stays visible on hover */
-.master-admin-portal .equipment-table tbody tr:hover td,
-.master-admin-portal .users-table tbody tr:hover td,
-.master-admin-portal .equipment-table-compact tbody tr:hover td {
-  color: var(--master-text-primary) !important;
-}
-
-/* MANAGEMENT PAGES */
-.master-admin-portal .equipment-management,
-.master-admin-portal .user-management,
-.master-admin-portal .booking-approvals {
-  background: var(--master-bg-secondary);
-  color: var(--master-text-primary);
-}
-
-.master-admin-portal .equipment-management h2,
-.master-admin-portal .user-management h2,
-.master-admin-portal .booking-approvals h2 {
-  color: var(--master-text-primary) !important;
-}
-
-.master-admin-portal .subtitle,
-.master-admin-portal .equipment-management p,
-.master-admin-portal .user-management p {
-  color: var(--master-text-secondary) !important;
-}
-
-/* MODAL BACKGROUNDS */
-.master-admin-portal .modal-content {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-primary) !important;
-  border: 1px solid var(--master-border-light) !important;
-  box-shadow: var(--master-shadow-lg) !important;
-}
-
-.master-admin-portal .modal-header {
-  border-bottom: 1px solid var(--master-border-light) !important;
-}
-
-.master-admin-portal .modal-footer {
-  border-top: 1px solid var(--master-border-light) !important;
-  background: var(--master-bg-secondary) !important;
-}
-
-/* BADGES */
-.master-admin-portal .role-badge,
-.master-admin-portal .status-badge {
-  background: var(--master-bg-tertiary) !important;
-  color: var(--master-text-primary) !important;
-  border: 1px solid var(--master-border-medium) !important;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.master-admin-portal .status-badge.available {
-  background: var(--master-success-bg) !important;
-  color: var(--master-success-text) !important;
-  border-color: var(--master-success-text) !important;
-}
-
-.master-admin-portal .status-badge.booked {
-  background: var(--master-warning-bg) !important;
-  color: var(--master-warning-text) !important;
-  border-color: var(--master-warning-text) !important;
-}
-
-.master-admin-portal .status-badge.maintenance {
-  background: var(--master-error-bg) !important;
-  color: var(--master-error-text) !important;
-  border-color: var(--master-error-text) !important;
-}
-
-/* PAGINATION */
-.master-admin-portal .pagination button {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-primary) !important;
-  border: 1px solid var(--master-border-medium) !important;
-}
-
-.master-admin-portal .pagination button:hover:not(:disabled) {
-  background: rgba(156, 39, 176, 0.05) !important;
-  color: var(--master-accent-primary) !important;
-  border-color: var(--master-accent-primary) !important;
-}
-
-.master-admin-portal .pagination button.active {
-  background: var(--master-accent-primary) !important;
-  color: var(--master-text-inverse) !important;
-  border-color: var(--master-accent-primary) !important;
-}
-
-.master-admin-portal .pagination button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* TRACKING NUMBER (monospace) */
-.master-admin-portal .tracking-number {
-  color: var(--master-text-secondary) !important;
-  font-family: 'Courier New', monospace;
-}
-
-/* LOADING SKELETON */
-.master-admin-portal .loading-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--master-bg-secondary) 0%,
-    var(--master-bg-tertiary) 50%,
-    var(--master-bg-secondary) 100%
-  ) !important;
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
-}
-
-/* ANALYTICS PAGE */
-.master-admin-portal .analytics-card {
-  background: var(--master-bg-primary) !important;
-  border: 1px solid var(--master-border-light) !important;
-  box-shadow: var(--master-shadow-sm) !important;
-}
-
-/* DEPARTMENT FILTERS */
-.master-admin-portal .department-filter {
-  background: var(--master-bg-primary) !important;
-  color: var(--master-text-primary) !important;
-  border: 1px solid var(--master-border-medium) !important;
-}
-
-/* Override admin portal styles */
-.master-admin-portal .admin-portal {
-  background: var(--master-bg-secondary);
-  color: var(--master-text-primary);
-}
-
-.master-admin-portal .admin-header {
-  background: var(--master-bg-primary);
-  border-bottom: 1px solid var(--master-border-light);
-  box-shadow: var(--master-shadow-sm);
-}
-
-.master-admin-portal .admin-nav {
-  background: var(--master-bg-primary);
-  border-bottom: 1px solid var(--master-border-light);
-}
-
-.master-admin-portal .admin-nav-link {
-  color: var(--master-text-secondary);
-}
-
-.master-admin-portal .admin-nav-link:hover {
-  color: var(--master-accent-primary);
-  background: rgba(156, 39, 176, 0.05);
-}
-
-.master-admin-portal .admin-nav-link.active {
-  color: var(--master-accent-primary);
-  border-bottom-color: var(--master-accent-primary);
-  background: rgba(156, 39, 176, 0.05);
-}
-
-.master-admin-portal .admin-stat-card {
-  background: var(--master-bg-primary);
-  border-color: var(--master-border-light);
-  box-shadow: var(--master-shadow-sm);
-}
-
-.master-admin-portal .admin-stat-number {
-  color: var(--master-accent-primary);
-}
-
-.master-admin-portal .admin-action-btn.secondary {
-  background: var(--master-bg-primary);
-  color: var(--master-accent-primary);
-  border: 1px solid var(--master-border-medium);
-}
-
-.master-admin-portal .admin-action-btn.secondary:hover {
-  background: rgba(156, 39, 176, 0.05);
-  border-color: var(--master-accent-primary);
-}
-
-/* Headings */
-.master-admin-portal h1,
-.master-admin-portal h2,
-.master-admin-portal h3,
-.master-admin-portal h4,
-.master-admin-portal h5,
-.master-admin-portal h6 {
-  color: var(--master-text-primary);
-}
-
-/* Tables - consistent styling */
-.master-admin-portal table {
-  background: var(--master-bg-primary);
-  color: var(--master-text-primary);
-  border: 1px solid var(--master-border-light);
-  border-radius: var(--master-radius-md);
-  overflow: hidden;
-}
-
-.master-admin-portal th {
-  background: var(--master-bg-tertiary);
-  color: var(--master-text-primary);
-  border-bottom: 2px solid var(--master-border-medium);
-  font-weight: var(--font-weight-semibold);
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  padding: 12px 16px;
-}
-
-.master-admin-portal td {
-  border-bottom: 1px solid var(--master-border-light);
-  padding: 12px 16px;
-  color: var(--master-text-primary);
-}
-
-.master-admin-portal tbody tr:hover {
-  background: rgba(156, 39, 176, 0.05);
-  cursor: pointer;
-}
-
-/* Zebra striping for better readability */
-.master-admin-portal tbody tr:nth-child(even) {
-  background: var(--master-bg-secondary);
-}
-
-.master-admin-portal tbody tr:nth-child(even):hover {
-  background: rgba(156, 39, 176, 0.05);
+.master-admin-portal .theme-toggle,
+.master-admin-portal [data-theme-toggle] {
+  display: var(--theme-toggle-display, none) !important;
 }

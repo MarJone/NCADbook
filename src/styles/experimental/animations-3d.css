@@ -1,0 +1,428 @@
+/**
+ * ============================================
+ * 3D ANIMATIONS & TRANSFORMS
+ * Perspective effects, card flips, depth layers
+ * ============================================
+ *
+ * Inspired by: Awwwards winners, Robin, modern SaaS dashboards
+ * Uses CSS 3D transforms for depth and interactivity
+ */
+
+/* ========================================
+   3D PERSPECTIVE CONTAINERS
+   ======================================== */
+
+.perspective-subtle {
+  perspective: var(--perspective-subtle);
+  transform-style: preserve-3d;
+}
+
+.perspective-medium {
+  perspective: var(--perspective-medium);
+  transform-style: preserve-3d;
+}
+
+.perspective-dramatic {
+  perspective: var(--perspective-dramatic);
+  transform-style: preserve-3d;
+}
+
+/* ========================================
+   3D CARD COMPONENT
+   Flip card with front/back faces
+   ======================================== */
+
+.card-3d {
+  perspective: var(--perspective-medium);
+  transform-style: preserve-3d;
+}
+
+.card-3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform var(--flip-duration) var(--flip-timing);
+  transform-style: preserve-3d;
+}
+
+.card-3d.flipped .card-3d-inner,
+.card-3d:focus-within .card-3d-inner.flip-on-focus {
+  transform: rotateY(180deg);
+}
+
+.card-3d-front,
+.card-3d-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-3d-back {
+  transform: rotateY(180deg);
+}
+
+/* ========================================
+   3D HOVER TILT EFFECT
+   Mouse-follow perspective shift
+   ======================================== */
+
+.tilt-3d {
+  perspective: var(--perspective-subtle);
+  transform-style: preserve-3d;
+  transition: transform var(--duration-fast) var(--ease-smooth);
+}
+
+.tilt-3d:hover {
+  transform: var(--tilt-subtle);
+}
+
+.tilt-3d-medium:hover {
+  transform: var(--tilt-medium);
+}
+
+.tilt-3d-dramatic:hover {
+  transform: var(--tilt-dramatic);
+}
+
+/* Dynamic tilt (set via JS) */
+.tilt-3d-dynamic {
+  transition: transform var(--duration-micro) linear;
+  will-change: transform;
+}
+
+/* ========================================
+   EQUIPMENT CARD 3D
+   Specialized for equipment browsing
+   ======================================== */
+
+.equipment-card-3d {
+  perspective: var(--perspective-subtle);
+  transform-style: preserve-3d;
+  transition: transform var(--duration-image) var(--ease-smooth),
+              box-shadow var(--duration-image) var(--ease-smooth);
+}
+
+.equipment-card-3d:hover {
+  transform: rotateX(-3deg) rotateY(3deg) translateZ(10px) scale(var(--scale-subtle));
+  box-shadow: var(--shadow-xl),
+              -5px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Card inner content layers */
+.equipment-card-3d .card-image {
+  transform: translateZ(0);
+  transition: transform var(--duration-image) var(--ease-smooth);
+}
+
+.equipment-card-3d:hover .card-image {
+  transform: translateZ(20px) scale(1.05);
+}
+
+.equipment-card-3d .card-content {
+  transform: translateZ(30px);
+}
+
+.equipment-card-3d .card-actions {
+  transform: translateZ(40px);
+}
+
+/* ========================================
+   HOVER LIFT EFFECT
+   Robin-style scale + lift
+   ======================================== */
+
+.hover-lift {
+  transition: transform var(--duration-image) var(--ease-smooth),
+              box-shadow var(--duration-image) var(--ease-smooth);
+  will-change: transform;
+}
+
+.hover-lift:hover {
+  transform: scale(var(--scale-medium)) translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.hover-lift-subtle:hover {
+  transform: scale(var(--scale-subtle)) translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-lift-large:hover {
+  transform: scale(var(--scale-large)) translateY(-8px);
+  box-shadow: var(--shadow-xl), var(--glow-primary);
+}
+
+/* ========================================
+   DEPTH LAYERS
+   Parallax depth effect
+   ======================================== */
+
+.depth-container {
+  transform-style: preserve-3d;
+  perspective: var(--perspective-medium);
+}
+
+.depth-layer-0 { transform: var(--depth-layer-0); }
+.depth-layer-1 { transform: var(--depth-layer-1); }
+.depth-layer-2 { transform: var(--depth-layer-2); }
+.depth-layer-3 { transform: var(--depth-layer-3); }
+.depth-layer-4 { transform: var(--depth-layer-4); }
+.depth-layer-5 { transform: var(--depth-layer-5); }
+
+/* ========================================
+   3D NAVIGATION DROPDOWN
+   Smartway2-inspired fold animation
+   ======================================== */
+
+.nav-3d {
+  perspective: var(--perspective-dramatic);
+}
+
+.nav-3d-dropdown {
+  transform-origin: top center;
+  transform: rotateX(-15deg) scaleY(0);
+  opacity: 0;
+  transition: all var(--duration-medium) var(--ease-smooth);
+  pointer-events: none;
+}
+
+.nav-3d:hover .nav-3d-dropdown,
+.nav-3d:focus-within .nav-3d-dropdown {
+  transform: rotateX(0deg) scaleY(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ========================================
+   3D MODAL ENTRANCE
+   ======================================== */
+
+.modal-3d-enter {
+  animation: modal3dEnter var(--duration-slow) var(--ease-spring) forwards;
+}
+
+@keyframes modal3dEnter {
+  0% {
+    opacity: 0;
+    transform: perspective(var(--perspective-medium)) rotateX(-10deg) translateY(50px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(var(--perspective-medium)) rotateX(0deg) translateY(0) scale(1);
+  }
+}
+
+.modal-3d-exit {
+  animation: modal3dExit var(--duration-normal) var(--ease-smooth) forwards;
+}
+
+@keyframes modal3dExit {
+  0% {
+    opacity: 1;
+    transform: perspective(var(--perspective-medium)) rotateX(0deg) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: perspective(var(--perspective-medium)) rotateX(10deg) translateY(-30px) scale(0.95);
+  }
+}
+
+/* ========================================
+   3D STAT CARDS
+   Dashboard metrics with depth
+   ======================================== */
+
+.stat-card-3d {
+  perspective: var(--perspective-subtle);
+  transform-style: preserve-3d;
+  transition: transform var(--duration-medium) var(--ease-smooth);
+}
+
+.stat-card-3d:hover {
+  transform: rotateX(-5deg) rotateY(5deg) translateZ(15px);
+}
+
+.stat-card-3d .stat-number {
+  transform: translateZ(20px);
+  transition: transform var(--duration-medium) var(--ease-spring);
+}
+
+.stat-card-3d:hover .stat-number {
+  transform: translateZ(40px) scale(1.05);
+}
+
+/* ========================================
+   3D BUTTON PRESS EFFECT
+   ======================================== */
+
+.btn-3d {
+  transform-style: preserve-3d;
+  transition: transform var(--duration-fast) var(--ease-smooth);
+}
+
+.btn-3d:hover {
+  transform: translateZ(5px);
+}
+
+.btn-3d:active {
+  transform: translateZ(-2px) scale(var(--scale-press));
+}
+
+/* ========================================
+   3D IMAGE CONTAINER
+   Zoom effect with depth
+   ======================================== */
+
+.image-3d-container {
+  overflow: hidden;
+  perspective: var(--perspective-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.image-3d {
+  transition: transform var(--duration-image) var(--ease-smooth);
+  will-change: transform;
+}
+
+.image-3d-container:hover .image-3d {
+  transform: scale(1.1) translateZ(20px);
+}
+
+/* ========================================
+   3D FLOATING ELEMENTS
+   Background decorations with parallax
+   ======================================== */
+
+.float-3d {
+  animation: float3d 6s ease-in-out infinite;
+}
+
+@keyframes float3d {
+  0%, 100% {
+    transform: translateY(0) translateZ(0) rotateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateZ(30px) rotateX(5deg);
+  }
+}
+
+.float-3d-slow {
+  animation-duration: 8s;
+}
+
+.float-3d-fast {
+  animation-duration: 4s;
+}
+
+/* ========================================
+   3D PAGE TRANSITIONS
+   ======================================== */
+
+.page-3d-enter {
+  animation: page3dEnter var(--duration-page) var(--ease-smooth) forwards;
+}
+
+@keyframes page3dEnter {
+  0% {
+    opacity: 0;
+    transform: perspective(var(--perspective-medium)) translateZ(-100px) rotateY(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(var(--perspective-medium)) translateZ(0) rotateY(0);
+  }
+}
+
+/* ========================================
+   3D LIST ITEMS
+   Staggered reveal with depth
+   ======================================== */
+
+.list-3d > * {
+  opacity: 0;
+  transform: perspective(var(--perspective-subtle)) translateZ(-30px) translateY(20px);
+  transition: all var(--duration-reveal) var(--ease-smooth);
+}
+
+.list-3d.revealed > *:nth-child(1) { transition-delay: var(--stagger-1); }
+.list-3d.revealed > *:nth-child(2) { transition-delay: var(--stagger-2); }
+.list-3d.revealed > *:nth-child(3) { transition-delay: var(--stagger-3); }
+.list-3d.revealed > *:nth-child(4) { transition-delay: var(--stagger-4); }
+.list-3d.revealed > *:nth-child(5) { transition-delay: var(--stagger-5); }
+.list-3d.revealed > *:nth-child(6) { transition-delay: var(--stagger-6); }
+.list-3d.revealed > *:nth-child(7) { transition-delay: var(--stagger-7); }
+.list-3d.revealed > *:nth-child(8) { transition-delay: var(--stagger-8); }
+
+.list-3d.revealed > * {
+  opacity: 1;
+  transform: perspective(var(--perspective-subtle)) translateZ(0) translateY(0);
+}
+
+/* ========================================
+   PORTAL-SPECIFIC 3D INTENSITY
+   ======================================== */
+
+/* Student Portal - More playful */
+.student-portal .hover-lift:hover {
+  transform: scale(1.06) translateY(-6px) rotateZ(1deg);
+}
+
+/* Staff Portal - Professional */
+.staff-portal .hover-lift:hover {
+  transform: scale(1.04) translateY(-4px);
+}
+
+/* Admin Portals - Subtle */
+.admin-portal .hover-lift:hover {
+  transform: scale(1.03) translateY(-3px);
+}
+
+/* ========================================
+   DESKTOP ONLY
+   Disable 3D on touch devices
+   ======================================== */
+
+@media (hover: none) {
+  .tilt-3d:hover,
+  .tilt-3d-medium:hover,
+  .tilt-3d-dramatic:hover,
+  .equipment-card-3d:hover,
+  .stat-card-3d:hover {
+    transform: none;
+  }
+
+  .equipment-card-3d:hover .card-image {
+    transform: none;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .card-3d-inner,
+  .tilt-3d,
+  .equipment-card-3d,
+  .hover-lift,
+  .nav-3d-dropdown,
+  .stat-card-3d,
+  .btn-3d,
+  .image-3d,
+  .float-3d,
+  .list-3d > * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .modal-3d-enter,
+  .modal-3d-exit,
+  .page-3d-enter {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

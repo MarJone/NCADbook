@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme, usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
+import { PortalHeader } from '../../components/layout/PortalHeader';
+import { SmartSearch } from '../../components/ai/SmartSearch';
+import { AIAssistant, useAIAssistant } from '../../components/ai/AIAssistant';
 import StudentDashboard from './StudentDashboard';
 import EquipmentBrowse from './EquipmentBrowse';
 import MyBookings from './MyBookings';
@@ -10,37 +15,77 @@ import '../../styles/role-colors.css';
 
 export default function StudentLayout() {
   const { user, logout } = useAuth();
+  const { theme } = useTheme();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Register portal theme
+  usePortalTheme('student');
+
+  // AI Assistant state
+  const {
+    messages,
+    isThinking,
+    unreadCount,
+    sendMessage,
+  } = useAIAssistant();
+
+  // Mock data for smart search
+  const recentSearches = [
+    { id: 1, text: 'Canon EOS R5' },
+    { id: 2, text: 'Audio recorder' },
+  ];
+
+  const trendingItems = [
+    { id: 1, name: 'Sony A7 IV', category: 'camera', bookings: 15 },
+    { id: 2, name: 'Zoom H6', category: 'audio', bookings: 12 },
+  ];
 
   return (
-    <div className="student-portal">
-      <header className="student-header">
-        <div className="student-header-content">
-          <h1>📚 NCADbook</h1>
-          <div className="student-header-actions">
-            <NotificationCenter />
-            <span className="student-user-info">
-              {user?.full_name}
-            </span>
-            <button onClick={logout} className="btn btn-secondary btn-sm">
-              Logout
-            </button>
+    <div className="student-portal" data-theme={theme}>
+      {/* Enhanced Header with scroll-awareness */}
+      <PortalHeader
+        portalType="student"
+        user={user}
+        logoSrc="/images/ncad-logo.svg"
+        onSearchOpen={() => setIsSearchOpen(true)}
+        onMobileMenuToggle={(open) => console.log('Mobile menu:', open)}
+        notificationCount={3}
+      />
+
+      {/* Smart Search Modal */}
+      {isSearchOpen && (
+        <div className="search-modal-backdrop glass-modal-backdrop" onClick={() => setIsSearchOpen(false)}>
+          <div className="search-modal glass-modal" onClick={(e) => e.stopPropagation()}>
+            <SmartSearch
+              onSearch={(query) => {
+                console.log('Search:', query);
+                setIsSearchOpen(false);
+              }}
+              onSelectItem={(item) => {
+                console.log('Selected:', item);
+                setIsSearchOpen(false);
+              }}
+              recentSearches={recentSearches}
+              trendingItems={trendingItems}
+              placeholder="Search equipment... try 'camera for portraits'"
+            />
           </div>
         </div>
-      </header>
+      )}
 
-      <nav className="student-nav">
+      <nav className="student-nav glass-nav">
         <NavLink to="/student" end className={({ isActive }) => `student-nav-link ${isActive ? 'active' : ''}`}>
-          🏠 Dashboard
+          Dashboard
         </NavLink>
         <NavLink to="/student/equipment" className={({ isActive }) => `student-nav-link ${isActive ? 'active' : ''}`}>
-          📦 Browse Equipment
+          Browse Equipment
         </NavLink>
         <NavLink to="/student/bookings" className={({ isActive }) => `student-nav-link ${isActive ? 'active' : ''}`}>
-          📅 My Bookings
+          My Bookings
         </NavLink>
       </nav>
 
-      <main className="student-main">
+      <main className="student-main scroll-reveal-container">
         <Routes>
           <Route index element={<StudentDashboard />} />
           <Route path="equipment" element={<EquipmentBrowse />} />
@@ -49,6 +94,14 @@ export default function StudentLayout() {
       </main>
 
       <MobileBottomNav />
+
+      {/* AI Assistant FAB */}
+      <AIAssistant
+        messages={messages}
+        isThinking={isThinking}
+        unreadCount={unreadCount}
+        onSendMessage={sendMessage}
+      />
     </div>
   );
 }

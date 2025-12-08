@@ -37,7 +37,56 @@
 @import './components-cards.css';
 
 /* ========================================
-   STEP 4: LEGACY COMPATIBILITY - REMOVED
+   STEP 4: EXPERIMENTAL UI SYSTEM
+   Advanced effects, animations, AI interfaces
+   ======================================== */
+
+@import './experimental/design-tokens-experimental.css';
+@import './experimental/glassmorphism.css';
+@import './experimental/animations-3d.css';
+@import './experimental/scroll-animations.css';
+@import './experimental/ai-interface.css';
+
+/* ========================================
+   STEP 5: GLOBAL UTILITY STYLES
+   ======================================== */
+
+/* Search Modal Backdrop */
+.search-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-backdrop, 1000);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+}
+
+.search-modal {
+  width: 90%;
+  max-width: 640px;
+  padding: var(--space-lg);
+  animation: modalSlideIn 0.2s var(--ease-smooth);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll reveal container */
+.scroll-reveal-container {
+  /* Enable scroll-triggered animations */
+}
+
+/* ========================================
+   LEGACY COMPATIBILITY - REMOVED
    Legacy variable files (ncad-variables.css, variables.css) have been
    replaced by design-tokens.css and are no longer needed.
    ======================================== */

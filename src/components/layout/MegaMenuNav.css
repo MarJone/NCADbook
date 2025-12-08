@@ -1,0 +1,335 @@
+/**
+ * ============================================
+ * MEGA MENU NAVIGATION
+ * Smartway2-inspired desktop navigation
+ * ============================================
+ */
+
+.mega-menu-nav {
+  position: relative;
+  z-index: var(--z-sticky);
+}
+
+.mega-menu-list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================
+   MENU ITEM
+   ======================================== */
+
+.mega-menu-item {
+  position: relative;
+}
+
+.mega-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+  text-decoration: none;
+}
+
+.mega-menu-trigger:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-bg-tertiary);
+}
+
+.mega-menu-item.active .mega-menu-trigger,
+.mega-menu-item.current .mega-menu-trigger {
+  color: var(--role-accent);
+}
+
+.mega-menu-icon {
+  flex-shrink: 0;
+}
+
+.mega-menu-chevron {
+  transition: transform var(--duration-normal) var(--ease-smooth);
+  margin-left: var(--space-xs);
+}
+
+.mega-menu-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* ========================================
+   ACCENT UNDERLINE
+   ======================================== */
+
+.mega-menu-underline {
+  position: absolute;
+  bottom: -2px;
+  left: var(--space-md);
+  right: var(--space-md);
+  height: 2px;
+  background: var(--role-accent);
+  border-radius: var(--radius-full);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--duration-normal) var(--ease-smooth);
+}
+
+.mega-menu-item:hover .mega-menu-underline,
+.mega-menu-item.active .mega-menu-underline,
+.mega-menu-item.current .mega-menu-underline {
+  transform: scaleX(1);
+}
+
+/* ========================================
+   MEGA MENU DROPDOWN
+   ======================================== */
+
+.mega-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px) rotateX(-10deg);
+  transform-origin: top center;
+  min-width: 280px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl), var(--glass-shadow);
+  padding: var(--space-md);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-medium) var(--ease-smooth);
+  perspective: var(--perspective-medium);
+}
+
+.mega-menu-dropdown.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(var(--space-sm)) rotateX(0);
+}
+
+.mega-menu-content {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+/* ========================================
+   MENU SECTIONS
+   ======================================== */
+
+.mega-menu-section {
+  min-width: 200px;
+}
+
+.mega-menu-section-title {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.mega-menu-section-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================
+   SUB ITEMS
+   ======================================== */
+
+.mega-menu-subitem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  color: var(--theme-text-primary);
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.mega-menu-subitem:hover {
+  background: var(--role-accent-light);
+  transform: translateX(4px);
+}
+
+.mega-menu-subitem.highlight {
+  background: linear-gradient(
+    135deg,
+    var(--role-accent-light) 0%,
+    transparent 100%
+  );
+  border: 1px solid var(--role-accent);
+}
+
+.mega-menu-subitem-icon {
+  flex-shrink: 0;
+  color: var(--theme-text-tertiary);
+  margin-top: 2px;
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.mega-menu-subitem:hover .mega-menu-subitem-icon {
+  color: var(--role-accent);
+}
+
+.mega-menu-subitem-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mega-menu-subitem-label {
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.mega-menu-subitem-desc {
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-tertiary);
+}
+
+/* ========================================
+   BADGE
+   ======================================== */
+
+.mega-menu-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  background: var(--role-accent);
+  color: white;
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+/* ========================================
+   FEATURED PANEL
+   ======================================== */
+
+.mega-menu-featured {
+  min-width: 240px;
+  max-width: 280px;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--glass-border);
+}
+
+.mega-menu-featured-link {
+  display: block;
+  padding: var(--space-md);
+  background: var(--theme-bg-tertiary);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: all var(--duration-medium) var(--ease-smooth);
+}
+
+.mega-menu-featured-link:hover {
+  background: var(--role-accent-light);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.mega-menu-featured-image {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+  aspect-ratio: 16/9;
+  background: var(--theme-bg-secondary);
+}
+
+.mega-menu-featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mega-menu-featured-title {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.mega-menu-featured-desc {
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-secondary);
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.mega-menu-featured-cta {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--role-accent);
+}
+
+/* ========================================
+   PORTAL VARIATIONS
+   ======================================== */
+
+/* Master Admin - Dark theme specific */
+.master-admin-portal .mega-menu-dropdown {
+  background: rgba(18, 10, 15, 0.95);
+  border-color: rgba(233, 30, 99, 0.2);
+}
+
+.master-admin-portal .mega-menu-subitem:hover {
+  background: rgba(233, 30, 99, 0.1);
+}
+
+.master-admin-portal .mega-menu-featured-link {
+  background: rgba(233, 30, 99, 0.1);
+}
+
+.master-admin-portal .mega-menu-featured-link:hover {
+  background: rgba(233, 30, 99, 0.2);
+}
+
+/* ========================================
+   RESPONSIVE - Hide on mobile
+   ======================================== */
+
+@media (max-width: 1023px) {
+  .mega-menu-nav {
+    display: none;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .mega-menu-dropdown,
+  .mega-menu-chevron,
+  .mega-menu-underline,
+  .mega-menu-subitem,
+  .mega-menu-featured-link {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .mega-menu-dropdown.visible {
+    transform: translateX(-50%) translateY(var(--space-sm)) !important;
+  }
+}

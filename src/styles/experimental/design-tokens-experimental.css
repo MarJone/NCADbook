@@ -1,0 +1,400 @@
+/**
+ * ============================================
+ * EXPERIMENTAL DESIGN TOKENS
+ * Advanced tokens for cutting-edge UI effects
+ * ============================================
+ *
+ * These tokens enable:
+ * - 3D transforms and perspective effects
+ * - Glassmorphism (frosted glass)
+ * - Neumorphism (soft shadows)
+ * - Advanced animations and easing
+ * - Scroll-triggered effects
+ * - AI interface styling
+ * - Gesture feedback
+ */
+
+:root {
+  /* ========================================
+     3D PERSPECTIVE SYSTEM
+     For card flips, depth effects, parallax
+     ======================================== */
+
+  --perspective-subtle: 1000px;    /* Subtle 3D - equipment cards */
+  --perspective-medium: 800px;     /* Medium 3D - modals */
+  --perspective-dramatic: 500px;   /* Dramatic 3D - hero sections */
+  --perspective-extreme: 300px;    /* Extreme 3D - special effects */
+
+  /* 3D Transform Presets */
+  --tilt-subtle: rotateX(-2deg) rotateY(2deg);
+  --tilt-medium: rotateX(-5deg) rotateY(5deg);
+  --tilt-dramatic: rotateX(-10deg) rotateY(10deg);
+
+  /* Card flip timing */
+  --flip-duration: 600ms;
+  --flip-timing: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  /* Depth layers for parallax */
+  --depth-layer-0: translateZ(0px);
+  --depth-layer-1: translateZ(10px);
+  --depth-layer-2: translateZ(20px);
+  --depth-layer-3: translateZ(40px);
+  --depth-layer-4: translateZ(60px);
+  --depth-layer-5: translateZ(100px);
+
+  /* ========================================
+     GLASSMORPHISM TOKENS
+     Frosted glass effects
+     ======================================== */
+
+  /* Blur intensities */
+  --glass-blur-subtle: blur(8px);
+  --glass-blur-light: blur(12px);
+  --glass-blur-medium: blur(16px);
+  --glass-blur-heavy: blur(24px);
+  --glass-blur-extreme: blur(40px);
+
+  /* Light mode glass backgrounds */
+  --glass-bg-light: rgba(255, 255, 255, 0.7);
+  --glass-bg-light-subtle: rgba(255, 255, 255, 0.5);
+  --glass-bg-light-strong: rgba(255, 255, 255, 0.85);
+
+  /* Dark mode glass backgrounds */
+  --glass-bg-dark: rgba(10, 0, 6, 0.7);
+  --glass-bg-dark-subtle: rgba(10, 0, 6, 0.5);
+  --glass-bg-dark-strong: rgba(10, 0, 6, 0.85);
+
+  /* Glass borders */
+  --glass-border-light: rgba(255, 255, 255, 0.2);
+  --glass-border-light-strong: rgba(255, 255, 255, 0.4);
+  --glass-border-dark: rgba(255, 255, 255, 0.1);
+  --glass-border-dark-strong: rgba(255, 255, 255, 0.2);
+
+  /* Glass shadows */
+  --glass-shadow-light: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-shadow-colored: 0 8px 32px var(--role-accent-light, rgba(0, 0, 0, 0.1));
+
+  /* ========================================
+     NEUMORPHISM TOKENS
+     Soft shadow effects (light mode focused)
+     ======================================== */
+
+  /* Light mode neumorphism */
+  --neu-shadow-light:
+    6px 6px 12px rgba(0, 0, 0, 0.08),
+    -6px -6px 12px rgba(255, 255, 255, 0.9);
+
+  --neu-shadow-light-sm:
+    3px 3px 6px rgba(0, 0, 0, 0.06),
+    -3px -3px 6px rgba(255, 255, 255, 0.8);
+
+  --neu-shadow-light-lg:
+    10px 10px 20px rgba(0, 0, 0, 0.1),
+    -10px -10px 20px rgba(255, 255, 255, 0.95);
+
+  /* Light mode inset (pressed state) */
+  --neu-inset-light:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.08),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+
+  /* Dark mode neumorphism (subtle) */
+  --neu-shadow-dark:
+    6px 6px 12px rgba(0, 0, 0, 0.4),
+    -6px -6px 12px rgba(50, 50, 50, 0.2);
+
+  --neu-inset-dark:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.4),
+    inset -4px -4px 8px rgba(50, 50, 50, 0.2);
+
+  /* ========================================
+     ADVANCED ANIMATION CURVES
+     For experimental interactions
+     ======================================== */
+
+  /* Spring-like easing */
+  --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-spring-soft: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-spring-bouncy: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+  /* Elastic easing */
+  --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-elastic-in: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  --ease-elastic-out: cubic-bezier(0.175, 0.885, 0.32, 1.6);
+
+  /* Smooth easing */
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-smooth-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-smooth-in: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Snappy easing */
+  --ease-snappy: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --ease-snappy-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Dramatic easing */
+  --ease-dramatic: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-dramatic-in: cubic-bezier(0.9, 0, 0.8, 0.2);
+  --ease-dramatic-out: cubic-bezier(0.2, 0.8, 0.1, 1);
+
+  /* ========================================
+     DURATION SCALE (Extended)
+     ======================================== */
+
+  --duration-instant: 50ms;
+  --duration-micro: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-medium: 300ms;
+  --duration-slow: 400ms;
+  --duration-slower: 500ms;
+  --duration-slowest: 700ms;
+
+  /* Special durations */
+  --duration-image: 400ms;         /* Robin-style image transitions */
+  --duration-reveal: 600ms;        /* Scroll-triggered reveals */
+  --duration-page: 800ms;          /* Page transitions */
+  --duration-flip: 600ms;          /* Card flip animations */
+
+  /* ========================================
+     STAGGER DELAYS
+     Robin-style cascading animations
+     ======================================== */
+
+  --stagger-1: 0ms;
+  --stagger-2: 50ms;
+  --stagger-3: 100ms;
+  --stagger-4: 150ms;
+  --stagger-5: 200ms;
+  --stagger-6: 250ms;
+  --stagger-7: 300ms;
+  --stagger-8: 350ms;
+  --stagger-9: 400ms;
+  --stagger-10: 450ms;
+
+  /* Faster stagger for smaller items */
+  --stagger-fast-1: 0ms;
+  --stagger-fast-2: 30ms;
+  --stagger-fast-3: 60ms;
+  --stagger-fast-4: 90ms;
+  --stagger-fast-5: 120ms;
+
+  /* ========================================
+     TRANSFORM SCALES
+     Hover and interaction scaling
+     ======================================== */
+
+  --scale-press: 0.97;             /* Button press */
+  --scale-subtle: 1.02;            /* Subtle hover */
+  --scale-medium: 1.05;            /* Robin-style hover */
+  --scale-large: 1.08;             /* Dramatic hover */
+  --scale-xl: 1.1;                 /* Maximum scale */
+
+  /* ========================================
+     SCROLL ANIMATION TOKENS
+     ======================================== */
+
+  --scroll-trigger-offset: 100px;   /* Trigger before entering viewport */
+  --scroll-parallax-slow: 0.3;      /* Slow parallax factor */
+  --scroll-parallax-medium: 0.5;    /* Medium parallax factor */
+  --scroll-parallax-fast: 0.7;      /* Fast parallax factor */
+
+  /* Reveal distances */
+  --reveal-distance-sm: 20px;
+  --reveal-distance-md: 40px;
+  --reveal-distance-lg: 60px;
+
+  /* ========================================
+     AI INTERFACE TOKENS
+     ======================================== */
+
+  --ai-pulse-duration: 2s;
+  --ai-glow-color: rgba(123, 31, 162, 0.4);
+  --ai-glow-color-active: rgba(123, 31, 162, 0.6);
+
+  --ai-thinking-gradient: linear-gradient(
+    90deg,
+    var(--role-accent, #7C3AED) 0%,
+    #9C27B0 25%,
+    var(--role-accent, #7C3AED) 50%,
+    #9C27B0 75%,
+    var(--role-accent, #7C3AED) 100%
+  );
+
+  --ai-shimmer-gradient: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+
+  /* ========================================
+     GESTURE TOKENS
+     Touch and interaction feedback
+     ======================================== */
+
+  --swipe-threshold: 100px;        /* Minimum swipe distance */
+  --swipe-velocity: 0.5;           /* Minimum velocity (px/ms) */
+  --pinch-min-scale: 0.5;          /* Minimum pinch zoom */
+  --pinch-max-scale: 3;            /* Maximum pinch zoom */
+  --drag-resistance: 0.8;          /* Drag resistance factor */
+  --pull-refresh-threshold: 80px;  /* Pull-to-refresh trigger */
+
+  /* Gesture visual feedback */
+  --gesture-feedback-scale: 0.98;
+  --gesture-feedback-opacity: 0.8;
+  --gesture-feedback-rotation: 5deg;
+
+  /* ========================================
+     GLOW EFFECTS
+     ======================================== */
+
+  --glow-sm: 0 0 10px;
+  --glow-md: 0 0 20px;
+  --glow-lg: 0 0 40px;
+  --glow-xl: 0 0 60px;
+
+  /* Colored glows */
+  --glow-primary: 0 0 20px var(--role-accent-light, rgba(37, 99, 235, 0.3));
+  --glow-success: 0 0 20px rgba(16, 185, 129, 0.3);
+  --glow-warning: 0 0 20px rgba(245, 158, 11, 0.3);
+  --glow-error: 0 0 20px rgba(239, 68, 68, 0.3);
+
+  /* ========================================
+     VARIABLE FONTS
+     ======================================== */
+
+  --font-variable: 'Inter var', 'Inter', system-ui, sans-serif;
+  --font-weight-range: 100 900;
+  --font-optical-sizing: auto;
+
+  /* Font weight animation targets */
+  --font-weight-hover-start: 400;
+  --font-weight-hover-end: 600;
+
+  /* ========================================
+     RIPPLE EFFECT TOKENS
+     ======================================== */
+
+  --ripple-duration: 600ms;
+  --ripple-size: 300px;
+  --ripple-color-light: rgba(0, 0, 0, 0.1);
+  --ripple-color-dark: rgba(255, 255, 255, 0.2);
+  --ripple-color-accent: rgba(var(--role-accent), 0.3);
+
+  /* ========================================
+     MORPHING ICON TOKENS
+     ======================================== */
+
+  --morph-duration: 300ms;
+  --morph-timing: var(--ease-smooth);
+
+  /* ========================================
+     FLOATING/ELEVATION TOKENS
+     ======================================== */
+
+  --float-distance-sm: 4px;
+  --float-distance-md: 8px;
+  --float-distance-lg: 12px;
+
+  --float-shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --float-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --float-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   THEME-AWARE TOKEN OVERRIDES
+   ======================================== */
+
+[data-theme="dark"] {
+  /* Glass backgrounds for dark mode */
+  --glass-bg: var(--glass-bg-dark);
+  --glass-bg-subtle: var(--glass-bg-dark-subtle);
+  --glass-bg-strong: var(--glass-bg-dark-strong);
+  --glass-border: var(--glass-border-dark);
+  --glass-border-strong: var(--glass-border-dark-strong);
+  --glass-shadow: var(--glass-shadow-dark);
+
+  /* Neumorphism for dark mode */
+  --neu-shadow: var(--neu-shadow-dark);
+  --neu-inset: var(--neu-inset-dark);
+
+  /* Ripple for dark mode */
+  --ripple-color: var(--ripple-color-dark);
+}
+
+[data-theme="light"],
+:root:not([data-theme]) {
+  /* Glass backgrounds for light mode */
+  --glass-bg: var(--glass-bg-light);
+  --glass-bg-subtle: var(--glass-bg-light-subtle);
+  --glass-bg-strong: var(--glass-bg-light-strong);
+  --glass-border: var(--glass-border-light);
+  --glass-border-strong: var(--glass-border-light-strong);
+  --glass-shadow: var(--glass-shadow-light);
+
+  /* Neumorphism for light mode */
+  --neu-shadow: var(--neu-shadow-light);
+  --neu-inset: var(--neu-inset-light);
+
+  /* Ripple for light mode */
+  --ripple-color: var(--ripple-color-light);
+}
+
+/* ========================================
+   EXPERIMENTAL MODE TOGGLE
+   Only apply experimental effects when enabled
+   ======================================== */
+
+[data-experimental="false"] {
+  /* Disable 3D effects */
+  --perspective-subtle: none;
+  --perspective-medium: none;
+  --perspective-dramatic: none;
+
+  /* Disable glassmorphism blur */
+  --glass-blur-subtle: none;
+  --glass-blur-light: none;
+  --glass-blur-medium: none;
+  --glass-blur-heavy: none;
+
+  /* Simplify animations */
+  --ease-spring: var(--ease-smooth);
+  --ease-elastic: var(--ease-smooth);
+  --ease-dramatic: var(--ease-smooth);
+}
+
+/* ========================================
+   REDUCED MOTION OVERRIDES
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    /* Minimal durations */
+    --duration-instant: 0ms;
+    --duration-micro: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-medium: 0ms;
+    --duration-slow: 0ms;
+    --duration-reveal: 0ms;
+    --duration-flip: 0ms;
+
+    /* No stagger */
+    --stagger-1: 0ms;
+    --stagger-2: 0ms;
+    --stagger-3: 0ms;
+    --stagger-4: 0ms;
+    --stagger-5: 0ms;
+
+    /* No transforms */
+    --scale-press: 1;
+    --scale-subtle: 1;
+    --scale-medium: 1;
+    --scale-large: 1;
+
+    /* No parallax */
+    --scroll-parallax-slow: 0;
+    --scroll-parallax-medium: 0;
+    --scroll-parallax-fast: 0;
+  }
+}

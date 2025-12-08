@@ -1,0 +1,416 @@
+/**
+ * ============================================
+ * GLASSMORPHISM EFFECTS
+ * Frosted glass UI components
+ * ============================================
+ *
+ * Inspired by: Apple's Big Sur, Robin, Smartway2
+ * Uses backdrop-filter for blur effects
+ */
+
+/* ========================================
+   BASE GLASS PANEL
+   ======================================== */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+}
+
+.glass-subtle {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: var(--glass-blur-light);
+  -webkit-backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: var(--radius-lg);
+}
+
+/* ========================================
+   GLASS CARDS
+   ======================================== */
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--glass-shadow);
+  transition: all var(--duration-medium) var(--ease-smooth);
+}
+
+.glass-card:hover {
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--glass-shadow), var(--glow-primary);
+  transform: translateY(-4px);
+}
+
+/* Glass card with gradient border */
+.glass-card-gradient {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.glass-card-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--glass-border-strong) 0%,
+    transparent 50%,
+    var(--glass-border) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ========================================
+   GLASS NAVIGATION
+   ======================================== */
+
+.glass-nav {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-heavy) saturate(180%);
+  -webkit-backdrop-filter: var(--glass-blur-heavy) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.glass-nav-floating {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  margin: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+}
+
+/* ========================================
+   GLASS MODALS
+   ======================================== */
+
+.glass-modal-backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: var(--glass-blur-subtle);
+  -webkit-backdrop-filter: var(--glass-blur-subtle);
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-backdrop);
+}
+
+.glass-modal {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl), var(--glass-shadow);
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+.glass-modal-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.glass-modal-content {
+  padding: var(--space-lg);
+  overflow-y: auto;
+}
+
+.glass-modal-footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--glass-border);
+  background: var(--glass-bg-subtle);
+}
+
+/* ========================================
+   GLASS SIDEBAR
+   ======================================== */
+
+.glass-sidebar {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border-right: 1px solid var(--glass-border);
+  height: 100%;
+}
+
+.glass-sidebar-item {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin: var(--space-xs);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.glass-sidebar-item:hover {
+  background: var(--glass-bg-subtle);
+}
+
+.glass-sidebar-item.active {
+  background: var(--role-accent-light);
+  border: 1px solid var(--role-accent);
+}
+
+/* ========================================
+   GLASS DROPDOWN
+   ======================================== */
+
+.glass-dropdown {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), var(--glass-shadow);
+  padding: var(--space-sm);
+  min-width: 200px;
+}
+
+.glass-dropdown-item {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--ease-smooth);
+  cursor: pointer;
+}
+
+.glass-dropdown-item:hover {
+  background: var(--glass-bg-subtle);
+}
+
+/* ========================================
+   GLASS TOOLTIP
+   ======================================== */
+
+.glass-tooltip {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-body-sm);
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-tooltip);
+}
+
+/* ========================================
+   GLASS BUTTONS
+   ======================================== */
+
+.glass-btn {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-light);
+  -webkit-backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.glass-btn:hover {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.glass-btn:active {
+  transform: translateY(0);
+}
+
+.glass-btn-accent {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--role-accent), 0.2) 0%,
+    rgba(var(--role-accent), 0.1) 100%
+  );
+  border-color: var(--role-accent);
+}
+
+/* ========================================
+   GLASS INPUTS
+   ======================================== */
+
+.glass-input {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: var(--glass-blur-light);
+  -webkit-backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.glass-input:focus {
+  outline: none;
+  background: var(--glass-bg);
+  border-color: var(--role-accent);
+  box-shadow: 0 0 0 3px var(--role-accent-light), var(--glow-primary);
+}
+
+.glass-input::placeholder {
+  color: var(--theme-text-tertiary);
+}
+
+/* ========================================
+   GLASS SEARCH
+   ======================================== */
+
+.glass-search {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-medium);
+  -webkit-backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.glass-search:focus-within {
+  background: var(--glass-bg-strong);
+  border-color: var(--role-accent);
+  box-shadow: var(--glow-primary);
+}
+
+.glass-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  color: var(--theme-text-primary);
+}
+
+/* ========================================
+   GLASS BADGE
+   ======================================== */
+
+.glass-badge {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: var(--glass-blur-light);
+  -webkit-backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   GLASS FLOATING ACTION BUTTON
+   ======================================== */
+
+.glass-fab {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg), var(--glass-shadow);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-spring);
+}
+
+.glass-fab:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-xl), var(--glow-primary);
+}
+
+/* ========================================
+   PORTAL-SPECIFIC GLASS TINTS
+   ======================================== */
+
+/* Student Portal - Coral tint */
+.student-portal .glass,
+.student-portal .glass-card {
+  background: rgba(255, 107, 107, 0.05);
+  border-color: rgba(255, 107, 107, 0.15);
+}
+
+/* Staff Portal - Teal tint */
+.staff-portal .glass,
+.staff-portal .glass-card {
+  background: rgba(0, 188, 212, 0.05);
+  border-color: rgba(0, 188, 212, 0.15);
+}
+
+/* Dept Admin Portal - Amber tint */
+.admin-portal:not(.master-admin-portal) .glass,
+.admin-portal:not(.master-admin-portal) .glass-card {
+  background: rgba(255, 179, 0, 0.05);
+  border-color: rgba(255, 179, 0, 0.15);
+}
+
+/* Master Admin Portal - Magenta tint */
+.master-admin-portal .glass,
+.master-admin-portal .glass-card {
+  background: rgba(233, 30, 99, 0.08);
+  border-color: rgba(233, 30, 99, 0.2);
+}
+
+/* ========================================
+   BROWSER FALLBACK
+   For browsers without backdrop-filter
+   ======================================== */
+
+@supports not (backdrop-filter: blur(10px)) {
+  .glass,
+  .glass-subtle,
+  .glass-strong,
+  .glass-card,
+  .glass-nav,
+  .glass-modal,
+  .glass-dropdown {
+    background: var(--theme-bg-primary);
+    opacity: 0.98;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card:hover,
+  .glass-btn:hover,
+  .glass-fab:hover {
+    transform: none;
+  }
+}
