@@ -27,7 +27,11 @@ import SystemSettings from '../master-admin/SystemSettings';
 import RoleManagement from '../master-admin/RoleManagement';
 import CrossDepartmentRequests from './CrossDepartmentRequests';
 import EquipmentKitsManagement from './EquipmentKitsManagement';
+import CheckoutVerification from './CheckoutVerification';
+import ReturnVerification from './ReturnVerification';
 import './AdminPortal.css';
+import './CheckoutVerification.css';
+import './ReturnVerification.css';
 import '../../styles/role-colors.css';
 
 export default function AdminLayout() {
@@ -140,6 +144,8 @@ export default function AdminLayout() {
           <Route path="role-management" element={<RoleManagement />} />
           <Route path="cross-department-requests" element={<CrossDepartmentRequests />} />
           <Route path="equipment-kits" element={<EquipmentKitsManagement />} />
+          <Route path="checkout" element={<CheckoutVerification />} />
+          <Route path="return" element={<ReturnVerification />} />
         </Routes>
       </main>
 

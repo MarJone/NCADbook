@@ -64,8 +64,8 @@
 - [x] QR/Barcode scanner component (camera + USB)
 - [x] Printable equipment label component
 - [ ] Equipment accessory manager
-- [ ] Checkout verification workflow
-- [ ] Return verification with condition assessment
+- [x] Checkout verification workflow
+- [x] Return verification with condition assessment
 - [ ] Batch label printing
 
 ### 2.4 Local LLM Integration (NEW - Master Admin Only)
@@ -157,14 +157,14 @@
 |----------|-------|-----------|-------------|---------|
 | UI/UX | 18 | 12 | 0 | 6 |
 | Core Functionality | 15 | 1 | 1 | 13 |
-| Barcode/QR System | 8 | 4 | 0 | 4 |
+| Barcode/QR System | 8 | 6 | 0 | 2 |
 | Local LLM Integration | 8 | 2 | 0 | 6 |
 | Admin Features | 12 | 5 | 0 | 7 |
 | Testing | 9 | 4 | 0 | 5 |
 | Docs/DevOps | 10 | 0 | 0 | 10 |
-| **TOTAL** | **80** | **28** | **1** | **51** |
+| **TOTAL** | **80** | **30** | **0** | **50** |
 
-**Overall Progress: 36%**
+**Overall Progress: 38%**
 
 ---
 
