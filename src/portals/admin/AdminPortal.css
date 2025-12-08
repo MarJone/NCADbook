@@ -17,10 +17,10 @@
   padding-bottom: 80px;
 }
 
-/* Master Admin - Force dark background */
+/* Master Admin - Light theme with purple accents */
 .admin-portal.master-admin-portal {
-  background: var(--master-bg-primary, #0A0006);
-  color: var(--master-text-primary, #FAFAFA);
+  background: var(--master-bg-secondary);
+  color: var(--master-text-primary);
 }
 
 @media (min-width: 1024px) {

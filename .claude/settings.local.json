@@ -65,7 +65,8 @@
       "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\styles\\experimental\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\styles\\experimental\")",
       "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\experimental\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\experimental\")",
       "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\ai\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\ai\")",
-      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\")"
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\")",
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\.claude\\commands\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\.claude\\commands\")"
     ],
     "deny": [],
     "ask": []

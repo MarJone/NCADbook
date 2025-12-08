@@ -1,157 +1,88 @@
 /**
  * ============================================
- * MASTER ADMIN - "COMMAND CENTER" DARK THEME
- * Inspired by: Robin (robinpowered.com)
- * Design Philosophy: Sophisticated, Data-Rich, Always Dark
+ * MASTER ADMIN - LIGHT THEME WITH PURPLE ACCENTS
+ * Design Philosophy: Professional, Data-Rich, Light Mode
  * ============================================
  *
  * Key Characteristics:
- * - Permanent dark mode (#0A0006 deep black with magenta undertone)
- * - Magenta accent (#E91E63) with glow effects
- * - 4K-optimized data density (2560px+ primary target)
- * - Glassmorphism panels and cards
- * - Subtle animations with AI-ready visual language
- * - Desktop-only (minimum 1280px viewport)
+ * - Light mode matching other portals
+ * - Purple accent (#9C27B0) for brand differentiation
+ * - Clean, professional aesthetic
+ * - Desktop-optimized data density
  */
 
 .master-admin-portal {
   /* ========================================
-     COLOR PALETTE - Robin-Inspired Dark
-     Deep black with magenta energy
+     COLOR PALETTE - Light with Purple Accents
      ======================================== */
 
-  /* Base Backgrounds - Deep black spectrum */
-  --master-bg-primary: #0A0006;           /* Deepest - main background */
-  --master-bg-secondary: #120A0F;         /* Elevated surface */
-  --master-bg-tertiary: #1A121A;          /* Card backgrounds */
-  --master-bg-elevated: #221A22;          /* Hover states, raised elements */
-  --master-bg-overlay: rgba(10, 0, 6, 0.95); /* Modal overlays */
+  /* Base Backgrounds - Light theme */
+  --master-bg-primary: #FFFFFF;
+  --master-bg-secondary: #F8F9FA;
+  --master-bg-tertiary: #F3F4F6;
+  --master-bg-elevated: #FFFFFF;
+  --master-bg-overlay: rgba(0, 0, 0, 0.5);
+  --master-bg-hover: #EDE7F6;
 
-  /* Magenta Accent System - Primary energy color */
-  --master-accent-primary: #E91E63;       /* Primary magenta */
-  --master-accent-secondary: #FF4081;     /* Lighter - hover states */
-  --master-accent-tertiary: #F50057;      /* Vibrant - active states */
-  --master-accent-muted: #AD1457;         /* Darker - subtle accents */
-  --master-accent-glow: rgba(233, 30, 99, 0.4);  /* Glow effect */
-  --master-accent-subtle: rgba(233, 30, 99, 0.1); /* Very subtle tint */
+  /* Purple Accent System - Primary brand color */
+  --master-accent-primary: #9C27B0;
+  --master-accent-secondary: #AB47BC;
+  --master-accent-tertiary: #BA68C8;
+  --master-accent-muted: #7B1FA2;
+  --master-accent-light: rgba(156, 39, 176, 0.1);
+  --master-accent-glow: rgba(156, 39, 176, 0.2);
 
-  /* Text Colors - High contrast on dark */
-  --master-text-primary: #FAFAFA;         /* Primary text - near white */
-  --master-text-secondary: #B8A8B8;       /* Secondary - muted lavender */
-  --master-text-tertiary: #7A6A7A;        /* Tertiary - subtle hints */
-  --master-text-disabled: #4A3A4A;        /* Disabled state */
-  --master-text-inverse: #0A0006;         /* Text on light/accent backgrounds */
+  /* Text Colors - Dark text on light background */
+  --master-text-primary: #1F2937;
+  --master-text-secondary: #6B7280;
+  --master-text-tertiary: #9CA3AF;
+  --master-text-disabled: #D1D5DB;
+  --master-text-inverse: #FFFFFF;
 
-  /* Border Colors - Subtle definition */
-  --master-border-subtle: rgba(233, 30, 99, 0.1);
-  --master-border-light: rgba(233, 30, 99, 0.15);
-  --master-border-medium: rgba(233, 30, 99, 0.25);
-  --master-border-strong: rgba(233, 30, 99, 0.4);
-  --master-border-glow: rgba(233, 30, 99, 0.5);
+  /* Border Colors */
+  --master-border-subtle: rgba(0, 0, 0, 0.05);
+  --master-border-light: rgba(0, 0, 0, 0.08);
+  --master-border-medium: rgba(0, 0, 0, 0.12);
+  --master-border-strong: rgba(156, 39, 176, 0.3);
 
-  /* Status Colors - Adapted for dark mode */
-  --master-success: #4CAF50;
-  --master-success-bg: rgba(76, 175, 80, 0.15);
-  --master-success-border: rgba(76, 175, 80, 0.3);
+  /* Status Colors */
+  --master-success: #10B981;
+  --master-success-bg: #D1FAE5;
+  --master-success-border: rgba(16, 185, 129, 0.3);
 
-  --master-warning: #FF9800;
-  --master-warning-bg: rgba(255, 152, 0, 0.15);
-  --master-warning-border: rgba(255, 152, 0, 0.3);
+  --master-warning: #F59E0B;
+  --master-warning-bg: #FEF3C7;
+  --master-warning-border: rgba(245, 158, 11, 0.3);
 
-  --master-error: #F44336;
-  --master-error-bg: rgba(244, 67, 54, 0.15);
-  --master-error-border: rgba(244, 67, 54, 0.3);
+  --master-error: #EF4444;
+  --master-error-bg: #FEE2E2;
+  --master-error-border: rgba(239, 68, 68, 0.3);
 
-  --master-info: #2196F3;
-  --master-info-bg: rgba(33, 150, 243, 0.15);
-  --master-info-border: rgba(33, 150, 243, 0.3);
+  --master-info: #3B82F6;
+  --master-info-bg: #DBEAFE;
+  --master-info-border: rgba(59, 130, 246, 0.3);
 
   /* ========================================
-     GLASSMORPHISM TOKENS
+     GLASSMORPHISM TOKENS - Light version
      ======================================== */
 
-  --master-glass-bg: rgba(18, 10, 15, 0.8);
+  --master-glass-bg: rgba(255, 255, 255, 0.9);
   --master-glass-blur: blur(20px);
-  --master-glass-border: rgba(233, 30, 99, 0.15);
-  --master-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --master-glass-border: rgba(156, 39, 176, 0.15);
+  --master-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   /* ========================================
-     TYPOGRAPHY - Optimized for 4K
+     SHADOWS - Light theme appropriate
      ======================================== */
 
-  --master-text-hero: 48px;               /* 3rem */
-  --master-text-h1: 36px;                 /* 2.25rem */
-  --master-text-h2: 28px;                 /* 1.75rem */
-  --master-text-h3: 22px;                 /* 1.375rem */
-  --master-text-h4: 18px;                 /* 1.125rem */
-  --master-text-body-lg: 16px;            /* 1rem */
-  --master-text-body: 15px;               /* 0.9375rem */
-  --master-text-body-sm: 13px;            /* 0.8125rem */
-  --master-text-caption: 11px;            /* 0.6875rem */
-
-  --master-line-height-tight: 1.2;
-  --master-line-height-heading: 1.3;
-  --master-line-height-body: 1.6;
-
-  /* ========================================
-     SPACING - Optimized for data density
-     ======================================== */
-
-  --master-card-padding: 20px;
-  --master-card-gap: 24px;
-  --master-section-gap: 32px;
-  --master-component-gap: 12px;
-
-  /* ========================================
-     BORDER RADIUS - Modern but not rounded
-     ======================================== */
-
-  --master-radius-sm: 6px;
-  --master-radius-md: 8px;
-  --master-radius-lg: 12px;
-  --master-radius-xl: 16px;
-  --master-radius-2xl: 20px;
-  --master-radius-full: 9999px;
-
-  /* ========================================
-     SHADOWS - Dramatic depth
-     ======================================== */
-
-  --master-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --master-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --master-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --master-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-  --master-shadow-glow: 0 0 20px var(--master-accent-glow);
-  --master-shadow-glow-lg: 0 0 40px var(--master-accent-glow);
-
-  /* ========================================
-     COMPONENT SIZING - Compact for density
-     ======================================== */
-
-  --master-button-height: 40px;
-  --master-button-padding: 0 20px;
-  --master-input-height: 42px;
-  --master-input-padding: 0 16px;
-
-  /* ========================================
-     ANIMATIONS - Smooth and purposeful
-     ======================================== */
-
-  --master-transition-fast: 150ms;
-  --master-transition-normal: 250ms;
-  --master-transition-slow: 400ms;
-  --master-ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --master-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-  /* ========================================
-     THEME TOGGLE - Hidden for Master Admin
-     ======================================== */
-
-  --theme-toggle-display: none;
+  --master-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --master-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --master-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --master-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --master-shadow-glow: 0 0 20px rgba(156, 39, 176, 0.15);
 
   /* ========================================
      THEME VARIABLE MAPPINGS
-     Map to global theme system
      ======================================== */
 
   /* Background mappings */
@@ -162,9 +93,9 @@
   /* Accent mappings */
   --role-accent: var(--master-accent-primary);
   --role-accent-hover: var(--master-accent-secondary);
-  --role-accent-light: var(--master-accent-subtle);
+  --role-accent-light: var(--master-accent-light);
   --role-gradient-start: var(--master-accent-primary);
-  --role-gradient-end: #9C27B0;
+  --role-gradient-end: var(--master-accent-secondary);
 
   /* Theme system overrides */
   --theme-bg-primary: var(--master-bg-primary);
@@ -193,16 +124,6 @@
   --theme-error-text: var(--master-error);
   --theme-info-bg: var(--master-info-bg);
   --theme-info-text: var(--master-info);
-
-  /* Legacy mappings */
-  --text-xs: var(--master-text-caption);
-  --text-sm: var(--master-text-body-sm);
-  --text-base: var(--master-text-body);
-  --text-lg: var(--master-text-h4);
-  --text-xl: var(--master-text-h3);
-  --text-2xl: var(--master-text-h2);
-  --text-3xl: var(--master-text-h1);
-  --text-4xl: var(--master-text-hero);
 }
 
 /* ========================================
@@ -210,7 +131,7 @@
    ======================================== */
 
 .master-admin-portal {
-  background: var(--master-bg-primary);
+  background: var(--master-bg-secondary);
   color: var(--master-text-primary);
   min-height: 100vh;
 }
@@ -220,85 +141,60 @@
    ======================================== */
 
 .master-admin-portal .btn-primary {
-  height: var(--master-button-height);
-  padding: var(--master-button-padding);
-  border-radius: var(--master-radius-md);
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
   background: linear-gradient(135deg, var(--master-accent-primary) 0%, var(--master-accent-muted) 100%);
-  color: var(--master-text-primary);
+  color: #FFFFFF;
   font-size: 14px;
-  font-weight: var(--font-weight-semibold);
+  font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: all var(--master-transition-normal) var(--master-ease-out);
+  transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
 }
 
-.master-admin-portal .btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--master-accent-secondary) 0%, var(--master-accent-primary) 100%);
-  opacity: 0;
-  transition: opacity var(--master-transition-normal) var(--master-ease-out);
-}
-
-.master-admin-portal .btn-primary:hover::before {
-  opacity: 1;
-}
-
 .master-admin-portal .btn-primary:hover {
+  background: linear-gradient(135deg, var(--master-accent-secondary) 0%, var(--master-accent-primary) 100%);
   box-shadow: var(--master-shadow-glow);
-  transform: translateY(-2px);
-}
-
-.master-admin-portal .btn-primary:active {
-  transform: translateY(0);
-}
-
-.master-admin-portal .btn-primary span {
-  position: relative;
-  z-index: 1;
+  transform: translateY(-1px);
 }
 
 .master-admin-portal .btn-secondary {
-  height: var(--master-button-height);
-  padding: var(--master-button-padding);
-  border-radius: var(--master-radius-md);
-  background: var(--master-bg-tertiary);
-  color: var(--master-text-primary);
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: var(--master-bg-primary);
+  color: var(--master-accent-primary);
   border: 1px solid var(--master-border-medium);
   font-size: 14px;
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   cursor: pointer;
-  transition: all var(--master-transition-normal) var(--master-ease-out);
+  transition: all 0.2s ease;
 }
 
 .master-admin-portal .btn-secondary:hover {
-  background: var(--master-bg-elevated);
+  background: var(--master-bg-hover);
   border-color: var(--master-accent-primary);
-  color: var(--master-accent-secondary);
 }
 
 /* ========================================
-   CARDS - Glassmorphism
+   CARDS
    ======================================== */
 
 .master-admin-portal .card {
-  background: var(--master-glass-bg);
-  backdrop-filter: var(--master-glass-blur);
-  -webkit-backdrop-filter: var(--master-glass-blur);
-  border-radius: var(--master-radius-lg);
-  padding: var(--master-card-padding);
-  border: 1px solid var(--master-glass-border);
-  box-shadow: var(--master-glass-shadow);
-  transition: all var(--master-transition-normal) var(--master-ease-out);
+  background: var(--master-bg-primary);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--master-border-light);
+  box-shadow: var(--master-shadow-sm);
+  transition: all 0.2s ease;
 }
 
 .master-admin-portal .card:hover {
-  border-color: var(--master-border-medium);
-  transform: translateY(-4px);
-  box-shadow: var(--master-shadow-lg), var(--master-shadow-glow);
+  border-color: var(--master-accent-light);
+  box-shadow: var(--master-shadow-md);
 }
 
 /* ========================================
@@ -308,14 +204,14 @@
 .master-admin-portal input,
 .master-admin-portal select,
 .master-admin-portal textarea {
-  height: var(--master-input-height);
-  padding: var(--master-input-padding);
-  border-radius: var(--master-radius-md);
-  background: var(--master-bg-tertiary);
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: var(--master-bg-primary);
   color: var(--master-text-primary);
-  border: 1px solid var(--master-border-light);
+  border: 1px solid var(--master-border-medium);
   font-size: 14px;
-  transition: all var(--master-transition-fast) var(--master-ease-out);
+  transition: all 0.15s ease;
 }
 
 .master-admin-portal input::placeholder,
@@ -328,48 +224,46 @@
 .master-admin-portal textarea:focus {
   outline: none;
   border-color: var(--master-accent-primary);
-  box-shadow: 0 0 0 3px var(--master-accent-subtle), var(--master-shadow-glow);
-  background: var(--master-bg-elevated);
+  box-shadow: 0 0 0 3px var(--master-accent-light);
 }
 
 /* ========================================
-   TABLES - Data-dense styling
+   TABLES
    ======================================== */
 
 .master-admin-portal table {
   width: 100%;
-  background: var(--master-bg-secondary);
-  border-radius: var(--master-radius-lg);
+  background: var(--master-bg-primary);
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--master-border-subtle);
+  border: 1px solid var(--master-border-light);
 }
 
 .master-admin-portal th {
   background: var(--master-bg-tertiary);
   color: var(--master-text-secondary);
   font-size: 11px;
-  font-weight: var(--font-weight-semibold);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 14px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--master-border-light);
+  border-bottom: 1px solid var(--master-border-medium);
 }
 
 .master-admin-portal td {
   padding: 14px 16px;
   color: var(--master-text-primary);
-  border-bottom: 1px solid var(--master-border-subtle);
+  border-bottom: 1px solid var(--master-border-light);
   font-size: 14px;
 }
 
 .master-admin-portal tbody tr {
-  transition: background var(--master-transition-fast) var(--master-ease-out);
+  transition: background 0.15s ease;
 }
 
 .master-admin-portal tbody tr:hover {
-  background: var(--master-accent-subtle);
-  cursor: pointer;
+  background: var(--master-bg-hover);
 }
 
 .master-admin-portal tbody tr:last-child td {
@@ -377,30 +271,26 @@
 }
 
 /* ========================================
-   NAVIGATION - Command center style
+   NAVIGATION
    ======================================== */
 
 .master-admin-portal .admin-header {
-  background: var(--master-bg-secondary);
+  background: var(--master-bg-primary);
   border-bottom: 1px solid var(--master-border-light);
-  padding: 0 24px;
-  position: sticky;
-  top: 0;
-  z-index: var(--z-sticky);
-  backdrop-filter: blur(10px);
+  box-shadow: var(--master-shadow-sm);
 }
 
 .master-admin-portal .admin-nav {
-  background: transparent;
-  border-bottom: 1px solid var(--master-border-subtle);
+  background: var(--master-bg-primary);
+  border-bottom: 1px solid var(--master-border-light);
 }
 
 .master-admin-portal .admin-nav-link {
   color: var(--master-text-secondary);
   padding: 16px 20px;
   font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  transition: all var(--master-transition-fast) var(--master-ease-out);
+  font-weight: 500;
+  transition: all 0.15s ease;
   position: relative;
 }
 
@@ -412,12 +302,13 @@
   width: 0;
   height: 2px;
   background: var(--master-accent-primary);
-  transition: all var(--master-transition-normal) var(--master-ease-out);
+  transition: all 0.2s ease;
   transform: translateX(-50%);
 }
 
 .master-admin-portal .admin-nav-link:hover {
-  color: var(--master-text-primary);
+  color: var(--master-accent-primary);
+  background: var(--master-bg-hover);
 }
 
 .master-admin-portal .admin-nav-link:hover::after {
@@ -425,27 +316,25 @@
 }
 
 .master-admin-portal .admin-nav-link.active {
-  color: var(--master-accent-secondary);
+  color: var(--master-accent-primary);
 }
 
 .master-admin-portal .admin-nav-link.active::after {
   width: 100%;
-  box-shadow: var(--master-shadow-glow);
 }
 
 /* ========================================
-   STAT CARDS - Dashboard metrics
+   STAT CARDS
    ======================================== */
 
 .master-admin-portal .admin-stat-card {
-  background: var(--master-glass-bg);
-  backdrop-filter: var(--master-glass-blur);
-  border: 1px solid var(--master-glass-border);
-  border-radius: var(--master-radius-lg);
+  background: var(--master-bg-primary);
+  border: 1px solid var(--master-border-light);
+  border-radius: 12px;
   padding: 24px;
   position: relative;
   overflow: hidden;
-  transition: all var(--master-transition-normal) var(--master-ease-out);
+  transition: all 0.2s ease;
 }
 
 .master-admin-portal .admin-stat-card::before {
@@ -455,22 +344,21 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, var(--master-accent-primary) 0%, var(--master-accent-muted) 100%);
+  background: linear-gradient(180deg, var(--master-accent-primary) 0%, var(--master-accent-secondary) 100%);
 }
 
 .master-admin-portal .admin-stat-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  border-color: var(--master-border-medium);
-  box-shadow: var(--master-shadow-lg), var(--master-shadow-glow);
+  transform: translateY(-2px);
+  box-shadow: var(--master-shadow-md);
+  border-color: var(--master-accent-light);
 }
 
 .master-admin-portal .admin-stat-number {
   font-size: 42px;
-  font-weight: var(--font-weight-bold);
-  color: var(--master-accent-secondary);
+  font-weight: 700;
+  color: var(--master-accent-primary);
   line-height: 1;
   margin-bottom: 8px;
-  text-shadow: 0 0 30px var(--master-accent-glow);
 }
 
 .master-admin-portal .admin-stat-label {
@@ -481,20 +369,19 @@
 }
 
 /* ========================================
-   MODALS - Glassmorphism overlays
+   MODALS
    ======================================== */
 
 .master-admin-portal .modal-overlay {
   background: var(--master-bg-overlay);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(4px);
 }
 
 .master-admin-portal .modal-content {
-  background: var(--master-glass-bg);
-  backdrop-filter: var(--master-glass-blur);
-  border: 1px solid var(--master-glass-border);
-  border-radius: var(--master-radius-xl);
-  box-shadow: var(--master-shadow-xl), var(--master-shadow-glow-lg);
+  background: var(--master-bg-primary);
+  border: 1px solid var(--master-border-light);
+  border-radius: 16px;
+  box-shadow: var(--master-shadow-xl);
   color: var(--master-text-primary);
 }
 
@@ -507,7 +394,7 @@
   border-top: 1px solid var(--master-border-light);
   background: var(--master-bg-tertiary);
   padding: 16px 24px;
-  border-radius: 0 0 var(--master-radius-xl) var(--master-radius-xl);
+  border-radius: 0 0 16px 16px;
 }
 
 /* ========================================
@@ -519,9 +406,9 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: var(--master-radius-full);
+  border-radius: 9999px;
   font-size: 12px;
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
 }
 
 .master-admin-portal .status-badge.available {
@@ -550,48 +437,17 @@
   background: linear-gradient(
     90deg,
     var(--master-bg-tertiary) 0%,
-    var(--master-bg-elevated) 50%,
+    var(--master-bg-secondary) 50%,
     var(--master-bg-tertiary) 100%
   );
   background-size: 200% 100%;
   animation: skeleton-pulse 1.5s ease-in-out infinite;
-  border-radius: var(--master-radius-md);
+  border-radius: 8px;
 }
 
 @keyframes skeleton-pulse {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
-}
-
-/* ========================================
-   AI/COMMAND INTERFACE ELEMENTS
-   ======================================== */
-
-.master-admin-portal .ai-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--master-accent-subtle);
-  border: 1px solid var(--master-accent-primary);
-  border-radius: var(--master-radius-full);
-  color: var(--master-accent-secondary);
-  font-size: 13px;
-  font-weight: var(--font-weight-medium);
-}
-
-.master-admin-portal .ai-indicator::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--master-accent-primary);
-  animation: ai-pulse 2s ease-in-out infinite;
-}
-
-@keyframes ai-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
 }
 
 /* ========================================
@@ -604,13 +460,13 @@
 }
 
 .master-admin-portal ::-webkit-scrollbar-track {
-  background: var(--master-bg-secondary);
-  border-radius: var(--master-radius-full);
+  background: var(--master-bg-tertiary);
+  border-radius: 9999px;
 }
 
 .master-admin-portal ::-webkit-scrollbar-thumb {
   background: var(--master-border-medium);
-  border-radius: var(--master-radius-full);
+  border-radius: 9999px;
   transition: background 0.2s;
 }
 
@@ -619,108 +475,27 @@
 }
 
 /* ========================================
-   FOCUS STATES - Accessible
+   FOCUS STATES
    ======================================== */
 
 .master-admin-portal *:focus-visible {
   outline: 2px solid var(--master-accent-primary);
   outline-offset: 2px;
-  box-shadow: var(--master-shadow-glow);
 }
 
 /* ========================================
-   RESPONSIVE - 4K OPTIMIZATION
+   RESPONSIVE
    ======================================== */
 
-/* Desktop minimum (1280px-1919px) */
-@media (min-width: 1280px) and (max-width: 1919px) {
-  .master-admin-portal {
-    --master-card-padding: 20px;
-    --master-card-gap: 20px;
-  }
-
-  .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-
-  .master-admin-portal .admin-main {
-    max-width: 1600px;
-  }
-}
-
-/* Full HD (1920px-2559px) */
-@media (min-width: 1920px) and (max-width: 2559px) {
-  .master-admin-portal {
-    --master-card-padding: 24px;
-    --master-card-gap: 24px;
-  }
-
-  .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 24px;
-  }
-
+@media (min-width: 1920px) {
   .master-admin-portal .admin-stat-number {
     font-size: 48px;
   }
-
-  .master-admin-portal .admin-main {
-    max-width: 1800px;
-  }
 }
 
-/* 4K Optimized (2560px-3439px) */
-@media (min-width: 2560px) and (max-width: 3439px) {
-  .master-admin-portal {
-    --master-card-padding: 28px;
-    --master-card-gap: 28px;
-    --master-text-body: 16px;
-    --master-text-body-sm: 14px;
-    --master-text-h4: 20px;
-    --master-text-h3: 24px;
-  }
-
-  .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 28px;
-  }
-
+@media (min-width: 2560px) {
   .master-admin-portal .admin-stat-number {
     font-size: 56px;
-  }
-
-  .master-admin-portal .admin-main {
-    max-width: 2400px;
-  }
-
-  .master-admin-portal .admin-dashboard-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Ultra-Wide 4K (3440px+) */
-@media (min-width: 3440px) {
-  .master-admin-portal {
-    --master-card-padding: 32px;
-    --master-card-gap: 32px;
-  }
-
-  .master-admin-portal .admin-stats-grid {
-    grid-template-columns: repeat(8, 1fr);
-    gap: 32px;
-  }
-
-  .master-admin-portal .admin-stat-number {
-    font-size: 64px;
-  }
-
-  .master-admin-portal .admin-main {
-    max-width: 3200px;
-  }
-
-  .master-admin-portal .card-grid {
-    grid-template-columns: repeat(6, 1fr);
   }
 }
 
@@ -733,13 +508,4 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* ========================================
-   HIDE THEME TOGGLE IN MASTER ADMIN
-   ======================================== */
-
-.master-admin-portal .theme-toggle,
-.master-admin-portal [data-theme-toggle] {
-  display: var(--theme-toggle-display, none) !important;
 }

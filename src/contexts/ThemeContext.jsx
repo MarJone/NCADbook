@@ -3,58 +3,28 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 const ThemeContext = createContext();
 
 /**
- * Enhanced Theme Provider with Portal-Aware Theming
+ * Theme Provider - Light Mode Only
  *
- * Features:
- * - Master Admin: Permanent dark mode (cannot toggle)
- * - Other portals: Light default with dark mode toggle
- * - System preference detection
- * - Experimental mode flag for progressive rollout
- * - Smooth theme transitions
+ * All portals now use light mode exclusively.
+ * Portal-specific styling is handled via CSS custom properties
+ * on the portal containers (e.g., .master-admin-portal uses purple accents).
  */
 export function ThemeProvider({ children }) {
   // Portal type detection (will be set by portal layouts)
   const [portalType, setPortalType] = useState(null);
 
-  // Experimental mode flag
+  // Experimental mode flag for progressive rollout
   const [experimentalMode, setExperimentalMode] = useState(true);
 
-  // Theme state with smart defaults
-  const [theme, setTheme] = useState(() => {
-    // Check localStorage first
-    const savedTheme = localStorage.getItem('ncad-theme');
-    if (savedTheme) return savedTheme;
-
-    // Check system preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return prefersDark ? 'dark' : 'light';
-  });
-
-  // Master Admin is always dark - determine effective theme
-  const isThemeLocked = portalType === 'master-admin';
-  const effectiveTheme = isThemeLocked ? 'dark' : theme;
-  const canToggle = !isThemeLocked;
-
-  // Listen for system preference changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => {
-      // Only auto-switch if no saved preference and not Master Admin
-      if (!localStorage.getItem('ncad-theme') && !isThemeLocked) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [isThemeLocked]);
+  // Theme is always light
+  const theme = 'light';
 
   // Apply theme to document
   useEffect(() => {
     const root = document.documentElement;
 
-    // Set theme attribute
-    root.setAttribute('data-theme', effectiveTheme);
+    // Set theme attribute - always light
+    root.setAttribute('data-theme', 'light');
 
     // Set experimental mode attribute
     root.setAttribute('data-experimental', experimentalMode.toString());
@@ -64,44 +34,13 @@ export function ThemeProvider({ children }) {
       root.setAttribute('data-portal', portalType);
     }
 
-    // Add permanent-dark class for Master Admin
-    if (isThemeLocked) {
-      root.classList.add('permanent-dark');
-    } else {
-      root.classList.remove('permanent-dark');
-    }
+    // Remove any dark mode classes
+    root.classList.remove('permanent-dark', 'dark-mode');
+    root.classList.add('light-mode');
 
-    // Add transition class for smooth theme changes
-    root.classList.add('theme-transitioning');
-    const timeout = setTimeout(() => {
-      root.classList.remove('theme-transitioning');
-    }, 300);
-
-    // Save to localStorage (only if not Master Admin)
-    if (!isThemeLocked) {
-      localStorage.setItem('ncad-theme', theme);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [effectiveTheme, experimentalMode, portalType, isThemeLocked, theme]);
-
-  // Toggle theme function
-  const toggleTheme = useCallback(() => {
-    if (isThemeLocked) {
-      console.warn('Theme toggle is disabled for Master Admin portal');
-      return;
-    }
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  }, [isThemeLocked]);
-
-  // Set specific theme
-  const setThemeValue = useCallback((newTheme) => {
-    if (isThemeLocked && newTheme !== 'dark') {
-      console.warn('Master Admin portal can only use dark theme');
-      return;
-    }
-    setTheme(newTheme);
-  }, [isThemeLocked]);
+    // Clear any saved theme preference
+    localStorage.removeItem('ncad-theme');
+  }, [experimentalMode, portalType]);
 
   // Register portal type (called by portal layouts)
   const registerPortal = useCallback((type) => {
@@ -114,16 +53,16 @@ export function ThemeProvider({ children }) {
   }, []);
 
   const value = {
-    // Current theme state
-    theme: effectiveTheme,
-    isDark: effectiveTheme === 'dark',
-    isLight: effectiveTheme === 'light',
+    // Current theme state - always light
+    theme: 'light',
+    isDark: false,
+    isLight: true,
 
-    // Theme control
-    setTheme: setThemeValue,
-    toggleTheme,
-    canToggle,
-    isThemeLocked,
+    // Theme control - disabled (no toggle functionality)
+    setTheme: () => {},
+    toggleTheme: () => {},
+    canToggle: false,
+    isThemeLocked: true,
 
     // Portal management
     portalType,
@@ -135,7 +74,7 @@ export function ThemeProvider({ children }) {
     setExperimentalMode,
 
     // Utility
-    getThemeClass: () => effectiveTheme === 'dark' ? 'dark-mode' : 'light-mode',
+    getThemeClass: () => 'light-mode',
   };
 
   return (

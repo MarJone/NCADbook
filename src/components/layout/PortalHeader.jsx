@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Bell, User, Moon, Sun, Search, Command } from 'lucide-react';
+import { Menu, X, Bell, User, Search, Command } from 'lucide-react';
 import { MegaMenuNav } from './MegaMenuNav';
 import { useScrollHeader } from '../../hooks/useScrollReveal';
-import { useTheme } from '../../contexts/ThemeContext';
 import './PortalHeader.css';
 
 /**
  * PortalHeader - Scroll-aware header with glassmorphism
  *
  * Features:
- * - Robin-style dark-to-light transition on scroll
+ * - Scroll-aware styling
  * - Integrated mega menu navigation
- * - Theme toggle (hidden on Master Admin)
  * - Notification indicator
  * - User menu
  * - Mobile hamburger
@@ -40,9 +38,6 @@ export function PortalHeader({
 
   // Scroll behavior
   const { isScrolled, scrollY } = useScrollHeader(50);
-
-  // Theme context
-  const { theme, toggleTheme, canToggle } = useTheme();
 
   // Portal display names
   const portalNames = {
@@ -95,12 +90,10 @@ export function PortalHeader({
   }, [portalType, onSearchOpen, onCommandPaletteOpen]);
 
   // Determine header class based on portal and scroll state
-  const isMasterAdmin = portalType === 'master-admin';
   const headerClass = `
     portal-header
     ${portalType}-header
     ${isScrolled ? 'scrolled' : ''}
-    ${isMasterAdmin ? 'always-dark' : ''}
   `.trim();
 
   return (
@@ -150,17 +143,6 @@ export function PortalHeader({
               <span className="header-shortcut">
                 <kbd>⌘</kbd><kbd>K</kbd>
               </span>
-            </button>
-          )}
-
-          {/* Theme Toggle (hidden for Master Admin) */}
-          {canToggle && (
-            <button
-              className="header-action-btn"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            >
-              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
           )}
 

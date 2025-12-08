@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { useTheme, usePortalTheme } from '../../contexts/ThemeContext';
+import { usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
 import { PortalHeader } from '../../components/layout/PortalHeader';
@@ -32,7 +32,6 @@ import '../../styles/role-colors.css';
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
-  const { theme } = useTheme();
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -78,7 +77,7 @@ export default function AdminLayout() {
   return (
     <div
       className={`admin-portal ${isMasterAdmin ? 'master-admin-portal' : ''}`}
-      data-theme={isMasterAdmin ? 'dark' : theme}
+      data-theme="light"
     >
       {/* Enhanced Header with scroll-awareness */}
       <PortalHeader

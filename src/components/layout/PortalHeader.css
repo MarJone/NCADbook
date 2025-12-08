@@ -29,18 +29,6 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Master Admin - Always dark */
-.portal-header.always-dark {
-  background: rgba(10, 0, 6, 0.95);
-  backdrop-filter: var(--glass-blur-heavy);
-  -webkit-backdrop-filter: var(--glass-blur-heavy);
-  border-bottom: 1px solid rgba(233, 30, 99, 0.1);
-}
-
-.portal-header.always-dark.scrolled {
-  background: rgba(10, 0, 6, 0.98);
-  border-bottom-color: rgba(233, 30, 99, 0.2);
-}
 
 /* ========================================
    HEADER CONTAINER
@@ -425,47 +413,13 @@
   background: #FFB300;
 }
 
-/* Master Admin Portal */
-.master-admin-header {
-  color: white;
-}
-
-.master-admin-header .header-action-btn {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.master-admin-header .header-action-btn:hover {
-  color: white;
-  background: rgba(233, 30, 99, 0.2);
-}
-
-.master-admin-header .header-user-dropdown {
-  background: rgba(18, 10, 15, 0.98);
-  border-color: rgba(233, 30, 99, 0.2);
-}
-
-.master-admin-header .header-user-dropdown-name {
-  color: #FAFAFA;
-}
-
-.master-admin-header .header-user-dropdown-email {
-  color: #B0A0B0;
-}
-
-.master-admin-header .header-user-dropdown-divider {
-  background: rgba(233, 30, 99, 0.2);
-}
-
-.master-admin-header .header-user-dropdown-menu li a {
-  color: #FAFAFA;
-}
-
-.master-admin-header .header-user-dropdown-menu li a:hover {
-  background: rgba(233, 30, 99, 0.2);
-}
-
+/* Master Admin Portal - Light theme with purple accents */
 .master-admin-header .header-scroll-progress {
-  background: linear-gradient(90deg, #E91E63 0%, #FF4081 100%);
+  background: linear-gradient(90deg, #9C27B0 0%, #AB47BC 100%);
+}
+
+.master-admin-header .header-badge {
+  background: #9C27B0;
 }
 
 /* ========================================
