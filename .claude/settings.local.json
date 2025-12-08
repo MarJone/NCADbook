@@ -58,7 +58,10 @@
       "Bash(git tag:*)",
       "Bash(timeout /t 5)",
       "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT DISTINCT department FROM equipment LIMIT 10;\")",
-      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT id, email, department FROM users WHERE role = ''student'' LIMIT 5;\")"
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT id, email, department FROM users WHERE role = ''student'' LIMIT 5;\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -f \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\backend\\migrations\\007_add_policy_enforcement.sql\")",
+      "Bash(timeout /t 3)",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT tablename FROM pg_tables WHERE schemaname = ''public'' AND tablename LIKE ''policy%'';\")"
     ],
     "deny": [],
     "ask": []
