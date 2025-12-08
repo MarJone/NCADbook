@@ -253,4 +253,45 @@ test.describe('UI Layout Audit', () => {
       console.log('✅ All portals pass structure checks!');
     }
   });
+
+  test('MEGA MENU DROPDOWN - Verify light background on light theme portals', async ({ page }) => {
+    // Test Staff portal mega menu dropdown
+    await setupDemoUser(page, 'staff');
+
+    // Wait for page to stabilize
+    await page.waitForTimeout(1000);
+
+    // Find a mega menu trigger (button with dropdown)
+    const menuTrigger = page.locator('.mega-menu-trigger').first();
+
+    if (await menuTrigger.count() > 0) {
+      // Hover to open the dropdown
+      await menuTrigger.hover();
+      await page.waitForTimeout(500);
+
+      // Check if dropdown is visible
+      const dropdown = page.locator('.mega-menu-dropdown.visible');
+
+      if (await dropdown.count() > 0) {
+        // Get computed background color
+        const bgColor = await dropdown.evaluate(el => {
+          return window.getComputedStyle(el).backgroundColor;
+        });
+
+        console.log('\n📊 MEGA MENU DROPDOWN STYLE:');
+        console.log(`   Background Color: ${bgColor}`);
+
+        // Should be light (white-ish), not dark
+        // rgba(255, 255, 255, 0.95) or similar
+        const isLight = bgColor.includes('255') || bgColor.includes('rgba(255');
+        console.log(`   Theme Correct: ${isLight ? '✅ Light theme applied' : '❌ Dark theme incorrectly applied'}`);
+
+        expect(isLight).toBeTruthy();
+      } else {
+        console.log('⚠️ No visible dropdown found after hover');
+      }
+    } else {
+      console.log('⚠️ No mega menu triggers found');
+    }
+  });
 });

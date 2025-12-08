@@ -50,7 +50,7 @@ test.describe('Fines + Policies + Bookings Integration', () => {
             });
 
             // Should show total fines owed
-            await expect(page.locator('text=/€\d+/)).toBeVisible();
+            await expect(page.locator('text=/€\\d+/')).toBeVisible();
           }
         }
       }
