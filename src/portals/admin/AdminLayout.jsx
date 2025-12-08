@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme, usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
@@ -118,55 +118,6 @@ export default function AdminLayout() {
           onCommand={handleCommand}
         />
       )}
-
-      <nav className={`admin-nav ${isMasterAdmin ? 'glass-nav' : ''}`}>
-        <div className="admin-nav-container">
-          <NavLink to="/admin" end className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/admin/approvals" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-            Approvals
-          </NavLink>
-          <NavLink to="/admin/equipment" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-            Equipment
-          </NavLink>
-          <NavLink to="/admin/equipment-kits" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-            Equipment Kits
-          </NavLink>
-          {isMasterAdmin && (
-            <>
-              <NavLink to="/admin/users" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Users
-              </NavLink>
-              <NavLink to="/admin/analytics" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Analytics
-              </NavLink>
-              <NavLink to="/admin/departments" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Departments
-              </NavLink>
-              <NavLink to="/admin/csv-import" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                CSV Import
-              </NavLink>
-              <NavLink to="/admin/system-settings" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Settings
-              </NavLink>
-              <NavLink to="/admin/role-management" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Role Management
-              </NavLink>
-            </>
-          )}
-          {user?.role === 'department_admin' && (
-            <>
-              <NavLink to="/admin/cross-department-requests" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Cross-Dept Requests
-              </NavLink>
-              <NavLink to="/admin/department-staff-permissions" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-                Staff Permissions
-              </NavLink>
-            </>
-          )}
-        </div>
-      </nav>
 
       <main className="admin-main scroll-reveal-container">
         <Routes>

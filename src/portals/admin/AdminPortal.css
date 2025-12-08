@@ -17,6 +17,12 @@
   padding-bottom: 80px;
 }
 
+/* Master Admin - Force dark background */
+.admin-portal.master-admin-portal {
+  background: var(--master-bg-primary, #0A0006);
+  color: var(--master-text-primary, #FAFAFA);
+}
+
 @media (min-width: 1024px) {
   .admin-portal {
     padding-bottom: 0;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme, usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
@@ -72,18 +72,6 @@ export default function StudentLayout() {
           </div>
         </div>
       )}
-
-      <nav className="student-nav glass-nav">
-        <NavLink to="/student" end className={({ isActive }) => `student-nav-link ${isActive ? 'active' : ''}`}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/student/equipment" className={({ isActive }) => `student-nav-link ${isActive ? 'active' : ''}`}>
-          Browse Equipment
-        </NavLink>
-        <NavLink to="/student/bookings" className={({ isActive }) => `student-nav-link ${isActive ? 'active' : ''}`}>
-          My Bookings
-        </NavLink>
-      </nav>
 
       <main className="student-main scroll-reveal-container">
         <Routes>

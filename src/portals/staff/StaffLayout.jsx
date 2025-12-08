@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme, usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
@@ -62,27 +62,6 @@ export default function StaffLayout() {
           </div>
         </div>
       )}
-
-      <nav className="staff-nav glass-nav">
-        <NavLink to="/staff" end className={({ isActive }) => `staff-nav-link ${isActive ? 'active' : ''}`}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/staff/rooms" className={({ isActive }) => `staff-nav-link ${isActive ? 'active' : ''}`}>
-          Book Rooms
-        </NavLink>
-        <NavLink to="/staff/equipment" className={({ isActive }) => `staff-nav-link ${isActive ? 'active' : ''}`}>
-          Equipment
-        </NavLink>
-        <NavLink to="/staff/bookings" className={({ isActive }) => `staff-nav-link ${isActive ? 'active' : ''}`}>
-          My Bookings
-        </NavLink>
-        <NavLink to="/staff/cross-department-requests" className={({ isActive }) => `staff-nav-link ${isActive ? 'active' : ''}`}>
-          Request Equipment
-        </NavLink>
-        <NavLink to="/staff/my-cross-department-requests" className={({ isActive }) => `staff-nav-link ${isActive ? 'active' : ''}`}>
-          My Requests
-        </NavLink>
-      </nav>
 
       <main className="staff-main scroll-reveal-container">
         <Routes>
