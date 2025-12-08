@@ -138,45 +138,13 @@
 
 /* ========================================
    BUTTONS
+   Main button styles are in components-buttons.css
+   These are additional overrides for specific cases
    ======================================== */
 
-.master-admin-portal .btn-primary {
-  height: 40px;
-  padding: 0 20px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--master-accent-primary) 0%, var(--master-accent-muted) 100%);
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.master-admin-portal .btn-primary:hover {
-  background: linear-gradient(135deg, var(--master-accent-secondary) 0%, var(--master-accent-primary) 100%);
-  box-shadow: var(--master-shadow-glow);
-  transform: translateY(-1px);
-}
-
-.master-admin-portal .btn-secondary {
-  height: 40px;
-  padding: 0 20px;
-  border-radius: 8px;
-  background: var(--master-bg-primary);
-  color: var(--master-accent-primary);
-  border: 1px solid var(--master-border-medium);
-  font-size: 14px;
+/* Ensure buttons use the same sizing as Department Admin */
+.master-admin-portal .btn {
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.master-admin-portal .btn-secondary:hover {
-  background: var(--master-bg-hover);
-  border-color: var(--master-accent-primary);
 }
 
 /* ========================================

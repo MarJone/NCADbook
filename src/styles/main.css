@@ -13,6 +13,9 @@
 /* Import Micro-Interactions (Phase II-D) */
 @import './micro-interactions.css';
 
+/* Import QR Code & Barcode Components */
+@import './components-qr.css';
+
 /* Import Proxima Nova Font from Adobe Fonts (Typekit) */
 @import url('https://use.typekit.net/qpk8hon.css');
 
@@ -2282,7 +2285,7 @@ input:disabled + .slider {
    ============================================ */
 .toast {
   position: fixed;
-  top: var(--space-md);
+  top: 80px; /* Below header (64px) + spacing */
   right: var(--space-md);
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -2292,9 +2295,9 @@ input:disabled + .slider {
   align-items: center;
   justify-content: space-between;
   min-width: 300px;
-  max-width: 500px;
+  max-width: 400px;
   animation: slideIn var(--duration-normal) var(--easing-decelerate);
-  z-index: var(--z-tooltip);
+  z-index: 9999; /* Ensure toast is always on top */
 }
 
 @keyframes slideIn {

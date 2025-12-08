@@ -246,71 +246,70 @@ button:disabled {
 }
 
 /* ========================================
-   MASTER ADMIN BUTTONS - Purple Power
-   Dense sizing, instant interactions, dark mode
+   MASTER ADMIN BUTTONS - Purple Authority
+   Same sizing as Department Admin, purple color scheme
    ======================================== */
 
 .master-admin-portal .btn-primary,
 .master-admin-portal .admin-action-btn:not(.secondary) {
-  height: var(--master-button-height); /* 32px */
-  padding: var(--master-button-padding); /* 0 12px */
-  border-radius: var(--master-radius-md); /* 6px */
-  background: linear-gradient(135deg, var(--master-accent-primary) 0%, #AB47BC 100%);
+  height: var(--dept-button-height); /* 36px - same as dept admin */
+  padding: var(--dept-button-padding); /* 0 16px */
+  border-radius: var(--dept-radius-md); /* 8px */
+  background: linear-gradient(135deg, var(--master-accent-primary) 0%, #7B1FA2 100%);
   color: white;
-  font-size: 13px;
-  transition: all var(--master-transition-duration) var(--master-transition-timing);
-  box-shadow: 0 0 0 0 rgba(186, 104, 200, 0);
+  font-size: 14px;
+  transition: all var(--dept-transition-duration) var(--dept-transition-timing);
 }
 
 .master-admin-portal .btn-primary:hover,
 .master-admin-portal .admin-action-btn:not(.secondary):hover {
-  background: linear-gradient(135deg, #AB47BC 0%, #BA68C8 100%);
-  box-shadow: 0 0 0 1px rgba(186, 104, 200, 0.4);
+  filter: brightness(1.1);
 }
 
 .master-admin-portal .btn-secondary,
 .master-admin-portal .admin-action-btn.secondary {
-  height: var(--master-button-height);
-  padding: var(--master-button-padding);
-  border-radius: var(--master-radius-md);
+  height: var(--dept-button-height);
+  padding: var(--dept-button-padding);
+  border-radius: var(--dept-radius-md);
   background: transparent;
   color: var(--master-accent-primary);
-  border: 1px solid var(--master-border-medium);
-  font-size: 13px;
+  border: 2px solid var(--master-accent-primary);
+  font-size: 14px;
 }
 
 .master-admin-portal .btn-secondary:hover,
 .master-admin-portal .admin-action-btn.secondary:hover {
   background: var(--master-bg-tertiary);
   border-color: var(--master-accent-primary);
+  color: var(--master-accent-primary);
 }
 
 .master-admin-portal .btn-text {
-  height: var(--master-button-height);
-  padding: var(--master-button-padding);
+  height: var(--dept-button-height);
+  padding: var(--dept-button-padding);
   background: transparent;
   color: var(--master-accent-primary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .master-admin-portal .btn-text:hover {
   background: var(--master-bg-hover);
-  border-radius: var(--master-radius-md);
+  border-radius: var(--dept-radius-md);
 }
 
 /* Master Admin - Icon Buttons */
 .master-admin-portal .btn-icon {
-  width: var(--master-button-height);
-  height: var(--master-button-height);
+  width: var(--dept-button-height);
+  height: var(--dept-button-height);
   padding: 0;
-  border-radius: var(--master-radius-md);
+  border-radius: var(--dept-radius-md);
   background: var(--master-bg-tertiary);
   color: var(--master-text-secondary);
 }
 
 .master-admin-portal .btn-icon:hover {
-  background: var(--master-bg-hover);
-  color: var(--master-accent-secondary);
+  background: var(--master-accent-primary);
+  color: white;
 }
 
 /* ========================================
@@ -349,7 +348,7 @@ button:disabled {
 }
 
 .master-admin-portal .btn-sm {
-  height: 28px;
+  height: 32px; /* Match dept admin sizing */
 }
 
 /* Large buttons */
@@ -371,7 +370,7 @@ button:disabled {
 }
 
 .master-admin-portal .btn-lg {
-  height: 40px;
+  height: 44px; /* Match dept admin sizing */
 }
 
 /* ========================================

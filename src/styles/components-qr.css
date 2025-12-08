@@ -1,0 +1,471 @@
+/* ============================================
+   QR CODE COMPONENTS STYLES
+   Styles for QRGenerator, QRScanner, and EquipmentLabel
+   ============================================ */
+
+/* ----------------------------------------
+   QR Generator
+   ---------------------------------------- */
+.qr-generator {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.qr-generator svg {
+  display: block;
+}
+
+.qr-generator__actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+/* ----------------------------------------
+   QR Scanner
+   ---------------------------------------- */
+.qr-scanner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.qr-scanner__modes {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.qr-scanner__mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qr-scanner__mode-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary-400);
+  color: var(--color-text-primary);
+}
+
+.qr-scanner__mode-btn--active {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-700);
+}
+
+.qr-scanner__mode-btn svg {
+  flex-shrink: 0;
+}
+
+/* Camera Scanner */
+.qr-scanner__camera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.qr-scanner__viewport {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+  background: var(--color-neutral-900);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+#qr-scanner-region video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#qr-scanner-region__scan_region {
+  border: 3px solid var(--color-primary-500) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+/* Manual Entry */
+.qr-scanner__manual {
+  width: 100%;
+}
+
+.qr-scanner__input-wrapper {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.qr-scanner__input {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qr-scanner__input:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.qr-scanner__input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.qr-scanner__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm);
+  background: var(--color-primary-600);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.qr-scanner__submit:hover:not(:disabled) {
+  background: var(--color-primary-700);
+}
+
+.qr-scanner__submit:disabled {
+  background: var(--color-neutral-300);
+  cursor: not-allowed;
+}
+
+.qr-scanner__hint {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+/* Error Display */
+.qr-scanner__error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-error-50);
+  border: 1px solid var(--color-error-200);
+  border-radius: var(--radius-md);
+  color: var(--color-error-700);
+  font-size: var(--font-size-sm);
+}
+
+.qr-scanner__error svg {
+  flex-shrink: 0;
+  color: var(--color-error-500);
+}
+
+/* Last Scanned Display */
+.qr-scanner__last-scanned {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-success-50);
+  border: 1px solid var(--color-success-200);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+}
+
+.qr-scanner__last-scanned-label {
+  color: var(--color-text-secondary);
+}
+
+.qr-scanner__last-scanned-id {
+  font-weight: 600;
+  color: var(--color-success-700);
+  font-family: var(--font-mono);
+}
+
+.qr-scanner__last-scanned-source {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+/* ----------------------------------------
+   Equipment Label (Screen Preview)
+   ---------------------------------------- */
+.equipment-label {
+  width: 320px;
+  padding: var(--spacing-md);
+  background: white;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-md);
+}
+
+.equipment-label--bordered {
+  border: 2px dashed var(--color-border);
+}
+
+.equipment-label--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--color-text-tertiary);
+}
+
+.equipment-label__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-neutral-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.equipment-label__logo {
+  height: 24px;
+  width: auto;
+}
+
+.equipment-label__title {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-neutral-600);
+  letter-spacing: 0.5px;
+}
+
+.equipment-label__content {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.equipment-label__qr {
+  flex-shrink: 0;
+}
+
+.equipment-label__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.equipment-label__name {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-neutral-900);
+  margin: 0 0 var(--spacing-xs) 0;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-label__category {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.equipment-label__category-icon {
+  font-size: var(--font-size-base);
+}
+
+.equipment-label__category-text {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-neutral-500);
+  letter-spacing: 0.5px;
+}
+
+.equipment-label__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.equipment-label__detail {
+  display: flex;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.equipment-label__detail-label {
+  font-weight: 600;
+  color: var(--color-neutral-500);
+}
+
+.equipment-label__detail-value {
+  color: var(--color-neutral-700);
+  font-family: var(--font-mono);
+}
+
+.equipment-label__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-neutral-200);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-400);
+}
+
+.equipment-label__separator {
+  color: var(--color-neutral-300);
+}
+
+/* Compact Variant */
+.equipment-label--compact {
+  width: 240px;
+  padding: var(--spacing-sm);
+}
+
+.equipment-label--compact .equipment-label__name {
+  font-size: var(--font-size-base);
+}
+
+.equipment-label--compact .equipment-label__footer {
+  font-size: 10px;
+}
+
+/* Large Variant */
+.equipment-label--large {
+  width: 400px;
+  padding: var(--spacing-lg);
+}
+
+.equipment-label--large .equipment-label__name {
+  font-size: var(--font-size-xl);
+}
+
+/* ----------------------------------------
+   Label Print Preview Grid
+   ---------------------------------------- */
+.label-print-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+}
+
+.label-print-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* ----------------------------------------
+   Progress Bar (for AI operations)
+   ---------------------------------------- */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--color-neutral-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: var(--color-primary-500);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.progress-bar__fill--indeterminate {
+  width: 30%;
+  animation: progress-indeterminate 1.5s infinite linear;
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.progress-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.progress-bar__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.progress-bar__stage {
+  font-weight: 500;
+}
+
+.progress-bar__percentage {
+  font-family: var(--font-mono);
+}
+
+/* ----------------------------------------
+   Responsive Adjustments
+   ---------------------------------------- */
+@media (max-width: 768px) {
+  .qr-scanner__modes {
+    flex-direction: column;
+  }
+
+  .qr-scanner__mode-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .equipment-label {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .label-print-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------------------------------
+   Print Styles
+   ---------------------------------------- */
+@media print {
+  .equipment-label {
+    box-shadow: none;
+    border: 1px dashed #ccc;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .qr-scanner,
+  .label-print-actions {
+    display: none;
+  }
+}

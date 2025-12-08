@@ -52,11 +52,31 @@
 - [ ] Booking templates for common equipment sets
 
 ### 2.2 Equipment Management
-- [ ] Equipment condition tracking
+- [>] Equipment condition tracking (verification system in progress)
 - [ ] Maintenance scheduling
-- [ ] QR code generation for equipment
+- [x] QR code generation for equipment
 - [ ] Equipment usage analytics
 - [ ] Low stock alerts
+
+### 2.3 Barcode/QR Verification System (NEW)
+- [x] Database schema for accessories and verifications
+- [x] QR code generator component
+- [x] QR/Barcode scanner component (camera + USB)
+- [x] Printable equipment label component
+- [ ] Equipment accessory manager
+- [ ] Checkout verification workflow
+- [ ] Return verification with condition assessment
+- [ ] Batch label printing
+
+### 2.4 Local LLM Integration (NEW - Master Admin Only)
+- [x] Ollama service backend
+- [x] AI controller and routes
+- [ ] Natural language database queries (Text-to-SQL)
+- [ ] Visual condition assessment
+- [ ] AI chat assistant enhancement
+- [ ] Booking justification analyzer
+- [ ] Email draft assistant
+- [ ] AI settings page
 
 ### 2.3 User Management
 - [ ] Bulk user operations
@@ -136,13 +156,15 @@
 | Category | Total | Completed | In Progress | Pending |
 |----------|-------|-----------|-------------|---------|
 | UI/UX | 18 | 12 | 0 | 6 |
-| Core Functionality | 15 | 0 | 0 | 15 |
+| Core Functionality | 15 | 1 | 1 | 13 |
+| Barcode/QR System | 8 | 4 | 0 | 4 |
+| Local LLM Integration | 8 | 2 | 0 | 6 |
 | Admin Features | 12 | 5 | 0 | 7 |
 | Testing | 9 | 4 | 0 | 5 |
 | Docs/DevOps | 10 | 0 | 0 | 10 |
-| **TOTAL** | **64** | **21** | **0** | **43** |
+| **TOTAL** | **80** | **28** | **1** | **51** |
 
-**Overall Progress: 33%**
+**Overall Progress: 36%**
 
 ---
 
