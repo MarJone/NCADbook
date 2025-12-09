@@ -23,10 +23,15 @@
 5. Documentation and DevOps improvements
 
 ### In Progress
-- [>] Local LLM Integration for Master Admin (4/8 complete)
-- [>] Natural language query UI and condition assessment UI
+- [>] Local LLM Integration for Master Admin (6/8 complete)
 
-### Recently Completed (Session 4 - 2025-12-09)
+### Recently Completed (Session 5 - 2025-12-09)
+- [x] Natural Language Query UI (NaturalLanguageQuery.jsx)
+- [x] Visual Condition Assessment UI (ConditionAssessment.jsx)
+- [x] AI Features added to CommandPalette (Cmd+K)
+- [x] ~700 lines of new code across 4 files
+
+### Completed (Session 4 - 2025-12-09)
 - [x] Code splitting (React.lazy portal loading + Vite manual chunks)
 - [x] AI Chat Assistant backend integration with demo mode fallback
 - [x] Weekend auto-inclusion for Friday bookings (useDateSelector hook)
@@ -115,7 +120,7 @@
 - [x] Equipment usage analytics
 - [x] Excel export
 - [x] AI Settings page
-- [>] Local LLM AI features (chat done, 4 features remaining)
+- [x] Local LLM AI features (chat, NLQ, condition assessment)
 - [x] Booking enhancements (weekend selection, conflict viz, extensions)
 - [ ] Additional booking features (multi-item cart, templates)
 - [ ] Advanced analytics (heatmaps, department charts)

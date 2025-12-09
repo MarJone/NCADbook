@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Search, X, Settings, Users, Package, Calendar, FileText, Shield, BarChart3, AlertTriangle, Download, Upload, Moon, Sun, Zap } from 'lucide-react';
+import { Search, X, Settings, Users, Package, Calendar, FileText, Shield, BarChart3, AlertTriangle, Download, Upload, Moon, Sun, Zap, Sparkles, Camera, MessageSquare } from 'lucide-react';
 import '../../styles/experimental/ai-interface.css';
 
 /**
@@ -56,6 +56,11 @@ export function CommandPalette({
 
     // Theme
     { id: 'theme-toggle', name: 'Toggle Theme', description: 'Switch light/dark mode', icon: Moon, category: 'Preferences', shortcut: ['T'] },
+
+    // AI Features
+    { id: 'ai-query', name: 'Natural Language Query', description: 'Ask questions about your data', icon: MessageSquare, category: 'AI Features', shortcut: ['A', 'Q'] },
+    { id: 'ai-condition', name: 'Condition Assessment', description: 'AI-powered equipment condition check', icon: Camera, category: 'AI Features', shortcut: ['A', 'C'] },
+    { id: 'ai-settings', name: 'AI Settings', description: 'Configure Ollama and AI features', icon: Sparkles, category: 'AI Features' },
   ], []);
 
   // Combine default and custom commands

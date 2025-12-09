@@ -33,7 +33,11 @@ import CheckoutVerification from './CheckoutVerification';
 import ReturnVerification from './ReturnVerification';
 import AccessoryManager from './AccessoryManager';
 import BatchLabelPrinting from './BatchLabelPrinting';
+import ConditionAssessment from './ConditionAssessment';
+import NaturalLanguageQuery from '../master-admin/NaturalLanguageQuery';
 import './AdminPortal.css';
+import './ConditionAssessment.css';
+import '../master-admin/NaturalLanguageQuery.css';
 import './CheckoutVerification.css';
 import './ReturnVerification.css';
 import './AccessoryManager.css';
@@ -77,6 +81,9 @@ export default function AdminLayout() {
       'action-import-csv': '/admin/csv-import',
       'admin-policies': '/admin/system-settings',
       'admin-settings': '/admin/system-settings',
+      'ai-query': '/admin/nlq',
+      'ai-condition': '/admin/condition-assessment',
+      'ai-settings': '/admin/ai-settings',
     };
 
     if (navCommands[command.id]) {
@@ -158,6 +165,10 @@ export default function AdminLayout() {
           <Route path="return" element={<ReturnVerification />} />
           <Route path="accessories" element={<AccessoryManager />} />
           <Route path="labels" element={<BatchLabelPrinting />} />
+          <Route path="condition-assessment" element={<ConditionAssessment />} />
+          {isMasterAdmin && (
+            <Route path="nlq" element={<NaturalLanguageQuery />} />
+          )}
         </Routes>
       </main>
 

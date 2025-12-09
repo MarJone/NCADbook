@@ -72,8 +72,8 @@
 ### 2.4 Local LLM Integration (NEW - Master Admin Only)
 - [x] Ollama service backend
 - [x] AI controller and routes
-- [ ] Natural language database queries (Text-to-SQL)
-- [ ] Visual condition assessment UI
+- [x] Natural language database queries (Text-to-SQL)
+- [x] Visual condition assessment UI
 - [x] AI chat assistant enhancement
 - [ ] Booking justification analyzer
 - [ ] Email draft assistant
@@ -159,13 +159,13 @@
 | UI/UX | 18 | 15 | 0 | 3 |
 | Core Functionality | 16 | 6 | 0 | 10 |
 | Barcode/QR System | 8 | 8 | 0 | 0 |
-| Local LLM Integration | 8 | 4 | 0 | 4 |
+| Local LLM Integration | 8 | 6 | 0 | 2 |
 | Admin Features | 12 | 6 | 0 | 6 |
 | Testing | 9 | 6 | 0 | 3 |
 | Docs/DevOps | 10 | 0 | 0 | 10 |
-| **TOTAL** | **81** | **45** | **0** | **36** |
+| **TOTAL** | **81** | **47** | **0** | **34** |
 
-**Overall Progress: 57%**
+**Overall Progress: 58%**
 
 ---
 
