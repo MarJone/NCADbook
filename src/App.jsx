@@ -1,19 +1,34 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import StudentLayout from './portals/student/StudentLayout';
-import StaffLayout from './portals/staff/StaffLayout';
-import AdminLayout from './portals/admin/AdminLayout';
 import Login from './components/common/Login';
-import ViewOnlyStaffDemo from './portals/demo/ViewOnlyStaffDemo';
-import AccountsOfficerDemo from './portals/demo/AccountsOfficerDemo';
-import PayrollCoordinatorDemo from './portals/demo/PayrollCoordinatorDemo';
-import ITSupportDemo from './portals/demo/ITSupportDemo';
-import BudgetManagerDemo from './portals/demo/BudgetManagerDemo';
 import './styles/theme.css';
 import './styles/mobile-touch-targets.css';
 import './styles/smooth-animations.css';
+
+// Lazy-loaded portal layouts for code splitting
+const StudentLayout = lazy(() => import('./portals/student/StudentLayout'));
+const StaffLayout = lazy(() => import('./portals/staff/StaffLayout'));
+const AdminLayout = lazy(() => import('./portals/admin/AdminLayout'));
+
+// Lazy-loaded demo portals (public routes)
+const ViewOnlyStaffDemo = lazy(() => import('./portals/demo/ViewOnlyStaffDemo'));
+const AccountsOfficerDemo = lazy(() => import('./portals/demo/AccountsOfficerDemo'));
+const PayrollCoordinatorDemo = lazy(() => import('./portals/demo/PayrollCoordinatorDemo'));
+const ITSupportDemo = lazy(() => import('./portals/demo/ITSupportDemo'));
+const BudgetManagerDemo = lazy(() => import('./portals/demo/BudgetManagerDemo'));
+
+// Portal loading fallback component
+function PortalLoadingFallback() {
+  return (
+    <div className="loading-container">
+      <div className="loading-spinner"></div>
+      <p>Loading portal...</p>
+    </div>
+  );
+}
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user } = useAuth();
@@ -47,37 +62,39 @@ function AppContent() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={!user ? <Login /> : <Navigate to={
-        user.role === 'master_admin' || user.role === 'department_admin' ? '/admin' :
-        user.role === 'staff' ? '/staff' : '/student'
-      } />} />
+    <Suspense fallback={<PortalLoadingFallback />}>
+      <Routes>
+        <Route path="/" element={!user ? <Login /> : <Navigate to={
+          user.role === 'master_admin' || user.role === 'department_admin' ? '/admin' :
+          user.role === 'staff' ? '/staff' : '/student'
+        } />} />
 
-      <Route path="/student/*" element={
-        <ProtectedRoute allowedRoles={['student', 'staff', 'department_admin', 'master_admin']}>
-          <StudentLayout />
-        </ProtectedRoute>
-      } />
+        <Route path="/student/*" element={
+          <ProtectedRoute allowedRoles={['student', 'staff', 'department_admin', 'master_admin']}>
+            <StudentLayout />
+          </ProtectedRoute>
+        } />
 
-      <Route path="/staff/*" element={
-        <ProtectedRoute allowedRoles={['staff', 'department_admin', 'master_admin']}>
-          <StaffLayout />
-        </ProtectedRoute>
-      } />
+        <Route path="/staff/*" element={
+          <ProtectedRoute allowedRoles={['staff', 'department_admin', 'master_admin']}>
+            <StaffLayout />
+          </ProtectedRoute>
+        } />
 
-      <Route path="/admin/*" element={
-        <ProtectedRoute allowedRoles={['department_admin', 'master_admin']}>
-          <AdminLayout />
-        </ProtectedRoute>
-      } />
+        <Route path="/admin/*" element={
+          <ProtectedRoute allowedRoles={['department_admin', 'master_admin']}>
+            <AdminLayout />
+          </ProtectedRoute>
+        } />
 
-      {/* Demo Portal Routes - PUBLIC (no login required) */}
-      <Route path="/demo/view_only_staff" element={<ViewOnlyStaffDemo />} />
-      <Route path="/demo/accounts_officer" element={<AccountsOfficerDemo />} />
-      <Route path="/demo/payroll_coordinator" element={<PayrollCoordinatorDemo />} />
-      <Route path="/demo/it_support_technician" element={<ITSupportDemo />} />
-      <Route path="/demo/budget_manager" element={<BudgetManagerDemo />} />
-    </Routes>
+        {/* Demo Portal Routes - PUBLIC (no login required) */}
+        <Route path="/demo/view_only_staff" element={<ViewOnlyStaffDemo />} />
+        <Route path="/demo/accounts_officer" element={<AccountsOfficerDemo />} />
+        <Route path="/demo/payroll_coordinator" element={<PayrollCoordinatorDemo />} />
+        <Route path="/demo/it_support_technician" element={<ITSupportDemo />} />
+        <Route path="/demo/budget_manager" element={<BudgetManagerDemo />} />
+      </Routes>
+    </Suspense>
   );
 }
 

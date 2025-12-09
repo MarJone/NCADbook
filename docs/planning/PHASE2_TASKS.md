@@ -46,8 +46,9 @@
 
 ### 2.1 Booking System
 - [ ] Multi-item booking cart
-- [ ] Weekend auto-selection for Friday bookings
-- [ ] Booking conflict visualization
+- [x] Weekend auto-selection for Friday bookings
+- [x] Booking conflict visualization (with alternative suggestions)
+- [x] Booking extension/renewal system
 - [ ] Recurring booking support
 - [ ] Booking templates for common equipment sets
 
@@ -72,8 +73,8 @@
 - [x] Ollama service backend
 - [x] AI controller and routes
 - [ ] Natural language database queries (Text-to-SQL)
-- [ ] Visual condition assessment
-- [ ] AI chat assistant enhancement
+- [ ] Visual condition assessment UI
+- [x] AI chat assistant enhancement
 - [ ] Booking justification analyzer
 - [ ] Email draft assistant
 - [x] AI settings page
@@ -126,8 +127,8 @@
 
 ### 4.2 Performance Optimization
 - [ ] Image lazy loading optimization
-- [ ] Bundle size reduction
-- [ ] Code splitting by route
+- [x] Bundle size reduction (via lazy loading)
+- [x] Code splitting by route (portal-based lazy loading)
 - [ ] Service worker for offline support
 - [ ] Database query optimization
 
@@ -156,15 +157,15 @@
 | Category | Total | Completed | In Progress | Pending |
 |----------|-------|-----------|-------------|---------|
 | UI/UX | 18 | 15 | 0 | 3 |
-| Core Functionality | 15 | 3 | 0 | 12 |
+| Core Functionality | 16 | 6 | 0 | 10 |
 | Barcode/QR System | 8 | 8 | 0 | 0 |
-| Local LLM Integration | 8 | 3 | 0 | 5 |
+| Local LLM Integration | 8 | 4 | 0 | 4 |
 | Admin Features | 12 | 6 | 0 | 6 |
-| Testing | 9 | 4 | 0 | 5 |
+| Testing | 9 | 6 | 0 | 3 |
 | Docs/DevOps | 10 | 0 | 0 | 10 |
-| **TOTAL** | **80** | **39** | **0** | **41** |
+| **TOTAL** | **81** | **45** | **0** | **36** |
 
-**Overall Progress: 49%**
+**Overall Progress: 57%**
 
 ---
 

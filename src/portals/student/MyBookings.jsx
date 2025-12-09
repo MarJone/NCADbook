@@ -5,6 +5,7 @@ import { bookingService } from '../../services/booking.service';
 import { exportService } from '../../services/export.service';
 import Toast from '../../components/common/Toast';
 import BookingModal from '../../components/booking/BookingModal';
+import RenewalModal from '../../components/booking/RenewalModal';
 import PullToRefresh from '../../components/common/PullToRefresh';
 import { useToast } from '../../hooks/useToast';
 
@@ -13,7 +14,9 @@ export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showRebookModal, setShowRebookModal] = useState(false);
+  const [showExtendModal, setShowExtendModal] = useState(false);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [selectedBooking, setSelectedBooking] = useState(null);
   const { toasts, showToast, removeToast } = useToast();
 
   // Check permissions (for staff only)
@@ -93,6 +96,30 @@ export default function MyBookings() {
   const handleRebook = (booking) => {
     setSelectedEquipment(booking.equipment);
     setShowRebookModal(true);
+  };
+
+  const handleExtend = (booking) => {
+    setSelectedBooking(booking);
+    setShowExtendModal(true);
+  };
+
+  const handleExtendSuccess = (updatedBooking) => {
+    showToast('Extension requested successfully!', 'success');
+    setShowExtendModal(false);
+    setSelectedBooking(null);
+    loadBookings();
+  };
+
+  // Check if booking can be extended
+  const canExtendBooking = (booking) => {
+    const eligibleStatuses = ['approved', 'checked_out'];
+    if (!eligibleStatuses.includes(booking.status)) return false;
+
+    // Check if return date is in the future
+    const endDate = new Date(booking.end_date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return endDate >= today;
   };
 
   const handleRebookSuccess = () => {
@@ -242,6 +269,16 @@ export default function MyBookings() {
                   Cannot cancel (no permission)
                 </span>
               )}
+              {canExtendBooking(booking) && (
+                <button
+                  onClick={() => handleExtend(booking)}
+                  className="btn btn-secondary btn-sm"
+                  data-testid="extend-booking-btn"
+                  style={{ marginRight: '8px' }}
+                >
+                  Extend
+                </button>
+              )}
               {(booking.status === 'completed' || booking.status === 'denied') && booking.equipment && (
                 <button
                   onClick={() => handleRebook(booking)}
@@ -265,6 +302,17 @@ export default function MyBookings() {
             setSelectedEquipment(null);
           }}
           onSuccess={handleRebookSuccess}
+        />
+      )}
+
+      {showExtendModal && selectedBooking && (
+        <RenewalModal
+          booking={selectedBooking}
+          onClose={() => {
+            setShowExtendModal(false);
+            setSelectedBooking(null);
+          }}
+          onSuccess={handleExtendSuccess}
         />
       )}
 

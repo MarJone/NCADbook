@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { bookingService } from '../../services/booking.service';
 import { useAuth } from '../../hooks/useAuth';
 import { emailService } from '../../services/email.service';
+import { useDateSelector } from '../../hooks/useDateSelector';
 import BookingConflictCalendar from './BookingConflictCalendar';
 import MobileCalendar from './MobileCalendar';
+import AlternativeDateSuggestions from './AlternativeDateSuggestions';
 
 export default function BookingModal({ equipment, onClose, onSuccess }) {
   const { user } = useAuth();
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
   const [startDateObj, setStartDateObj] = useState(null);
   const [endDateObj, setEndDateObj] = useState(null);
   const [purpose, setPurpose] = useState('');
@@ -16,6 +16,48 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [useMobileCalendar, setUseMobileCalendar] = useState(window.innerWidth <= 768);
+  const [hasConflict, setHasConflict] = useState(false);
+  const [checkingConflict, setCheckingConflict] = useState(false);
+
+  // Use date selector hook with weekend auto-inclusion
+  const {
+    startDate,
+    endDate,
+    weekendIncluded,
+    durationInfo,
+    handleStartDateChange,
+    handleEndDateChange,
+    removeWeekendExtension,
+    setDates,
+  } = useDateSelector({ autoIncludeWeekend: true, maxDays: 14 });
+
+  // Check for conflicts when dates change
+  useEffect(() => {
+    if (startDate && endDate && equipment?.id) {
+      checkForConflicts();
+    } else {
+      setHasConflict(false);
+    }
+  }, [startDate, endDate, equipment?.id]);
+
+  const checkForConflicts = async () => {
+    setCheckingConflict(true);
+    try {
+      const conflicts = await bookingService.checkConflicts(equipment.id, startDate, endDate);
+      setHasConflict(conflicts.length > 0);
+    } catch (error) {
+      console.error('Error checking conflicts:', error);
+      setHasConflict(false);
+    } finally {
+      setCheckingConflict(false);
+    }
+  };
+
+  // Handle alternative date selection
+  const handleSelectAlternative = (newStartDate, newEndDate) => {
+    setDates(newStartDate, newEndDate);
+    setHasConflict(false); // Clear conflict since we're using a suggested date
+  };
 
   // Check if user has permission to create bookings (for staff only)
   const canCreateBooking = () => {
@@ -97,13 +139,13 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
   // Handle mobile calendar date changes
   const handleMobileStartDateChange = (date) => {
     setStartDateObj(date);
-    setStartDate(formatDateForInput(date));
+    handleStartDateChange(formatDateForInput(date));
   };
 
   const handleMobileEndDateChange = (date) => {
     setEndDateObj(date);
     if (date) {
-      setEndDate(formatDateForInput(date));
+      handleEndDateChange(formatDateForInput(date));
     }
   };
 
@@ -113,6 +155,16 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  };
+
+  // Format end date display to show weekend inclusion
+  const getEndDateDisplay = () => {
+    if (!endDate) return '';
+    if (weekendIncluded) {
+      const d = new Date(endDate);
+      return d.toLocaleDateString('en-IE', { weekday: 'long', month: 'short', day: 'numeric' });
+    }
+    return '';
   };
 
   // Check if user has permission
@@ -206,7 +258,7 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
                     name="startDate"
                     type="date"
                     value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
+                    onChange={(e) => handleStartDateChange(e.target.value)}
                     min={today}
                     required
                     data-testid="start-date-input"
@@ -222,16 +274,81 @@ export default function BookingModal({ equipment, onClose, onSuccess }) {
                     name="endDate"
                     type="date"
                     value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
+                    onChange={(e) => handleEndDateChange(e.target.value)}
                     min={startDate || today}
                     required
                     data-testid="end-date-input"
                     className={fieldErrors.endDate ? 'error' : ''}
                   />
                   {fieldErrors.endDate && <div className="field-error" role="alert">{fieldErrors.endDate}</div>}
+
+                  {/* Weekend auto-inclusion notice */}
+                  {weekendIncluded && (
+                    <div className="weekend-notice" style={{
+                      marginTop: '8px',
+                      padding: '8px 12px',
+                      backgroundColor: 'var(--theme-info-bg, #e3f2fd)',
+                      borderRadius: '6px',
+                      fontSize: '13px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '8px',
+                    }}>
+                      <span>
+                        <strong>Weekend included:</strong> Return extended to {getEndDateDisplay()}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={removeWeekendExtension}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: 'var(--theme-text-secondary)',
+                          cursor: 'pointer',
+                          fontSize: '12px',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
                 </div>
+
+                {/* Duration summary */}
+                {startDate && endDate && (
+                  <div className="duration-summary" style={{
+                    padding: '8px 12px',
+                    backgroundColor: 'var(--theme-bg-secondary, #f5f5f5)',
+                    borderRadius: '6px',
+                    fontSize: '13px',
+                    marginBottom: '16px',
+                  }}>
+                    <strong>Loan duration:</strong> {durationInfo.message}
+                    {checkingConflict && (
+                      <span style={{ marginLeft: '8px', color: 'var(--theme-text-secondary)' }}>
+                        Checking availability...
+                      </span>
+                    )}
+                    {durationInfo.isOverLimit && (
+                      <div className="field-error" role="alert" style={{ marginTop: '4px' }}>
+                        Maximum booking duration is 14 days
+                      </div>
+                    )}
+                  </div>
+                )}
               </>
             )}
+
+            {/* Alternative date suggestions when there's a conflict */}
+            <AlternativeDateSuggestions
+              equipmentId={equipment.id}
+              startDate={startDate}
+              endDate={endDate}
+              hasConflict={hasConflict}
+              onSelectAlternative={handleSelectAlternative}
+            />
 
             <div className="form-group">
               <label htmlFor="purpose">

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { MessageCircle, X, Send, Sparkles, HelpCircle, Calendar, Package, AlertCircle } from 'lucide-react';
+import { sendChatMessage } from '../../services/ai.service.js';
 import '../../styles/experimental/ai-interface.css';
 
 /**
@@ -252,13 +253,14 @@ export function AIAssistant({
 
 /**
  * useAIAssistant - Hook to manage AI assistant state
+ * Integrates with Ollama backend for real AI responses
  */
 export function useAIAssistant() {
   const [messages, setMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const sendMessage = useCallback(async (content, onResponse) => {
+  const sendMessage = useCallback(async (content) => {
     // Add user message
     const userMessage = {
       id: Date.now(),
@@ -270,48 +272,24 @@ export function useAIAssistant() {
     setMessages(prev => [...prev, userMessage]);
     setIsThinking(true);
 
-    // Simulate AI response (replace with actual AI call)
     try {
-      // If onResponse callback provided, use it
-      if (onResponse) {
-        const response = await onResponse(content);
-        const assistantMessage = {
-          id: Date.now() + 1,
-          type: 'assistant',
-          content: response,
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-      } else {
-        // Default simulated response
-        await new Promise(resolve => setTimeout(resolve, 1500));
+      // Get conversation history for context (last 10 messages)
+      const history = messages.slice(-10);
 
-        const responses = {
-          'how do i book': "To book equipment, browse our catalog and click on any item you're interested in. Select your pickup and return dates, add any required justification, and submit your booking request. You'll receive a confirmation once approved!",
-          'check availability': "I can help you check equipment availability! Tell me what type of equipment you're looking for and when you need it, and I'll show you what's available.",
-          'recommend equipment': "I'd be happy to recommend equipment! What kind of project are you working on? For example, are you doing photography, video production, audio recording, or something else?",
-          'report an issue': "I'm sorry to hear you're having an issue. Please describe the problem and I'll help you report it to the appropriate admin. Include the equipment name if applicable.",
-        };
+      // Call the AI service
+      const result = await sendChatMessage(content, history);
 
-        const lowerContent = content.toLowerCase();
-        let response = "I understand you're asking about something. Let me help you with that. Could you provide more details about what you need?";
+      const assistantMessage = {
+        id: Date.now() + 1,
+        type: 'assistant',
+        content: result.message,
+        timestamp: new Date(),
+        source: result.source, // 'ollama', 'demo', or 'fallback'
+      };
 
-        for (const [key, value] of Object.entries(responses)) {
-          if (lowerContent.includes(key)) {
-            response = value;
-            break;
-          }
-        }
-
-        const assistantMessage = {
-          id: Date.now() + 1,
-          type: 'assistant',
-          content: response,
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-      }
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
+      console.error('[AIAssistant] Error:', error);
       const errorMessage = {
         id: Date.now() + 1,
         type: 'assistant',
@@ -322,7 +300,7 @@ export function useAIAssistant() {
     } finally {
       setIsThinking(false);
     }
-  }, []);
+  }, [messages]);
 
   const clearMessages = useCallback(() => {
     setMessages([]);

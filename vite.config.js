@@ -20,5 +20,17 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor libraries
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-pdf': ['jspdf', 'jspdf-autotable'],
+          // QR code libraries (only loaded when needed)
+          'vendor-qr': ['html5-qrcode', 'qrcode.react'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Increase threshold for warning
   },
 });

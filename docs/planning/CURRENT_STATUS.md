@@ -5,8 +5,8 @@
 | Metric | Value |
 |--------|-------|
 | **Current Phase** | Phase 2 - Feature Expansion |
-| **Overall Progress** | 49% |
-| **Last Session** | 2025-12-09 (Session 3) |
+| **Overall Progress** | 57% |
+| **Last Session** | 2025-12-09 (Session 4) |
 | **Active Branch** | master |
 | **Build Status** | Passing |
 | **Tests Passing** | 11/11 |
@@ -23,10 +23,18 @@
 5. Documentation and DevOps improvements
 
 ### In Progress
-- [>] Local LLM Integration for Master Admin (3/8 complete)
-- [>] Dark mode toggle integration into PortalHeader
+- [>] Local LLM Integration for Master Admin (4/8 complete)
+- [>] Natural language query UI and condition assessment UI
 
-### Recently Completed (Session 3 - 2025-12-09)
+### Recently Completed (Session 4 - 2025-12-09)
+- [x] Code splitting (React.lazy portal loading + Vite manual chunks)
+- [x] AI Chat Assistant backend integration with demo mode fallback
+- [x] Weekend auto-inclusion for Friday bookings (useDateSelector hook)
+- [x] Alternative date suggestions when booking conflicts occur
+- [x] Booking extension/renewal system with conflict checking
+- [x] ~900 lines of new code across 4 new files
+
+### Completed (Session 3 - 2025-12-09)
 - [x] Batch Label Printing (BatchLabelPrinting.jsx)
 - [x] Dark Mode Toggle system with localStorage persistence
 - [x] AI Settings page for Ollama configuration
@@ -94,7 +102,7 @@
 - [x] Fine management system
 - [x] Policy enforcement system
 
-### Phase 2 - Feature Expansion (IN PROGRESS - 49%)
+### Phase 2 - Feature Expansion (IN PROGRESS - 57%)
 - [x] Experimental UI components (Card3D, GlassPanel, ScrollReveal)
 - [x] AI components (SmartSearch, CommandPalette, AIAssistant)
 - [x] MegaMenuNav and PortalHeader
@@ -107,8 +115,9 @@
 - [x] Equipment usage analytics
 - [x] Excel export
 - [x] AI Settings page
-- [>] Local LLM AI features (settings done, 5 features remaining)
-- [ ] Booking enhancements (cart, weekend selection, templates)
+- [>] Local LLM AI features (chat done, 4 features remaining)
+- [x] Booking enhancements (weekend selection, conflict viz, extensions)
+- [ ] Additional booking features (multi-item cart, templates)
 - [ ] Advanced analytics (heatmaps, department charts)
 
 ### Phase 3 - Polish & Deployment (PLANNED)
@@ -131,16 +140,27 @@ Playwright tests ✅ 11/11 passing
 ### Bundle Sizes
 - CSS: 396KB (gzip: 60KB)
 - JS: 1,808KB (includes xlsx library)
-- Note: Chunk size warning - consider code splitting
+- Code splitting implemented: React.lazy for portals + vendor chunks (react, pdf, qr)
 
-### Key Files Created This Session
+### Key Files Created Session 4
+- `src/services/ai.service.js` - AI chat service with Ollama + demo mode
+- `src/hooks/useDateSelector.js` - Date selection with weekend auto-inclusion
+- `src/components/booking/AlternativeDateSuggestions.jsx` - Date alternatives UI
+- `src/components/booking/RenewalModal.jsx` - Booking extension modal
+
+### Key Files Modified Session 4
+- `src/App.jsx` - Portal-based lazy loading with React.lazy/Suspense
+- `vite.config.js` - Manual chunks for vendor optimization
+- `src/utils/api.js` - Added aiChatAPI endpoints
+- `src/services/booking.service.js` - Extension and alternative date methods
+- `src/components/booking/BookingModal.jsx` - Weekend inclusion, conflict detection
+- `src/portals/student/MyBookings.jsx` - Extend booking feature
+
+### Key Files Created Session 3
 - `src/portals/admin/BatchLabelPrinting.jsx` - Batch QR label printing
 - `src/portals/master-admin/AISettings.jsx` - AI configuration
 - `src/components/analytics/EquipmentAnalytics.jsx` - Usage analytics
-- `src/components/common/Breadcrumb.css` - Breadcrumb styles
-- `src/components/common/DarkModeToggle.css` - Toggle styles
 - `src/services/aiSettings.service.js` - AI settings API
-- `tests/dark-mode.spec.js` - 22 E2E tests
 
 ### Dependencies Added
 - `xlsx` - Excel file generation
@@ -157,17 +177,18 @@ Playwright tests ✅ 11/11 passing
 
 ### Outstanding Issues
 - Dark mode toggle needs to be added to PortalHeader (component ready)
-- Chunk size warning (1,808KB) - consider code splitting
+- Natural language query UI not yet implemented
+- Visual condition assessment UI not yet implemented
 
 ---
 
 ## Next Steps (Priority Order)
 
-1. **Integrate Dark Mode Toggle** - Add to PortalHeader component
-2. **Local LLM Features** - Natural language queries, visual assessment
-3. **Booking Enhancements** - Multi-item cart, weekend auto-selection
+1. **Local LLM UI Features** - Natural language query interface, visual condition assessment
+2. **Integrate Dark Mode Toggle** - Add to PortalHeader component
+3. **Booking Enhancements** - Multi-item cart, booking templates
 4. **Advanced Analytics** - Department charts, utilization heatmaps
-5. **Code Splitting** - Address bundle size warning
+5. **Documentation** - API docs, user guide
 
 ---
 

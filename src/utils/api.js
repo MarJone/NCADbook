@@ -635,6 +635,73 @@ export const equipmentKitsAPI = {
 };
 
 // ============================================
+// AI CHAT API
+// ============================================
+
+export const aiChatAPI = {
+  /**
+   * Check AI service status
+   */
+  getStatus: async () => {
+    return await request('/ai/status');
+  },
+
+  /**
+   * Send a chat message to the AI assistant
+   * @param {Array} messages - Array of message objects with role and content
+   * @param {Object} options - Optional settings (model, stream)
+   */
+  chat: async (messages, options = {}) => {
+    return await request('/ai/chat', {
+      method: 'POST',
+      body: JSON.stringify({ messages, ...options }),
+    });
+  },
+
+  /**
+   * Generate text from a prompt
+   * @param {string} prompt - The prompt to generate from
+   * @param {Object} options - Optional settings (system, model, maxTokens, temperature)
+   */
+  generate: async (prompt, options = {}) => {
+    return await request('/ai/generate', {
+      method: 'POST',
+      body: JSON.stringify({ prompt, ...options }),
+    });
+  },
+
+  /**
+   * Assess equipment condition from a photo
+   * @param {string} image - Base64 encoded image
+   * @param {Object} equipmentInfo - Optional equipment metadata
+   */
+  assessCondition: async (image, equipmentInfo = {}) => {
+    return await request('/ai/assess-condition', {
+      method: 'POST',
+      body: JSON.stringify({ image, equipmentInfo }),
+    });
+  },
+
+  /**
+   * Natural language database query
+   * @param {string} question - Natural language question
+   */
+  naturalLanguageQuery: async (question) => {
+    return await request('/ai/query', {
+      method: 'POST',
+      body: JSON.stringify({ question }),
+    });
+  },
+
+  /**
+   * List available models
+   */
+  listModels: async () => {
+    return await request('/ai/models');
+  },
+};
+
+// ============================================
 // AI SETTINGS API
 // ============================================
 
@@ -692,6 +759,7 @@ export default {
   analyticsAPI,
   systemSettingsAPI,
   equipmentKitsAPI,
+  aiChatAPI,
   aiSettingsAPI,
   tokenManager,
 };
