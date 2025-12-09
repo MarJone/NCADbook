@@ -35,9 +35,13 @@ import AccessoryManager from './AccessoryManager';
 import BatchLabelPrinting from './BatchLabelPrinting';
 import ConditionAssessment from './ConditionAssessment';
 import NaturalLanguageQuery from '../master-admin/NaturalLanguageQuery';
+import EmailDraftAssistant from '../master-admin/EmailDraftAssistant';
+import BookingJustificationAnalyzer from '../master-admin/BookingJustificationAnalyzer';
 import './AdminPortal.css';
 import './ConditionAssessment.css';
 import '../master-admin/NaturalLanguageQuery.css';
+import '../master-admin/EmailDraftAssistant.css';
+import '../master-admin/BookingJustificationAnalyzer.css';
 import './CheckoutVerification.css';
 import './ReturnVerification.css';
 import './AccessoryManager.css';
@@ -83,6 +87,8 @@ export default function AdminLayout() {
       'admin-settings': '/admin/system-settings',
       'ai-query': '/admin/nlq',
       'ai-condition': '/admin/condition-assessment',
+      'ai-email': '/admin/email-draft',
+      'ai-justification': '/admin/justification-analyzer',
       'ai-settings': '/admin/ai-settings',
     };
 
@@ -167,7 +173,11 @@ export default function AdminLayout() {
           <Route path="labels" element={<BatchLabelPrinting />} />
           <Route path="condition-assessment" element={<ConditionAssessment />} />
           {isMasterAdmin && (
-            <Route path="nlq" element={<NaturalLanguageQuery />} />
+            <>
+              <Route path="nlq" element={<NaturalLanguageQuery />} />
+              <Route path="email-draft" element={<EmailDraftAssistant />} />
+              <Route path="justification-analyzer" element={<BookingJustificationAnalyzer />} />
+            </>
           )}
         </Routes>
       </main>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Search, X, Settings, Users, Package, Calendar, FileText, Shield, BarChart3, AlertTriangle, Download, Upload, Moon, Sun, Zap, Sparkles, Camera, MessageSquare } from 'lucide-react';
+import { Search, X, Settings, Users, Package, Calendar, FileText, Shield, BarChart3, AlertTriangle, Download, Upload, Moon, Sun, Zap, Sparkles, Camera, MessageSquare, Mail } from 'lucide-react';
 import '../../styles/experimental/ai-interface.css';
 
 /**
@@ -59,6 +59,8 @@ export function CommandPalette({
 
     // AI Features
     { id: 'ai-query', name: 'Natural Language Query', description: 'Ask questions about your data', icon: MessageSquare, category: 'AI Features', shortcut: ['A', 'Q'] },
+    { id: 'ai-email', name: 'Email Draft Assistant', description: 'AI-powered email drafting', icon: Mail, category: 'AI Features', shortcut: ['A', 'E'] },
+    { id: 'ai-justification', name: 'Justification Analyzer', description: 'Analyze booking justifications', icon: FileText, category: 'AI Features', shortcut: ['A', 'J'] },
     { id: 'ai-condition', name: 'Condition Assessment', description: 'AI-powered equipment condition check', icon: Camera, category: 'AI Features', shortcut: ['A', 'C'] },
     { id: 'ai-settings', name: 'AI Settings', description: 'Configure Ollama and AI features', icon: Sparkles, category: 'AI Features' },
   ], []);

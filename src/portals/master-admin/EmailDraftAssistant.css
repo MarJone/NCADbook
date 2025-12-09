@@ -1,0 +1,634 @@
+/**
+ * Email Draft Assistant Styles
+ * AI-powered email drafting interface
+ */
+
+.eda-container {
+  padding: var(--space-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.eda-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.eda-header-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--role-accent) 0%, var(--role-accent-dark, var(--role-accent)) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 0 30px rgba(var(--role-accent-rgb, 124, 58, 237), 0.4);
+}
+
+.eda-header h1 {
+  margin: 0;
+  font-size: var(--font-size-heading-2);
+  color: var(--theme-text-primary);
+}
+
+.eda-header p {
+  margin: var(--space-xs) 0 0;
+  color: var(--theme-text-secondary);
+}
+
+/* Scenario Selection */
+.eda-scenarios {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.eda-scenarios h3 {
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-body);
+  color: var(--theme-text-secondary);
+}
+
+.eda-scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-sm);
+}
+
+.eda-scenario-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--glass-bg-subtle);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+  text-align: left;
+  width: 100%;
+}
+
+.eda-scenario-btn:hover {
+  background: var(--theme-bg-secondary);
+  border-color: var(--scenario-color, var(--role-accent));
+  transform: translateY(-2px);
+}
+
+.eda-scenario-btn.selected {
+  background: var(--theme-bg-secondary);
+  border-color: var(--scenario-color, var(--role-accent));
+  box-shadow: 0 0 0 3px rgba(var(--role-accent-rgb, 124, 58, 237), 0.2);
+}
+
+.eda-scenario-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: rgba(var(--role-accent-rgb, 124, 58, 237), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--scenario-color, var(--role-accent));
+  flex-shrink: 0;
+}
+
+.eda-scenario-btn.selected .eda-scenario-icon,
+.eda-scenario-btn:hover .eda-scenario-icon {
+  background: var(--scenario-color, var(--role-accent));
+  color: white;
+}
+
+.eda-scenario-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.eda-scenario-label {
+  display: block;
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+  margin-bottom: var(--space-xxs);
+}
+
+.eda-scenario-desc {
+  display: block;
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eda-scenario-category {
+  padding: var(--space-xxs) var(--space-sm);
+  background: var(--theme-bg-tertiary);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-tertiary);
+  flex-shrink: 0;
+}
+
+/* Form Section */
+.eda-form {
+  padding: 0;
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
+}
+
+.eda-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--theme-bg-secondary);
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.eda-form-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+}
+
+.eda-form-title svg {
+  color: var(--role-accent);
+}
+
+.eda-close-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-md);
+  color: var(--theme-text-tertiary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.eda-close-btn:hover {
+  background: var(--theme-bg-tertiary);
+  color: var(--theme-text-primary);
+}
+
+.eda-form-fields {
+  padding: var(--space-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-md);
+}
+
+.eda-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.eda-field label {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-secondary);
+}
+
+.eda-field input,
+.eda-field select,
+.eda-field textarea {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  color: var(--theme-text-primary);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.eda-field input:focus,
+.eda-field select:focus,
+.eda-field textarea:focus {
+  outline: none;
+  border-color: var(--role-accent);
+  box-shadow: 0 0 0 3px rgba(var(--role-accent-rgb, 124, 58, 237), 0.2);
+}
+
+.eda-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.eda-form-actions {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--theme-bg-secondary);
+  border-top: 1px solid var(--theme-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.eda-generate-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-xl);
+  background: var(--ai-gradient-primary, linear-gradient(135deg, var(--role-accent) 0%, #9333ea 100%));
+  border: none;
+  border-radius: var(--radius-lg);
+  color: white;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.eda-generate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(var(--role-accent-rgb, 124, 58, 237), 0.4);
+}
+
+.eda-generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.eda-spinner {
+  animation: eda-spin 1s linear infinite;
+}
+
+@keyframes eda-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Progress */
+.eda-progress {
+  padding: 0 var(--space-lg) var(--space-lg);
+}
+
+.eda-progress-bar {
+  height: 4px;
+  background: var(--theme-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.eda-progress-fill {
+  height: 100%;
+  background: var(--ai-gradient-primary, linear-gradient(135deg, var(--role-accent) 0%, #9333ea 100%));
+  border-radius: var(--radius-full);
+  transition: width 0.3s var(--ease-smooth);
+}
+
+.eda-progress-text {
+  display: block;
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-tertiary);
+  text-align: center;
+}
+
+/* Error Display */
+.eda-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.eda-error svg {
+  color: var(--semantic-error);
+  flex-shrink: 0;
+}
+
+.eda-error strong {
+  display: block;
+  color: var(--semantic-error);
+  margin-bottom: var(--space-xs);
+}
+
+.eda-error p {
+  margin: 0;
+  color: var(--theme-text-secondary);
+}
+
+/* Email Display */
+.eda-email {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: var(--space-lg);
+}
+
+.eda-email-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--theme-bg-secondary);
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.eda-email-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.eda-success-icon {
+  color: var(--semantic-success);
+}
+
+.eda-email-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.eda-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.eda-action-btn:hover:not(:disabled) {
+  background: var(--theme-bg-tertiary);
+  border-color: var(--role-accent);
+  color: var(--role-accent);
+}
+
+.eda-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.eda-action-btn.active {
+  background: var(--role-accent);
+  border-color: var(--role-accent);
+  color: white;
+}
+
+.eda-action-btn.copied {
+  background: var(--semantic-success);
+  border-color: var(--semantic-success);
+  color: white;
+}
+
+/* Email Content */
+.eda-email-content {
+  padding: var(--space-lg);
+}
+
+.eda-email-subject {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.eda-email-subject label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-secondary);
+  flex-shrink: 0;
+}
+
+.eda-email-subject span {
+  flex: 1;
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+}
+
+.eda-edit-subject {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--role-accent);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--theme-text-primary);
+}
+
+.eda-edit-subject:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--role-accent-rgb, 124, 58, 237), 0.2);
+}
+
+.eda-email-body {
+  margin-bottom: var(--space-lg);
+}
+
+.eda-email-body pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: var(--font-family-primary, system-ui, -apple-system, sans-serif);
+  font-size: var(--font-size-body);
+  line-height: 1.7;
+  color: var(--theme-text-primary);
+}
+
+.eda-edit-body {
+  width: 100%;
+  padding: var(--space-md);
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--role-accent);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary, system-ui, -apple-system, sans-serif);
+  font-size: var(--font-size-body);
+  line-height: 1.7;
+  color: var(--theme-text-primary);
+  resize: vertical;
+}
+
+.eda-edit-body:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--role-accent-rgb, 124, 58, 237), 0.2);
+}
+
+.eda-email-footer {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--theme-border);
+}
+
+.eda-email-footer small {
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-tertiary);
+  font-style: italic;
+}
+
+/* Demo Note */
+.eda-demo-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background: rgba(59, 130, 246, 0.1);
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+  font-size: var(--font-size-caption);
+  color: var(--semantic-info);
+}
+
+/* Recent Emails */
+.eda-recent {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.eda-recent h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-body);
+  color: var(--theme-text-secondary);
+}
+
+.eda-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.eda-recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-md);
+}
+
+.eda-recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+  min-width: 0;
+  flex: 1;
+}
+
+.eda-recent-scenario {
+  font-size: var(--font-size-caption);
+  color: var(--role-accent);
+  font-weight: var(--font-weight-medium);
+}
+
+.eda-recent-subject {
+  font-size: var(--font-size-body-sm);
+  color: var(--theme-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eda-recent-time {
+  font-size: var(--font-size-caption);
+  color: var(--theme-text-tertiary);
+  flex-shrink: 0;
+  margin-left: var(--space-md);
+}
+
+/* Tips Section */
+.eda-tips {
+  padding: var(--space-lg);
+}
+
+.eda-tips h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-body);
+  color: var(--theme-text-secondary);
+}
+
+.eda-tips h3 svg {
+  color: var(--role-accent);
+}
+
+.eda-tips ul {
+  margin: 0;
+  padding-left: var(--space-lg);
+}
+
+.eda-tips li {
+  font-size: var(--font-size-body-sm);
+  color: var(--theme-text-secondary);
+  margin-bottom: var(--space-xs);
+  line-height: 1.6;
+}
+
+.eda-tips li:last-child {
+  margin-bottom: 0;
+}
+
+/* Mobile Adaptations */
+@media (max-width: 767px) {
+  .eda-container {
+    padding: var(--space-md);
+  }
+
+  .eda-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .eda-scenarios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .eda-scenario-btn {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-md);
+  }
+
+  .eda-scenario-info {
+    width: 100%;
+  }
+
+  .eda-scenario-desc {
+    white-space: normal;
+  }
+
+  .eda-form-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .eda-email-header {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .eda-email-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .eda-email-subject {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .eda-edit-subject {
+    width: 100%;
+  }
+}

@@ -23,6 +23,9 @@ import {
   QrCode,
   ClipboardCheck,
   Brain,
+  Mail,
+  Database,
+  Sparkles,
 } from 'lucide-react';
 import './MegaMenuNav.css';
 
@@ -248,9 +251,18 @@ export function MegaMenuNav({
               title: 'System Settings',
               items: [
                 { label: 'System Settings', icon: Settings, href: '/admin/system-settings' },
-                { label: 'AI Settings', icon: Brain, href: '/admin/ai-settings', description: 'Configure local LLM' },
                 { label: 'Departments', icon: FileText, href: '/admin/departments' },
                 { label: 'Feature Flags', icon: Zap, href: '/admin/features' },
+              ],
+            },
+            {
+              title: 'AI Tools',
+              items: [
+                { label: 'AI Settings', icon: Brain, href: '/admin/ai-settings', description: 'Configure local LLM' },
+                { label: 'Natural Language Query', icon: Database, href: '/admin/nlq', description: 'Query data with AI' },
+                { label: 'Email Draft Assistant', icon: Mail, href: '/admin/email-draft', description: 'AI-powered emails' },
+                { label: 'Justification Analyzer', icon: FileText, href: '/admin/justification-analyzer', description: 'Analyze booking requests' },
+                { label: 'Condition Assessment', icon: Sparkles, href: '/admin/condition-assessment', description: 'AI equipment inspection' },
               ],
             },
           ],
