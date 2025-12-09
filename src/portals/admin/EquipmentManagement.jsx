@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Package } from 'lucide-react';
 import { equipmentAPI } from '../../utils/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { getDepartmentList } from '../../config/departments';
@@ -13,6 +15,7 @@ import { haptics } from '../../utils/haptics';
 
 export default function EquipmentManagement() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [equipment, setEquipment] = useState([]);
   const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -147,6 +150,11 @@ export default function EquipmentManagement() {
     setShowFormModal(false);
     await loadEquipment();
     showToast(formMode === 'add' ? 'Equipment added successfully' : 'Equipment updated successfully', 'success');
+  };
+
+  const handleAccessories = (equipmentId) => {
+    haptics.light();
+    navigate(`/admin/accessories?equipment=${equipmentId}`);
   };
 
   // Paginate filtered equipment
@@ -301,6 +309,14 @@ export default function EquipmentManagement() {
                       className="btn btn-primary btn-sm"
                     >
                       Edit
+                    </button>
+                    <button
+                      onClick={() => handleAccessories(item.id)}
+                      className="btn btn-secondary btn-sm"
+                      title="Manage Accessories"
+                    >
+                      <Package size={16} style={{ verticalAlign: 'middle' }} />
+                      <span style={{ marginLeft: '0.25rem' }}>Accessories</span>
                     </button>
                     {isMasterAdmin && (
                       <button

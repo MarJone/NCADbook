@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { PortalHeader } from '../../components/layout/PortalHeader';
 import { SmartSearch } from '../../components/ai/SmartSearch';
 import { AIAssistant, useAIAssistant } from '../../components/ai/AIAssistant';
@@ -74,6 +75,9 @@ export default function StudentLayout() {
       )}
 
       <main className="student-main scroll-reveal-container">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb />
+
         <Routes>
           <Route index element={<StudentDashboard />} />
           <Route path="equipment" element={<EquipmentBrowse />} />

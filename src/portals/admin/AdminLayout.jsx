@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { usePortalTheme } from '../../contexts/ThemeContext';
 import NotificationCenter from '../../components/common/NotificationCenter';
 import MobileBottomNav from '../../components/common/MobileBottomNav';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { PortalHeader } from '../../components/layout/PortalHeader';
 import { SmartSearch } from '../../components/ai/SmartSearch';
 import { CommandPalette, useCommandPalette } from '../../components/ai/CommandPalette';
@@ -25,15 +26,18 @@ import ManageAccessRequests from './ManageAccessRequests';
 import DepartmentStaffPermissions from './DepartmentStaffPermissions';
 import SystemSettings from '../master-admin/SystemSettings';
 import RoleManagement from '../master-admin/RoleManagement';
+import AISettings from '../master-admin/AISettings';
 import CrossDepartmentRequests from './CrossDepartmentRequests';
 import EquipmentKitsManagement from './EquipmentKitsManagement';
 import CheckoutVerification from './CheckoutVerification';
 import ReturnVerification from './ReturnVerification';
 import AccessoryManager from './AccessoryManager';
+import BatchLabelPrinting from './BatchLabelPrinting';
 import './AdminPortal.css';
 import './CheckoutVerification.css';
 import './ReturnVerification.css';
 import './AccessoryManager.css';
+import './BatchLabelPrinting.css';
 import '../../styles/role-colors.css';
 
 export default function AdminLayout() {
@@ -126,6 +130,9 @@ export default function AdminLayout() {
       )}
 
       <main className="admin-main scroll-reveal-container">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb />
+
         <Routes>
           <Route index element={<Dashboard />} />
           <Route path="approvals" element={<BookingApprovals />} />
@@ -144,11 +151,13 @@ export default function AdminLayout() {
           <Route path="department-staff-permissions" element={<DepartmentStaffPermissions />} />
           <Route path="system-settings" element={<SystemSettings />} />
           <Route path="role-management" element={<RoleManagement />} />
+          <Route path="ai-settings" element={<AISettings />} />
           <Route path="cross-department-requests" element={<CrossDepartmentRequests />} />
           <Route path="equipment-kits" element={<EquipmentKitsManagement />} />
           <Route path="checkout" element={<CheckoutVerification />} />
           <Route path="return" element={<ReturnVerification />} />
           <Route path="accessories" element={<AccessoryManager />} />
+          <Route path="labels" element={<BatchLabelPrinting />} />
         </Routes>
       </main>
 

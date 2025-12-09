@@ -68,7 +68,10 @@
       "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\src\\components\\layout\")",
       "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\.claude\\commands\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\.claude\\commands\")",
       "Bash(cd:*)",
-      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\docs\\sessions\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\docs\\sessions\")"
+      "Bash(if not exist \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\docs\\sessions\" md \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\docs\\sessions\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"SELECT tablename FROM pg_tables WHERE schemaname = ''public'' AND tablename LIKE ''%verification%'' OR tablename LIKE ''%accessor%'';\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -c \"\\dt\")",
+      "Bash(\"C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe\" -U postgres -d ncadbook_db -f \"c:\\Users\\Media Admin\\AIprojects\\NCADbook\\backend\\migrations\\008_barcode_verification.sql\")"
     ],
     "deny": [],
     "ask": []

@@ -54,8 +54,54 @@
   --light-shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark Theme Colors - DEPRECATED (kept for backwards compatibility) */
-/* All portals now use light mode exclusively */
+/* Dark Theme Colors */
+:root {
+  /* Backgrounds */
+  --dark-bg-primary: #1F2937;
+  --dark-bg-secondary: #111827;
+  --dark-bg-tertiary: #374151;
+  --dark-bg-elevated: #2D3748;
+
+  /* Text Colors */
+  --dark-text-primary: #F9FAFB;
+  --dark-text-secondary: #D1D5DB;
+  --dark-text-tertiary: #9CA3AF;
+  --dark-text-inverse: #1F2937;
+
+  /* Accent Colors */
+  --dark-accent-primary: #3B82F6;
+  --dark-accent-primary-hover: #60A5FA;
+  --dark-accent-secondary: #2563EB;
+  --dark-accent-tertiary: #93C5FD;
+
+  /* Border Colors */
+  --dark-border-light: #374151;
+  --dark-border-medium: #4B5563;
+  --dark-border-dark: #6B7280;
+
+  /* Status Colors */
+  --dark-success: #34D399;
+  --dark-success-bg: #065F46;
+  --dark-success-text: #D1FAE5;
+
+  --dark-warning: #FBBF24;
+  --dark-warning-bg: #78350F;
+  --dark-warning-text: #FEF3C7;
+
+  --dark-error: #F87171;
+  --dark-error-bg: #7F1D1D;
+  --dark-error-text: #FEE2E2;
+
+  --dark-info: #60A5FA;
+  --dark-info-bg: #1E3A8A;
+  --dark-info-text: #DBEAFE;
+
+  /* Shadows */
+  --dark-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --dark-shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --dark-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --dark-shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
 
 /* ========== ACTIVE THEME MAPPING ========== */
 
@@ -102,8 +148,48 @@
   --theme-shadow-xl: var(--light-shadow-xl);
 }
 
-/* Dark Theme Override - REMOVED */
-/* All portals now use light mode exclusively */
+/* Dark Theme Override */
+[data-theme="dark"] {
+  --theme-bg-primary: var(--dark-bg-primary);
+  --theme-bg-secondary: var(--dark-bg-secondary);
+  --theme-bg-tertiary: var(--dark-bg-tertiary);
+  --theme-bg-elevated: var(--dark-bg-elevated);
+
+  --theme-text-primary: var(--dark-text-primary);
+  --theme-text-secondary: var(--dark-text-secondary);
+  --theme-text-tertiary: var(--dark-text-tertiary);
+  --theme-text-inverse: var(--dark-text-inverse);
+
+  --theme-accent-primary: var(--dark-accent-primary);
+  --theme-accent-primary-hover: var(--dark-accent-primary-hover);
+  --theme-accent-secondary: var(--dark-accent-secondary);
+  --theme-accent-tertiary: var(--dark-accent-tertiary);
+
+  --theme-border-light: var(--dark-border-light);
+  --theme-border-medium: var(--dark-border-medium);
+  --theme-border-dark: var(--dark-border-dark);
+
+  --theme-success: var(--dark-success);
+  --theme-success-bg: var(--dark-success-bg);
+  --theme-success-text: var(--dark-success-text);
+
+  --theme-warning: var(--dark-warning);
+  --theme-warning-bg: var(--dark-warning-bg);
+  --theme-warning-text: var(--dark-warning-text);
+
+  --theme-error: var(--dark-error);
+  --theme-error-bg: var(--dark-error-bg);
+  --theme-error-text: var(--dark-error-text);
+
+  --theme-info: var(--dark-info);
+  --theme-info-bg: var(--dark-info-bg);
+  --theme-info-text: var(--dark-info-text);
+
+  --theme-shadow-sm: var(--dark-shadow-sm);
+  --theme-shadow-md: var(--dark-shadow-md);
+  --theme-shadow-lg: var(--dark-shadow-lg);
+  --theme-shadow-xl: var(--dark-shadow-xl);
+}
 
 /* ========== TYPOGRAPHY SYSTEM ========== */
 

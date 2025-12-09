@@ -1,0 +1,249 @@
+/**
+ * ============================================
+ * BREADCRUMB NAVIGATION
+ * ============================================
+ *
+ * Breadcrumb component styles using design tokens
+ * Features:
+ * - Desktop-first responsive design
+ * - Accessible keyboard navigation
+ * - Smooth transitions
+ * - Mobile-optimized (collapsible)
+ */
+
+.breadcrumb {
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 60px; /* Adjust based on header height */
+  z-index: var(--z-sticky);
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-body-sm);
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-muted);
+}
+
+.breadcrumb-item--active {
+  color: var(--color-headings);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Breadcrumb Links */
+.breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-in-out);
+
+  /* Touch target optimization */
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+}
+
+.breadcrumb-link:hover {
+  color: var(--color-primary);
+  background-color: var(--color-surface);
+}
+
+.breadcrumb-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+  background-color: var(--color-surface);
+}
+
+.breadcrumb-link:active {
+  transform: scale(0.98);
+}
+
+/* Home Icon */
+.breadcrumb-home-icon {
+  color: var(--color-muted);
+  transition: color var(--duration-fast) var(--ease-in-out);
+  flex-shrink: 0;
+}
+
+.breadcrumb-link:hover .breadcrumb-home-icon {
+  color: var(--color-primary);
+}
+
+/* Breadcrumb Labels */
+.breadcrumb-label {
+  white-space: nowrap;
+}
+
+/* Current Page (Non-clickable) */
+.breadcrumb-current {
+  color: var(--color-headings);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+/* Separators (Chevrons) */
+.breadcrumb-separator {
+  color: var(--color-subtle);
+  flex-shrink: 0;
+  margin: 0 var(--space-xs);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .breadcrumb {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .breadcrumb-list {
+    font-size: var(--font-size-caption);
+  }
+
+  .breadcrumb-home-icon,
+  .breadcrumb-separator {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Mobile (320px - 768px) */
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding: var(--space-sm);
+    top: 56px; /* Mobile header height */
+  }
+
+  .breadcrumb-list {
+    gap: var(--space-2xs);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  /* Hide scrollbar for Chrome/Safari */
+  .breadcrumb-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Collapse intermediate items on mobile - show only last 2 items */
+  .breadcrumb-item:not(:first-child):not(:last-child):not(:nth-last-child(2)) {
+    display: none;
+  }
+
+  /* Show ellipsis when items are hidden */
+  .breadcrumb-item:first-child::after {
+    content: '';
+  }
+
+  .breadcrumb-item:nth-child(2)::after {
+    content: '...';
+    color: var(--color-subtle);
+    padding: 0 var(--space-xs);
+    font-weight: var(--font-weight-bold);
+  }
+
+  /* Hide ellipsis if there are only 2 items total */
+  .breadcrumb-list:has(.breadcrumb-item:nth-child(2):last-child) .breadcrumb-item:nth-child(2)::after {
+    content: '';
+  }
+
+  .breadcrumb-link {
+    padding: var(--space-xs);
+  }
+
+  .breadcrumb-current {
+    padding: var(--space-xs);
+  }
+
+  /* Hide text labels on very small screens, keep icons */
+  @media (max-width: 375px) {
+    .breadcrumb-label {
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .breadcrumb {
+    border-bottom-width: 2px;
+  }
+
+  .breadcrumb-link:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .breadcrumb-link,
+  .breadcrumb-home-icon {
+    transition: none;
+  }
+
+  .breadcrumb-link:active {
+    transform: none;
+  }
+}
+
+/* Dark mode support (if implementing dark theme) */
+@media (prefers-color-scheme: dark) {
+  [data-theme="dark"] .breadcrumb {
+    background-color: var(--color-headings);
+    border-bottom-color: var(--color-muted);
+  }
+
+  [data-theme="dark"] .breadcrumb-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .breadcrumb {
+    position: static;
+    border-bottom: 1px solid #000;
+    padding: var(--space-sm) 0;
+  }
+
+  .breadcrumb-link {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .breadcrumb-separator {
+    color: #000;
+  }
+}

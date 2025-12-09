@@ -1249,3 +1249,73 @@
   color: var(--theme-text-secondary);
   margin: 0;
 }
+
+/* ========== ANALYTICS TABS ========== */
+
+.analytics-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  border-bottom: 2px solid var(--theme-border-light);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.analytics-tab {
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--theme-text-secondary);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  position: relative;
+  bottom: -2px;
+}
+
+.analytics-tab:hover {
+  color: var(--theme-text-primary);
+  background: var(--role-bg-hover);
+}
+
+.analytics-tab.active {
+  color: var(--master-accent-primary);
+  border-bottom-color: var(--master-accent-primary);
+  font-weight: var(--font-semibold);
+}
+
+.analytics-tab:focus-visible {
+  outline: 2px solid var(--master-accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Master Admin Dark Mode */
+.master-admin-portal .analytics-tab {
+  color: var(--master-text-secondary);
+}
+
+.master-admin-portal .analytics-tab:hover {
+  color: var(--master-text-primary);
+  background: var(--master-bg-hover);
+}
+
+.master-admin-portal .analytics-tab.active {
+  color: var(--master-accent-secondary);
+  border-bottom-color: var(--master-accent-secondary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .analytics-tabs {
+    gap: var(--space-1);
+  }
+
+  .analytics-tab {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+  }
+}

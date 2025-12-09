@@ -19,6 +19,10 @@ import {
   Monitor,
   Headphones,
   Laptop,
+  Printer,
+  QrCode,
+  ClipboardCheck,
+  Brain,
 } from 'lucide-react';
 import './MegaMenuNav.css';
 
@@ -137,7 +141,25 @@ export function MegaMenuNav({
         id: 'equipment',
         label: 'Equipment',
         icon: Package,
-        href: '/admin/equipment',
+        megaMenu: {
+          sections: [
+            {
+              title: 'Equipment Management',
+              items: [
+                { label: 'All Equipment', icon: Package, href: '/admin/equipment' },
+                { label: 'Accessories', icon: Package, href: '/admin/accessories' },
+              ],
+            },
+            {
+              title: 'Verification & Labels',
+              items: [
+                { label: 'Checkout Verification', icon: ClipboardCheck, href: '/admin/checkout' },
+                { label: 'Return Verification', icon: ClipboardCheck, href: '/admin/return' },
+                { label: 'Print Labels', icon: Printer, href: '/admin/labels', description: 'Batch print QR labels' },
+              ],
+            },
+          ],
+        },
       },
       {
         id: 'users',
@@ -178,6 +200,15 @@ export function MegaMenuNav({
                 { label: 'All Equipment', icon: Package, href: '/admin/equipment' },
                 { label: 'Equipment Kits', icon: Package, href: '/admin/equipment-kits' },
                 { label: 'Kit Management', icon: Settings, href: '/admin/kits' },
+                { label: 'Accessories', icon: Package, href: '/admin/accessories' },
+              ],
+            },
+            {
+              title: 'Verification & Labels',
+              items: [
+                { label: 'Checkout Verification', icon: ClipboardCheck, href: '/admin/checkout' },
+                { label: 'Return Verification', icon: ClipboardCheck, href: '/admin/return' },
+                { label: 'Print Labels', icon: Printer, href: '/admin/labels', description: 'Batch print QR labels' },
               ],
             },
           ],
@@ -217,6 +248,7 @@ export function MegaMenuNav({
               title: 'System Settings',
               items: [
                 { label: 'System Settings', icon: Settings, href: '/admin/system-settings' },
+                { label: 'AI Settings', icon: Brain, href: '/admin/ai-settings', description: 'Configure local LLM' },
                 { label: 'Departments', icon: FileText, href: '/admin/departments' },
                 { label: 'Feature Flags', icon: Zap, href: '/admin/features' },
               ],

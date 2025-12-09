@@ -7,6 +7,9 @@ import Toast from '../../components/common/Toast';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { haptics } from '../../utils/haptics';
+import { FileSpreadsheet } from 'lucide-react';
+import { exportService } from '../../services/export.service';
+import EquipmentAnalytics from '../../components/analytics/EquipmentAnalytics';
 
 export default function Analytics() {
   const { user } = useAuth();
@@ -19,6 +22,7 @@ export default function Analytics() {
     filteredBookings: []
   });
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' or 'equipment'
 
   // Filter states
   const [filterDepartment, setFilterDepartment] = useState('all');
@@ -447,11 +451,77 @@ export default function Analytics() {
     }
   };
 
+  const exportToExcel = () => {
+    try {
+      // Prepare filter information
+      const filters = {
+        department: filterDepartment !== 'all' ? filterDepartment : null,
+        user: filterUser !== 'all' ? users.find(u => u.id === filterUser)?.full_name : null,
+        startDate: filterStartDate,
+        endDate: filterEndDate
+      };
+
+      // Call the export service
+      exportService.exportAnalyticsToExcel(analytics, filters, 'NCAD_Analytics');
+
+      showToast('Excel report generated successfully!', 'success');
+    } catch (error) {
+      console.error('Failed to generate Excel:', error);
+      showToast('Failed to generate Excel report. Please try again.', 'error');
+    }
+  };
+
   const resetFilters = () => {
     setFilterDepartment('all');
     setFilterUser('all');
     setFilterStartDate('');
     setFilterEndDate('');
+  };
+
+  const exportEquipmentData = () => {
+    try {
+      // Create CSV with equipment analytics
+      let csv = 'Equipment,Category,Department,Total Bookings,Utilization %\n';
+
+      // Count bookings by equipment
+      const equipmentCounts = {};
+      analytics.filteredBookings.forEach(b => {
+        equipmentCounts[b.equipment_id] = (equipmentCounts[b.equipment_id] || 0) + 1;
+      });
+
+      // Sort by booking count
+      const sortedEquipment = Object.entries(equipmentCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([equipId, count]) => {
+          const equip = equipment.find(e => e.id === equipId);
+          const utilization = Math.round((count / analytics.totalBookings) * 100);
+          return {
+            name: equip?.product_name || 'Unknown',
+            category: equip?.category || 'Unknown',
+            department: equip?.department || 'Unknown',
+            count,
+            utilization
+          };
+        });
+
+      sortedEquipment.forEach(item => {
+        csv += `"${item.name}","${item.category}","${item.department}",${item.count},${item.utilization}%\n`;
+      });
+
+      // Create download link
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `equipment_analytics_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      showToast('Equipment data exported successfully!', 'success');
+    } catch (error) {
+      console.error('Failed to export equipment data:', error);
+      showToast('Failed to export equipment data. Please try again.', 'error');
+    }
   };
 
   if (loading) {
@@ -474,6 +544,13 @@ export default function Analytics() {
           </button>
           <button onClick={() => {
             haptics.medium();
+            exportToExcel();
+          }} className="btn btn-secondary">
+            <FileSpreadsheet size={18} style={{ marginRight: '8px' }} />
+            Export Excel
+          </button>
+          <button onClick={() => {
+            haptics.medium();
             exportToPDF();
           }} className="btn btn-primary">
             📄 Generate PDF Report
@@ -481,10 +558,35 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* Filter Section */}
-      <div className="analytics-filters">
-        <h3>Filters</h3>
-        <div className="filter-grid">
+      {/* Analytics Tabs */}
+      <div className="analytics-tabs">
+        <button
+          className={`analytics-tab ${activeTab === 'overview' ? 'active' : ''}`}
+          onClick={() => {
+            haptics.light();
+            setActiveTab('overview');
+          }}
+        >
+          📊 Overview
+        </button>
+        <button
+          className={`analytics-tab ${activeTab === 'equipment' ? 'active' : ''}`}
+          onClick={() => {
+            haptics.light();
+            setActiveTab('equipment');
+          }}
+        >
+          📦 Equipment Usage
+        </button>
+      </div>
+
+      {/* Overview Tab */}
+      {activeTab === 'overview' && (
+        <>
+          {/* Filter Section */}
+          <div className="analytics-filters">
+            <h3>Filters</h3>
+            <div className="filter-grid">
           <div className="filter-group">
             <label htmlFor="filter-department">Department</label>
             <select
@@ -645,6 +747,17 @@ export default function Analytics() {
           </div>
         </div>
       </div>
+        </>
+      )}
+
+      {/* Equipment Usage Tab */}
+      {activeTab === 'equipment' && (
+        <EquipmentAnalytics
+          bookings={analytics.filteredBookings}
+          equipment={equipment}
+          onExportEquipmentData={exportEquipmentData}
+        />
+      )}
 
       {toasts.map(toast => (
         <Toast

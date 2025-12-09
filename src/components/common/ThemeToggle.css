@@ -54,9 +54,42 @@
   outline-offset: 2px;
 }
 
+/* Pressed state for accessibility */
+.theme-toggle[aria-pressed="true"] {
+  background: var(--theme-accent-primary);
+  color: var(--theme-text-inverse);
+  border-color: var(--theme-accent-primary);
+}
+
+.theme-toggle[aria-pressed="true"]:hover {
+  background: var(--theme-accent-primary-hover);
+  border-color: var(--theme-accent-primary-hover);
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .theme-toggle {
     transition: none;
   }
+}
+
+/* Dark mode specific styling */
+[data-theme="dark"] .theme-toggle {
+  background: var(--theme-bg-tertiary);
+  border-color: var(--theme-border-medium);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: var(--theme-bg-secondary);
+  border-color: var(--theme-accent-tertiary);
+}
+
+[data-theme="dark"] .theme-toggle[aria-pressed="true"] {
+  background: var(--theme-accent-secondary);
+  border-color: var(--theme-accent-secondary);
+}
+
+[data-theme="dark"] .theme-toggle[aria-pressed="true"]:hover {
+  background: var(--theme-accent-tertiary);
+  border-color: var(--theme-accent-tertiary);
 }

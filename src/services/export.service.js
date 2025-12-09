@@ -1,4 +1,5 @@
-// Export Service - Handles CSV and PDF export functionality
+// Export Service - Handles CSV, PDF, and Excel export functionality
+import * as XLSX from 'xlsx';
 
 class ExportService {
   /**
@@ -241,6 +242,232 @@ class ExportService {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Export analytics data to Excel (XLSX) format
+   * @param {Object} analyticsData - Analytics data object containing metrics
+   * @param {Object} filters - Filter information for the report
+   * @param {string} filename - Name of the file (without extension)
+   */
+  exportAnalyticsToExcel(analyticsData, filters = {}, filename = 'analytics') {
+    try {
+      const {
+        totalBookings = 0,
+        approvalRate = 0,
+        popularEquipment = [],
+        bookingsByDepartment = {},
+        bookingsByStatus = {},
+        filteredBookings = []
+      } = analyticsData;
+
+      // Create a new workbook
+      const workbook = XLSX.utils.book_new();
+
+      // ===== SHEET 1: Summary Statistics =====
+      const summaryData = [
+        ['NCAD Equipment Booking System - Analytics Report'],
+        ['Generated:', new Date().toLocaleString('en-IE')],
+        [],
+        ['Applied Filters:'],
+        ['Department:', filters.department || 'All Departments'],
+        ['User:', filters.user || 'All Users'],
+        ['Date Range:', filters.startDate && filters.endDate
+          ? `${new Date(filters.startDate).toLocaleDateString('en-IE')} - ${new Date(filters.endDate).toLocaleDateString('en-IE')}`
+          : 'All Dates'],
+        [],
+        ['Summary Statistics'],
+        ['Metric', 'Value'],
+        ['Total Bookings', totalBookings],
+        ['Approval Rate', `${approvalRate}%`],
+        ['Pending Bookings', bookingsByStatus['pending'] || 0],
+        ['Approved Bookings', bookingsByStatus['approved'] || 0],
+        ['Rejected Bookings', bookingsByStatus['rejected'] || 0],
+        ['Completed Bookings', bookingsByStatus['completed'] || 0]
+      ];
+
+      const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+
+      // Set column widths for summary sheet
+      summarySheet['!cols'] = [
+        { wch: 25 },
+        { wch: 30 }
+      ];
+
+      // Style the header row (make it bold by merging cells)
+      summarySheet['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 1 } } // Merge title cells
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+
+      // ===== SHEET 2: Popular Equipment =====
+      const popularEquipmentData = [
+        ['Top Equipment by Bookings'],
+        [],
+        ['Rank', 'Equipment Name', 'Number of Bookings', 'Usage Percentage'],
+        ...popularEquipment.map((item, index) => [
+          index + 1,
+          item.name,
+          item.count,
+          `${Math.round((item.count / totalBookings) * 100)}%`
+        ])
+      ];
+
+      const popularSheet = XLSX.utils.aoa_to_sheet(popularEquipmentData);
+      popularSheet['!cols'] = [
+        { wch: 8 },
+        { wch: 40 },
+        { wch: 20 },
+        { wch: 18 }
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, popularSheet, 'Popular Equipment');
+
+      // ===== SHEET 3: Bookings by Department =====
+      const departmentData = [
+        ['Bookings by Department'],
+        [],
+        ['Department', 'Number of Bookings', 'Percentage'],
+        ...Object.entries(bookingsByDepartment).map(([dept, count]) => [
+          dept,
+          count,
+          `${Math.round((count / totalBookings) * 100)}%`
+        ])
+      ];
+
+      const deptSheet = XLSX.utils.aoa_to_sheet(departmentData);
+      deptSheet['!cols'] = [
+        { wch: 30 },
+        { wch: 20 },
+        { wch: 15 }
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, deptSheet, 'By Department');
+
+      // ===== SHEET 4: Bookings by Status =====
+      const statusData = [
+        ['Bookings by Status'],
+        [],
+        ['Status', 'Count', 'Percentage'],
+        ...Object.entries(bookingsByStatus).map(([status, count]) => [
+          status.charAt(0).toUpperCase() + status.slice(1),
+          count,
+          `${Math.round((count / totalBookings) * 100)}%`
+        ])
+      ];
+
+      const statusSheet = XLSX.utils.aoa_to_sheet(statusData);
+      statusSheet['!cols'] = [
+        { wch: 20 },
+        { wch: 15 },
+        { wch: 15 }
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, statusSheet, 'By Status');
+
+      // ===== SHEET 5: Detailed Bookings Data =====
+      if (filteredBookings && filteredBookings.length > 0) {
+        const detailedData = [
+          ['All Bookings (Detailed)'],
+          [],
+          ['Booking ID', 'User', 'Department', 'Equipment', 'Start Date', 'End Date', 'Status', 'Created Date']
+        ];
+
+        const detailedSheet = XLSX.utils.aoa_to_sheet(detailedData);
+        detailedSheet['!cols'] = [
+          { wch: 12 },
+          { wch: 25 },
+          { wch: 20 },
+          { wch: 35 },
+          { wch: 15 },
+          { wch: 15 },
+          { wch: 12 },
+          { wch: 18 }
+        ];
+
+        XLSX.utils.book_append_sheet(workbook, detailedSheet, 'Detailed Data');
+      }
+
+      // Generate filename with date range
+      const timestamp = new Date().toISOString().split('T')[0];
+      let finalFilename = `${filename}_${timestamp}`;
+
+      if (filters.startDate && filters.endDate) {
+        const startStr = new Date(filters.startDate).toISOString().split('T')[0];
+        const endStr = new Date(filters.endDate).toISOString().split('T')[0];
+        finalFilename = `${filename}_${startStr}_to_${endStr}`;
+      }
+
+      // Write file
+      XLSX.writeFile(workbook, `${finalFilename}.xlsx`);
+
+      return true;
+    } catch (error) {
+      console.error('Failed to export to Excel:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Export bookings data to Excel format
+   * @param {Array} bookings - Array of booking objects with equipment and user data
+   * @param {Array} users - Array of user objects
+   * @param {Array} equipment - Array of equipment objects
+   * @param {string} filename - Name of the file (without extension)
+   */
+  exportBookingsToExcel(bookings, users, equipment, filename = 'bookings') {
+    try {
+      const workbook = XLSX.utils.book_new();
+
+      // Prepare data for export
+      const bookingsData = [
+        ['Booking ID', 'User', 'Department', 'Equipment', 'Start Date', 'End Date', 'Status', 'Purpose', 'Created Date']
+      ];
+
+      bookings.forEach(booking => {
+        const user = users.find(u => u.id === booking.user_id);
+        const equipItem = equipment.find(e => e.id === booking.equipment_id);
+
+        bookingsData.push([
+          booking.id,
+          user?.full_name || 'Unknown',
+          user?.department || 'Unknown',
+          equipItem?.product_name || 'Unknown',
+          this.formatDate(booking.start_date),
+          this.formatDate(booking.end_date),
+          booking.status,
+          booking.purpose || '',
+          this.formatDate(booking.created_at)
+        ]);
+      });
+
+      const worksheet = XLSX.utils.aoa_to_sheet(bookingsData);
+
+      // Set column widths
+      worksheet['!cols'] = [
+        { wch: 12 },
+        { wch: 25 },
+        { wch: 20 },
+        { wch: 35 },
+        { wch: 15 },
+        { wch: 15 },
+        { wch: 12 },
+        { wch: 30 },
+        { wch: 18 }
+      ];
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Bookings');
+
+      // Generate filename
+      const timestamp = new Date().toISOString().split('T')[0];
+      XLSX.writeFile(workbook, `${filename}_${timestamp}.xlsx`);
+
+      return true;
+    } catch (error) {
+      console.error('Failed to export bookings to Excel:', error);
+      throw error;
+    }
   }
 }
 

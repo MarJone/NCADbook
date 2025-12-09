@@ -1,0 +1,113 @@
+/* ============================================
+   Dark Mode Toggle Component
+   ============================================ */
+
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-light);
+  border-radius: var(--radius-md);
+  color: var(--theme-text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: 44px; /* Accessibility: minimum touch target */
+}
+
+.dark-mode-toggle:hover {
+  background: var(--theme-bg-tertiary);
+  border-color: var(--theme-accent-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--theme-shadow-sm);
+}
+
+.dark-mode-toggle:active {
+  transform: translateY(0);
+}
+
+.dark-mode-toggle:focus-visible {
+  outline: 3px solid var(--theme-accent-primary);
+  outline-offset: 2px;
+}
+
+/* Icon */
+.dark-mode-toggle .mode-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-base);
+}
+
+.dark-mode-toggle:hover .mode-icon {
+  transform: rotate(15deg);
+}
+
+/* Label */
+.dark-mode-toggle .mode-label {
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+/* Mobile: Icon only */
+@media (max-width: 640px) {
+  .dark-mode-toggle {
+    padding: 0.625rem;
+    min-width: 44px;
+    justify-content: center;
+  }
+
+  .dark-mode-toggle .mode-label {
+    display: none;
+  }
+}
+
+/* Pressed state for accessibility */
+.dark-mode-toggle[aria-pressed="true"] {
+  background: var(--theme-accent-primary);
+  color: var(--theme-text-inverse);
+  border-color: var(--theme-accent-primary);
+}
+
+.dark-mode-toggle[aria-pressed="true"]:hover {
+  background: var(--theme-accent-primary-hover);
+  border-color: var(--theme-accent-primary-hover);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .dark-mode-toggle,
+  .dark-mode-toggle .mode-icon {
+    transition: none;
+  }
+
+  .dark-mode-toggle:hover .mode-icon {
+    transform: none;
+  }
+}
+
+/* Dark mode specific styling */
+[data-theme="dark"] .dark-mode-toggle {
+  background: var(--theme-bg-tertiary);
+  border-color: var(--theme-border-medium);
+}
+
+[data-theme="dark"] .dark-mode-toggle:hover {
+  background: var(--theme-bg-secondary);
+  border-color: var(--theme-accent-tertiary);
+}
+
+[data-theme="dark"] .dark-mode-toggle[aria-pressed="true"] {
+  background: var(--theme-accent-secondary);
+  border-color: var(--theme-accent-secondary);
+}
+
+[data-theme="dark"] .dark-mode-toggle[aria-pressed="true"]:hover {
+  background: var(--theme-accent-tertiary);
+  border-color: var(--theme-accent-tertiary);
+}

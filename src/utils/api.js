@@ -634,6 +634,46 @@ export const equipmentKitsAPI = {
   },
 };
 
+// ============================================
+// AI SETTINGS API
+// ============================================
+
+export const aiSettingsAPI = {
+  /**
+   * Get all AI settings
+   */
+  getAll: async () => {
+    return await request('/ai-settings');
+  },
+
+  /**
+   * Get single AI setting by key
+   */
+  getByKey: async (key) => {
+    return await request(`/ai-settings/${key}`);
+  },
+
+  /**
+   * Update or create AI setting (Master Admin only)
+   */
+  update: async (key, value, modifiedBy) => {
+    return await request(`/ai-settings/${key}`, {
+      method: 'PUT',
+      body: JSON.stringify({ value, modified_by: modifiedBy }),
+    });
+  },
+
+  /**
+   * Test Ollama connection
+   */
+  testConnection: async (endpoint) => {
+    return await request('/ai-settings/test-connection', {
+      method: 'POST',
+      body: JSON.stringify({ endpoint }),
+    });
+  },
+};
+
 // Export token management functions
 export const tokenManager = {
   getToken,
@@ -652,5 +692,6 @@ export default {
   analyticsAPI,
   systemSettingsAPI,
   equipmentKitsAPI,
+  aiSettingsAPI,
   tokenManager,
 };

@@ -1,39 +1,43 @@
-import { useState, useEffect } from 'react';
-import { darkModeService } from '../../services/darkMode.service';
+import { useTheme } from '../../contexts/ThemeContext';
+import './DarkModeToggle.css';
 
-export default function DarkModeToggle({ showLabel = true }) {
-  const [isDark, setIsDark] = useState(false);
+/**
+ * DarkModeToggle - Theme toggle button
+ *
+ * Features:
+ * - Integrates with ThemeContext
+ * - Saves preference to localStorage
+ * - Detects system preference initially
+ * - Disabled for Master Admin portal (always dark)
+ * - Full keyboard accessibility
+ *
+ * @param {Object} props
+ * @param {boolean} props.showLabel - Show text label (defaults to true)
+ * @param {string} props.className - Additional CSS classes
+ */
+export default function DarkModeToggle({ showLabel = true, className = '' }) {
+  const { isDarkMode, toggleDarkMode, canToggleDarkMode } = useTheme();
 
-  useEffect(() => {
-    setIsDark(darkModeService.isDarkMode());
-
-    // Watch for system preference changes
-    const cleanup = darkModeService.watchSystemPreference((prefersDark) => {
-      setIsDark(prefersDark);
-    });
-
-    return cleanup;
-  }, []);
-
-  const handleToggle = () => {
-    const newMode = darkModeService.toggle();
-    setIsDark(newMode);
-  };
+  // Don't render if portal doesn't support dark mode toggle
+  if (!canToggleDarkMode) {
+    return null;
+  }
 
   return (
     <button
-      onClick={handleToggle}
-      className="dark-mode-toggle"
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      aria-pressed={isDark}
+      onClick={toggleDarkMode}
+      className={`dark-mode-toggle ${className}`.trim()}
+      aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      aria-pressed={isDarkMode}
+      title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
       data-testid="dark-mode-toggle"
     >
       <span className="mode-icon" aria-hidden="true">
-        {isDark ? '☀' : '☾'}
+        {isDarkMode ? '☀️' : '🌙'}
       </span>
       {showLabel && (
         <span className="mode-label">
-          {isDark ? 'Light Mode' : 'Dark Mode'}
+          {isDarkMode ? 'Light' : 'Dark'}
         </span>
       )}
     </button>
