@@ -29,9 +29,11 @@ import CrossDepartmentRequests from './CrossDepartmentRequests';
 import EquipmentKitsManagement from './EquipmentKitsManagement';
 import CheckoutVerification from './CheckoutVerification';
 import ReturnVerification from './ReturnVerification';
+import AccessoryManager from './AccessoryManager';
 import './AdminPortal.css';
 import './CheckoutVerification.css';
 import './ReturnVerification.css';
+import './AccessoryManager.css';
 import '../../styles/role-colors.css';
 
 export default function AdminLayout() {
@@ -146,6 +148,7 @@ export default function AdminLayout() {
           <Route path="equipment-kits" element={<EquipmentKitsManagement />} />
           <Route path="checkout" element={<CheckoutVerification />} />
           <Route path="return" element={<ReturnVerification />} />
+          <Route path="accessories" element={<AccessoryManager />} />
         </Routes>
       </main>
 

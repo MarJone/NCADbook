@@ -63,7 +63,7 @@
 - [x] QR code generator component
 - [x] QR/Barcode scanner component (camera + USB)
 - [x] Printable equipment label component
-- [ ] Equipment accessory manager
+- [x] Equipment accessory manager
 - [x] Checkout verification workflow
 - [x] Return verification with condition assessment
 - [ ] Batch label printing
@@ -157,14 +157,14 @@
 |----------|-------|-----------|-------------|---------|
 | UI/UX | 18 | 12 | 0 | 6 |
 | Core Functionality | 15 | 1 | 1 | 13 |
-| Barcode/QR System | 8 | 6 | 0 | 2 |
+| Barcode/QR System | 8 | 7 | 0 | 1 |
 | Local LLM Integration | 8 | 2 | 0 | 6 |
 | Admin Features | 12 | 5 | 0 | 7 |
 | Testing | 9 | 4 | 0 | 5 |
 | Docs/DevOps | 10 | 0 | 0 | 10 |
-| **TOTAL** | **80** | **30** | **0** | **50** |
+| **TOTAL** | **80** | **31** | **0** | **49** |
 
-**Overall Progress: 38%**
+**Overall Progress: 39%**
 
 ---
 
