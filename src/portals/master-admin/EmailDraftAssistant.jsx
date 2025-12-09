@@ -21,10 +21,30 @@ import {
   Clock,
   Shield,
   UserX,
-  Bell
+  Bell,
+  Search
 } from 'lucide-react';
 import { generateEmailDraft } from '../../services/ai.service.js';
 import './EmailDraftAssistant.css';
+
+// Mock students for demo mode
+const MOCK_STUDENTS = [
+  { id: 1, full_name: 'Emma O\'Brien', email: 'emma.obrien@student.ncad.ie', department: 'Moving Image Design' },
+  { id: 2, full_name: 'Liam Murphy', email: 'liam.murphy@student.ncad.ie', department: 'Graphic Design' },
+  { id: 3, full_name: 'Sophie Walsh', email: 'sophie.walsh@student.ncad.ie', department: 'Illustration' },
+  { id: 4, full_name: 'James Kelly', email: 'james.kelly@student.ncad.ie', department: 'Moving Image Design' },
+  { id: 5, full_name: 'Aoife Ryan', email: 'aoife.ryan@student.ncad.ie', department: 'Graphic Design' },
+  { id: 6, full_name: 'Sean Byrne', email: 'sean.byrne@student.ncad.ie', department: 'Illustration' },
+  { id: 7, full_name: 'Ciara Fitzgerald', email: 'ciara.fitzgerald@student.ncad.ie', department: 'Moving Image Design' },
+  { id: 8, full_name: 'Conor O\'Sullivan', email: 'conor.osullivan@student.ncad.ie', department: 'Graphic Design' },
+  { id: 9, full_name: 'Niamh Brennan', email: 'niamh.brennan@student.ncad.ie', department: 'Illustration' },
+  { id: 10, full_name: 'Patrick Doyle', email: 'patrick.doyle@student.ncad.ie', department: 'Moving Image Design' },
+  { id: 11, full_name: 'Sinead McCarthy', email: 'sinead.mccarthy@student.ncad.ie', department: 'Graphic Design' },
+  { id: 12, full_name: 'Roisin Kennedy', email: 'roisin.kennedy@student.ncad.ie', department: 'Illustration' },
+  { id: 13, full_name: 'Oisin Walsh', email: 'oisin.walsh@student.ncad.ie', department: 'Moving Image Design' },
+  { id: 14, full_name: 'Fiona O\'Connor', email: 'fiona.oconnor@student.ncad.ie', department: 'Graphic Design' },
+  { id: 15, full_name: 'Declan Murray', email: 'declan.murray@student.ncad.ie', department: 'Illustration' }
+];
 
 /**
  * EmailDraftAssistant - AI-powered email drafting for admin communications
@@ -120,7 +140,7 @@ const EMAIL_SCENARIOS = [
 
 // Field labels and placeholders
 const FIELD_CONFIG = {
-  studentName: { label: 'Student Name', placeholder: 'e.g., John Smith', type: 'text' },
+  studentName: { label: 'Student Name', placeholder: 'Search for a student...', type: 'student-search' },
   equipment: { label: 'Equipment', placeholder: 'e.g., Canon EOS R5, Tripod', type: 'text' },
   startDate: { label: 'Start Date', placeholder: '', type: 'date' },
   endDate: { label: 'End Date', placeholder: '', type: 'date' },
@@ -152,7 +172,13 @@ export default function EmailDraftAssistant() {
   const [recentEmails, setRecentEmails] = useState([]);
   const [progress, setProgress] = useState({ stage: '', percent: 0 });
 
+  // Student search state
+  const [studentSearchQuery, setStudentSearchQuery] = useState('');
+  const [studentSearchFocused, setStudentSearchFocused] = useState(false);
+  const [students] = useState(MOCK_STUDENTS);
+
   const emailRef = useRef(null);
+  const studentSearchRef = useRef(null);
 
   // Handle scenario selection
   const handleScenarioSelect = useCallback((scenario) => {
@@ -161,6 +187,37 @@ export default function EmailDraftAssistant() {
     setGeneratedEmail(null);
     setError(null);
     setIsEditing(false);
+    setStudentSearchQuery('');
+    setStudentSearchFocused(false);
+  }, []);
+
+  // Filter students based on search query
+  const filteredStudents = students.filter(student => {
+    if (!studentSearchQuery.trim()) return true;
+    const query = studentSearchQuery.toLowerCase();
+    return (
+      student.full_name.toLowerCase().includes(query) ||
+      student.email.toLowerCase().includes(query) ||
+      student.department.toLowerCase().includes(query)
+    );
+  }).slice(0, 8); // Limit to 8 results
+
+  // Handle student selection from dropdown
+  const handleStudentSelect = useCallback((student) => {
+    setFormData(prev => ({ ...prev, studentName: student.full_name }));
+    setStudentSearchQuery(student.full_name);
+    setStudentSearchFocused(false);
+  }, []);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (studentSearchRef.current && !studentSearchRef.current.contains(event.target)) {
+        setStudentSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Handle form field changes
@@ -271,6 +328,71 @@ export default function EmailDraftAssistant() {
     if (!config) return null;
 
     const value = formData[fieldName] || '';
+
+    // Student search dropdown
+    if (config.type === 'student-search') {
+      return (
+        <div key={fieldName} className="eda-field eda-field-full">
+          <label>{config.label}</label>
+          <div className="eda-student-search" ref={studentSearchRef}>
+            <div className="eda-search-input-wrapper">
+              <Search size={16} className="eda-search-icon" />
+              <input
+                type="text"
+                value={studentSearchQuery}
+                onChange={(e) => {
+                  setStudentSearchQuery(e.target.value);
+                  // Clear the form value if user is typing something different
+                  if (e.target.value !== formData.studentName) {
+                    handleFieldChange(fieldName, '');
+                  }
+                }}
+                onFocus={() => setStudentSearchFocused(true)}
+                placeholder={config.placeholder}
+                className="eda-search-input"
+              />
+              {studentSearchQuery && (
+                <button
+                  type="button"
+                  className="eda-search-clear"
+                  onClick={() => {
+                    setStudentSearchQuery('');
+                    handleFieldChange(fieldName, '');
+                  }}
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+            {studentSearchFocused && (
+              <div className="eda-student-dropdown">
+                {filteredStudents.length > 0 ? (
+                  filteredStudents.map(student => (
+                    <button
+                      key={student.id}
+                      type="button"
+                      className={`eda-student-option ${formData.studentName === student.full_name ? 'selected' : ''}`}
+                      onClick={() => handleStudentSelect(student)}
+                    >
+                      <User size={14} className="eda-student-avatar" />
+                      <div className="eda-student-info">
+                        <span className="eda-student-name">{student.full_name}</span>
+                        <span className="eda-student-email">{student.email}</span>
+                      </div>
+                      <span className="eda-student-dept">{student.department}</span>
+                    </button>
+                  ))
+                ) : (
+                  <div className="eda-no-students">
+                    <span>No students found</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
 
     if (config.type === 'textarea') {
       return (

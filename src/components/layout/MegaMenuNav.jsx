@@ -26,6 +26,7 @@ import {
   Mail,
   Database,
   Sparkles,
+  FileUp,
 } from 'lucide-react';
 import './MegaMenuNav.css';
 
@@ -227,7 +228,7 @@ export function MegaMenuNav({
               title: 'User Management',
               items: [
                 { label: 'All Users', icon: Users, href: '/admin/users' },
-                { label: 'Import CSV', icon: FileText, href: '/admin/csv-import' },
+                { label: 'AI Import', icon: FileUp, href: '/admin/ai-import', description: 'Smart data import' },
                 { label: 'Permissions', icon: Shield, href: '/admin/permissions' },
                 { label: 'Role Management', icon: Shield, href: '/admin/role-management' },
               ],
@@ -259,6 +260,7 @@ export function MegaMenuNav({
               title: 'AI Tools',
               items: [
                 { label: 'AI Settings', icon: Brain, href: '/admin/ai-settings', description: 'Configure local LLM' },
+                { label: 'AI Import', icon: FileUp, href: '/admin/ai-import', description: 'Smart data import wizard' },
                 { label: 'Natural Language Query', icon: Database, href: '/admin/nlq', description: 'Query data with AI' },
                 { label: 'Email Draft Assistant', icon: Mail, href: '/admin/email-draft', description: 'AI-powered emails' },
                 { label: 'Justification Analyzer', icon: FileText, href: '/admin/justification-analyzer', description: 'Analyze booking requests' },

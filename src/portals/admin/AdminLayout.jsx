@@ -37,11 +37,13 @@ import ConditionAssessment from './ConditionAssessment';
 import NaturalLanguageQuery from '../master-admin/NaturalLanguageQuery';
 import EmailDraftAssistant from '../master-admin/EmailDraftAssistant';
 import BookingJustificationAnalyzer from '../master-admin/BookingJustificationAnalyzer';
+import AIImportAssistant from '../master-admin/AIImportAssistant';
 import './AdminPortal.css';
 import './ConditionAssessment.css';
 import '../master-admin/NaturalLanguageQuery.css';
 import '../master-admin/EmailDraftAssistant.css';
 import '../master-admin/BookingJustificationAnalyzer.css';
+import '../master-admin/AIImportAssistant.css';
 import './CheckoutVerification.css';
 import './ReturnVerification.css';
 import './AccessoryManager.css';
@@ -90,6 +92,7 @@ export default function AdminLayout() {
       'ai-email': '/admin/email-draft',
       'ai-justification': '/admin/justification-analyzer',
       'ai-settings': '/admin/ai-settings',
+      'ai-import': '/admin/ai-import',
     };
 
     if (navCommands[command.id]) {
@@ -177,6 +180,7 @@ export default function AdminLayout() {
               <Route path="nlq" element={<NaturalLanguageQuery />} />
               <Route path="email-draft" element={<EmailDraftAssistant />} />
               <Route path="justification-analyzer" element={<BookingJustificationAnalyzer />} />
+              <Route path="ai-import" element={<AIImportAssistant />} />
             </>
           )}
         </Routes>
